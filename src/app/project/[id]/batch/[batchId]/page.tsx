@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ArrowLeft, Loader2, Download } from 'lucide-react';
 import { FileUploader } from '@/components/yago/FileUploader';
 import { v4 as uuidv4 } from 'uuid';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { StagingRow } from '@/types';
 import { StagingTable } from '@/components/yago/StagingTable';
 

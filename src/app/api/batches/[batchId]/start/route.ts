@@ -55,5 +55,9 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ bat
         .update({ status: 'processing' })
         .eq('id', batchId);
 
+    if (batchUpdateError) {
+        console.error("Warning: Could not update batch status", batchUpdateError);
+    }
+
     return NextResponse.json({ success: true, count: files.length });
 }
