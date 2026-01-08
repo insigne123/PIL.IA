@@ -68,6 +68,20 @@ create table staging_rows (
     created_at timestamptz default now()
 );
 
+-- EXCEL MAPS
+create table excel_maps (
+    id uuid primary key default uuid_generate_v4(),
+    batch_id uuid references batches(id) on delete cascade not null,
+    sheet_name text,
+    header_row int,
+    col_desc int,
+    col_unit int,
+    col_qty int,
+    col_price int,
+    detected_by text,
+    created_at timestamptz default now()
+);
+
 -- JOBS (Worker Queue)
 create table jobs (
     id uuid primary key default uuid_generate_v4(),
@@ -121,5 +135,9 @@ create policy "Users can insert own projects" on projects
 -- Policy: Batches inherit project access
 create policy "Users can see own batches" on batches
     for all using ( project_id in (select id from projects where user_id = auth.uid()::text) );
+
+alter table excel_maps enable row level security;
+create policy "Users can see own excel maps" on excel_maps
+    for all using ( batch_id in (select id from batches where project_id in (select id from projects where user_id = auth.uid()::text)) );
 
 -- Same logic for other tables... (Simplified for SQL file brevity, in production we'd add all)

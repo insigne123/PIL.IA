@@ -221,7 +221,31 @@ export default function BatchPage() {
                                 {batch.status === 'pending' || batch.status === 'error' ? (
                                     <Button size="lg" onClick={async () => {
                                         setLoading(true);
+                                        // 1. Mark batch as processing (queues jobs)
                                         await fetch(`/api/batches/${batchId}/start`, { method: 'POST' });
+
+                                        // 2. Trigger Worker Loop in Frontend
+                                        // This ensures we keep hitting the endpoint until done
+                                        const processLoop = async () => {
+                                            let keepingAlive = true;
+                                            while (keepingAlive) {
+                                                const res = await fetch('/api/worker/run', { method: 'POST' });
+                                                if (!res.ok) {
+                                                    // Error or 404
+                                                    console.warn("Worker stop/error");
+                                                    keepingAlive = false;
+                                                }
+                                                const json = await res.json();
+                                                if (json.message === "No jobs pending") {
+                                                    keepingAlive = false;
+                                                }
+                                                // Wait 1s between tasks
+                                                await new Promise(r => setTimeout(r, 1000));
+                                                fetchBatchData(); // Refresh UI
+                                            }
+                                        };
+
+                                        processLoop(); // Fire and forget loop
                                         fetchBatchData();
                                         setLoading(false);
                                     }}>
@@ -314,7 +338,24 @@ export default function BatchPage() {
                                 <Button size="lg" className="gap-2" onClick={async () => {
                                     // Call Generate API
                                     const res = await fetch(`/api/batches/${batchId}/generate`, { method: 'POST' });
-                                    if (res.ok) alert("Generación iniciada (Simulada MVP)");
+                                    if (res.ok) {
+                                        alert("Generación iniciada (Simulada MVP). Procesando...");
+                                        // Trigger Worker Loop
+                                        const processLoop = async () => {
+                                            let keepingAlive = true;
+                                            while (keepingAlive) {
+                                                const res = await fetch('/api/worker/run', { method: 'POST' });
+                                                if (!res.ok) keepingAlive = false;
+                                                const json = await res.json();
+                                                if (json.message === "No jobs pending") keepingAlive = false;
+                                                // Wait 1s between tasks
+                                                await new Promise(r => setTimeout(r, 1000));
+                                                fetchBatchData();
+                                            }
+                                        };
+                                        await processLoop();
+                                        window.location.reload(); // Quick refresh to see links
+                                    }
                                     else alert("Error al generar");
                                 }}>
                                     <Download className="h-5 w-5" /> Generar Excel & PDF
