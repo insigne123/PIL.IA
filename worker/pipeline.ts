@@ -39,7 +39,7 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
 
         if (file.file_type === 'dxf') {
             const text = await new Response(fileData).text();
-            extractedItems = parseDxf(text, 'm');
+            extractedItems = await parseDxf(text, 'm');
         } else if (file.file_type === 'excel') {
             const result = await parseExcel(buffer);
             extractedItems = result.items;
@@ -209,10 +209,10 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
         // Deduplicate by layer name but keep type info 
         // (If layer has both blocks and lines, we prefer block if it has more items? or keep both?)
         // Simplification: One entry per layer, prioritizing 'block' if mixed.
-        const candidateMap = new Map<string, { name: string, type: string, val: number }>();
+        const candidateMap = new Map<string, { name: string, type: string, sample_value: number }>();
         dxfItems.forEach(i => {
             if (!candidateMap.has(i.layer_normalized)) {
-                candidateMap.set(i.layer_normalized, { name: i.layer_normalized, type: i.type, val: i.value_m });
+                candidateMap.set(i.layer_normalized, { name: i.layer_normalized, type: i.type, sample_value: i.value_m });
             }
         });
         const candidatePayload = Array.from(candidateMap.values());
