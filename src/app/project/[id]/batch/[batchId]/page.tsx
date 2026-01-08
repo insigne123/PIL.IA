@@ -119,7 +119,11 @@ export default function BatchPage() {
                 continue;
             }
 
-            const path = `${batchId}/${file.name}`;
+
+            // Sanitize filename: remove spaces and special characters
+            const sanitizedName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+            const path = `${batchId}/${sanitizedName}`;
+
 
             // 1. Upload to Storage
             const { error: uploadError } = await supabase.storage
