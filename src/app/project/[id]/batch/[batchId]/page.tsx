@@ -308,7 +308,7 @@ export default function BatchPage() {
                         <CardContent>
                             <div className="flex justify-center py-6">
                                 {batch.status === 'pending' || batch.status === 'error' ? (
-                                    <Button size="lg" onClick={async () => {
+                                    <Button size="lg" disabled={loading} onClick={async () => {
                                         setLoading(true);
                                         // 1. Mark batch as processing (queues jobs)
                                         await fetch(`/api/batches/${batchId}/start`, { method: 'POST' });
@@ -369,6 +369,21 @@ export default function BatchPage() {
                                     }}>
                                         Iniciar Procesamiento
                                     </Button>
+                                ) : batch.status === 'processing' ? (
+                                    <div className="flex flex-col items-center gap-2">
+                                        <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+                                        <p className="text-slate-600 font-medium">Procesando... esto puede tomar unos minutos.</p>
+                                    </div>
+                                ) : batch.status === 'ready' ? (
+                                    <div className="text-center py-6">
+                                        <div className="h-16 w-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+                                            <svg className="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                        </div>
+                                        <p className="text-lg font-semibold text-green-600">✓ Procesamiento Completado</p>
+                                        <p className="text-sm text-slate-500 mt-1">Los datos están listos para revisión</p>
+                                    </div>
                                 ) : (
                                     <div className="flex flex-col items-center gap-2">
                                         <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
@@ -400,8 +415,15 @@ export default function BatchPage() {
                         </CardContent>
                         <CardFooter className="flex justify-end pt-0">
                             <Button variant="outline" onClick={() => fetchBatchData()}>Recargar Estado</Button>
-                            {batch.status === 'ready' && (
+                            {/* Only show "Go to Review" if no unit mismatch AND batch is ready */}
+                            {batch.status === 'ready' && !mismatchFile && (
                                 <Button className="ml-2" onClick={() => setActiveTab('staging')}>Ir a Revisión</Button>
+                            )}
+                            {/* Show warning if unit mismatch blocks review */}
+                            {batch.status === 'ready' && mismatchFile && (
+                                <div className="ml-2 text-sm text-amber-600 font-medium">
+                                    ⚠️ Resuelve la inconsistencia de unidades primero
+                                </div>
                             )}
                         </CardFooter>
                     </Card>
@@ -460,91 +482,103 @@ export default function BatchPage() {
                                 <CardDescription>Descarga los archivos finales generados o exporta datos para revisión.</CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-6">
-                                {batch.status === 'completed' ? (
-                                    <div className="space-y-4">
-                                        <div className="bg-green-50 border border-green-200 rounded-md p-4">
-                                            <h4 className="font-semibold text-green-900 mb-2">✓ Archivos Generados</h4>
-                                            <div className="space-y-2">
-                                                <Button
-                                                    variant="outline"
-                                                    className="w-full justify-start gap-2"
-                                                    onClick={async () => {
-                                                        const { data } = await supabase.storage
-                                                            .from('yago-output')
-                                                            .createSignedUrl(`${batchId}/YAGO_*.xlsx`, 3600);
-                                                        if (data?.signedUrl) window.open(data.signedUrl, '_blank');
-                                                    }}
-                                                >
-                                                    <Download className="h-4 w-4" />
-                                                    Descargar Excel Procesado
-                                                </Button>
-                                                <Button
-                                                    variant="outline"
-                                                    className="w-full justify-start gap-2"
-                                                    onClick={async () => {
-                                                        const { data } = await supabase.storage
-                                                            .from('yago-output')
-                                                            .createSignedUrl(`${batchId}/Heatmap_Report.pdf`, 3600);
-                                                        if (data?.signedUrl) window.open(data.signedUrl, '_blank');
-                                                    }}
-                                                >
-                                                    <Download className="h-4 w-4" />
-                                                    Descargar Reporte PDF
-                                                </Button>
-                                            </div>
-                                        </div>
+                                {/* Diagnostic JSON - Always available when ready or completed */}
+                                {(batch.status === 'ready' || batch.status === 'completed') && (
+                                    <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
+                                        <h4 className="font-semibold text-blue-900 mb-2">📊 Exportar para Revisión</h4>
+                                        <p className="text-sm text-blue-700 mb-3">
+                                            Descarga un JSON con todos los detalles de matching para análisis externo.
+                                        </p>
+                                        <Button
+                                            variant="outline"
+                                            className="w-full justify-start gap-2 border-blue-300"
+                                            onClick={() => {
+                                                window.open(`/api/batches/${batchId}/diagnostic`, '_blank');
+                                            }}
+                                        >
+                                            <Download className="h-4 w-4" />
+                                            Descargar Diagnóstico JSON
+                                        </Button>
+                                    </div>
+                                )}
 
-                                        <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
-                                            <h4 className="font-semibold text-blue-900 mb-2">📊 Exportar para Revisión</h4>
-                                            <p className="text-sm text-blue-700 mb-3">
-                                                Descarga un JSON con todos los detalles de matching para análisis externo.
-                                            </p>
+                                {/* Generated files - Only when completed */}
+                                {batch.status === 'completed' ? (
+                                    <div className="bg-green-50 border border-green-200 rounded-md p-4">
+                                        <h4 className="font-semibold text-green-900 mb-2">✓ Archivos Generados</h4>
+                                        <div className="space-y-2">
                                             <Button
                                                 variant="outline"
-                                                className="w-full justify-start gap-2 border-blue-300"
-                                                onClick={() => {
-                                                    window.open(`/api/batches/${batchId}/diagnostic`, '_blank');
+                                                className="w-full justify-start gap-2"
+                                                onClick={async () => {
+                                                    const { data } = await supabase.storage
+                                                        .from('yago-output')
+                                                        .createSignedUrl(`${batchId}/YAGO_*.xlsx`, 3600);
+                                                    if (data?.signedUrl) window.open(data.signedUrl, '_blank');
                                                 }}
                                             >
                                                 <Download className="h-4 w-4" />
-                                                Descargar Diagnóstico JSON
+                                                Descargar Excel Procesado
+                                            </Button>
+                                            <Button
+                                                variant="outline"
+                                                className="w-full justify-start gap-2"
+                                                onClick={async () => {
+                                                    const { data } = await supabase.storage
+                                                        .from('yago-output')
+                                                        .createSignedUrl(`${batchId}/Heatmap_Report.pdf`, 3600);
+                                                    if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+                                                }}
+                                            >
+                                                <Download className="h-4 w-4" />
+                                                Descargar Reporte PDF
                                             </Button>
                                         </div>
                                     </div>
-                                ) : (
+                                ) : batch.status === 'ready' ? (
                                     <div className="text-center py-10">
                                         <p className="text-slate-600 mb-4">
                                             Una vez revisado todo en la pestaña de Staging, genera los archivos finales.
                                         </p>
-                                        <Button size="lg" className="gap-2" onClick={async () => {
-                                            const res = await fetch(`/api/batches/${batchId}/generate`, { method: 'POST' });
-                                            if (res.ok) {
-                                                alert("Generación iniciada. Procesando...");
-                                                const processLoop = async () => {
-                                                    let keepingAlive = true;
-                                                    while (keepingAlive) {
-                                                        const res = await fetch('/api/worker/run', { method: 'POST' });
-                                                        if (!res.ok) keepingAlive = false;
-                                                        const json = await res.json();
-                                                        if (json.message === "No jobs pending") keepingAlive = false;
-                                                        await new Promise(r => setTimeout(r, 1000));
-                                                        fetchBatchData();
-                                                    }
-                                                };
-                                                await processLoop();
-                                                window.location.reload();
+                                        <Button size="lg" className="gap-2" disabled={loading} onClick={async () => {
+                                            setLoading(true);
+                                            try {
+                                                const res = await fetch(`/api/batches/${batchId}/generate`, { method: 'POST' });
+                                                if (res.ok) {
+                                                    const processLoop = async () => {
+                                                        let keepingAlive = true;
+                                                        while (keepingAlive) {
+                                                            const res = await fetch('/api/worker/run', { method: 'POST' });
+                                                            if (!res.ok) keepingAlive = false;
+                                                            const json = await res.json();
+                                                            if (json.message === "No jobs pending") keepingAlive = false;
+                                                            await new Promise(r => setTimeout(r, 1000));
+                                                            await fetchBatchData();
+                                                        }
+                                                    };
+                                                    await processLoop();
+                                                    alert('✅ Archivos generados exitosamente. Descárgalos arriba.');
+                                                } else {
+                                                    alert("Error al generar archivos");
+                                                }
+                                            } catch (e) {
+                                                console.error(e);
+                                                alert("Error al generar archivos");
+                                            } finally {
+                                                setLoading(false);
                                             }
-                                            else alert("Error al generar");
                                         }}>
-                                            <Download className="h-5 w-5" /> Generar Excel & PDF
+                                            {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Download className="h-5 w-5" />}
+                                            Generar Excel & PDF
                                         </Button>
                                     </div>
-                                )}
+                                ) : null}
                             </CardContent>
+                        </CardContent>
                         </Card>
                     )}
-                </TabsContent>
-            </Tabs>
+            </TabsContent>
+        </Tabs>
         </div >
     );
 }
