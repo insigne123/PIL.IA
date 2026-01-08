@@ -40,9 +40,10 @@ export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
                 <Table>
                     <TableHeader>
                         <TableRow>
-                            <TableHead className="w-[50px]">Status</TableHead>
+                            <TableHead className="w-[100px]">Status</TableHead>
                             <TableHead className="w-[300px]">Item Excel</TableHead>
                             <TableHead className="w-[250px]">Match CAD</TableHead>
+                            <TableHead className="w-[250px]">Razonamiento IA</TableHead>
                             <TableHead className="w-[100px]">Cant. Final</TableHead>
                             <TableHead className="w-[80px]">Unidad</TableHead>
                             <TableHead className="w-[120px]">Precio Unit.</TableHead>
@@ -66,17 +67,6 @@ export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
                                 </TableCell>
                                 <TableCell className="font-medium text-xs">
                                     {row.excel_item_text}
-                                    {/* AI Match Reason Display */}
-                                    {row.match_reason && (
-                                        <div className="group relative mt-1 inline-block">
-                                            <div className="text-[10px] text-blue-500 cursor-help border-b border-dotted border-blue-500">
-                                                Ver Razonamiento IA
-                                            </div>
-                                            <div className="absolute z-10 invisible group-hover:visible bg-slate-800 text-white text-[10px] p-2 rounded shadow-lg w-64 -left-2 top-4">
-                                                {row.match_reason}
-                                            </div>
-                                        </div>
-                                    )}
                                 </TableCell>
                                 <TableCell className="text-xs">
                                     {row.source_items && row.source_items.length > 0 ? (
@@ -87,6 +77,9 @@ export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
                                     ) : (
                                         <span className="text-slate-400 italic">Sin match automático</span>
                                     )}
+                                </TableCell>
+                                <TableCell className="text-xs text-slate-600 italic">
+                                    {row.match_reason ? row.match_reason : '-'}
                                 </TableCell>
                                 <TableCell>
                                     <Input

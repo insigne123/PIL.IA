@@ -80,6 +80,7 @@ export interface BatchFile {
   originalName: string;
   fileType: 'dwg' | 'dxf' | 'excel';
   size: number;
+  detectedUnit?: Unit;
   status: 'uploaded' | 'queued' | 'processing' | 'converted' | 'extracted' | 'error';
   errorCode?: string;
   errorMessage?: string;

@@ -36,10 +36,24 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
 
         const buffer = await fileData.arrayBuffer();
         let extractedItems: any = null;
+        let detectedUnitVal: any = null; // Scoped variable for update
 
         if (file.file_type === 'dxf') {
             const text = await new Response(fileData).text();
-            extractedItems = await parseDxf(text, 'm');
+
+            // Get Batch Unit Preference
+            const { data: batchData } = await supabase.from('batches').select('unit_selected').eq('id', file.batch_id).single();
+            const planUnit = (batchData?.unit_selected as any) || 'm';
+
+            const { items, detectedUnit } = await parseDxf(text, planUnit);
+            detectedUnitVal = detectedUnit;
+
+            if (detectedUnit && detectedUnit !== planUnit) {
+                console.warn(`[Unit Mismatch] Batch says '${planUnit}' but DXF header says '${detectedUnit}'. Using '${planUnit}'.`);
+                // Optional: We could update the batch here if we wanted fully automatic mode
+            }
+
+            extractedItems = items;
         } else if (file.file_type === 'excel') {
             const result = await parseExcel(buffer);
             extractedItems = result.items;
@@ -66,8 +80,9 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
         // Update Batch File
         await supabase.from('batch_files').update({
             status: 'extracted',
-            // @ts-ignore: Assuming column exists in updated migration or ignoring robustly
-            storage_json_path: jsonPath
+            // @ts-ignore: Assuming column exists in updated migration
+            storage_json_path: jsonPath,
+            detected_unit: detectedUnitVal
         }).eq('id', file.id);
 
         // Check Trigger

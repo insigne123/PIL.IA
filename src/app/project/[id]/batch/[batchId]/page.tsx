@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { Batch, BatchFile } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Loader2, Download } from 'lucide-react';
+import { ArrowLeft, Loader2, Download, AlertTriangle } from 'lucide-react';
 import { FileUploader } from '@/components/yago/FileUploader';
 import { v4 as uuidv4 } from 'uuid';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -64,7 +64,8 @@ export default function BatchPage() {
                 storagePath: f.storage_path,
                 createdAt: f.created_at,
                 errorCode: f.error_code,
-                errorMessage: f.error_message
+                errorMessage: f.error_message,
+                detectedUnit: f.detected_unit // Map detected Unit
             })));
         }
 
@@ -87,6 +88,38 @@ export default function BatchPage() {
 
         setLoading(false);
     }, [batchId]);
+
+    // Check for Mismatch
+    const mismatchFile = files.find(f => f.fileType === 'dxf' && f.detectedUnit && f.detectedUnit !== batch?.unitSelected);
+
+    const handleRectifyUnit = async () => {
+        if (!mismatchFile || !batch) return;
+        const correctUnit = mismatchFile.detectedUnit;
+
+        setLoading(true);
+        try {
+            // 1. Update Batch Unit
+            await supabase.from('batches').update({ unit_selected: correctUnit }).eq('id', batch.id);
+
+            // 2. Reset File Status to 'uploaded' to trigger re-extraction in next poll/run
+            await supabase.from('batch_files').update({
+                status: 'uploaded',
+                storage_json_path: null,
+                error_message: null
+            }).eq('batch_id', batch.id).eq('file_type', 'dxf');
+
+            // 3. Clear existing staging rows (optional but cleaner)
+            await supabase.from('staging_rows').delete().eq('batch_id', batch.id);
+
+            alert(`Unidad corregida a ${correctUnit}. Por favor inicia el procesamiento nuevamente.`);
+            fetchBatchData();
+        } catch (e) {
+            console.error(e);
+            alert("Error al rectificar unidad");
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
         if (batchId) fetchBatchData();
@@ -159,26 +192,56 @@ export default function BatchPage() {
     if (!batch) return <div className="p-10 text-center">Lote no encontrado</div>;
 
     return (
-        <div className="container mx-auto py-6 px-4">
-            {/* Header */}
-            <div className="flex items-center gap-4 mb-6">
-                <Button variant="ghost" onClick={() => router.push(`/project/${projectId}`)}>
-                    <ArrowLeft className="h-4 w-4 mr-2" /> Volver
+        <div className="container mx-auto py-6 space-y-6">
+            <div className="flex items-center gap-4">
+                <Button variant="ghost" size="icon" onClick={() => router.back()}>
+                    <ArrowLeft className="h-4 w-4" />
                 </Button>
                 <div>
-                    <h1 className="text-2xl font-bold">{batch.name}</h1>
-                    <div className="flex gap-4 text-sm text-slate-500">
-                        <span>Uni: {batch.unitSelected}</span>
-                        <span>Alt: {batch.heightDefault}m</span>
-                        <span>Sheet: {batch.sheetTarget}</span>
-                    </div>
-                </div>
-                <div className="ml-auto">
-                    <span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-sm font-medium uppercase">
-                        {batch.status}
-                    </span>
+                    <h1 className="text-2xl font-bold tracking-tight">{batch?.name || 'Cargando...'}</h1>
+                    <p className="text-muted-foreground">
+                        {batch?.unitSelected.toUpperCase()} • {files.length} Archivos
+                    </p>
                 </div>
             </div>
+
+            {/* UNIT MISMATCH ALERT */}
+            {mismatchFile && (
+                <div className="bg-amber-50 border border-amber-200 rounded-md p-4 flex items-start gap-3">
+                    <AlertTriangle className="h-5 w-5 text-amber-600 mt-0.5" />
+                    <div className="flex-1">
+                        <h4 className="font-semibold text-amber-900">Inconsistencia de Unidades Detectada</h4>
+                        <p className="text-sm text-amber-700 mt-1">
+                            El archivo <strong>{mismatchFile.originalName}</strong> parece estar dibujado en
+                            <strong> {mismatchFile.detectedUnit?.toUpperCase()}</strong> ({mismatchFile.detectedUnit === 'mm' ? 'Milímetros' : mismatchFile.detectedUnit === 'cm' ? 'Centímetros' : 'Metros'}),
+                            pero el lote está configurado en <strong>{batch?.unitSelected.toUpperCase()}</strong>.
+                        </p>
+                        <p className="text-sm text-amber-700 mt-1">
+                            Esto puede causar errores graves en las mediciones.
+                        </p>
+                        <div className="mt-3 flex gap-2">
+                            <Button
+                                size="sm"
+                                variant="default"
+                                className="bg-amber-600 hover:bg-amber-700 text-white border-none"
+                                onClick={handleRectifyUnit}
+                                disabled={loading}
+                            >
+                                {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                                Rectificar a {mismatchFile.detectedUnit?.toUpperCase()} y Reprocesar
+                            </Button>
+                            <Button
+                                size="sm"
+                                variant="outline"
+                                className="border-amber-200 text-amber-800 hover:bg-amber-100"
+                                onClick={() => alert("Se mantendrá la unidad actual. Verifica los resultados con cuidado.")}
+                            >
+                                Ignorar
+                            </Button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
                 <TabsList>
@@ -395,6 +458,6 @@ export default function BatchPage() {
                     </Card>
                 </TabsContent>
             </Tabs>
-        </div>
+        </div >
     );
 }
