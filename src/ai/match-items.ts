@@ -14,12 +14,17 @@ export const matchItemFlow = ai.defineFlow(
         name: 'matchItem',
         inputSchema: z.object({
             item_description: z.string(),
-            candidate_layers: z.array(z.string()),
+            item_unit: z.string(),
+            candidate_layers: z.array(z.object({
+                name: z.string(),
+                type: z.string().describe("block (count) or length (linear m)"),
+                sample_value: z.number().optional()
+            })),
         }),
         outputSchema: MatchOutputSchema,
     },
     async (input) => {
-        const { item_description, candidate_layers } = input;
+        const { item_description, item_unit, candidate_layers } = input;
 
         const prompt = `
     You are an expert Quantity Surveyor and CAD Technician.
@@ -27,15 +32,19 @@ export const matchItemFlow = ai.defineFlow(
     Task: Find the best matching CAD Layer for the given Bill of Quantities (BoQ) Item.
     
     BoQ Item: "${item_description}"
+    BoQ Unit: "${item_unit}"
     
-    Candidate Layers:
-    ${JSON.stringify(candidate_layers.slice(0, 500))} 
+    Candidate Layers (JSON):
+    ${JSON.stringify(candidate_layers.slice(0, 400))} 
     
     Instructions:
-    1. Analyze the semantic meaning of the BoQ Item (e.g., "Muro H.A." means Reinforced Concrete Wall).
-    2. Look for technical abbreviations in Layer names (e.g., "CONC" = Concrete, "WALL" = Muro).
-    3. Return the EXACT layer name from the list that is the best match.
-    4. If no layer is a plausible match, return null.
+    1. **Semantic Match**: Analyze meanings (e.g., "Muro" = Wall, "Enchufe" = Socket).
+    2. **Dimensional Analysis (CRITICAL)**: 
+       - If BoQ Unit is "m" (Linear), prioritize candidates of type "length".
+       - If BoQ Unit is "un", "u", "c/u" (Count), prioritize candidates of type "block".
+       - Mismatched dimensions (e.g. matching "Socket (u)" to "Wall (length)") is usually WRONG unless no other option exists.
+    3. **Return**: The EXACT layer name from the list.
+    4. **Confidence**: High (0.9) if name AND type match. Low (0.4) if only name matches but type is wrong.
     `;
 
         const result = await ai.generate({
@@ -43,6 +52,15 @@ export const matchItemFlow = ai.defineFlow(
             output: { format: 'json', schema: MatchOutputSchema },
         });
 
+        if (!result.output) {
+            return {
+                selected_layer: null,
+                confidence: 0,
+                reasoning: "Generative AI returned empty output"
+            };
+        }
+
         return result.output;
     }
 );
+

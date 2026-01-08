@@ -205,17 +205,29 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
     if (process.env.GOOGLE_GENAI_API_KEY) {
         const { matchItemFlow } = await import('@/ai/match-items');
 
-        const candidateLayers = Array.from(new Set(dxfItems.map(i => i.layer_normalized)));
+        // Prepare Rich Candidates (Name + Type)
+        // Deduplicate by layer name but keep type info 
+        // (If layer has both blocks and lines, we prefer block if it has more items? or keep both?)
+        // Simplification: One entry per layer, prioritizing 'block' if mixed.
+        const candidateMap = new Map<string, { name: string, type: string, val: number }>();
+        dxfItems.forEach(i => {
+            if (!candidateMap.has(i.layer_normalized)) {
+                candidateMap.set(i.layer_normalized, { name: i.layer_normalized, type: i.type, val: i.value_m });
+            }
+        });
+        const candidatePayload = Array.from(candidateMap.values());
+
         const lowConfidenceRows = stagingRows.filter(r => (r as any).match_confidence < 0.6);
 
-        console.log(`AI Refining ${lowConfidenceRows.length} items...`);
+        console.log(`AI Refining ${lowConfidenceRows.length} items with Dimensional Analysis...`);
 
         // Simple batch processing
         for (const row of lowConfidenceRows) {
             try {
                 const aiResult = await matchItemFlow({
                     item_description: row.excel_item_text,
-                    candidate_layers: candidateLayers
+                    item_unit: row.excel_unit,
+                    candidate_layers: candidatePayload
                 });
 
                 if (aiResult.selected_layer && aiResult.confidence > 0.5) {
