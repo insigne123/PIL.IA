@@ -180,7 +180,12 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
         if (f.file_type === 'excel') {
             excelItems = json;
         } else {
-            dxfItems = [...dxfItems, ...json];
+            // Ensure json is an array before spreading
+            if (Array.isArray(json)) {
+                dxfItems = [...dxfItems, ...json];
+            } else {
+                console.warn(`DXF file ${f.id} returned non-array data, skipping`);
+            }
         }
     }
 
@@ -198,13 +203,14 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
         excel_row_index: row.excel_row_index,
         excel_item_text: row.excel_item_text,
         excel_unit: row.excel_unit,
-        source_items: row.matched_items,
+        excel_unit: row.excel_unit,
+        source_items: (row as any).matched_items,
         qty_final: row.qty_final,
         height_factor: row.height_factor || 1.0,
         price_selected: row.price_selected,
         price_candidates: row.price_candidates,
-        confidence: row.match_confidence > 0.8 ? 'high' : (row.match_confidence > 0.4 ? 'medium' : 'low'),
-        status: row.match_confidence > 0.8 ? 'approved' : 'pending'
+        confidence: (row as any).match_confidence > 0.8 ? 'high' : ((row as any).match_confidence > 0.4 ? 'medium' : 'low'),
+        status: (row as any).match_confidence > 0.8 ? 'approved' : 'pending'
     }));
 
     const { error } = await supabase.from('staging_rows').insert(dbRows);
