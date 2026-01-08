@@ -66,7 +66,17 @@ export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
                                 </TableCell>
                                 <TableCell className="font-medium text-xs">
                                     {row.excel_item_text}
-                                    {row.match_reason && <div className="text-[10px] text-slate-400 mt-1">{row.match_reason}</div>}
+                                    {/* AI Match Reason Display */}
+                                    {row.match_reason && (
+                                        <div className="group relative mt-1 inline-block">
+                                            <div className="text-[10px] text-blue-500 cursor-help border-b border-dotted border-blue-500">
+                                                Ver Razonamiento IA
+                                            </div>
+                                            <div className="absolute z-10 invisible group-hover:visible bg-slate-800 text-white text-[10px] p-2 rounded shadow-lg w-64 -left-2 top-4">
+                                                {row.match_reason}
+                                            </div>
+                                        </div>
+                                    )}
                                 </TableCell>
                                 <TableCell className="text-xs">
                                     {row.source_items && row.source_items.length > 0 ? (

@@ -49,6 +49,7 @@ export interface StagingRow {
   price_candidates: PriceSource[];
 
   confidence: string; // high, medium, low
+  match_reason?: string; // AI reasoning
   confidence_reason?: string;
   status: 'pending' | 'approved' | 'ignored';
 }
