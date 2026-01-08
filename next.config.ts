@@ -1,4 +1,4 @@
-import type {NextConfig} from 'next';
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   /* config options here */
@@ -29,6 +29,10 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
     ],
+  },
+  experimental: {
+    // Silence "Cross origin request detected" warning on Cloud Workstations
+    allowedDevOrigins: ['*.cloudworkstations.dev'],
   },
 };
 
