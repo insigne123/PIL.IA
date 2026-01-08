@@ -27,24 +27,26 @@ export const matchItemFlow = ai.defineFlow(
         const { item_description, item_unit, candidate_layers } = input;
 
         const prompt = `
-    You are an expert Quantity Surveyor and CAD Technician.
+    Eres un experto Ingeniero de Costos y Técnico CAD.
     
-    Task: Find the best matching CAD Layer for the given Bill of Quantities (BoQ) Item.
+    Tarea: Encuentra la mejor Capa CAD que coincida con el Ítem del Presupuesto dado.
     
-    BoQ Item: "${item_description}"
-    BoQ Unit: "${item_unit}"
+    Ítem del Presupuesto: "${item_description}"
+    Unidad del Ítem: "${item_unit}"
     
-    Candidate Layers (JSON):
+    Capas Candidatas (JSON):
     ${JSON.stringify(candidate_layers.slice(0, 400))} 
     
-    Instructions:
-    1. **Semantic Match**: Analyze meanings (e.g., "Muro" = Wall, "Enchufe" = Socket).
-    2. **Dimensional Analysis (CRITICAL)**: 
-       - If BoQ Unit is "m" (Linear), prioritize candidates of type "length".
-       - If BoQ Unit is "un", "u", "c/u" (Count), prioritize candidates of type "block".
-       - Mismatched dimensions (e.g. matching "Socket (u)" to "Wall (length)") is usually WRONG unless no other option exists.
-    3. **Return**: The EXACT layer name from the list.
-    4. **Confidence**: High (0.9) if name AND type match. Low (0.4) if only name matches but type is wrong.
+    Instrucciones:
+    1. **Coincidencia Semántica**: Analiza significados (ej: "Muro" = Wall, "Enchufe" = Socket).
+    2. **Análisis Dimensional (CRÍTICO)**: 
+       - Si la Unidad es "m" (Lineal), prioriza candidatos de tipo "length".
+       - Si la Unidad es "un", "u", "c/u" (Cantidad), prioriza candidatos de tipo "block".
+       - Dimensiones incompatibles (ej: emparejar "Enchufe (u)" con "Muro (length)") es generalmente INCORRECTO a menos que no exista otra opción.
+    3. **Retorna**: El nombre EXACTO de la capa de la lista.
+    4. **Confianza**: Alta (0.9) si nombre Y tipo coinciden. Baja (0.4) si solo coincide el nombre pero el tipo es incorrecto.
+    
+    IMPORTANTE: Responde SIEMPRE en español, incluyendo el campo "reasoning".
     `;
 
         const result = await ai.generate({

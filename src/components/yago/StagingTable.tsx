@@ -78,8 +78,19 @@ export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
                                         <span className="text-slate-400 italic">Sin match automático</span>
                                     )}
                                 </TableCell>
-                                <TableCell className="text-xs text-slate-600 italic">
-                                    {row.match_reason ? row.match_reason : '-'}
+                                <TableCell className="text-xs">
+                                    {row.match_reason ? (
+                                        <div className="group relative inline-block">
+                                            <div className="text-blue-500 cursor-help border-b border-dotted border-blue-500 text-[11px]">
+                                                Ver explicación
+                                            </div>
+                                            <div className="absolute z-10 invisible group-hover:visible bg-slate-800 text-white text-[11px] p-2 rounded shadow-lg w-64 -left-2 top-5">
+                                                {row.match_reason}
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <span className="text-slate-400">-</span>
+                                    )}
                                 </TableCell>
                                 <TableCell>
                                     <Input

@@ -418,44 +418,102 @@ export default function BatchPage() {
                 </TabsContent>
 
                 <TabsContent value="output">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Entregables</CardTitle>
-                            <CardDescription>Descarga los archivos finales generados.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="flex flex-col items-center py-10 gap-4">
-                            <p className="text-slate-600 mb-4">
-                                Una vez revisado todo, genera el Excel final respetando el formato del cliente.
-                            </p>
-                            <div className="flex gap-4">
-                                <Button size="lg" className="gap-2" onClick={async () => {
-                                    // Call Generate API
-                                    const res = await fetch(`/api/batches/${batchId}/generate`, { method: 'POST' });
-                                    if (res.ok) {
-                                        alert("Generación iniciada (Simulada MVP). Procesando...");
-                                        // Trigger Worker Loop
-                                        const processLoop = async () => {
-                                            let keepingAlive = true;
-                                            while (keepingAlive) {
-                                                const res = await fetch('/api/worker/run', { method: 'POST' });
-                                                if (!res.ok) keepingAlive = false;
-                                                const json = await res.json();
-                                                if (json.message === "No jobs pending") keepingAlive = false;
-                                                // Wait 1s between tasks
-                                                await new Promise(r => setTimeout(r, 1000));
-                                                fetchBatchData();
+                    {batch.status !== 'ready' && batch.status !== 'completed' ? (
+                        <div className="text-center py-20 text-slate-500">
+                            El lote debe estar procesado antes de generar entregables.
+                            <br />
+                            <Button variant="link" onClick={() => setActiveTab('process')}>Ir a Procesamiento</Button>
+                        </div>
+                    ) : (
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Entregables</CardTitle>
+                                <CardDescription>Descarga los archivos finales generados o exporta datos para revisión.</CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-6">
+                                {batch.status === 'completed' ? (
+                                    <div className="space-y-4">
+                                        <div className="bg-green-50 border border-green-200 rounded-md p-4">
+                                            <h4 className="font-semibold text-green-900 mb-2">✓ Archivos Generados</h4>
+                                            <div className="space-y-2">
+                                                <Button
+                                                    variant="outline"
+                                                    className="w-full justify-start gap-2"
+                                                    onClick={async () => {
+                                                        const { data } = await supabase.storage
+                                                            .from('yago-output')
+                                                            .createSignedUrl(`${batchId}/YAGO_*.xlsx`, 3600);
+                                                        if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+                                                    }}
+                                                >
+                                                    <Download className="h-4 w-4" />
+                                                    Descargar Excel Procesado
+                                                </Button>
+                                                <Button
+                                                    variant="outline"
+                                                    className="w-full justify-start gap-2"
+                                                    onClick={async () => {
+                                                        const { data } = await supabase.storage
+                                                            .from('yago-output')
+                                                            .createSignedUrl(`${batchId}/Heatmap_Report.pdf`, 3600);
+                                                        if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+                                                    }}
+                                                >
+                                                    <Download className="h-4 w-4" />
+                                                    Descargar Reporte PDF
+                                                </Button>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
+                                            <h4 className="font-semibold text-blue-900 mb-2">📊 Exportar para Revisión</h4>
+                                            <p className="text-sm text-blue-700 mb-3">
+                                                Descarga un JSON con todos los detalles de matching para análisis externo.
+                                            </p>
+                                            <Button
+                                                variant="outline"
+                                                className="w-full justify-start gap-2 border-blue-300"
+                                                onClick={() => {
+                                                    window.open(`/api/batches/${batchId}/diagnostic`, '_blank');
+                                                }}
+                                            >
+                                                <Download className="h-4 w-4" />
+                                                Descargar Diagnóstico JSON
+                                            </Button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-10">
+                                        <p className="text-slate-600 mb-4">
+                                            Una vez revisado todo en la pestaña de Staging, genera los archivos finales.
+                                        </p>
+                                        <Button size="lg" className="gap-2" onClick={async () => {
+                                            const res = await fetch(`/api/batches/${batchId}/generate`, { method: 'POST' });
+                                            if (res.ok) {
+                                                alert("Generación iniciada. Procesando...");
+                                                const processLoop = async () => {
+                                                    let keepingAlive = true;
+                                                    while (keepingAlive) {
+                                                        const res = await fetch('/api/worker/run', { method: 'POST' });
+                                                        if (!res.ok) keepingAlive = false;
+                                                        const json = await res.json();
+                                                        if (json.message === "No jobs pending") keepingAlive = false;
+                                                        await new Promise(r => setTimeout(r, 1000));
+                                                        fetchBatchData();
+                                                    }
+                                                };
+                                                await processLoop();
+                                                window.location.reload();
                                             }
-                                        };
-                                        await processLoop();
-                                        window.location.reload(); // Quick refresh to see links
-                                    }
-                                    else alert("Error al generar");
-                                }}>
-                                    <Download className="h-5 w-5" /> Generar Excel & PDF
-                                </Button>
-                            </div>
-                        </CardContent>
-                    </Card>
+                                            else alert("Error al generar");
+                                        }}>
+                                            <Download className="h-5 w-5" /> Generar Excel & PDF
+                                        </Button>
+                                    </div>
+                                )}
+                            </CardContent>
+                        </Card>
+                    )}
                 </TabsContent>
             </Tabs>
         </div >
