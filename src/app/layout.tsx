@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { ProjectProvider } from "@/context/ProjectContext";
+import { AuthProvider } from "@/components/auth/AuthProvider";
 
 export const metadata: Metadata = {
-  title: "BidWise",
-  description: "AI-powered tender management to streamline your bidding process.",
+  title: "YAGO - Presupuesto Asistido",
+  description: "Automatización de cubicación y presupuesto.",
 };
 
 export default function RootLayout({
@@ -13,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="es" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -23,7 +25,11 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body antialiased">
-        {children}
+        <AuthProvider>
+          <ProjectProvider>
+            {children}
+          </ProjectProvider>
+        </AuthProvider>
         <Toaster />
       </body>
     </html>
