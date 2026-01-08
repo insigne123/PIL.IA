@@ -69,10 +69,10 @@ export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
                                     {row.match_reason && <div className="text-[10px] text-slate-400 mt-1">{row.match_reason}</div>}
                                 </TableCell>
                                 <TableCell className="text-xs">
-                                    {row.matched_items.length > 0 ? (
+                                    {row.source_items && row.source_items.length > 0 ? (
                                         <div className="flex flex-col">
-                                            <span className="font-bold">{row.matched_items[0].name_raw || row.matched_items[0].layer_raw}</span>
-                                            <span className="text-slate-500">{row.matched_items[0].type} ({row.matched_items[0].unit_raw})</span>
+                                            <span className="font-bold">{row.source_items[0].name_raw || row.source_items[0].layer_raw}</span>
+                                            <span className="text-slate-500">{row.source_items[0].type} ({row.source_items[0].unit_raw})</span>
                                         </div>
                                     ) : (
                                         <span className="text-slate-400 italic">Sin match automático</span>
