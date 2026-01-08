@@ -70,7 +70,7 @@ export interface Batch {
   unitSelected: Unit;
   heightDefault: number;
   sheetTarget: string;
-  status: 'pending' | 'processing' | 'ready' | 'error';
+  status: 'pending' | 'processing' | 'ready' | 'completed' | 'error';
   createdAt: string;
 }
 

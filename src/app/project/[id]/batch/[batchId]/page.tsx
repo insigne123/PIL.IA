@@ -111,7 +111,29 @@ export default function BatchPage() {
             // 3. Clear existing staging rows (optional but cleaner)
             await supabase.from('staging_rows').delete().eq('batch_id', batch.id);
 
-            alert(`Unidad corregida a ${correctUnit}. Por favor inicia el procesamiento nuevamente.`);
+            alert(`Unidad corregida a ${correctUnit?.toUpperCase()}. Reprocesando automáticamente...`);
+
+            // 4. Start processing automatically
+            const startRes = await fetch(`/api/batches/${batch.id}/start`, { method: 'POST' });
+            if (!startRes.ok) {
+                alert("Error al iniciar reprocesamiento");
+                setLoading(false);
+                return;
+            }
+
+            // 5. Run worker loop automatically
+            let keepingAlive = true;
+            while (keepingAlive) {
+                const res = await fetch('/api/worker/run', { method: 'POST' });
+                if (!res.ok) keepingAlive = false;
+                const json = await res.json();
+                if (json.message === "No jobs pending") keepingAlive = false;
+                await new Promise(r => setTimeout(r, 1000));
+                await fetchBatchData();
+            }
+
+            alert("Reprocesamiento completado con la unidad correcta.");
+            setActiveTab('staging'); // Redirect to staging to see results
             fetchBatchData();
         } catch (e) {
             console.error(e);
@@ -329,7 +351,14 @@ export default function BatchPage() {
 
                                                 // Wait 1s between tasks
                                                 await new Promise(r => setTimeout(r, 1000));
-                                                fetchBatchData(); // Refresh UI
+                                                await fetchBatchData(); // Refresh UI
+                                            }
+
+                                            // Processing complete - redirect to staging
+                                            await fetchBatchData(); // Final refresh
+                                            if (batch.status === 'ready') {
+                                                setActiveTab('staging');
+                                                alert('✅ Procesamiento completado. Los datos están listos para revisión en la pestaña Staging.');
                                             }
                                             setLoading(false);
                                         };
@@ -359,7 +388,7 @@ export default function BatchPage() {
                                                 {f.status === 'error' && <span className="text-red-500 text-xs">({f.errorMessage})</span>}
                                             </div>
                                             <span className={`px-2 py-0.5 text-xs rounded-full uppercase
-                                                ${f.status === 'done' ? 'bg-green-100 text-green-700' :
+                                                ${f.status === 'extracted' ? 'bg-green-100 text-green-700' :
                                                     f.status === 'processing' ? 'bg-blue-100 text-blue-700' :
                                                         f.status === 'error' ? 'bg-red-100 text-red-700' : 'bg-slate-200 text-slate-600'}`}>
                                                 {f.status}
