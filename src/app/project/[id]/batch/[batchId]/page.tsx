@@ -336,8 +336,12 @@ export default function BatchPage() {
                                         setStagingRows(current =>
                                             current.map(row => row.id === id ? { ...row, ...updates } : row)
                                         );
-                                        // DB Update
-                                        await supabase.from('staging_rows').update(updates).eq('id', id);
+                                        // API Update
+                                        await fetch('/api/staging/update', {
+                                            method: 'POST',
+                                            headers: { 'Content-Type': 'application/json' },
+                                            body: JSON.stringify({ id, updates })
+                                        });
                                     }}
                                 />
                             </CardContent>

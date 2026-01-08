@@ -194,15 +194,58 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
         return;
     }
 
-    // 2. Perform Matching
-    const stagingRows = matchItems(excelItems, dxfItems, batch.sheet_target || 'Presupuesto');
+    const sheetTarget = batch.sheet_target || 'Presupuesto';
 
-    // 3. Insert into Staging Rows
+    // 4. Match Items (Hybrid: Fuzzy + AI)
+    let stagingRows = matchItems(excelItems, dxfItems, sheetTarget);
+
+    // AI ENHANCEMENT:
+    // Filter rows with low confidence to refine with AI
+    // We process them in parallel batches to speed up
+    if (process.env.GOOGLE_GENAI_API_KEY) {
+        const { matchItemFlow } = await import('@/ai/match-items');
+
+        const candidateLayers = Array.from(new Set(dxfItems.map(i => i.layer_normalized)));
+        const lowConfidenceRows = stagingRows.filter(r => (r as any).match_confidence < 0.6);
+
+        console.log(`AI Refining ${lowConfidenceRows.length} items...`);
+
+        // Simple batch processing
+        for (const row of lowConfidenceRows) {
+            try {
+                const aiResult = await matchItemFlow({
+                    item_description: row.excel_item_text,
+                    candidate_layers: candidateLayers
+                });
+
+                if (aiResult.selected_layer && aiResult.confidence > 0.5) {
+                    // Find the items belonging to this layer
+                    const betterMatches = dxfItems.filter(i => i.layer_normalized === aiResult.selected_layer);
+                    if (betterMatches.length > 0) {
+                        (row as any).matched_items = betterMatches;
+                        (row as any).match_confidence = aiResult.confidence;
+                        (row as any).match_reason = "AI: " + aiResult.reasoning;
+                        (row as any).status = aiResult.confidence > 0.8 ? 'approved' : 'pending';
+
+                        // Recalculate Qty
+                        let qty = 0;
+                        betterMatches.forEach(m => qty += m.value_m);
+                        row.qty_final = qty;
+                    }
+                }
+            } catch (err) {
+                console.error("AI Match Error for", row.excel_item_text, err);
+            }
+        }
+    }
+
+    // 5. Insert into Staging
     const dbRows = stagingRows.map(row => ({
+        id: row.id,
         batch_id: batchId,
+        excel_sheet: row.excel_sheet,
         excel_row_index: row.excel_row_index,
         excel_item_text: row.excel_item_text,
-        excel_unit: row.excel_unit,
         excel_unit: row.excel_unit,
         source_items: (row as any).matched_items,
         qty_final: row.qty_final,
