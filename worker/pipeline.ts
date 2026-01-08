@@ -232,13 +232,32 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
         // Deduplicate by layer name but keep type info 
         // (If layer has both blocks and lines, we prefer block if it has more items? or keep both?)
         // Simplification: One entry per layer, prioritizing 'block' if mixed.
-        const candidateMap = new Map<string, { name: string, type: string, sample_value: number }>();
+        // Prepare Rich Candidates (Name + Type)
+        // IMPROVED: Group by Layer + BlockName for blocks to distinguish specific components
+        const candidateMap = new Map<string, { name: string, type: string, sample_value: number, ids: string[] }>();
+
         dxfItems.forEach(i => {
-            if (!candidateMap.has(i.layer_normalized)) {
-                candidateMap.set(i.layer_normalized, { name: i.layer_normalized, type: i.type, sample_value: i.value_m });
+            // Skip tiny text or noise if needed, but for now let's focus on logic
+            let key = i.layer_normalized;
+            let displayName = i.layer_normalized;
+
+            // For Blocks, distinguishing by name is CRITICAL (e.g. UPS vs Socket)
+            if (i.type === 'block' && i.name_raw) {
+                key = `${i.layer_normalized}::${i.name_raw}`;
+                displayName = `${i.name_raw} (Layer: ${i.layer_normalized})`;
+            }
+
+            if (!candidateMap.has(key)) {
+                candidateMap.set(key, {
+                    name: displayName,
+                    type: i.type,
+                    sample_value: i.value_m,
+                    ids: [i.id] // Keep track of representant IDs? No, we filter later by match
+                });
             }
         });
-        const candidatePayload = Array.from(candidateMap.values());
+        const candidatePayload = Array.from(candidateMap.values())
+            .map(c => ({ name: c.name, type: c.type, sample_value: c.sample_value }));
 
         const lowConfidenceRows = stagingRows.filter(r => (r as any).match_confidence < 0.6);
 
@@ -255,7 +274,19 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
 
                 if (aiResult.selected_layer && aiResult.confidence > 0.5) {
                     // Find the items belonging to this layer
-                    const betterMatches = dxfItems.filter(i => i.layer_normalized === aiResult.selected_layer);
+                    let betterMatches: ItemDetectado[] = [];
+
+                    // Parse "BlockName (Layer: LayerName)" format
+                    const granularMatch = aiResult.selected_layer.match(/^(.*) \(Layer: (.*)\)$/);
+
+                    if (granularMatch) {
+                        const bName = granularMatch[1];
+                        const bLayer = granularMatch[2];
+                        betterMatches = dxfItems.filter(i => i.layer_normalized === bLayer && i.name_raw === bName);
+                    } else {
+                        // Standard Layer Match
+                        betterMatches = dxfItems.filter(i => i.layer_normalized === aiResult.selected_layer);
+                    }
                     if (betterMatches.length > 0) {
                         (row as any).matched_items = betterMatches;
                         (row as any).match_confidence = aiResult.confidence;
