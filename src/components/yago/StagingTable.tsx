@@ -100,28 +100,61 @@ export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
                                         className="h-8 w-24"
                                     />
                                 </TableCell>
+                                <TableCell className="text-xs">{row.unit_final || row.excel_unit}</TableCell>
+                                {/* PRICING COLUMNS */}
                                 <TableCell>
-                                    <Input
-                                        value={row.excel_unit}
-                                        onChange={(e) => onUpdateRow(row.id, { excel_unit: e.target.value })}
-                                        className="h-8 w-16"
-                                    />
+                                    <div className="flex items-center gap-1">
+                                        <span className={cn("text-sm", !row.unit_price_ref && "text-slate-400 italic")}>
+                                            {row.unit_price_ref
+                                                ? `$ ${row.unit_price_ref.toLocaleString('es-CL')}`
+                                                : "N/A"
+                                            }
+                                        </span>
+                                        {row.price_sources && row.price_sources.length > 0 && (
+                                            <div className="group relative inline-block ml-1">
+                                                <div className="text-blue-500 cursor-help">
+                                                    <AlertTriangle className="h-3 w-3 text-blue-500" />
+                                                </div>
+                                                <div className="absolute z-20 invisible group-hover:visible bg-white border border-slate-200 text-slate-800 text-xs p-3 rounded shadow-xl w-64 -left-32 top-6">
+                                                    <h5 className="font-semibold mb-1">Fuentes de Precio:</h5>
+                                                    <ul className="space-y-1">
+                                                        {row.price_sources.map((s, idx) => (
+                                                            <li key={idx} className="flex justify-between border-b pb-1 last:border-0">
+                                                                <span className="text-slate-600 truncate max-w-[120px]" title={s.title}>{s.vendor}</span>
+                                                                <span className="font-mono font-medium">${s.price.toLocaleString('es-CL')}</span>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
                                 </TableCell>
-                                <TableCell>
-                                    <Input
-                                        type="number"
-                                        placeholder="0.00"
-                                        value={row.price_selected || ''}
-                                        onChange={(e) => onUpdateRow(row.id, { price_selected: parseFloat(e.target.value) || 0 })}
-                                        className="h-8 w-24"
-                                    />
+                                <TableCell className="font-semibold text-sm">
+                                    {row.total_price_ref
+                                        ? `$ ${row.total_price_ref.toLocaleString('es-CL')}`
+                                        : "-"
+                                    }
                                 </TableCell>
+
                                 <TableCell className="text-right">
-                                    {row.status !== 'approved' && (
-                                        <Button size="sm" variant="ghost" onClick={() => onUpdateRow(row.id, { status: 'approved' })}>
-                                            <Check className="h-4 w-4 text-green-600" />
-                                        </Button>
-                                    )}
+                                    <div className="flex justify-end gap-1">
+                                        {row.status === 'pending' && (
+                                            <>
+                                                <Button size="icon" variant="ghost" className="h-8 w-8 text-green-600 hover:bg-green-50" onClick={() => onUpdateRow(row.id, { status: 'approved' })}>
+                                                    <Check className="h-4 w-4" />
+                                                </Button>
+                                                <Button size="icon" variant="ghost" className="h-8 w-8 text-red-600 hover:bg-red-50" onClick={() => onUpdateRow(row.id, { status: 'ignored' })}>
+                                                    <X className="h-4 w-4" />
+                                                </Button>
+                                            </>
+                                        )}
+                                        {row.status !== 'pending' && (
+                                            <Button size="sm" variant="ghost" onClick={() => onUpdateRow(row.id, { status: 'pending' })}>
+                                                Editar
+                                            </Button>
+                                        )}
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         ))}

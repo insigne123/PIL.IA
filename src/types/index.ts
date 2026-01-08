@@ -45,13 +45,25 @@ export interface StagingRow {
 
   unit_final?: string; // Normalized unit to write if Excel was empty
 
-  price_selected?: number;
-  price_candidates: PriceSource[];
+  price_selected?: number; // Deprecated? Used for manual override maybe?
+
+  // Pricing Fields (New)
+  unit_price_ref?: number;
+  total_price_ref?: number;
+  price_sources?: PriceSource[];
+  price_confidence?: 'high' | 'medium' | 'low';
 
   confidence: string; // high, medium, low
   match_reason?: string; // AI reasoning
   confidence_reason?: string;
   status: 'pending' | 'approved' | 'ignored';
+}
+
+export interface PriceSource {
+  vendor: string;
+  price: number;
+  url?: string;
+  title: string;
 }
 
 // M1: Project & Batch
@@ -70,7 +82,7 @@ export interface Batch {
   unitSelected: Unit;
   heightDefault: number;
   sheetTarget: string;
-  status: 'pending' | 'processing' | 'ready' | 'completed' | 'error';
+  status: 'pending' | 'processing' | 'ready' | 'completed' | 'error' | 'waiting_review';
   createdAt: string;
 }
 

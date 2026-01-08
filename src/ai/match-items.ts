@@ -38,15 +38,18 @@ export const matchItemFlow = ai.defineFlow(
     ${JSON.stringify(candidate_layers.slice(0, 400))} 
     
     Instrucciones:
-    1. **Coincidencia Semántica**: Analiza significados (ej: "Muro" = Wall, "Enchufe" = Socket).
-    2. **Análisis Dimensional (CRÍTICO)**: 
-       - Si la Unidad es "m" (Lineal), prioriza candidatos de tipo "length".
-       - Si la Unidad es "un", "u", "c/u" (Cantidad), prioriza candidatos de tipo "block".
-       - Dimensiones incompatibles (ej: emparejar "Enchufe (u)" con "Muro (length)") es generalmente INCORRECTO a menos que no exista otra opción.
-    3. **Retorna**: El nombre EXACTO de la capa de la lista.
-    4. **Confianza**: Alta (0.9) si nombre Y tipo coinciden. Baja (0.4) si solo coincide el nombre pero el tipo es incorrecto.
+    1. **FILTRADO DIMENSIONAL (MANDATORIO)**: 
+       - Si Unidad es **"m", "ml", "mts", "metro"**: DESCARTA candidatos que NO sean 'length'. Solo considera 'length'.
+       - Si Unidad es **"un", "uni", "c/u", "unidad", "n°", "n"**: DESCARTA candidatos que NO sean 'block'. Solo considera 'block'.
+       - Si la unidad es ambigua o vacía, usa tu mejor juicio semántico.
+    2. **Coincidencia Semántica**: Una vez filtrado por tipo, busca el nombre que mejor describa el ítem.
+       - Analiza sinónimos técnicos (ej: "Enchufe" = Tomada/Socket, "Muro" = Wall).
+    3. **Selección**: Retorna el nombre EXACTO de la capa seleccionada.
+    4. **Confianza**: 
+       - 0.95: Coincidencia perfecta de Nombre + Tipo correcto.
+       - 0.1: Si no encontraste ningún candidato del tipo correcto (recomienda null).
     
-    IMPORTANTE: Responde SIEMPRE en español, incluyendo el campo "reasoning".
+    IMPORTANTE: Responde SIEMPRE en español. Reasoning debe explicar por qué el tipo coincide con la unidad.
     `;
 
         const result = await ai.generate({

@@ -169,13 +169,38 @@ async function executeGeneration(supabase: SupabaseClient, batchId: string, exce
 async function checkAndTriggerMatching(supabase: SupabaseClient, batchId: string) {
     const { data: files } = await supabase
         .from('batch_files')
-        .select('status')
+        .select('*')
         .eq('batch_id', batchId);
 
     if (!files) return;
     const allExtracted = files.every(f => f.status === 'extracted');
 
     if (allExtracted) {
+        // FAST VALIDATION: Check Units BEFORE starting slow Matching
+        const { data: batch } = await supabase.from('batches').select('unit_selected').eq('id', batchId).single();
+        const batchUnit = batch?.unit_selected;
+
+        const mismatchFile = files.find(f => f.detected_unit && f.detected_unit !== 'unknown' && f.detected_unit !== batchUnit);
+
+        if (mismatchFile) {
+            console.warn(`[Pipeline] Unit Mismatch detected. Halting Matching. detected=${mismatchFile.detected_unit}, batch=${batchUnit}`);
+            // DO NOT update status to 'ready' or trigger matching.
+            // The UI will detect this state (files extracted but unit mismatch) and prompt user.
+            // Ensure batch status stays 'processing' or 'pending' so UI can intervene? 
+            // Better: Set to a special state or just leave it. 
+            // Current UI shows "Procesando..." if processing, but we want it to show "Mismatch".
+            // Since this function is called inside the processing loop or after worker, 
+            // we should probably signal "Attention Required".
+            // But for MVP, simply NOT triggering mapping is enough. The UI will just sit there?
+            // No, the UI polling loop needs to know it finished.
+            // Let's set batch status to 'error' or remain 'processing' but with mismatch error?
+            // Safer: Just don't trigger mapping. The files are 'extracted'.
+            // UI logic handles: if matchingFile, suggest rectification.
+            // But we need to stop the spinners.
+            await supabase.from('batches').update({ status: 'waiting_review' }).eq('id', batchId);
+            return;
+        }
+
         console.log(`All files for batch ${batchId} extracted. Starting matching...`);
         await executeMapping(supabase, batchId);
     }

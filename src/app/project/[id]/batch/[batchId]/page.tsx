@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase';
 import { Batch, BatchFile } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ArrowLeft, Loader2, Download, AlertTriangle } from 'lucide-react';
+import { ArrowLeft, Loader2, Download, AlertTriangle, DollarSign } from 'lucide-react';
 import { FileUploader } from '@/components/yago/FileUploader';
 import { v4 as uuidv4 } from 'uuid';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -356,16 +356,20 @@ export default function BatchPage() {
 
                                             // Processing complete - redirect to staging
                                             await fetchBatchData(); // Final refresh
+
                                             if (batch.status === 'ready') {
                                                 setActiveTab('staging');
                                                 alert('✅ Procesamiento completado. Los datos están listos para revisión en la pestaña Staging.');
+                                            } else if (batch.status === 'waiting_review') {
+                                                // Mismatch detected => Stop here
+                                                console.log("Processing paused for review");
+                                                alert('⚠️ Procesamiento PAUSADO. Se detectó una inconsistencia de unidades. Por favor rectifica para continuar.');
                                             }
                                             setLoading(false);
                                         };
 
                                         processLoop(); // Fire and forget loop
-                                        fetchBatchData();
-                                        setLoading(false);
+                                        fetchBatchData(); // Immediate UI update
                                     }}>
                                         Iniciar Procesamiento
                                     </Button>
@@ -373,6 +377,17 @@ export default function BatchPage() {
                                     <div className="flex flex-col items-center gap-2">
                                         <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
                                         <p className="text-slate-600 font-medium">Procesando... esto puede tomar unos minutos.</p>
+                                    </div>
+                                ) : batch.status === 'waiting_review' ? (
+                                    <div className="flex flex-col items-center gap-2 p-4 bg-amber-50 rounded-lg border border-amber-200">
+                                        <div className="h-10 w-10 text-amber-500 mb-2">
+                                            ⚠️
+                                        </div>
+                                        <h3 className="font-semibold text-amber-800">Procesamiento Pausado</h3>
+                                        <p className="text-amber-700 text-center max-w-md">
+                                            Se detectó una diferencia entre la unidad del lote y el archivo DXF.
+                                            Por favor, revisa la sección de "Unidad Detectada" arriba y elige "Rectificar" o "Continuar" para reanudar.
+                                        </p>
                                     </div>
                                 ) : batch.status === 'ready' ? (
                                     <div className="text-center py-6">
@@ -438,9 +453,33 @@ export default function BatchPage() {
                         </div>
                     ) : (
                         <Card>
-                            <CardHeader>
-                                <CardTitle>Área de Revisión (Staging)</CardTitle>
-                                <CardDescription>Revisa los cruces automáticos, edita cantidades y aprueba partidas.</CardDescription>
+                            <CardHeader className="flex flex-row items-center justify-between">
+                                <div>
+                                    <CardTitle>Área de Revisión (Staging)</CardTitle>
+                                    <CardDescription>Revisa los cruces automáticos, edita cantidades y aprueba partidas.</CardDescription>
+                                </div>
+                                <Button
+                                    variant="outline"
+                                    className="gap-2 border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100"
+                                    onClick={async () => {
+                                        if (!confirm("¿Iniciar cotización automática de materiales? Esto puede tomar unos minutos.")) return;
+                                        setLoading(true);
+                                        try {
+                                            const res = await fetch(`/api/batches/${batchId}/pricing`, { method: 'POST' });
+                                            const json = await res.json();
+                                            alert(json.message);
+                                            await fetchBatchData();
+                                        } catch (err) {
+                                            console.error(err);
+                                            alert("Error al cotizar");
+                                        } finally {
+                                            setLoading(false);
+                                        }
+                                    }}
+                                >
+                                    <DollarSign className="h-4 w-4" />
+                                    Cotizar Materiales (IA)
+                                </Button>
                             </CardHeader>
                             <CardContent>
                                 <StagingTable
