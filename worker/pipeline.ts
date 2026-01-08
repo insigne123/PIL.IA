@@ -100,8 +100,16 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
 
 async function executeGeneration(supabase: SupabaseClient, batchId: string, excelFileId: string) {
     // 1. Get Staging Rows
-    const { data: rows } = await supabase.from('staging_rows').select('*').eq('batch_id', batchId);
-    if (!rows) throw new Error("No staging rows found");
+    const { data: rows, error: rowsError } = await supabase.from('staging_rows').select('*').eq('batch_id', batchId);
+
+    if (rowsError) {
+        console.error("Error fetching staging rows:", rowsError);
+        throw new Error(`Database error: ${rowsError.message}`);
+    }
+
+    if (!rows || rows.length === 0) {
+        throw new Error("No staging rows found. Please complete the processing phase first (batch status should be 'ready').");
+    }
 
     // 2. Get Excel Structure
     const { data: map } = await supabase.from('excel_maps').select('*').eq('batch_id', batchId).single();
