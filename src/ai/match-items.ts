@@ -1,12 +1,5 @@
-
-import { genkit, z } from 'genkit';
-import { googleAI, gemini15Flash } from '@genkit-ai/google-genai';
-
-// Initialize Genkit
-const ai = genkit({
-    plugins: [googleAI()],
-    model: gemini15Flash, // Easy to switch to 'gemini15Pro' or OpenAI models later
-});
+import { z } from 'genkit';
+import { ai } from './genkit';
 
 // Schema for the Output
 const MatchOutputSchema = z.object({
