@@ -574,11 +574,10 @@ export default function BatchPage() {
                                     </div>
                                 ) : null}
                             </CardContent>
-                        </CardContent>
                         </Card>
                     )}
-            </TabsContent>
-        </Tabs>
+                </TabsContent>
+            </Tabs>
         </div >
     );
 }
