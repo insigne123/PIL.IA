@@ -233,20 +233,42 @@ export default function BatchPage() {
                                         const processLoop = async () => {
                                             let keepingAlive = true;
                                             while (keepingAlive) {
-                                                const res = await fetch('/api/worker/run', { method: 'POST' });
-                                                if (!res.ok) {
-                                                    // Error or 404
-                                                    console.warn("Worker stop/error");
+                                                try {
+                                                    const res = await fetch('/api/worker/run', { method: 'POST' });
+
+                                                    if (!res.ok) {
+                                                        console.error("Worker API error:", res.status);
+                                                        keepingAlive = false;
+                                                        break;
+                                                    }
+
+                                                    const json = await res.json();
+
+                                                    if (json.message === "No jobs pending") {
+                                                        console.log("All jobs completed");
+                                                        keepingAlive = false;
+                                                        break;
+                                                    }
+
+                                                    if (!json.success) {
+                                                        console.error("Job failed:", json.error);
+                                                        keepingAlive = false;
+                                                        break;
+                                                    }
+
+                                                    console.log("Job completed:", json.phase);
+
+                                                } catch (err) {
+                                                    console.error("Worker loop error:", err);
                                                     keepingAlive = false;
+                                                    break;
                                                 }
-                                                const json = await res.json();
-                                                if (json.message === "No jobs pending") {
-                                                    keepingAlive = false;
-                                                }
+
                                                 // Wait 1s between tasks
                                                 await new Promise(r => setTimeout(r, 1000));
                                                 fetchBatchData(); // Refresh UI
                                             }
+                                            setLoading(false);
                                         };
 
                                         processLoop(); // Fire and forget loop
