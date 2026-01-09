@@ -58,10 +58,12 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
             }
             else if (entity.type === 'LINE') {
                 const layer = (entity as any).layer || '0';
-                const vertices = (entity as any).vertices;
-                if (vertices && vertices.length >= 2) {
-                    const dx = vertices[0].x - vertices[1].x;
-                    const dy = vertices[0].y - vertices[1].y;
+                // FIX: LINE entities use start/end points, not vertices array
+                const start = (entity as any).start;
+                const end = (entity as any).end;
+                if (start && end) {
+                    const dx = end.x - start.x;
+                    const dy = end.y - start.y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
                     layerLengths.set(layer, (layerLengths.get(layer) || 0) + dist);
                 }

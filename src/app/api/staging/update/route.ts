@@ -10,24 +10,41 @@ export async function POST(req: NextRequest) {
 
     try {
         const body = await req.json();
-        const { id, updates } = body;
+        const { id, updates } = await req.json();
 
         if (!id || !updates) {
             return NextResponse.json({ error: "Missing id or updates" }, { status: 400 });
         }
 
-        // Only allow updating certain fields for security
-        // In a real app we would validate 'updates' object strictly
-        const allowedUpdates = {
-            qty_final: updates.qty_final,
-            height_factor: updates.height_factor,
-            status: updates.status,
-            price_selected: updates.price_selected
-        };
+        // Whitelist of allowed fields to prevent unauthorized modifications
+        const ALLOWED_FIELDS = [
+            'qty_final',
+            'height_factor',
+            'unit_final',
+            'price_selected',
+            'status',
+            'excel_unit'
+        ];
 
-        const { error } = await supabaseAdmin
+        // Filter updates to only include allowed fields
+        const sanitizedUpdates: Record<string, any> = {};
+        for (const key of Object.keys(updates)) {
+            if (ALLOWED_FIELDS.includes(key)) {
+                sanitizedUpdates[key] = updates[key];
+            }
+        }
+
+        if (Object.keys(sanitizedUpdates).length === 0) {
+            return NextResponse.json({ error: "No valid fields to update" }, { status: 400 });
+        }
+
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+        const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+        const { error } = await supabase
             .from('staging_rows')
-            .update(allowedUpdates)
+            .update(sanitizedUpdates)
             .eq('id', id);
 
         if (error) {
@@ -36,9 +53,8 @@ export async function POST(req: NextRequest) {
         }
 
         return NextResponse.json({ success: true });
-
-    } catch (e: any) {
+    } catch (e) {
         console.error("API Error:", e);
-        return NextResponse.json({ error: e.message }, { status: 500 });
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
 }

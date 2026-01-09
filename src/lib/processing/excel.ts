@@ -29,7 +29,7 @@ export async function parseExcel(buffer: ArrayBuffer, targetSheetName?: string):
         worksheet = workbook.worksheets.find(ws => ws.name.toLowerCase().includes('presupuesto')) || workbook.worksheets[0];
     }
 
-    if (!worksheet) throw new Error("No workshet found");
+    if (!worksheet) throw new Error("No worksheet found");
 
     // Detect Headers
     const structure: ExcelStructure = {

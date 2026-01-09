@@ -53,6 +53,7 @@ export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
                     <TableBody>
                         {filteredData.map((row) => (
                             <TableRow key={row.id} className={cn(
+                                "transition-all duration-300", // UX: Smooth transitions
                                 row.status === 'approved' ? "bg-green-50/50" : "",
                                 row.match_confidence < 0.3 ? "bg-red-50/50" : ""
                             )}>

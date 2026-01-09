@@ -43,9 +43,20 @@ export async function POST(req: NextRequest) {
 
     console.log(`Processing Job ${job.id} (${job.phase})...`);
 
-    // 3. Execute
+    // 3. Execute with timeout protection
     try {
-        await executeJob(supabaseAdmin, job);
+        // FIX: Add timeout to prevent hanging jobs (Bug 1.8)
+        const JOB_TIMEOUT_MS = 5 * 60 * 1000; // 5 minutes
+
+        const timeoutPromise = new Promise<never>((_, reject) => {
+            setTimeout(() => reject(new Error('Job timeout exceeded (5 minutes)')), JOB_TIMEOUT_MS);
+        });
+
+        // Race between job execution and timeout
+        await Promise.race([
+            executeJob(supabaseAdmin, job),
+            timeoutPromise
+        ]);
 
         await supabaseAdmin.from('jobs').update({ status: 'completed' }).eq('id', job.id);
 
@@ -64,7 +75,16 @@ export async function POST(req: NextRequest) {
 
     } catch (e: any) {
         console.error(`Job ${job.id} failed:`, e);
-        await supabaseAdmin.from('jobs').update({ status: 'failed', last_error: e.message }).eq('id', job.id);
-        return NextResponse.json({ success: false, error: e.message }, { status: 500 });
+        const errorMessage = e.message || 'Unknown error';
+
+        await supabaseAdmin.from('jobs').update({
+            status: 'failed',
+            last_error: errorMessage
+        }).eq('id', job.id);
+
+        return NextResponse.json({
+            success: false,
+            error: errorMessage
+        }, { status: 500 });
     }
 }

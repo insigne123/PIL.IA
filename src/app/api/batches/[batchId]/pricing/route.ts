@@ -36,6 +36,7 @@ export async function POST(
     // 2. Process in parallel chunks (limit concurrency)
     const CHUNK_SIZE = 3;
     let processedCount = 0;
+    const failedItems: Array<{ item: string; error: string }> = [];
 
     // Helper to process one item
     const processItem = async (item: any) => {
@@ -55,9 +56,13 @@ export async function POST(
                     price_confidence: priceResult.confidence
                 }).eq('id', item.id);
                 processedCount++;
+            } else {
+                failedItems.push({ item: item.excel_item, error: 'No prices found' });
             }
         } catch (err) {
+            const errorMsg = err instanceof Error ? err.message : 'Unknown error';
             console.error(`Failed to price item ${item.excel_item}:`, err);
+            failedItems.push({ item: item.excel_item, error: errorMsg });
         }
     };
 
@@ -69,6 +74,7 @@ export async function POST(
 
     return NextResponse.json({
         success: true,
-        message: `Pricing complete. Processed ${processedCount}/${items.length} items.`
+        message: `Pricing complete. Processed ${processedCount}/${items.length} items.`,
+        failed: failedItems.length > 0 ? failedItems : undefined
     });
 }

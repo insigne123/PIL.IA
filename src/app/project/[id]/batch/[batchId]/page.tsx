@@ -6,6 +6,8 @@ import { supabase } from '@/lib/supabase';
 import { Batch, BatchFile } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Input } from '@/components/ui/input';
 import { ArrowLeft, Loader2, Download, AlertTriangle, DollarSign } from 'lucide-react';
 import { FileUploader } from '@/components/yago/FileUploader';
 import { v4 as uuidv4 } from 'uuid';
@@ -23,7 +25,9 @@ export default function BatchPage() {
     const [files, setFiles] = useState<BatchFile[]>([]);
     const [stagingRows, setStagingRows] = useState<StagingRow[]>([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState("upload");
+    const [activeTab, setActiveTab] = useState<'process' | 'staging' | 'output'>('process');
+    const [stagingFilter, setStagingFilter] = useState<'all' | 'pending' | 'approved' | 'low-confidence'>('all');
+    const [searchTerm, setSearchTerm] = useState('');
 
     const fetchBatchData = useCallback(async () => {
         setLoading(true);
@@ -71,13 +75,13 @@ export default function BatchPage() {
 
         // Fetch Staging Rows when tab is 'staging' or just always if batch is ready
         if (batchData && batchData.status === 'ready') {
-            const { data: rows } = await supabase
+            const { data: stagingRows, error: stagingError } = await supabase
                 .from('staging_rows')
-                .select('*')
+                .select('*, source_items:matched_items') // Include related items
                 .eq('batch_id', batchId)
                 .order('excel_row_index', { ascending: true });
 
-            if (rows) {
+            if (stagingRows) {
                 // Map DB snake_case to CamelCase TS Interface if needed, or update interface
                 // Our Interface keys: excel_item_text... same as DB.
                 // source_items is jsonb, matches ItemDetectado[]
@@ -187,7 +191,7 @@ export default function BatchPage() {
 
             if (uploadError) {
                 console.error("Upload error", uploadError);
-                // Optionally show toast
+                alert(`Error al subir archivo "${file.name}": ${uploadError.message || 'Error desconocido'}. Por favor verifica el formato del archivo.`);
                 continue;
             }
 
@@ -203,6 +207,8 @@ export default function BatchPage() {
 
             if (dbError) {
                 console.error("DB Insert error", dbError);
+                alert(`Error al registrar archivo "${file.name}" en la base de datos. Por favor contacta soporte.`);
+                continue;
             }
         }
 
@@ -310,47 +316,47 @@ export default function BatchPage() {
                                 {batch.status === 'pending' || batch.status === 'error' ? (
                                     <Button size="lg" disabled={loading} onClick={async () => {
                                         setLoading(true);
+
                                         // 1. Mark batch as processing (queues jobs)
                                         await fetch(`/api/batches/${batchId}/start`, { method: 'POST' });
 
-                                        // 2. Trigger Worker Loop in Frontend
-                                        // This ensures we keep hitting the endpoint until done
+                                        // 2. Trigger Worker Loop with exponential backoff
+                                        let keepPolling = true;
+                                        let pollInterval = 1000; // Start at 1s
+
                                         const processLoop = async () => {
-                                            let keepingAlive = true;
-                                            while (keepingAlive) {
+                                            while (keepPolling) {
                                                 try {
                                                     const res = await fetch('/api/worker/run', { method: 'POST' });
-
                                                     if (!res.ok) {
                                                         console.error("Worker API error:", res.status);
-                                                        keepingAlive = false;
                                                         break;
                                                     }
 
                                                     const json = await res.json();
-
                                                     if (json.message === "No jobs pending") {
                                                         console.log("All jobs completed");
-                                                        keepingAlive = false;
                                                         break;
                                                     }
 
-                                                    if (!json.success) {
+                                                    if (json.error) {
                                                         console.error("Job failed:", json.error);
-                                                        keepingAlive = false;
                                                         break;
                                                     }
 
                                                     console.log("Job completed:", json.phase);
-
+                                                    // Reset interval on successful job
+                                                    pollInterval = 1000;
                                                 } catch (err) {
                                                     console.error("Worker loop error:", err);
-                                                    keepingAlive = false;
                                                     break;
                                                 }
 
-                                                // Wait 1s between tasks
-                                                await new Promise(r => setTimeout(r, 1000));
+                                                // Exponential backoff: 1s → 2s → 5s (max)
+                                                await new Promise(r => setTimeout(r, pollInterval));
+                                                pollInterval = Math.min(pollInterval * 1.5, 5000);
+
+                                                if (!keepPolling) break; // Check before fetching
                                                 await fetchBatchData(); // Refresh UI
                                             }
 
@@ -368,8 +374,11 @@ export default function BatchPage() {
                                             setLoading(false);
                                         };
 
-                                        processLoop(); // Fire and forget loop
+                                        processLoop();
                                         fetchBatchData(); // Immediate UI update
+
+                                        // Cleanup function to stop polling if component unmounts
+                                        return () => { keepPolling = false; };
                                     }}>
                                         Iniciar Procesamiento
                                     </Button>
@@ -451,6 +460,21 @@ export default function BatchPage() {
                             <br />
                             <Button variant="link" onClick={() => setActiveTab('process')}>Ir a Procesamiento</Button>
                         </div>
+                    ) : loading ? (
+                        // UX: Granular loading skeleton
+                        <Card>
+                            <CardHeader>
+                                <div className="h-6 w-48 bg-slate-200 rounded animate-pulse"></div>
+                                <div className="h-4 w-96 bg-slate-100 rounded animate-pulse mt-2"></div>
+                            </CardHeader>
+                            <CardContent>
+                                <div className="space-y-3">
+                                    {[1, 2, 3, 4, 5].map(i => (
+                                        <div key={i} className="h-16 bg-slate-50 rounded animate-pulse"></div>
+                                    ))}
+                                </div>
+                            </CardContent>
+                        </Card>
                     ) : (
                         <Card>
                             <CardHeader className="flex flex-row items-center justify-between">
@@ -458,32 +482,103 @@ export default function BatchPage() {
                                     <CardTitle>Área de Revisión (Staging)</CardTitle>
                                     <CardDescription>Revisa los cruces automáticos, edita cantidades y aprueba partidas.</CardDescription>
                                 </div>
-                                <Button
-                                    variant="outline"
-                                    className="gap-2 border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100"
-                                    onClick={async () => {
-                                        if (!confirm("¿Iniciar cotización automática de materiales? Esto puede tomar unos minutos.")) return;
-                                        setLoading(true);
-                                        try {
-                                            const res = await fetch(`/api/batches/${batchId}/pricing`, { method: 'POST' });
-                                            const json = await res.json();
-                                            alert(json.message);
-                                            await fetchBatchData();
-                                        } catch (err) {
-                                            console.error(err);
-                                            alert("Error al cotizar");
-                                        } finally {
-                                            setLoading(false);
-                                        }
-                                    }}
-                                >
-                                    <DollarSign className="h-4 w-4" />
-                                    Cotizar Materiales (IA)
-                                </Button>
+                                <TooltipProvider>
+                                    <Tooltip>
+                                        <TooltipTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                className="gap-2 border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100"
+                                                onClick={async () => {
+                                                    if (!confirm("¿Iniciar cotización automática de materiales? Esto puede tomar unos minutos.")) return;
+                                                    setLoading(true);
+                                                    try {
+                                                        const res = await fetch(`/api/batches/${batchId}/pricing`, { method: 'POST' });
+                                                        const json = await res.json();
+
+                                                        if (json.failed && json.failed.length > 0) {
+                                                            alert(`${json.message}\n\nErrores:\n${json.failed.map((f: any) => `- ${f.item}: ${f.error}`).join('\n')}`);
+                                                        } else {
+                                                            alert(json.message);
+                                                        }
+                                                        await fetchBatchData();
+                                                    } catch (err) {
+                                                        console.error(err);
+                                                        alert("Error al cotizar");
+                                                    } finally {
+                                                        setLoading(false);
+                                                    }
+                                                }}
+                                            >
+                                                <DollarSign className="h-4 w-4" />
+                                                Cotizar Materiales (IA)
+                                            </Button>
+                                        </TooltipTrigger>
+                                        <TooltipContent>
+                                            <p>Busca precios automáticamente usando IA</p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                </TooltipProvider>
                             </CardHeader>
                             <CardContent>
+                                {/* UX: Advanced Filtering */}
+                                <div className="mb-4 space-y-3">
+                                    <Input
+                                        placeholder="🔍 Buscar por descripción..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
+                                        className="max-w-md"
+                                    />
+                                    <div className="flex gap-2">
+                                        <Button
+                                            size="sm"
+                                            variant={stagingFilter === 'all' ? 'default' : 'outline'}
+                                            onClick={() => setStagingFilter('all')}
+                                        >
+                                            Todos ({stagingRows.length})
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            variant={stagingFilter === 'pending' ? 'default' : 'outline'}
+                                            onClick={() => setStagingFilter('pending')}
+                                            className="border-yellow-200 text-yellow-700 hover:bg-yellow-50"
+                                        >
+                                            Pendientes ({stagingRows.filter(r => r.status === 'pending').length})
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            variant={stagingFilter === 'approved' ? 'default' : 'outline'}
+                                            onClick={() => setStagingFilter('approved')}
+                                            className="border-green-200 text-green-700 hover:bg-green-50"
+                                        >
+                                            Aprobados ({stagingRows.filter(r => r.status === 'approved').length})
+                                        </Button>
+                                        <Button
+                                            size="sm"
+                                            variant={stagingFilter === 'low-confidence' ? 'default' : 'outline'}
+                                            onClick={() => setStagingFilter('low-confidence')}
+                                            className="border-red-200 text-red-700 hover:bg-red-50"
+                                        >
+                                            Baja Confianza ({stagingRows.filter(r => r.match_confidence < 0.4).length})
+                                        </Button>
+                                    </div>
+                                </div>
+
                                 <StagingTable
-                                    data={stagingRows}
+                                    data={stagingRows
+                                        .filter(row => {
+                                            // Filter by status
+                                            if (stagingFilter === 'pending' && row.status !== 'pending') return false;
+                                            if (stagingFilter === 'approved' && row.status !== 'approved') return false;
+                                            if (stagingFilter === 'low-confidence' && row.match_confidence >= 0.4) return false;
+
+                                            // Filter by search term
+                                            if (searchTerm && !row.excel_item_text.toLowerCase().includes(searchTerm.toLowerCase())) {
+                                                return false;
+                                            }
+
+                                            return true;
+                                        })
+                                    }
                                     onUpdateRow={async (id, updates) => {
                                         // Specific Optimistic Update
                                         setStagingRows(current =>
@@ -580,6 +675,11 @@ export default function BatchPage() {
                                             Una vez revisado todo en la pestaña de Staging, genera los archivos finales.
                                         </p>
                                         <Button size="lg" className="gap-2" disabled={loading} onClick={async () => {
+                                            // UX: Confirmation before generating
+                                            if (!confirm('¿Generar archivos finales? Esta acción creará el Excel y PDF con los datos actuales.')) {
+                                                return;
+                                            }
+
                                             setLoading(true);
                                             try {
                                                 const res = await fetch(`/api/batches/${batchId}/generate`, { method: 'POST' });
@@ -598,11 +698,12 @@ export default function BatchPage() {
                                                     await processLoop();
                                                     alert('✅ Archivos generados exitosamente. Descárgalos arriba.');
                                                 } else {
-                                                    alert("Error al generar archivos");
+                                                    const error = await res.text();
+                                                    alert(`Error al generar archivos: ${error || 'Error desconocido'}`);
                                                 }
                                             } catch (e) {
                                                 console.error(e);
-                                                alert("Error al generar archivos");
+                                                alert("Error al generar archivos. Por favor intenta nuevamente.");
                                             } finally {
                                                 setLoading(false);
                                             }

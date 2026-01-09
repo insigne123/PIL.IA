@@ -1,6 +1,5 @@
 import { z } from 'genkit';
 import { ai } from './genkit';
-import { search } from './tools/search'; // Assuming a search tool exists or we'll define a simple one
 
 // Output Schema
 const PriceOutputSchema = z.object({
@@ -66,9 +65,13 @@ export const findPriceFlow = ai.defineFlow(
         `;
 
         const result = await ai.generate({
+            model: 'googleai/gemini-2.0-flash',
             prompt: prompt,
+            config: {
+                // Enable Google Search for real-time pricing data
+                googleSearchRetrieval: {}
+            },
             output: { format: 'json', schema: PriceOutputSchema },
-            // tools: ['webSearch'] // Assumption: We will register this tool
         });
 
         if (!result.output) {
