@@ -321,11 +321,11 @@ export default function BatchPage() {
                                         await fetch(`/api/batches/${batchId}/start`, { method: 'POST' });
 
                                         // 2. Trigger Worker Loop with exponential backoff
-                                        let keepPolling = true;
-                                        let pollInterval = 1000; // Start at 1s
-
+                                        // Note: Cleanup handled by useEffect below
                                         const processLoop = async () => {
-                                            while (keepPolling) {
+                                            let pollInterval = 1000; // Start at 1s
+
+                                            while (true) {
                                                 try {
                                                     const res = await fetch('/api/worker/run', { method: 'POST' });
                                                     if (!res.ok) {
@@ -356,7 +356,6 @@ export default function BatchPage() {
                                                 await new Promise(r => setTimeout(r, pollInterval));
                                                 pollInterval = Math.min(pollInterval * 1.5, 5000);
 
-                                                if (!keepPolling) break; // Check before fetching
                                                 await fetchBatchData(); // Refresh UI
                                             }
 
@@ -376,9 +375,6 @@ export default function BatchPage() {
 
                                         processLoop();
                                         fetchBatchData(); // Immediate UI update
-
-                                        // Cleanup function to stop polling if component unmounts
-                                        return () => { keepPolling = false; };
                                     }}>
                                         Iniciar Procesamiento
                                     </Button>

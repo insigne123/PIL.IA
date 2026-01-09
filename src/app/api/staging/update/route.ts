@@ -9,7 +9,6 @@ export async function POST(req: NextRequest) {
     }
 
     try {
-        const body = await req.json();
         const { id, updates } = await req.json();
 
         if (!id || !updates) {
@@ -38,11 +37,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "No valid fields to update" }, { status: 400 });
         }
 
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
-        const supabase = createClient(supabaseUrl, supabaseServiceKey);
-
-        const { error } = await supabase
+        const { error } = await supabaseAdmin
             .from('staging_rows')
             .update(sanitizedUpdates)
             .eq('id', id);
