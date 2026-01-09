@@ -86,12 +86,44 @@ export default function BatchPage() {
                 // Our Interface keys: excel_item_text... same as DB.
                 // source_items is jsonb, matches ItemDetectado[]
                 // price_candidates is jsonb, matches PriceSource[]
-                setStagingRows(rows as unknown as StagingRow[]);
+                setStagingRows(stagingRows as unknown as StagingRow[]);
             }
         }
 
         setLoading(false);
     }, [batchId]);
+
+    // This useEffect is for initial data fetch and realtime subscription
+    useEffect(() => {
+        if (batchId) fetchBatchData();
+
+        // Realtime subscription for file status
+        const channel = supabase.channel('batch_files')
+            .on('postgres_changes',
+                { event: 'UPDATE', schema: 'public', table: 'batch_files', filter: `batch_id=eq.${batchId}` },
+                () => {
+                    fetchBatchData(); // Reload for simplicity in MVP
+                }
+            )
+            .subscribe();
+
+        return () => { supabase.removeChannel(channel); };
+    }, [batchId, fetchBatchData]);
+
+    // UX: Set initial tab based on batch state
+    useEffect(() => {
+        if (!batch || !files) return;
+
+        // If batch is new (pending) and has no files, keep on process tab (which has upload)
+        if (batch.status === 'pending' && files.length === 0) {
+            setActiveTab('process'); // ✅ 'process' tab contains upload section
+        }
+        // If batch is ready, show staging tab
+        else if (batch.status === 'ready') {
+            setActiveTab('staging');
+        }
+        // Otherwise keep current tab (or default to process)
+    }, [batch, files]);
 
     // Check for Mismatch
     const mismatchFile = files.find(f => f.fileType === 'dxf' && f.detectedUnit && f.detectedUnit !== batch?.unitSelected);
