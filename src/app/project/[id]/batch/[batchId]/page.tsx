@@ -248,6 +248,25 @@ export default function BatchPage() {
         fetchBatchData();
     };
 
+    const handleResetBatch = async () => {
+        if (!confirm("¿Estás seguro de reiniciar este lote? Se perderán todos los datos procesados (cruces, staging) y tendrás que procesar de nuevo. Los archivos cargados se mantendrán.")) return;
+
+        setLoading(true);
+        try {
+            const res = await fetch(`/api/batches/${batchId}/reset`, { method: 'POST' });
+            if (!res.ok) throw new Error("Error resetting");
+
+            alert("Lote reiniciado correctamente.");
+            await fetchBatchData();
+            setActiveTab('process');
+        } catch (e) {
+            console.error(e);
+            alert("Error al reiniciar lote");
+        } finally {
+            setLoading(false);
+        }
+    };
+
     if (loading && !batch) return <div className="p-10 text-center">Cargando lote...</div>;
     if (!batch) return <div className="p-10 text-center">Lote no encontrado</div>;
 
@@ -262,6 +281,16 @@ export default function BatchPage() {
                     <p className="text-muted-foreground">
                         {batch?.unitSelected.toUpperCase()} • {files.length} Archivos
                     </p>
+                </div>
+                <div className="ml-auto">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={handleResetBatch}
+                        className="text-slate-600 border-slate-300 hover:bg-slate-100"
+                    >
+                        Reiniciar Lote
+                    </Button>
                 </div>
             </div>
 
