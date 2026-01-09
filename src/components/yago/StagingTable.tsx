@@ -18,24 +18,8 @@ interface StagingTableProps {
 }
 
 export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
-    const [filter, setFilter] = useState<'all' | 'pending' | 'approved'>('all');
-
-    const filteredData = data.filter(r => filter === 'all' || r.status === filter);
-
     return (
         <div className="space-y-4">
-            <div className="flex gap-2">
-                <Button variant={filter === 'all' ? 'default' : 'outline'} onClick={() => setFilter('all')} size="sm">
-                    Todos ({data.length})
-                </Button>
-                <Button variant={filter === 'pending' ? 'default' : 'outline'} onClick={() => setFilter('pending')} size="sm" className="text-yellow-600 border-yellow-200 bg-yellow-50 hover:bg-yellow-100">
-                    Pendientes ({data.filter(d => d.status === 'pending').length})
-                </Button>
-                <Button variant={filter === 'approved' ? 'default' : 'outline'} onClick={() => setFilter('approved')} size="sm" className="text-green-600 border-green-200 bg-green-50 hover:bg-green-100">
-                    Aprobados ({data.filter(d => d.status === 'approved').length})
-                </Button>
-            </div>
-
             <div className="rounded-md border">
                 <Table>
                     <TableHeader>
@@ -51,7 +35,7 @@ export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {filteredData.map((row) => (
+                        {data.map((row) => (
                             <TableRow key={row.id} className={cn(
                                 "transition-all duration-300", // UX: Smooth transitions
                                 row.status === 'approved' ? "bg-green-50/50" : "",

@@ -42,7 +42,7 @@ export async function POST(
     const processItem = async (item: any) => {
         try {
             const priceResult = await findPriceFlow({
-                item_description: item.excel_item,
+                item_description: item.excel_item_text, // ✅ Fixed: was excel_item
                 item_unit: item.excel_unit,
                 country: 'Chile'
             });
@@ -57,12 +57,12 @@ export async function POST(
                 }).eq('id', item.id);
                 processedCount++;
             } else {
-                failedItems.push({ item: item.excel_item, error: 'No prices found' });
+                failedItems.push({ item: item.excel_item_text, error: 'No prices found' });
             }
         } catch (err) {
             const errorMsg = err instanceof Error ? err.message : 'Unknown error';
-            console.error(`Failed to price item ${item.excel_item}:`, err);
-            failedItems.push({ item: item.excel_item, error: errorMsg });
+            console.error(`Failed to price item ${item.excel_item_text}:`, err);
+            failedItems.push({ item: item.excel_item_text, error: errorMsg });
         }
     };
 
