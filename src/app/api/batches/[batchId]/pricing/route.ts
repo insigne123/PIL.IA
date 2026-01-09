@@ -41,9 +41,24 @@ export async function POST(
     // Helper to process one item
     const processItem = async (item: any) => {
         try {
+            // Debug logging
+            console.log('Processing item:', {
+                id: item.id,
+                excel_item_text: item.excel_item_text,
+                excel_unit: item.excel_unit,
+                has_text: !!item.excel_item_text
+            });
+
+            // Validate required fields
+            if (!item.excel_item_text || item.excel_item_text.trim() === '') {
+                console.warn(`Skipping item ${item.id}: empty description`);
+                failedItems.push({ item: item.id, error: 'Empty item description' });
+                return;
+            }
+
             const priceResult = await findPriceFlow({
                 item_description: item.excel_item_text, // ✅ Fixed: was excel_item
-                item_unit: item.excel_unit,
+                item_unit: item.excel_unit || '',
                 country: 'Chile'
             });
 
