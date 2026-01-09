@@ -114,9 +114,9 @@ export default function BatchPage() {
     useEffect(() => {
         if (!batch || !files) return;
 
-        // If batch is new (pending) and has no files, keep on process tab (which has upload)
+        // If batch is new (pending) and has no files, show upload tab
         if (batch.status === 'pending' && files.length === 0) {
-            setActiveTab('process'); // ✅ 'process' tab contains upload section
+            setActiveTab('upload'); // ✅ Correctly redirect to upload tab
         }
         // If batch is ready, show staging tab
         else if (batch.status === 'ready') {
