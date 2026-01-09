@@ -77,7 +77,7 @@ export default function BatchPage() {
         if (batchData && batchData.status === 'ready') {
             const { data: stagingRows, error: stagingError } = await supabase
                 .from('staging_rows')
-                .select('*, source_items:matched_items') // Include related items
+                .select('*') // Correct: source_items is already in *
                 .eq('batch_id', batchId)
                 .order('excel_row_index', { ascending: true });
 
