@@ -31,53 +31,92 @@ export const findPriceFlow = ai.defineFlow(
     async (input) => {
         const { item_description, item_unit, country } = input;
 
-        // 1. Construct Search Query
-        // Optimize for Chilean construction suppliers
-        const query = `precio ${item_description} ${item_unit} ${country} sodimac easy conmet`;
-
-        // 2. Perform Search (using the tool)
-        // We need a search tool. For now, we'll try to use the 'search' tool if registered, 
-        // or prompt the LLM to use its grounding if enabled.
-        // Since I cannot call `search_web` directly from here (it's an agent tool, not a Genkit tool yet),
-        // I will assume we have a `searchTool` registered in our Genkit instance or I will create a wrapper.
-        // For this implementation, let's assume `ai.generate` with `googleSearchRetrieval` if available, 
-        // or we rely on a custom tool we will build.
-
-        // Let's use a robust prompt that ASKS the model to Search.
-        // Note: For this to work, the model needs a tool. 
-        // I'll assume we pass a tool named 'webSearch' or similar.
-
-        const prompt = `
-        Eres un experto Cotizador de Construcción en ${country}.
-        Tarea: Encuentra el precio de mercado actual para: "${item_description}"
+        // STEP 1: RESEARCH (Text Output + Search Tool)
+        // We prompt the model to search and return a text summary.
+        // This is allowed because we are NOT asking for JSON output here.
+        const searchPrompt = `
+        Investiga el precio de mercado actual en ${country} para: "${item_description}"
         Unidad requerida: "${item_unit}"
         
         Instrucciones:
-        1. Busca en proveedores locales (Sodimac, Easy, Rexel, etc.).
-        2. Encuentra 3 precios de referencias.
-        3. Calcula el promedio.
-        4. Asegúrate que el precio corresponda a la UNIDAD pedida.
-           - Si pido 'm' y venden 'rollo 100m', divide el precio por 100.
-           - Si pido 'm' y venden 'tira 3m', divide por 3.
-        5. Retorna precios en CLP (Pesos Chilenos) sin separadores de miles.
+        1. Busca en proveedores locales (Sodimac, Easy, Rexel, sitios de construcción, etc.).
+        2. Intenta encontrar al menos 3 referencias de precio.
+        3. Resume los hallazgos en un texto detallado que incluya:
+           - Nombre del proveedor
+           - Precio encontrado
+           - Descripción del producto encontrado (para verificar si coincide)
+           - URL si es posible
         
-        Si no encuentras nada específico, busca un sustituto estándar y acláralo en 'notes'.
+        Si no encuentras el producto exacto, busca el sustituto más cercano y acláralo.
+        Responde SOLO con el resumen de la investigación en texto plano.
         `;
 
-        const result = await ai.generate({
-            model: 'googleai/gemini-2.5-flash', // Updated from deprecated 2.0
-            prompt: prompt,
-            config: {
-                // Enable Google Search for real-time pricing data
-                googleSearchRetrieval: {}
-            },
-            output: { format: 'json', schema: PriceOutputSchema },
-        });
+        try {
+            const searchResult = await ai.generate({
+                model: 'googleai/gemini-2.5-flash',
+                prompt: searchPrompt,
+                config: {
+                    googleSearchRetrieval: {} // ✅ Allowed with Text output
+                }
+            });
 
-        if (!result.output) {
-            throw new Error("Failed to generate price");
+            const researchText = searchResult.text;
+            console.log(`[PricingAI] Research for '${item_description}':`, researchText.substring(0, 100) + "...");
+
+            // STEP 2: EXTRACTION (JSON Output + No Tool)
+            // We feed the research text back to the model to structure it.
+            // No capabilities enabled here, just pure text processing.
+            const extractionPrompt = `
+            Actúa como un extractor de datos estructurados.
+            
+            Tu tarea es convertir el siguiente reporte de investigación de precios en un formato JSON estricto.
+            
+            Reporte de Investigación:
+            """
+            ${researchText}
+            """
+            
+            Item Buscado: "${item_description}" (${item_unit})
+            
+            Instrucciones:
+            1. Extrae los precios encontrados.
+            2. Calcula el precio promedio en CLP.
+            3. Analiza la confianza basada en la calidad de los hallazgos.
+            4. Si la investigación dice que no encontró nada, marca 'found': false.
+            `;
+
+            const extractionResult = await ai.generate({
+                model: 'googleai/gemini-2.5-flash',
+                prompt: extractionPrompt,
+                output: { format: 'json', schema: PriceOutputSchema } // ✅ Allowed without Tools
+            });
+
+            if (!extractionResult.output) {
+                console.error("Failed to parse pricing JSON");
+                return {
+                    found: false,
+                    average_price: 0,
+                    currency: 'CLP',
+                    unit_ref: item_unit,
+                    sources: [],
+                    confidence: 'low',
+                    notes: "Error parsing AI response"
+                };
+            }
+
+            return extractionResult.output;
+
+        } catch (error) {
+            console.error("AI Pricing Flow Error:", error);
+            return {
+                found: false,
+                average_price: 0,
+                currency: 'CLP',
+                unit_ref: item_unit,
+                sources: [],
+                confidence: 'low',
+                notes: "Error in pricing flow execution"
+            };
         }
-
-        return result.output;
     }
 );
