@@ -65,7 +65,7 @@ export const findPriceFlow = ai.defineFlow(
         `;
 
         const result = await ai.generate({
-            model: 'googleai/gemini-2.0-flash',
+            model: 'googleai/gemini-2.5-flash', // Updated from deprecated 2.0
             prompt: prompt,
             config: {
                 // Enable Google Search for real-time pricing data
