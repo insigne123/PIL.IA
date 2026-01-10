@@ -382,19 +382,35 @@ export default function BatchPage() {
                                         await fetch(`/api/batches/${batchId}/start`, { method: 'POST' });
 
                                         // 2. Trigger Worker Loop with exponential backoff
-                                        // Note: Cleanup handled by useEffect below
                                         const processLoop = async () => {
                                             let pollInterval = 1000; // Start at 1s
+                                            let consecutiveErrors = 0;
+                                            const MAX_ERRORS = 3;
 
                                             while (true) {
                                                 try {
                                                     const res = await fetch('/api/worker/run', { method: 'POST' });
+
                                                     if (!res.ok) {
-                                                        console.error("Worker API error:", res.status);
-                                                        break;
+                                                        const errorText = await res.text().catch(() => 'Unknown error');
+                                                        console.error(`Worker API error [${res.status}]:`, errorText);
+
+                                                        consecutiveErrors++;
+                                                        if (consecutiveErrors >= MAX_ERRORS) {
+                                                            alert(`❌ Error en el procesamiento después de ${MAX_ERRORS} intentos. Por favor revisa los logs o intenta reiniciar el lote.`);
+                                                            break;
+                                                        }
+
+                                                        // Wait before retry
+                                                        await new Promise(r => setTimeout(r, 2000));
+                                                        continue;
                                                     }
 
                                                     const json = await res.json();
+
+                                                    // Reset error counter on success
+                                                    consecutiveErrors = 0;
+
                                                     if (json.message === "No jobs pending") {
                                                         console.log("All jobs completed");
                                                         break;
@@ -402,15 +418,25 @@ export default function BatchPage() {
 
                                                     if (json.error) {
                                                         console.error("Job failed:", json.error);
+                                                        alert(`❌ Error en el trabajo: ${json.error}`);
                                                         break;
                                                     }
 
                                                     console.log("Job completed:", json.phase);
-                                                    // Reset interval on successful job
-                                                    pollInterval = 1000;
+                                                    pollInterval = 1000; // Reset interval on successful job
+
                                                 } catch (err) {
-                                                    console.error("Worker loop error:", err);
-                                                    break;
+                                                    console.error("Worker loop fetch error:", err);
+                                                    consecutiveErrors++;
+
+                                                    if (consecutiveErrors >= MAX_ERRORS) {
+                                                        alert(`❌ Error de conexión después de ${MAX_ERRORS} intentos. Verifica que el servidor esté corriendo.`);
+                                                        break;
+                                                    }
+
+                                                    // Wait before retry
+                                                    await new Promise(r => setTimeout(r, 2000));
+                                                    continue;
                                                 }
 
                                                 // Exponential backoff: 1s → 2s → 5s (max)
