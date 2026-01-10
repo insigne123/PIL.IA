@@ -63,12 +63,30 @@ export async function POST(
             });
 
             if (priceResult.found) {
+                // Validate and filter sources with valid URLs
+                const validSources = priceResult.sources.filter(s =>
+                    s.url &&
+                    s.url.trim() !== '' &&
+                    s.url !== 'null' &&
+                    s.url.startsWith('http')
+                );
+
+                // Adjust confidence if sources lack URLs
+                let finalConfidence = priceResult.confidence;
+                if (validSources.length === 0) {
+                    console.warn(`Item ${item.excel_item_text}: No sources with valid URLs. Lowering confidence.`);
+                    finalConfidence = 'low';
+                } else if (validSources.length < priceResult.sources.length) {
+                    console.warn(`Item ${item.excel_item_text}: Some sources missing URLs (${validSources.length}/${priceResult.sources.length})`);
+                    if (finalConfidence === 'high') finalConfidence = 'medium';
+                }
+
                 // Update DB
                 await supabase.from('staging_rows').update({
                     unit_price_ref: priceResult.average_price,
                     total_price_ref: priceResult.average_price * item.qty_final,
-                    price_sources: priceResult.sources,
-                    price_confidence: priceResult.confidence
+                    price_sources: validSources, // Only save sources with valid URLs
+                    price_confidence: finalConfidence
                 }).eq('id', item.id);
                 processedCount++;
             } else {

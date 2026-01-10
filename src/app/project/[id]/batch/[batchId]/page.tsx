@@ -579,7 +579,7 @@ export default function BatchPage() {
                                                         const json = await res.json();
 
                                                         if (json.failed && json.failed.length > 0) {
-                                                            alert(`${json.message}\n\nErrores:\n${json.failed.map((f: any) => `- ${f.item}: ${f.error}`).join('\n')}`);
+                                                            alert(`${json.message}\n\n⚠️ Items sin referencia de mercado encontrada:\n${json.failed.map((f: any) => `- ${f.item}: No se encontró referencia`).join('\n')}`);
                                                         } else {
                                                             alert(json.message);
                                                         }

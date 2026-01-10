@@ -39,15 +39,18 @@ export const findPriceFlow = ai.defineFlow(
         Unidad requerida: "${item_unit}"
         
         Instrucciones:
-        1. Busca en proveedores locales (Sodimac, Easy, Rexel, sitios de construcción, etc.).
-        2. Intenta encontrar al menos 3 referencias de precio.
-        3. Resume los hallazgos en un texto detallado que incluya:
+        1. **Enfoque Materiales**: Si el ítem es "Punto de X" (ej: enchufe, datos), busca el precio de los MATERIALES (placa + módulo + caja). Evita precios de "servicio de instalación" a menos que se especifique "Mano de obra".
+        2. **Proveedores**: Prioriza Sodimac, Easy, Rexel, sitios de ferretería online.
+        3. **Referencia**: Intenta encontrar 3 referencias.
+        4. **Packs**: Fíjate si el precio es por unidad o por pack/tira/caja (ej: "tira 3m", "pack 10 un"). Anótalo claramente.
+        
+        Resume los hallazgos en un texto detallado que incluya:
            - Nombre del proveedor
            - Precio encontrado
-           - Descripción del producto encontrado (para verificar si coincide)
-           - URL si es posible
+           - Descripción exacta (incluyendo si es pack o unidad)
+           - URL (INDISPENSABLE)
         
-        Si no encuentras el producto exacto, busca el sustituto más cercano y acláralo.
+        Si no encuentras el producto exacto, busca el sustituto más cercano (ej: 'Canaleta 20x10' si no hay medida exacta).
         Responde SOLO con el resumen de la investigación en texto plano.
         `;
 
@@ -78,11 +81,24 @@ export const findPriceFlow = ai.defineFlow(
             
             Item Buscado: "${item_description}" (${item_unit})
             
-            Instrucciones:
-            1. Extrae los precios encontrados.
-            2. Calcula el precio promedio en CLP.
-            3. Analiza la confianza basada en la calidad de los hallazgos.
-            4. Si la investigación dice que no encontró nada, marca 'found': false.
+            Instrucciones Específicas:
+            1. **Normalización de Precio**:
+               - Si encuentras un "pack", "caja", "rollo" o "tira", divide el precio por la cantidad para obtener el precio unitario base (ej: Tira 3m $3000 -> Precio $1000/m).
+               - Si el título dice "2 mt", "3 metros", etc., divide por los metros.
+            
+            2. **Materiales vs Servicios**:
+               - Prioriza siempre MATERIALES de tiendas de construcción (Sodimac, Easy, etc.).
+               - Solo si es explícitamente una instalación (mano de obra), busca tarifas de servicios.
+               - Si el ítem es "Punto de X" (ej: enchufes), cotiza los MATERIALES para armar ese punto (cajas, placa, cable estimado), NO solo el módulo.
+            
+            3. **Validación**:
+               - **URL es OBLIGATORIA**. Si no hay URL válida, descarta esa fuente o marca confidence='low'.
+               - No aceptes fuentes sin precio numérico claro.
+            
+            4. **Salida**:
+               - Extrae los precios encontrados y normalizados.
+               - Calcula promedio simple.
+               - Si no encontraste nada confiable, marca 'found': false.
             `;
 
             const extractionResult = await ai.generate({

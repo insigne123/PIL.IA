@@ -304,21 +304,34 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                     // Find the items belonging to this layer
                     let betterMatches: ItemDetectado[] = [];
 
-                    // Parse "BlockName (Layer: LayerName)" format
+                    // Parse "BlockName (Layer: LayerName)" format used for Blocks in candidateMap
                     const granularMatch = aiResult.selected_layer.match(/^(.*) \(Layer: (.*)\)$/);
 
                     if (granularMatch) {
+                        // CASE A: Specific Block selected
                         const bName = granularMatch[1];
                         const bLayer = granularMatch[2];
-                        betterMatches = dxfItems.filter(i => i.layer_normalized === bLayer && i.name_raw === bName);
+                        // STRICT FILTER: Only return BLOCKS with that name and layer. Ignore lines.
+                        betterMatches = dxfItems.filter(i =>
+                            i.layer_normalized === bLayer &&
+                            i.name_raw === bName &&
+                            i.type === 'block'
+                        );
                     } else {
-                        // Standard Layer Match
-                        betterMatches = dxfItems.filter(i => i.layer_normalized === aiResult.selected_layer);
+                        // CASE B: Whole Layer selected (Typical for Lengths/Areas)
+                        // STRICT FILTER: Exclude blocks to avoid mixing types (e.g. 4 blocks + 0.9m length)
+                        // If the AI selected a whole layer, it usually means linear elements.
+                        betterMatches = dxfItems.filter(i =>
+                            i.layer_normalized === aiResult.selected_layer &&
+                            i.type !== 'block'
+                        );
                     }
+
                     if (betterMatches.length > 0) {
                         (row as any).matched_items = betterMatches;
                         (row as any).match_confidence = aiResult.confidence;
                         (row as any).match_reason = "AI: " + aiResult.reasoning;
+                        // Auto-approve high confidence
                         (row as any).status = aiResult.confidence > 0.8 ? 'approved' : 'pending';
 
                         // Recalculate Qty

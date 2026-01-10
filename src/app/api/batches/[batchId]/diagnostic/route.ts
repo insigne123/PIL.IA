@@ -88,7 +88,58 @@ export async function GET(
                 items_without_pricing: stagingRows?.filter(r => !r.unit_price_ref).length || 0,
                 pricing_coverage: stagingRows?.length
                     ? ((stagingRows.filter(r => r.unit_price_ref).length / stagingRows.length) * 100).toFixed(1) + '%'
-                    : '0%'
+                    : '0%',
+                // Match quality breakdown
+                match_quality: {
+                    high_confidence: stagingRows?.filter(r => r.confidence === 'high').length || 0,
+                    medium_confidence: stagingRows?.filter(r => r.confidence === 'medium').length || 0,
+                    low_confidence: stagingRows?.filter(r => r.confidence === 'low').length || 0,
+                    approved: stagingRows?.filter(r => r.status === 'approved').length || 0,
+                    pending: stagingRows?.filter(r => r.status === 'pending').length || 0
+                },
+                // Pricing quality breakdown
+                pricing_quality: {
+                    high_confidence: stagingRows?.filter(r => r.price_confidence === 'high').length || 0,
+                    medium_confidence: stagingRows?.filter(r => r.price_confidence === 'medium').length || 0,
+                    low_confidence: stagingRows?.filter(r => r.price_confidence === 'low').length || 0
+                },
+                // Type distribution
+                type_distribution: {
+                    blocks: stagingRows?.filter(r => r.source_items?.[0]?.type === 'block').length || 0,
+                    lengths: stagingRows?.filter(r => r.source_items?.[0]?.type === 'length').length || 0,
+                    texts: stagingRows?.filter(r => r.source_items?.[0]?.type === 'text').length || 0
+                }
+            },
+            // Data quality indicators for AI analysis
+            quality_indicators: {
+                // Items with fractional quantities on block types (potential bug)
+                fractional_block_quantities: stagingRows?.filter(r =>
+                    r.qty_final && !Number.isInteger(r.qty_final) && r.source_items?.[0]?.type === 'block'
+                ).map(r => ({
+                    row_index: r.excel_row_index,
+                    item: r.excel_item_text,
+                    qty: r.qty_final
+                })) || [],
+                // Items with pricing but no valid URL sources
+                pricing_without_urls: stagingRows?.filter(r =>
+                    r.unit_price_ref && (!r.price_sources || !r.price_sources.some((s: any) => s.url?.startsWith('http')))
+                ).map(r => ({
+                    row_index: r.excel_row_index,
+                    item: r.excel_item_text
+                })) || [],
+                // "Punto de" items for kit analysis
+                point_items: stagingRows?.filter(r =>
+                    r.excel_item_text?.toLowerCase().includes('punto')
+                ).map(r => ({
+                    row_index: r.excel_row_index,
+                    item: r.excel_item_text,
+                    unit_price: r.unit_price_ref
+                })) || []
+            },
+            // System metadata
+            system_info: {
+                export_timestamp: new Date().toISOString(),
+                files_processed: files?.length || 0
             }
         };
 
