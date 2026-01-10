@@ -71,8 +71,25 @@ export async function GET(
                 qty_final: row.qty_final,
                 status: row.status,
                 source_items_count: row.source_items?.length || 0,
-                source_items: row.source_items
-            }))
+                source_items: row.source_items,
+                // Pricing information
+                pricing: {
+                    unit_price: row.unit_price_ref,
+                    total_price: row.total_price_ref,
+                    sources: row.price_sources,
+                    confidence: row.price_confidence,
+                    has_pricing: !!row.unit_price_ref
+                }
+            })),
+            // Summary statistics
+            summary: {
+                total_items: stagingRows?.length || 0,
+                items_with_pricing: stagingRows?.filter(r => r.unit_price_ref).length || 0,
+                items_without_pricing: stagingRows?.filter(r => !r.unit_price_ref).length || 0,
+                pricing_coverage: stagingRows?.length
+                    ? ((stagingRows.filter(r => r.unit_price_ref).length / stagingRows.length) * 100).toFixed(1) + '%'
+                    : '0%'
+            }
         };
 
         return NextResponse.json(diagnostic, {
