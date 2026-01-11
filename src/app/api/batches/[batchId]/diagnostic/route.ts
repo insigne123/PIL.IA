@@ -1,20 +1,34 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
+import { validateBatchAccess } from '@/lib/auth';
+import { validateSourceItems, validatePriceSources } from '@/lib/validation';
 
-export async function GET(
-    request: NextRequest,
-    { params }: { params: { batchId: string } }
-) {
-    const batchId = params.batchId;
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
+const supabase = createClient(supabaseUrl, supabaseKey);
 
+export async function GET(req: NextRequest, { params }: { params: Promise<{ batchId: string }> }) {
     try {
-        // Fetch all diagnostic data
-        const { data: batch } = await supabase
+        const { batchId } = await params;
+
+        // Validate authentication and batch access
+        const authResult = await validateBatchAccess(req, batchId);
+        if (!authResult.authorized) {
+            return authResult.error!;
+        }
+
+        // Fetch batch data
+        const { data: batch, error: batchError } = await supabase
             .from('batches')
             .select('*')
             .eq('id', batchId)
             .single();
 
+        if (batchError || !batch) {
+            return NextResponse.json({ error: 'Batch not found' }, { status: 404 });
+        }
+
+        // Fetch all diagnostic data
         const { data: files } = await supabase
             .from('batch_files')
             .select('*')
@@ -25,6 +39,25 @@ export async function GET(
             .select('*')
             .eq('batch_id', batchId)
             .order('excel_row_index', { ascending: true });
+
+        // Validate JSONB fields
+        const validatedRows = stagingRows?.map(row => {
+            const validatedSourceItems = validateSourceItems(row.source_items);
+            const validatedPriceSources = validatePriceSources(row.price_sources);
+
+            if (!validatedSourceItems && row.source_items) {
+                console.warn(`Invalid source_items for row ${row.id}`);
+            }
+            if (!validatedPriceSources && row.price_sources) {
+                console.warn(`Invalid price_sources for row ${row.id}`);
+            }
+
+            return {
+                ...row,
+                source_items: validatedSourceItems || [],
+                price_sources: validatedPriceSources || []
+            };
+        });
 
         const { data: excelMap } = await supabase
             .from('excel_maps')
@@ -145,7 +178,7 @@ export async function GET(
 
         return NextResponse.json(diagnostic, {
             headers: {
-                'Content-Disposition': `attachment; filename="diagnostic_${batchId}.json"`,
+                'Content-Disposition': `attachment; filename = "diagnostic_${batchId}.json"`,
                 'Content-Type': 'application/json'
             }
         });

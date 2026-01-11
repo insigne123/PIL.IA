@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { findPriceFlow } from '@/ai/find-prices';
+import { validateBatchAccess } from '@/lib/auth';
 
 // Initialize Supabase Client
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -13,6 +14,12 @@ export async function POST(
     { params }: { params: Promise<{ batchId: string }> }
 ) {
     const { batchId } = await params;
+
+    // Validate authentication and batch access
+    const authResult = await validateBatchAccess(req, batchId);
+    if (!authResult.authorized) {
+        return authResult.error!;
+    }
 
     // 1. Get items to price
     // Filter items that have a match ('approved' or 'pending') but no price yet
@@ -34,7 +41,8 @@ export async function POST(
     console.log(`Starting price search for ${items.length} items...`);
 
     // 2. Process in parallel chunks (limit concurrency)
-    const CHUNK_SIZE = 3;
+    // Configurable via environment variable for flexibility
+    const CHUNK_SIZE = parseInt(process.env.PRICING_CHUNK_SIZE || '3', 10);
     let processedCount = 0;
     const failedItems: Array<{ item: string; error: string }> = [];
 

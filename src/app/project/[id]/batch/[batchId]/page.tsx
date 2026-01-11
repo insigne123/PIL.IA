@@ -95,19 +95,42 @@ export default function BatchPage() {
 
     // This useEffect is for initial data fetch and realtime subscription
     useEffect(() => {
-        if (batchId) fetchBatchData();
+        const controller = new AbortController();
+        let mounted = true;
+
+        const fetchData = async () => {
+            if (!batchId || !mounted) return;
+
+            try {
+                await fetchBatchData();
+            } catch (err) {
+                if (err instanceof Error && err.name !== 'AbortError') {
+                    console.error('Error fetching batch data:', err);
+                }
+            }
+        };
+
+        fetchData();
 
         // Realtime subscription for file status
-        const channel = supabase.channel('batch_files')
-            .on('postgres_changes',
-                { event: 'UPDATE', schema: 'public', table: 'batch_files', filter: `batch_id=eq.${batchId}` },
-                () => {
-                    fetchBatchData(); // Reload for simplicity in MVP
+        const channel = supabase.channel(`batch-${batchId}`)
+            .on('postgres_changes', {
+                event: '*',
+                schema: 'public',
+                table: 'batch_files',
+                filter: `batch_id=eq.${batchId}`
+            }, () => {
+                if (mounted) {
+                    fetchBatchData();
                 }
-            )
+            })
             .subscribe();
 
-        return () => { supabase.removeChannel(channel); };
+        return () => {
+            mounted = false;
+            controller.abort();
+            channel.unsubscribe();
+        };
     }, [batchId, fetchBatchData]);
 
     // UX: Set initial tab based on batch state
@@ -198,54 +221,62 @@ export default function BatchPage() {
     const handleUpload = async (selectedFiles: File[]) => {
         if (!selectedFiles.length) return;
 
-        // Optimistic UI updates could be added here, but sticking to loading states for simplicity
+        setLoading(true);
 
-        for (const file of selectedFiles) {
-            const ext = file.name.split('.').pop()?.toLowerCase();
-            let type: 'excel' | 'dxf' | 'dwg' = 'dxf';
-            if (ext === 'xlsx' || ext === 'xlsm') type = 'excel';
-            else if (ext === 'dwg') type = 'dwg';
-            else if (ext !== 'dxf') {
-                console.warn("Skipping unsupported file", file.name);
-                continue;
+        try {
+            for (const file of selectedFiles) {
+                // Validate file size (50MB limit)
+                const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+                if (file.size > MAX_FILE_SIZE) {
+                    alert(`❌ Archivo "${file.name}" demasiado grande. Máximo permitido: ${MAX_FILE_SIZE / 1024 / 1024}MB`);
+                    continue;
+                }
+
+                // Validate file type
+                const fileType = file.name.endsWith('.dxf') ? 'dxf' :
+                    file.name.endsWith('.xlsx') || file.name.endsWith('.xls') ? 'excel' :
+                        file.name.endsWith('.dwg') ? 'dwg' : null;
+
+                if (!fileType) {
+                    alert(`Tipo de archivo no soportado: ${file.name}`);
+                    continue;
+                }
+
+                // Upload to Supabase Storage
+                const storagePath = `${batchId}/${file.name}`;
+                const { error: uploadError } = await supabase.storage
+                    .from('yago-source')
+                    .upload(storagePath, file, { upsert: true });
+
+                if (uploadError) {
+                    console.error('Upload error:', uploadError);
+                    alert(`Error subiendo ${file.name}: ${uploadError.message}`);
+                    continue;
+                }
+
+                // Create DB record
+                const { error: dbError } = await supabase.from('batch_files').insert({
+                    batch_id: batchId,
+                    original_filename: file.name,
+                    file_type: fileType,
+                    size_bytes: file.size,
+                    storage_path: storagePath,
+                    status: 'uploaded'
+                });
+
+                if (dbError) {
+                    console.error('DB error:', dbError);
+                    alert(`Error guardando ${file.name}: ${dbError.message}`);
+                }
             }
 
-
-            // Sanitize filename: remove spaces and special characters
-            const sanitizedName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
-            const path = `${batchId}/${sanitizedName}`;
-
-
-            // 1. Upload to Storage
-            const { error: uploadError } = await supabase.storage
-                .from('yago-source')
-                .upload(path, file, { upsert: true });
-
-            if (uploadError) {
-                console.error("Upload error", uploadError);
-                alert(`Error al subir archivo "${file.name}": ${uploadError.message || 'Error desconocido'}. Por favor verifica el formato del archivo.`);
-                continue;
-            }
-
-            // 2. Register in DB
-            const { error: dbError } = await supabase.from('batch_files').insert({
-                batch_id: batchId,
-                original_filename: file.name,
-                file_type: type,
-                size_bytes: file.size,
-                status: 'uploaded',
-                storage_path: path
-            });
-
-            if (dbError) {
-                console.error("DB Insert error", dbError);
-                alert(`Error al registrar archivo "${file.name}" en la base de datos. Por favor contacta soporte.`);
-                continue;
-            }
+            await fetchBatchData();
+        } catch (err) {
+            console.error('File upload error:', err);
+            alert('Error subiendo archivos');
+        } finally {
+            setLoading(false);
         }
-
-        // Refresh list
-        fetchBatchData();
     };
 
     const handleResetBatch = async () => {
@@ -386,8 +417,17 @@ export default function BatchPage() {
                                             let pollInterval = 1000; // Start at 1s
                                             let consecutiveErrors = 0;
                                             const MAX_ERRORS = 3;
+                                            const MAX_ITERATIONS = 100; // Safety limit to prevent infinite loops
+                                            let iterations = 0;
 
                                             while (true) {
+                                                iterations++;
+                                                if (iterations > MAX_ITERATIONS) {
+                                                    console.error(`Worker loop exceeded ${MAX_ITERATIONS} iterations`);
+                                                    alert(`⚠️ Proceso detenido: límite de iteraciones alcanzado (${MAX_ITERATIONS}). Por favor contacta soporte si el problema persiste.`);
+                                                    break;
+                                                }
+
                                                 try {
                                                     const res = await fetch('/api/worker/run', { method: 'POST' });
 
