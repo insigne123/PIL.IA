@@ -3,31 +3,33 @@ export type Unit = 'mm' | 'cm' | 'm';
 // M2/M5: Extracted from CAD
 export interface ItemDetectado {
   id: string; // uuid
-  type: 'block' | 'length';
+  type: 'block' | 'length' | 'text';
   name_raw: string;
   name_effective?: string; // For dynamic blocks
   layer_raw: string;
   layer_normalized: string;
   value_raw: number; // Count or Length in original unit
-  unit_raw: Unit;
+  unit_raw: Unit | 'txt' | 'u';
   value_m: number; // Normalized to meters or count
   evidence?: string; // 'ATTRIB', 'MTEXT vicinity', etc.
 }
 
-// M7/M9: Price Source
+// Unified Price Source
 export interface PriceSource {
   price: number;
-  currency: string;
-  source_url?: string;
-  date_fetched: string;
-  confidence: number;
-  vendor?: string;
+  currency?: string;
+  url?: string; // Standard URL field
+  source_url?: string; // Legacy
+  date_fetched?: string;
+  confidence?: number | 'high' | 'medium' | 'low';
+  vendor: string;
+  title: string;
 }
 
 // M10: Staging Row (The core data structure for the UI)
 export interface StagingRow {
   id: string; // uuid for React keys
-  batchId: string;
+  batchId?: string; // Optional as some internal flows might not set it immediately
 
   // Excel Context
   excel_sheet: string;
@@ -37,6 +39,8 @@ export interface StagingRow {
 
   // Mapping Result
   source_items: ItemDetectado[]; // Items contributing to this row
+  matched_items?: ItemDetectado[]; // Compability alias
+
   // aggregation_rule: 'sum' | 'count'; // usually sum
 
   // User Edits / Final State
@@ -51,19 +55,16 @@ export interface StagingRow {
   unit_price_ref?: number;
   total_price_ref?: number;
   price_sources?: PriceSource[];
+  price_candidates?: PriceSource[]; // Added for compatibility
+
   price_confidence?: 'high' | 'medium' | 'low';
 
   confidence: string; // high, medium, low
+  match_confidence?: number; // Numeric confidence score
+
   match_reason?: string; // AI reasoning
   confidence_reason?: string;
   status: 'pending' | 'approved' | 'ignored';
-}
-
-export interface PriceSource {
-  vendor: string;
-  price: number;
-  url?: string;
-  title: string;
 }
 
 // M1: Project & Batch

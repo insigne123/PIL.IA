@@ -39,12 +39,12 @@ export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
                             <TableRow key={row.id} className={cn(
                                 "transition-all duration-300", // UX: Smooth transitions
                                 row.status === 'approved' ? "bg-green-50/50" : "",
-                                row.match_confidence < 0.3 ? "bg-red-50/50" : ""
+                                (row.match_confidence ?? 0) < 0.3 ? "bg-red-50/50" : ""
                             )}>
                                 <TableCell>
                                     {row.status === 'approved' ? (
                                         <Check className="text-green-600 h-5 w-5" />
-                                    ) : row.match_confidence < 0.4 ? (
+                                    ) : (row.match_confidence ?? 0) < 0.4 ? (
                                         <AlertTriangle className="text-red-500 h-5 w-5" />
                                     ) : (
                                         <div className="h-2 w-2 rounded-full bg-yellow-400" />

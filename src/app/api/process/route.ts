@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
         let allDxfItems: ItemDetectado[] = [];
         for (const file of dxfFiles) {
             const text = await file.text();
-            const items = await parseDxf(text, planUnit);
+            const { items } = await parseDxf(text, planUnit);
             allDxfItems = [...allDxfItems, ...items];
         }
 
@@ -57,7 +57,7 @@ export async function POST(req: NextRequest) {
                 stats: {
                     excelRows: excelItems.length,
                     dxfItems: aggregatedDxfItems.length,
-                    matched: stagingRows.filter(r => r.matched_items.length > 0).length
+                    matched: stagingRows.filter(r => (r.matched_items?.length ?? 0) > 0).length
                 }
             }
         });

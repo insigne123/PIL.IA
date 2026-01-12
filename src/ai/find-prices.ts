@@ -115,7 +115,7 @@ export const findPriceFlow = ai.defineFlow(
                     currency: 'CLP',
                     unit_ref: item_unit,
                     sources: [],
-                    confidence: 'low',
+                    confidence: 'low' as const,
                     notes: "Error parsing AI response"
                 };
             }
@@ -130,7 +130,7 @@ export const findPriceFlow = ai.defineFlow(
                 currency: 'CLP',
                 unit_ref: item_unit,
                 sources: [],
-                confidence: 'low',
+                confidence: 'low' as const,
                 notes: "Error in pricing flow execution"
             };
         }

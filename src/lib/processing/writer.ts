@@ -2,7 +2,7 @@ import ExcelJS from 'exceljs';
 import { StagingRow } from '@/types';
 import { ExcelStructure } from './excel';
 
-export async function writeExcel(originalBuffer: ArrayBuffer, rows: StagingRow[], structure: ExcelStructure): Promise<Buffer> {
+export async function writeExcel(originalBuffer: ArrayBuffer, rows: StagingRow[], structure: ExcelStructure): Promise<ArrayBuffer> {
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(originalBuffer);
 
@@ -40,5 +40,5 @@ export async function writeExcel(originalBuffer: ArrayBuffer, rows: StagingRow[]
 
     // Return buffer
     const buffer = await workbook.xlsx.writeBuffer();
-    return buffer as Buffer;
+    return buffer as ArrayBuffer;
 }

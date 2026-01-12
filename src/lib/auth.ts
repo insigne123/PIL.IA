@@ -68,7 +68,8 @@ export async function validateBatchAccess(
     }
 
     // Check if user owns the project
-    if (batch.projects.user_id !== user.id) {
+    const project = Array.isArray(batch.projects) ? batch.projects[0] : batch.projects;
+    if (project.user_id !== user.id) {
         return {
             authorized: false,
             error: NextResponse.json({ error: 'Forbidden: You do not have access to this batch' }, { status: 403 })

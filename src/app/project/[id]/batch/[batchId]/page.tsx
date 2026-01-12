@@ -25,7 +25,7 @@ export default function BatchPage() {
     const [files, setFiles] = useState<BatchFile[]>([]);
     const [stagingRows, setStagingRows] = useState<StagingRow[]>([]);
     const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<'process' | 'staging' | 'output'>('process');
+    const [activeTab, setActiveTab] = useState<'upload' | 'process' | 'staging' | 'output'>('process');
     const [stagingFilter, setStagingFilter] = useState<'all' | 'pending' | 'approved' | 'low-confidence'>('all');
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -363,7 +363,7 @@ export default function BatchPage() {
                 </div>
             )}
 
-            <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+            <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as typeof activeTab)} className="space-y-4">
                 <TabsList>
                     <TabsTrigger value="upload">1. Carga de Archivos</TabsTrigger>
                     <TabsTrigger value="process">2. Procesamiento</TabsTrigger>
@@ -681,7 +681,7 @@ export default function BatchPage() {
                                             onClick={() => setStagingFilter('low-confidence')}
                                             className="border-red-200 text-red-700 hover:bg-red-50"
                                         >
-                                            Baja Confianza ({stagingRows.filter(r => r.match_confidence < 0.4).length})
+                                            Baja Confianza ({stagingRows.filter(r => (r.match_confidence ?? 0) < 0.4).length})
                                         </Button>
                                     </div>
                                 </div>
@@ -692,7 +692,7 @@ export default function BatchPage() {
                                             // Filter by status
                                             if (stagingFilter === 'pending' && row.status !== 'pending') return false;
                                             if (stagingFilter === 'approved' && row.status !== 'approved') return false;
-                                            if (stagingFilter === 'low-confidence' && row.match_confidence >= 0.4) return false;
+                                            if (stagingFilter === 'low-confidence' && (row.match_confidence ?? 1) >= 0.4) return false;
 
                                             // Filter by search term
                                             if (searchTerm && !row.excel_item_text.toLowerCase().includes(searchTerm.toLowerCase())) {
@@ -764,14 +764,36 @@ export default function BatchPage() {
                                     <div className="bg-green-50 border border-green-200 rounded-md p-4">
                                         <h4 className="font-semibold text-green-900 mb-2">✓ Archivos Generados</h4>
                                         <div className="space-y-2">
+
                                             <Button
                                                 variant="outline"
                                                 className="w-full justify-start gap-2"
                                                 onClick={async () => {
-                                                    const { data } = await supabase.storage
-                                                        .from('yago-output')
-                                                        .createSignedUrl(`${batchId}/YAGO_*.xlsx`, 3600);
-                                                    if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+                                                    try {
+                                                        // 1. List files to find the exact name (wildcards in createSignedUrl don't work)
+                                                        const { data: files, error: listError } = await supabase.storage
+                                                            .from('yago-output')
+                                                            .list(batchId);
+
+                                                        if (listError) throw listError;
+
+                                                        const excelFile = files?.find(f => f.name.startsWith('YAGO_') && f.name.endsWith('.xlsx'));
+
+                                                        if (!excelFile) {
+                                                            alert("No se encontró el archivo Excel generado. Por favor intenta regenerar los archivos.");
+                                                            return;
+                                                        }
+
+                                                        const { data, error: signError } = await supabase.storage
+                                                            .from('yago-output')
+                                                            .createSignedUrl(`${batchId}/${excelFile.name}`, 3600);
+
+                                                        if (signError) throw signError;
+                                                        if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+                                                    } catch (err: any) {
+                                                        console.error("Error downloading Excel:", err);
+                                                        alert(`Error al descargar Excel: ${err.message || 'Error desconocido'}`);
+                                                    }
                                                 }}
                                             >
                                                 <Download className="h-4 w-4" />
@@ -781,10 +803,18 @@ export default function BatchPage() {
                                                 variant="outline"
                                                 className="w-full justify-start gap-2"
                                                 onClick={async () => {
-                                                    const { data } = await supabase.storage
-                                                        .from('yago-output')
-                                                        .createSignedUrl(`${batchId}/Heatmap_Report.pdf`, 3600);
-                                                    if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+                                                    try {
+                                                        const { data, error } = await supabase.storage
+                                                            .from('yago-output')
+                                                            .createSignedUrl(`${batchId}/Heatmap_Report.pdf`, 3600);
+
+                                                        if (error) throw error;
+                                                        if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+                                                        else alert("No se pudo generar el enlace de descarga para el PDF.");
+                                                    } catch (err: any) {
+                                                        console.error("Error downloading PDF:", err);
+                                                        alert(`Error al descargar PDF: (Posiblemente no se generó aún). ${err.message || ''}`);
+                                                    }
                                                 }}
                                             >
                                                 <Download className="h-4 w-4" />

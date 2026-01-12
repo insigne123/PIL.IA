@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 const parser = new DxfParser();
 
 export async function parseDxf(fileContent: string, planUnitPreference?: Unit): Promise<{ items: ItemDetectado[], detectedUnit: Unit | null }> {
-    let dxf;
+    let dxf: any;
     try {
         dxf = parser.parseSync(fileContent);
     } catch (e) {
