@@ -360,6 +360,7 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
         price_selected: row.price_selected,
         price_candidates: row.price_candidates,
         confidence: (row as any).match_confidence > 0.8 ? 'high' : ((row as any).match_confidence > 0.4 ? 'medium' : 'low'),
+        match_confidence: (row as any).match_confidence,
         match_reason: (row as any).match_reason || null,
         status: (row as any).status || 'pending'
     }));
