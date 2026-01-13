@@ -1,8 +1,9 @@
 import { SupabaseClient } from '@supabase/supabase-js';
+import crypto from 'crypto';
 import { parseDxf } from '../src/lib/processing/dxf';
 import { parseExcel } from '../src/lib/processing/excel';
 import { matchItems } from '../src/lib/processing/matcher';
-import { ItemDetectado, StagingRow } from '../src/types';
+import { ItemDetectado, StagingRow, Suggestion } from '../src/types';
 import { writeExcel } from '../src/lib/processing/writer';
 import { generateHeatmapPdf } from '../src/lib/pdf-heatmap';
 
@@ -355,11 +356,16 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                         else if (desc.includes('canaliz') || desc.includes('tuber') || desc.includes('alimentador') || desc.includes('enlauchado') || desc.includes('cable') || desc.includes('conductor') || desc.includes('ducto') || desc.includes('escalerilla')) {
                             enforcedType = 'length';
                         }
-                        // 3. Block Items (Countable) - Strong Keywords
+                        // 3. Point Rule (Victory Feature) - "Punto X" is almost always BLOCK
+                        // Unless it mentions conduit/channel explicitly.
+                        else if ((desc.startsWith('punto ') || desc.startsWith('puntos ')) && !desc.includes('canaliz') && !desc.includes('tuber') && !desc.includes('ducto') && !desc.includes('conduit')) {
+                            enforcedType = 'block';
+                        }
+                        // 4. Block Items (Countable) - Strong Keywords
                         else if (desc.includes('tablero') || desc.includes('punto') || desc.includes('gabinete') || desc.includes('ups') || desc.includes('sensor') || desc.includes('modulo') || desc.includes('remarcador') || desc.includes('equipo') || desc.includes('rack') || desc.includes('interruptor') || desc.includes('enchufe') || desc.includes('luminaria') || desc.includes('foco')) {
                             enforcedType = 'block';
                         }
-                        // 4. Weak Block Keywords (Fallback)
+                        // 5. Weak Block Keywords (Fallback)
                         // Only match "caja" if it wasn't caught as "Alimentador" (Length)
                         else if (desc.includes('caja')) {
                             enforcedType = 'block';
@@ -373,6 +379,7 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                         (row as any).match_reason = "Logic: Item Global/Administrativo (No requiere dibujo)";
                         (row as any).status = 'approved';
                         row.qty_final = 1;
+                        // Suggestion: None needed for approved global
                         return; // Skip AI matching
                     }
 
@@ -441,7 +448,8 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                             // Recalculate Qty with Clean Length Filter
                             let qty = 0;
                             if (betterMatches[0].type === 'block') {
-                                qty = betterMatches.length; // Count items for blocks
+                                // VICTORY FIX: Sum values instead of counting items, for multi-insertion blocks
+                                qty = betterMatches.reduce((acc, m) => acc + (m.value_raw || 1), 0);
                             } else {
                                 // CLEAN LENGTH FILTER: Ignore tiny segments < 0.2m (Noise)
                                 betterMatches.forEach(m => {
@@ -503,6 +511,53 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                             }
 
                             (row as any).status = status;
+
+                            // 3. Suggestions System (Victory Feature)
+                            if (status === 'pending') {
+                                const suggestions: Suggestion[] = [];
+
+                                // A. Invalid Length -> Suggest Alt Layer
+                                if (enforcedType === 'length' && qty < 0.5) {
+                                    // Search for same-keyword layers with valid length
+                                    const keywords = desc.split(' ').filter(w => w.length > 4);
+                                    const altLinears = candidatesToUse.filter(c =>
+                                        c.type === 'length' &&
+                                        c.sample_value > 2.0 &&
+                                        keywords.some(k => c.name.toLowerCase().includes(k))
+                                    );
+
+                                    altLinears.slice(0, 2).forEach(alt => {
+                                        suggestions.push({
+                                            id: crypto.randomUUID(),
+                                            action_type: 'SELECT_ALT_LAYER',
+                                            label: `Usar capa alternativa: ${alt.name} (${alt.sample_value.toFixed(1)}m)`,
+                                            payload: { layer: alt.name, value: alt.sample_value },
+                                            confidence: 'medium'
+                                        });
+                                    });
+
+                                    // Suggest Manual Qty
+                                    suggestions.push({
+                                        id: crypto.randomUUID(),
+                                        action_type: 'MANUAL_QTY',
+                                        label: 'Ingresar Metros Manualmente',
+                                        confidence: 'high'
+                                    });
+                                }
+
+                                // B. Semantic Mismatch (UPS vs Tomada)
+                                if (warning.includes('[Semantics]')) {
+                                    suggestions.push({
+                                        id: crypto.randomUUID(),
+                                        action_type: 'MARK_GLOBAL',
+                                        label: 'Convertir a Global (No Dibujado)',
+                                        payload: { qty: 1 },
+                                        confidence: 'high'
+                                    });
+                                }
+
+                                (row as any).suggestions = suggestions;
+                            }
                         }
                     }
                 } catch (err) {
@@ -530,7 +585,8 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
         confidence: (row as any).match_confidence > 0.8 ? 'high' : ((row as any).match_confidence > 0.4 ? 'medium' : 'low'),
         match_confidence: (row as any).match_confidence,
         match_reason: (row as any).match_reason || null,
-        status: (row as any).status || 'pending'
+        status: (row as any).status || 'pending',
+        suggestions: (row as any).suggestions || null
     }));
 
     const { error } = await supabase.from('staging_rows').insert(dbRows);

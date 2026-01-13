@@ -65,6 +65,15 @@ export interface StagingRow {
   match_reason?: string; // AI reasoning
   confidence_reason?: string;
   status: 'pending' | 'approved' | 'ignored';
+  suggestions?: Suggestion[]; // Actionable suggestions for pending items
+}
+
+export interface Suggestion {
+  id: string; // unique
+  action_type: 'SELECT_ALT_LAYER' | 'MARK_GLOBAL' | 'SPLIT_ITEM' | 'MANUAL_QTY' | 'RETRY_EXTRACTION';
+  label: string;
+  payload?: any;
+  confidence?: 'high' | 'medium' | 'low';
 }
 
 // M1: Project & Batch
