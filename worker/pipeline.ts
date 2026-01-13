@@ -344,19 +344,25 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                         enforcedType = 'global';
                     }
 
-                    // Fallback to Description Regex
+                    // Fallback to Description Regex (Priority Algorithm)
                     if (!enforcedType) {
-                        // 1. Global Items (Non-Geometric)
-                        if (desc.includes('instalacion') || desc.includes('instalación') || desc.includes('certificado') || desc.includes('plano') || desc.includes('tramite') || desc.includes('inscripcion') || desc.includes('legaliz')) {
+                        // 1. Global Items (Non-Geometric) - Highest Priority
+                        if (desc.includes('instalacion') || desc.includes('instalación') || desc.includes('certificado') || desc.includes('plano') || desc.includes('tramite') || desc.includes('inscripcion') || desc.includes('legaliz') || desc.includes('rotulacion') || desc.includes('as built')) {
                             enforcedType = 'global';
                         }
-                        // 2. Block Items (Countable)
-                        else if (desc.includes('tablero') || desc.includes('punto') || desc.includes('gabinete') || desc.includes('ups') || desc.includes('sensor') || desc.includes('caja') || desc.includes('modulo') || desc.includes('remarcador') || desc.includes('equipo')) {
+                        // 2. Linear/Route Items (Strong Length Keywords) - Priority over Blocks
+                        // "Alimentador desde caja..." should be LENGTH, even if it has "caja".
+                        else if (desc.includes('canaliz') || desc.includes('tuber') || desc.includes('alimentador') || desc.includes('enlauchado') || desc.includes('cable') || desc.includes('conductor') || desc.includes('ducto') || desc.includes('escalerilla')) {
+                            enforcedType = 'length';
+                        }
+                        // 3. Block Items (Countable) - Strong Keywords
+                        else if (desc.includes('tablero') || desc.includes('punto') || desc.includes('gabinete') || desc.includes('ups') || desc.includes('sensor') || desc.includes('modulo') || desc.includes('remarcador') || desc.includes('equipo') || desc.includes('rack') || desc.includes('interruptor') || desc.includes('enchufe') || desc.includes('luminaria') || desc.includes('foco')) {
                             enforcedType = 'block';
                         }
-                        // 3. Length Items (Linear)
-                        else if (desc.includes('canalizad') || desc.includes('tuber') || desc.includes('alimentador') || desc.includes('enlauchado') || desc.includes('cable') || desc.includes('conductor')) {
-                            enforcedType = 'length';
+                        // 4. Weak Block Keywords (Fallback)
+                        // Only match "caja" if it wasn't caught as "Alimentador" (Length)
+                        else if (desc.includes('caja')) {
+                            enforcedType = 'block';
                         }
                     }
 
@@ -432,40 +438,68 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                             (row as any).match_confidence = aiResult.confidence;
                             (row as any).match_reason = "AI: " + aiResult.reasoning;
 
-                            // Recalculate Qty
+                            // Recalculate Qty with Clean Length Filter
                             let qty = 0;
                             if (betterMatches[0].type === 'block') {
                                 qty = betterMatches.length; // Count items for blocks
                             } else {
-                                betterMatches.forEach(m => qty += m.value_m); // Sum length
+                                // CLEAN LENGTH FILTER: Ignore tiny segments < 0.2m (Noise)
+                                betterMatches.forEach(m => {
+                                    if (m.value_m > 0.2) {
+                                        qty += m.value_m;
+                                    }
+                                });
                             }
                             row.qty_final = qty;
 
-                            // --- SANITY CHECKS ---
+                            // --- SANITY CHECKS (Tri-state) ---
                             let status = aiResult.confidence > 0.8 ? 'approved' : 'pending';
                             let warning = "";
 
-                            // 1. Ant-Man Check (Tiny Lengths)
-                            // AI Suggestion: Increase threshold to 2.0m to filter out symbolic lines safer
-                            if (enforcedType === 'length' && qty < 2.0) {
-                                status = 'pending';
-                                warning = `[Sanity Check] Longitud sospechosamente baja (${qty.toFixed(2)}m). Mínimo esperado: 2.0m para infraestructura real.`;
-                                (row as any).match_reason += ` | WARN: ${warning}`;
-                                console.warn(`[Sanity] ${row.excel_item_text}: ${warning}`);
-                            }
-                            // 2. High Length Check (Scale Error)
-                            if (enforcedType === 'length' && qty > 5000) {
-                                status = 'pending';
-                                warning = `[Sanity Check] Longitud extremadamente alta (${qty.toFixed(2)}m). Posible error de escala (mm vs m).`;
-                                (row as any).match_reason += ` | WARN: ${warning}`;
+                            // 1. Linear Sanity
+                            if (enforcedType === 'length') {
+                                // A. INVALID (Noise) - Hard Fail
+                                if (qty < 0.5) {
+                                    status = 'pending';
+                                    row.qty_final = 0; // Force to 0 to prevent pricing
+                                    warning = `[CRITICAL] Longitud < 0.5m (${qty.toFixed(2)}m). Invalidada por ser ruido gráfico.`;
+                                    (row as any).match_reason += ` | ERR: ${warning}`;
+                                    console.warn(`[Sanity Critical] ${row.excel_item_text}: ${warning}`);
+                                }
+                                // B. REVIEW REQUIRED (Suspicious) - Soft Fail
+                                else if (qty < 2.0) {
+                                    status = 'pending';
+                                    warning = `[Sanity Warn] Longitud baja (${qty.toFixed(2)}m). Revisar si es simbología.`;
+                                    (row as any).match_reason += ` | WARN: ${warning}`;
+                                }
+                                // C. HIGH SCALE ERROR
+                                else if (qty > 5000) {
+                                    status = 'pending';
+                                    warning = `[Sanity Warn] Longitud extrema (${qty.toFixed(2)}m). Posible error de escala DXF.`;
+                                    (row as any).match_reason += ` | WARN: ${warning}`;
+                                }
                             }
 
-                            // 3. Half-Toilet Check (Non-integer Blocks)
-                            // (Usually implicit by counting logic, but good generic check)
-                            if (enforcedType === 'block' && !Number.isInteger(qty)) {
-                                status = 'pending';
-                                warning = `[Sanity Check] Cantidad fraccionaria para bloque (${qty}).`;
-                                (row as any).match_reason += ` | WARN: ${warning}`;
+                            // 2. Block Keyword Overlap (Quick Win)
+                            if (enforcedType === 'block') {
+                                // Critical items must match semantically
+                                const iDesc = desc; // already lowercased
+                                if ((iDesc.includes('ups') || iDesc.includes('gabinete') || iDesc.includes('rack')) && betterMatches.length > 0) {
+                                    const matchName = betterMatches[0].name_raw.toLowerCase();
+                                    const hasOverlap = matchName.includes('ups') || matchName.includes('nobreak') || matchName.includes('rack') || matchName.includes('gab') || matchName.includes('cabinet');
+
+                                    if (!hasOverlap) {
+                                        status = 'pending';
+                                        warning = `[Semantics] Block match '${betterMatches[0].name_raw}' does not contain required keywords for UPS/Rack.`;
+                                        (row as any).match_reason += ` | WARN: ${warning}`;
+                                    }
+                                }
+
+                                if (!Number.isInteger(qty)) {
+                                    status = 'pending';
+                                    warning = `[Sanity] Cantidad fraccionaria para bloque (${qty}).`;
+                                    (row as any).match_reason += ` | WARN: ${warning}`;
+                                }
                             }
 
                             (row as any).status = status;

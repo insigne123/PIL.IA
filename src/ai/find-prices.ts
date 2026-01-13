@@ -106,22 +106,28 @@ export const findPriceFlow = ai.defineFlow(
             
             Instrucciones Específicas:
             1. **Normalización de Precio**:
-               - Si encuentras un "pack", "caja", "rollo" o "tira", divide el precio por la cantidad para obtener el precio unitario base (ej: Tira 3m $3000 -> Precio $1000/m).
-               - Si el título dice "2 mt", "3 metros", etc., divide por los metros.
+               - Si encuentras un "pack", "caja", "rollo" o "tira", divide el precio por la cantidad para obtener el precio unitario base.
             
-            2. **Materiales vs Servicios**:
+            2. **GUARDRAILS POR CATEGORÍA (CRÍTICO)**:
                ${pricing_mode === 'service' ?
-                    "- Prioriza TARIFAS de mano de obra o servicios. Si hay productos mezclados, IGNÓRALOS o dales baja prioridad." :
-                    "- Prioriza MATERIALES de construcción. Si hay servicios mezclados, IGNÓRALOS."}
+                    `- ESTÁS EN MODO SERVICIO.
+                  - PROHIBIDO aceptar productos de seguridad (EPP): "casco", "lente", "guante", "zapato", "chaleco".
+                  - PROHIBIDO aceptar materiales de construcción simples ("cinta", "tornillo") a menos que sea un kit de instalación.
+                  - DEBES buscar palabras clave como: "instalación", "servicio", "mano de obra", "tarifa", "trámite", "certificación".
+                  - Si la fuente es Sodimac/Easy/MercadoLibre y el título NO dice "Servicio" o "Instalación", DESCÁRTALO.` :
+                    `- ESTÁS EN MODO MATERIAL.
+                  - Prioriza productos físicos.
+                  - Si es "Punto de X", busca el costo de los materiales (placa + modulo).`
+                }
             
             3. **Validación**:
-               - **URL es OBLIGATORIA**. Si no hay URL válida, descarta esa fuente o marca confidence='low'.
+               - **URL es OBLIGATORIA**. Si no hay URL válida, descarta esa fuente.
                - No aceptes fuentes sin precio numérico claro.
             
             4. **Salida**:
                - Extrae los precios encontrados y normalizados.
                - Calcula promedio simple.
-               - Si no encontraste nada confiable, marca 'found': false.
+               - Si todos los resultados caen en la lista de PROHIBIDOS, marca 'found': false.
             `;
 
             const extractionResult = await ai.generate({
