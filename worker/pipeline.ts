@@ -39,21 +39,52 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
         let detectedUnitVal: any = null; // Scoped variable for update
 
         if (file.file_type === 'dxf') {
-            const text = await new Response(fileData).text();
+            // Try to read with different encodings
+            let text: string;
+            let parseError: Error | null = null;
 
-            // Get Batch Unit Preference
-            const { data: batchData } = await supabase.from('batches').select('unit_selected').eq('id', file.batch_id).single();
-            const planUnit = (batchData?.unit_selected as any) || 'm';
+            try {
+                // First attempt: UTF-8 (default)
+                text = await new Response(fileData).text();
 
-            const { items, detectedUnit } = await parseDxf(text, planUnit);
-            detectedUnitVal = detectedUnit;
+                // Get Batch Unit Preference
+                const { data: batchData } = await supabase.from('batches').select('unit_selected').eq('id', file.batch_id).single();
+                const planUnit = (batchData?.unit_selected as any) || 'm';
 
-            if (detectedUnit && detectedUnit !== planUnit) {
-                console.warn(`[Unit Mismatch] Batch says '${planUnit}' but DXF header says '${detectedUnit}'. Using '${planUnit}'.`);
-                // Optional: We could update the batch here if we wanted fully automatic mode
+                const { items, detectedUnit } = await parseDxf(text, planUnit);
+                detectedUnitVal = detectedUnit;
+
+                if (detectedUnit && detectedUnit !== planUnit) {
+                    console.warn(`[Unit Mismatch] Batch says '${planUnit}' but DXF header says '${detectedUnit}'. Using '${planUnit}'.`);
+                }
+
+                extractedItems = items;
+            } catch (firstError: any) {
+                parseError = firstError;
+                console.warn('[DXF] UTF-8 parsing failed, trying Latin-1 encoding...', firstError.message);
+
+                try {
+                    // Second attempt: Latin-1 (Windows-1252)
+                    const decoder = new TextDecoder('windows-1252');
+                    text = decoder.decode(buffer);
+
+                    const { data: batchData } = await supabase.from('batches').select('unit_selected').eq('id', file.batch_id).single();
+                    const planUnit = (batchData?.unit_selected as any) || 'm';
+
+                    const { items, detectedUnit } = await parseDxf(text, planUnit);
+                    detectedUnitVal = detectedUnit;
+
+                    if (detectedUnit && detectedUnit !== planUnit) {
+                        console.warn(`[Unit Mismatch] Batch says '${planUnit}' but DXF header says '${detectedUnit}'. Using '${planUnit}'.`);
+                    }
+
+                    extractedItems = items;
+                    console.log('[DXF] Successfully parsed with Latin-1 encoding');
+                } catch (secondError: any) {
+                    console.error('[DXF] Both UTF-8 and Latin-1 parsing failed');
+                    throw new Error(`Error al procesar archivo DXF: ${parseError.message}. El archivo puede estar corrupto o tener un formato incompatible.`);
+                }
             }
-
-            extractedItems = items;
         } else if (file.file_type === 'excel') {
             const result = await parseExcel(buffer);
             extractedItems = result.items;

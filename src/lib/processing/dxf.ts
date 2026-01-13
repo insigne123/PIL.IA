@@ -7,10 +7,31 @@ const parser = new DxfParser();
 export async function parseDxf(fileContent: string, planUnitPreference?: Unit): Promise<{ items: ItemDetectado[], detectedUnit: Unit | null }> {
     let dxf: any;
     try {
-        dxf = parser.parseSync(fileContent);
-    } catch (e) {
+        // Try to clean the content first (remove BOM and normalize line endings)
+        let cleanContent = fileContent;
+
+        // Remove BOM if present
+        if (cleanContent.charCodeAt(0) === 0xFEFF) {
+            cleanContent = cleanContent.slice(1);
+        }
+
+        // Normalize line endings
+        cleanContent = cleanContent.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+        dxf = parser.parseSync(cleanContent);
+    } catch (e: any) {
         console.error("DXF Parse Error", e);
-        throw new Error("Invalid DXF file");
+
+        // Provide more specific error messages
+        const errorMessage = e.message || String(e);
+
+        if (errorMessage.includes('Invalid key') || errorMessage.includes('Extended')) {
+            throw new Error(`Error de codificación en el archivo DXF. El archivo puede contener caracteres especiales o estar en un formato incompatible. Detalle: ${errorMessage}`);
+        } else if (errorMessage.includes('Unexpected')) {
+            throw new Error(`Formato DXF inválido. El archivo puede estar corrupto o no ser un DXF válido. Detalle: ${errorMessage}`);
+        } else {
+            throw new Error(`Error al leer el archivo DXF: ${errorMessage}`);
+        }
     }
 
     // 1. Auto-Detect Unit from $INSUNITS

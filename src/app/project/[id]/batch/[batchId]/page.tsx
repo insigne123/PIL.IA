@@ -225,6 +225,8 @@ export default function BatchPage() {
 
         try {
             for (const file of selectedFiles) {
+                console.log('📤 [Upload] Starting upload for file:', file.name, 'Type:', file.type, 'Size:', file.size);
+
                 // Validate file size (50MB limit)
                 const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
                 if (file.size > MAX_FILE_SIZE) {
@@ -237,24 +239,50 @@ export default function BatchPage() {
                     file.name.endsWith('.xlsx') || file.name.endsWith('.xls') ? 'excel' :
                         file.name.endsWith('.dwg') ? 'dwg' : null;
 
+                console.log('📋 [Upload] Detected file type:', fileType, 'for file:', file.name);
+
                 if (!fileType) {
                     alert(`Tipo de archivo no soportado: ${file.name}`);
                     continue;
                 }
 
-                // Upload to Supabase Storage
-                const storagePath = `${batchId}/${file.name}`;
+                // Sanitize filename for storage (remove special characters, spaces, accents)
+                const sanitizeFilename = (filename: string): string => {
+                    const extension = filename.substring(filename.lastIndexOf('.'));
+                    const nameWithoutExt = filename.substring(0, filename.lastIndexOf('.'));
+
+                    // Remove accents and special characters
+                    const sanitized = nameWithoutExt
+                        .normalize('NFD')
+                        .replace(/[\u0300-\u036f]/g, '') // Remove accents
+                        .replace(/[^a-zA-Z0-9_-]/g, '_') // Replace special chars with underscore
+                        .replace(/_+/g, '_') // Replace multiple underscores with single
+                        .replace(/^_|_$/g, ''); // Remove leading/trailing underscores
+
+                    return sanitized + extension;
+                };
+
+                const sanitizedFilename = sanitizeFilename(file.name);
+                console.log('🧹 [Upload] Sanitized filename:', file.name, '→', sanitizedFilename);
+
+                // Upload to Supabase Storage with sanitized name
+                const storagePath = `${batchId}/${sanitizedFilename}`;
+                console.log('☁️ [Upload] Uploading to storage path:', storagePath);
+
                 const { error: uploadError } = await supabase.storage
                     .from('yago-source')
                     .upload(storagePath, file, { upsert: true });
 
                 if (uploadError) {
-                    console.error('Upload error:', uploadError);
+                    console.error('❌ [Upload] Storage upload error:', uploadError);
                     alert(`Error subiendo ${file.name}: ${uploadError.message}`);
                     continue;
                 }
 
+                console.log('✅ [Upload] File uploaded to storage successfully');
+
                 // Create DB record
+                console.log('💾 [Upload] Creating DB record with type:', fileType);
                 const { error: dbError } = await supabase.from('batch_files').insert({
                     batch_id: batchId,
                     original_filename: file.name,
@@ -265,14 +293,16 @@ export default function BatchPage() {
                 });
 
                 if (dbError) {
-                    console.error('DB error:', dbError);
+                    console.error('❌ [Upload] DB insert error:', dbError);
                     alert(`Error guardando ${file.name}: ${dbError.message}`);
+                } else {
+                    console.log('✅ [Upload] DB record created successfully');
                 }
             }
 
             await fetchBatchData();
         } catch (err) {
-            console.error('File upload error:', err);
+            console.error('❌ [Upload] Unexpected error:', err);
             alert('Error subiendo archivos');
         } finally {
             setLoading(false);
