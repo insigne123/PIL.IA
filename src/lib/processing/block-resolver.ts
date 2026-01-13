@@ -47,7 +47,16 @@ export function composeTransforms(parent: Transform, child: Transform): Transfor
 /**
  * Apply transformation to a point
  */
-export function transformPoint(point: Point, transform: Transform): Point {
+export function transformPoint(point: Point | undefined, transform: Transform): Point {
+    // Defensive check: if point is undefined, return transform position
+    if (!point || point.x === undefined || point.y === undefined) {
+        return {
+            x: transform.position.x,
+            y: transform.position.y,
+            z: transform.position.z || 0
+        };
+    }
+
     const cos = Math.cos(transform.rotation);
     const sin = Math.sin(transform.rotation);
 
@@ -152,6 +161,11 @@ export function measureTransformedEntity(
 ): ItemDetectado | null {
     try {
         if (entity.type === 'LINE') {
+            // Validate that start and end points exist
+            if (!entity.start || !entity.end) {
+                return null;
+            }
+
             const start = transformPoint(entity.start, transform);
             const end = transformPoint(entity.end, transform);
 
@@ -159,6 +173,9 @@ export function measureTransformedEntity(
             const dy = end.y - start.y;
             const dist = Math.sqrt(dx * dx + dy * dy);
             const distM = toMeters(dist);
+
+            // Skip if distance is negligible
+            if (distM < 0.001) return null;
 
             return {
                 id: uuidv4(),
@@ -169,7 +186,7 @@ export function measureTransformedEntity(
                 value_raw: dist,
                 unit_raw: 'm',
                 value_m: distM,
-                evidence: `LINE in nested block (depth ${transform})`
+                evidence: `LINE in nested block`
             };
         }
 
@@ -177,10 +194,14 @@ export function measureTransformedEntity(
             const vertices = entity.vertices || [];
             if (vertices.length < 2) return null;
 
+            // Validate that vertices have x,y coordinates
+            const validVertices = vertices.filter((v: any) => v && v.x !== undefined && v.y !== undefined);
+            if (validVertices.length < 2) return null;
+
             let totalDist = 0;
-            for (let i = 0; i < vertices.length - 1; i++) {
-                const p1 = transformPoint(vertices[i], transform);
-                const p2 = transformPoint(vertices[i + 1], transform);
+            for (let i = 0; i < validVertices.length - 1; i++) {
+                const p1 = transformPoint(validVertices[i], transform);
+                const p2 = transformPoint(validVertices[i + 1], transform);
                 const dx = p2.x - p1.x;
                 const dy = p2.y - p1.y;
                 totalDist += Math.sqrt(dx * dx + dy * dy);
@@ -188,14 +209,17 @@ export function measureTransformedEntity(
 
             // Check if closed
             if (entity.shape || entity.closed) {
-                const p1 = transformPoint(vertices[vertices.length - 1], transform);
-                const p2 = transformPoint(vertices[0], transform);
+                const p1 = transformPoint(validVertices[validVertices.length - 1], transform);
+                const p2 = transformPoint(validVertices[0], transform);
                 const dx = p2.x - p1.x;
                 const dy = p2.y - p1.y;
                 totalDist += Math.sqrt(dx * dx + dy * dy);
             }
 
             const distM = toMeters(totalDist);
+
+            // Skip if distance is negligible
+            if (distM < 0.001) return null;
 
             return {
                 id: uuidv4(),
