@@ -278,19 +278,19 @@ export class VersioningService {
 
         // Modified items
         for (const item of modified) {
-            const priceBefore = (item.before.unit_price_ref || 0) * item.before.qty_final;
-            const priceAfter = (item.after.unit_price_ref || 0) * item.after.qty_final;
+            const priceBefore = (item.before.unit_price_ref || 0) * (item.before.qty_final ?? 0);
+            const priceAfter = (item.after.unit_price_ref || 0) * (item.after.qty_final ?? 0);
             impact += priceAfter - priceBefore;
         }
 
         // Added items
         for (const item of added) {
-            impact += (item.unit_price_ref || 0) * item.qty_final;
+            impact += (item.unit_price_ref || 0) * (item.qty_final ?? 0);
         }
 
         // Removed items
         for (const item of removed) {
-            impact -= (item.unit_price_ref || 0) * item.qty_final;
+            impact -= (item.unit_price_ref || 0) * (item.qty_final ?? 0);
         }
 
         return impact;
@@ -307,15 +307,15 @@ export class VersioningService {
         let impact = 0;
 
         for (const item of modified) {
-            impact += item.after.qty_final - item.before.qty_final;
+            impact += (item.after.qty_final ?? 0) - (item.before.qty_final ?? 0);
         }
 
         for (const item of added) {
-            impact += item.qty_final;
+            impact += item.qty_final ?? 0;
         }
 
         for (const item of removed) {
-            impact -= item.qty_final;
+            impact -= item.qty_final ?? 0;
         }
 
         return impact;

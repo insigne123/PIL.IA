@@ -44,7 +44,9 @@ export interface StagingRow {
   // aggregation_rule: 'sum' | 'count'; // usually sum
 
   // User Edits / Final State
-  qty_final: number; // The value to write to Excel
+  qty_final: number | null; // null = couldn't measure, 0 = measured as zero, >0 = valid
+  raw_qty?: number; // What was actually measured before sanity checks
+  sanity_flag?: string; // Reason if qty_final was nullified (e.g., 'insufficient_geometry')
   height_factor?: number; // For m -> m2 conversion (default 2.4 or user override)
 
   unit_final?: string; // Normalized unit to write if Excel was empty

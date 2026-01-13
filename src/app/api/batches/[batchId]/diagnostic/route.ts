@@ -126,7 +126,13 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ batc
                     medium_confidence: stagingRows?.filter(r => r.confidence === 'medium').length || 0,
                     low_confidence: stagingRows?.filter(r => r.confidence === 'low').length || 0,
                     approved: stagingRows?.filter(r => r.status === 'approved').length || 0,
-                    pending: stagingRows?.filter(r => r.status === 'pending').length || 0
+                    pending: stagingRows?.filter(r => r.status.startsWith('pending')).length || 0,
+                    pending_breakdown: {
+                        pending_semantics: stagingRows?.filter(r => r.status === 'pending_semantics').length || 0,
+                        pending_no_geometry: stagingRows?.filter(r => r.status === 'pending_no_geometry').length || 0,
+                        pending_no_match: stagingRows?.filter(r => r.status === 'pending_no_match').length || 0,
+                        pending_generic: stagingRows?.filter(r => r.status === 'pending').length || 0
+                    }
                 },
                 // Pricing quality breakdown
                 pricing_quality: {

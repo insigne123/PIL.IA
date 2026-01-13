@@ -320,6 +320,20 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
             };
         }
 
+        // FIX 1.5: Auto-classify "por mandante" items as GLOBAL
+        const unit = (row.excel_unit || '').toLowerCase();
+        if (unit.includes('mandante') || unit.includes('cliente')) {
+            return {
+                ...row,
+                matched_items: [],
+                source_items: [],
+                match_confidence: 0.9,
+                match_reason: "Logic: Unidad 'por mandante' indica provisión (GLOBAL)",
+                status: 'approved',
+                qty_final: 1
+            };
+        }
+
         // FIX 2: Pre-classify "Punto" items to force AI refinement
         if ((desc.startsWith('punto ') || desc.startsWith('puntos ')) &&
             !desc.includes('canaliz') && !desc.includes('ducto') && !desc.includes('tuber')) {
@@ -534,7 +548,9 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                                 if (qty < 0.5) {
                                     status = 'pending_no_geometry';
                                     statusReason = 'insufficient_geometry';
-                                    row.qty_final = 0; // Force to 0 to prevent pricing
+                                    (row as any).raw_qty = qty; // Save what was measured
+                                    (row as any).sanity_flag = 'insufficient_geometry';
+                                    row.qty_final = null; // null = couldn't measure reliably
                                     warning = `[CRITICAL] Longitud < 0.5m (${qty.toFixed(2)}m). Invalidada por ser ruido gráfico.`;
                                     (row as any).match_reason += ` | ERR: ${warning}`;
                                     console.warn(`[Sanity Critical] ${row.excel_item_text}: ${warning}`);

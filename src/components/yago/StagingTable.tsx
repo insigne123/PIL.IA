@@ -80,7 +80,7 @@ export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
                                 <TableCell>
                                     <Input
                                         type="number"
-                                        value={row.qty_final}
+                                        value={row.qty_final ?? ''}
                                         onChange={(e) => onUpdateRow(row.id, { qty_final: parseFloat(e.target.value) || 0 })}
                                         className="h-8 w-24"
                                     />

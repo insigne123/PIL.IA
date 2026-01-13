@@ -110,7 +110,7 @@ export async function POST(
                 // Update DB
                 await supabase.from('staging_rows').update({
                     unit_price_ref: priceResult.average_price,
-                    total_price_ref: priceResult.average_price * item.qty_final,
+                    total_price_ref: priceResult.average_price * (item.qty_final ?? 0),
                     price_sources: validSources, // Only save sources with valid URLs
                     price_confidence: finalConfidence
                 }).eq('id', item.id);

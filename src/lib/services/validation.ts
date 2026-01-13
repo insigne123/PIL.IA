@@ -23,7 +23,7 @@ export class ValidationEngine {
     private registerDefaultRules(): void {
         // Quantity sanity check
         this.rules.set('quantity_sanity', (row, ctx) => {
-            if (row.qty_final > 10000 && row.excel_unit === 'un') {
+            if (row.qty_final && row.qty_final > 10000 && row.excel_unit === 'un') {
                 return {
                     id: '',
                     stagingRowId: row.id,
