@@ -97,6 +97,20 @@ export async function POST(
                     s.url.startsWith('http')
                 );
 
+                // Use MINIMUM price from sources (best price for user)
+                const minPrice = priceResult.sources.length > 0
+                    ? Math.min(...priceResult.sources.map(s => s.price))
+                    : priceResult.average_price;
+
+                // Calculate average for metadata
+                const avgPrice = priceResult.sources.length > 0
+                    ? priceResult.sources.reduce((sum, s) => sum + s.price, 0) / priceResult.sources.length
+                    : priceResult.average_price;
+
+                // Check if AI average differs significantly from min
+                const priceDifference = Math.abs(priceResult.average_price - minPrice);
+                const percentageDiff = minPrice > 0 ? (priceDifference / minPrice) * 100 : 0;
+
                 // Adjust confidence if sources lack URLs
                 let finalConfidence = priceResult.confidence;
                 if (validSources.length === 0) {
@@ -107,13 +121,37 @@ export async function POST(
                     if (finalConfidence === 'high') finalConfidence = 'medium';
                 }
 
-                // Update DB
+                // Lower confidence if only 1 source
+                if (priceResult.sources.length === 1) {
+                    console.warn(`Item ${item.excel_item_text}: Only 1 source found`);
+                    if (finalConfidence === 'high') finalConfidence = 'medium';
+                }
+
+                // Create metadata for auditing
+                const priceMetadata = {
+                    ai_suggested_price: priceResult.average_price,
+                    minimum_price: Math.round(minPrice),
+                    average_price: Math.round(avgPrice),
+                    source_count: priceResult.sources.length,
+                    valid_source_count: validSources.length,
+                    calculation_method: 'minimum_from_sources',
+                    price_range: priceResult.sources.length > 0 ? {
+                        min: Math.min(...priceResult.sources.map(s => s.price)),
+                        max: Math.max(...priceResult.sources.map(s => s.price))
+                    } : null
+                };
+
+                // Update DB with manual average (more transparent)
                 await supabase.from('staging_rows').update({
-                    unit_price_ref: priceResult.average_price,
-                    total_price_ref: priceResult.average_price * (item.qty_final ?? 0),
+                    unit_price_ref: Math.round(minPrice),
+                    total_price_ref: Math.round(minPrice) * (item.qty_final ?? 0),
                     price_sources: validSources, // Only save sources with valid URLs
-                    price_confidence: finalConfidence
+                    price_confidence: finalConfidence,
+                    price_metadata: priceMetadata
                 }).eq('id', item.id);
+
+                const maxPrice = priceResult.sources.length > 0 ? Math.max(...priceResult.sources.map(s => s.price)) : minPrice;
+                console.log(`[Pricing] ${item.excel_item_text}: $${Math.round(minPrice).toLocaleString('es-CL')} (min of ${priceResult.sources.length} sources, range: $${Math.round(minPrice).toLocaleString('es-CL')}-$${Math.round(maxPrice).toLocaleString('es-CL')})`);
                 processedCount++;
             } else {
                 failedItems.push({ item: item.excel_item_text, error: 'No prices found' });

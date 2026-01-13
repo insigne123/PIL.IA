@@ -31,7 +31,7 @@ export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
                             <TableHead className="w-[100px]">Cant. Final</TableHead>
                             <TableHead className="w-[80px]">Unidad</TableHead>
                             <TableHead className="w-[120px]">Precio Unit.</TableHead>
-                            <TableHead className="text-right">Acciones</TableHead>
+                            <TableHead className="text-right">Total</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -89,9 +89,14 @@ export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
                                 {/* PRICING COLUMNS */}
                                 <TableCell>
                                     <div className="flex items-center gap-1">
-                                        <span className={cn("text-sm", !row.unit_price_ref && "text-slate-400 italic")}>
+                                        <span className={cn("text-sm whitespace-nowrap", !row.unit_price_ref && "text-slate-400 italic")}>
                                             {row.unit_price_ref
-                                                ? `$ ${row.unit_price_ref.toLocaleString('es-CL')}`
+                                                ? new Intl.NumberFormat('es-CL', {
+                                                    style: 'currency',
+                                                    currency: 'CLP',
+                                                    minimumFractionDigits: 0,
+                                                    maximumFractionDigits: 0
+                                                }).format(row.unit_price_ref)
                                                 : "N/A"
                                             }
                                         </span>
