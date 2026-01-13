@@ -323,7 +323,8 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
         // FIX 2: Pre-classify "Punto" items to force AI refinement
         if ((desc.startsWith('punto ') || desc.startsWith('puntos ')) &&
             !desc.includes('canaliz') && !desc.includes('ducto') && !desc.includes('tuber')) {
-            return { ...row, match_confidence: 0.3 }; // Force AI refinement
+            console.log(`[Punto Pre-classification] Forcing 'c:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA{row.excel_item_text}' to AI refinement`);
+            return { ...row, match_confidence: 0.3, confidence: 'low' }; // Force AI refinement
         }
 
         // FIX 3: Auto-approve valid lengths from fuzzy matcher
@@ -417,6 +418,9 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                         }
                         // 3. Point Rule (Victory Feature) - "Punto X" is almost always BLOCK
                         // Unless it mentions conduit/channel explicitly.
+                        // 3. Point Rule (Victory Feature) - "Punto X" is almost always BLOCK
+                        // Unless it mentions conduit/channel explicitly.
+                        // Force logic for "Punto" items if not already matched as length
                         else if ((desc.startsWith('punto ') || desc.startsWith('puntos ')) && !desc.includes('canaliz') && !desc.includes('tuber') && !desc.includes('ducto') && !desc.includes('conduit')) {
                             enforcedType = 'block';
                         }
