@@ -293,12 +293,48 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
     // 4. Match Items (Hybrid: Fuzzy + AI)
     let stagingRows = matchItems(excelItems, dxfItems, sheetTarget);
 
-    // Apply forced low confidence for pre-classified items
+    // POST-FUZZY PROCESSING: Apply all classification rules
     stagingRows = stagingRows.map((row: any) => {
-        if (row.excel_item_text && excelItems.find((ei: any) =>
-            ei.description === row.excel_item_text && ei._force_ai_refinement)) {
-            return { ...row, match_confidence: 0.3 };
+        const desc = (row.excel_item_text || '').toLowerCase();
+
+        // FIX 1: Auto-classify GLOBAL/SERVICE items (with proper normalization)
+        const isServiceScope =
+            desc.includes('instalacion') ||  // Normalized (no tilde)
+            desc.includes('instalación') ||  // With tilde
+            desc.includes('provision e instalacion') ||
+            desc.includes('provisión e instalación') ||
+            (desc.includes('certificado') && !desc.includes('rotulado')) ||
+            desc.includes('tramite') ||
+            desc.includes('trámite') ||
+            desc.includes('legaliz');
+
+        if (isServiceScope) {
+            return {
+                ...row,
+                matched_items: [],
+                source_items: [],
+                match_confidence: 0.95,
+                match_reason: "Logic: Item de Servicio/Alcance (No requiere dibujo)",
+                status: 'approved',
+                qty_final: 1
+            };
         }
+
+        // FIX 2: Pre-classify "Punto" items to force AI refinement
+        if ((desc.startsWith('punto ') || desc.startsWith('puntos ')) &&
+            !desc.includes('canaliz') && !desc.includes('ducto') && !desc.includes('tuber')) {
+            return { ...row, match_confidence: 0.3 }; // Force AI refinement
+        }
+
+        // FIX 3: Auto-approve valid lengths from fuzzy matcher
+        if (row.source_items && row.source_items.length > 0) {
+            const firstItem = row.source_items[0];
+            if (firstItem.type === 'length' && row.qty_final >= 1.0 && row.match_confidence >= 0.5) {
+                console.log(`[Auto-approve Fuzzy] Valid length ${row.qty_final.toFixed(2)}m for '${row.excel_item_text}'`);
+                return { ...row, status: 'approved' };
+            }
+        }
+
         return row;
     });
 
@@ -356,26 +392,8 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                     const unit = (row.excel_unit || '').toLowerCase().trim();
                     let enforcedType: 'block' | 'length' | 'global' | null = null;
 
-                    // QUICK WIN 2: Auto-classify GLOBAL/SERVICE items
-                    // These items don't depend on drawings and should be approved immediately
-                    const isServiceScope =
-                        desc.includes('instalacion electrica') ||
-                        desc.includes('instalación eléctrica') ||
-                        desc.includes('provision e instalacion') ||
-                        desc.includes('provisión e instalación') ||
-                        (desc.includes('certificado') && !desc.includes('rotulado')) ||
-                        desc.includes('tramite') ||
-                        desc.includes('trámite') ||
-                        desc.includes('legaliz');
-
-                    if (isServiceScope) {
-                        (row as any).matched_items = [];
-                        (row as any).match_confidence = 0.95;
-                        (row as any).match_reason = "Logic: Item de Servicio/Alcance (No requiere dibujo)";
-                        (row as any).status = 'approved';
-                        row.qty_final = 1;
-                        return; // Skip AI matching
-                    }
+                    // Note: GLOBAL/SERVICE auto-classification now happens in post-fuzzy processing
+                    // This section only handles items that reach AI refinement
 
                     // 0. Explicit Unit Detection (Hard Rules)
                     if (['m', 'ml', 'mts', 'metro', 'metros'].includes(unit)) {
