@@ -141,13 +141,13 @@ export async function POST(
                     } : null
                 };
 
-                // Update DB with manual average (more transparent)
+                // Update DB with minimum price (best for user)
                 await supabase.from('staging_rows').update({
                     unit_price_ref: Math.round(minPrice),
                     total_price_ref: Math.round(minPrice) * (item.qty_final ?? 0),
                     price_sources: validSources, // Only save sources with valid URLs
-                    price_confidence: finalConfidence,
-                    price_metadata: priceMetadata
+                    price_confidence: finalConfidence
+                    // price_metadata: priceMetadata // TODO: Add migration for this column
                 }).eq('id', item.id);
 
                 const maxPrice = priceResult.sources.length > 0 ? Math.max(...priceResult.sources.map(s => s.price)) : minPrice;
