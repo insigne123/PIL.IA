@@ -202,50 +202,6 @@ export default function BatchPage() {
         }
     };
 
-    const handleRectifyUnit = async () => {
-        if (!mismatchFile) return;
-
-        setLoading(true);
-        try {
-            console.log('🔧 [Rectify] Updating batch unit to:', mismatchFile.detectedUnit);
-
-            // Update batch unit to match detected unit
-            const { error: updateError } = await supabase
-                .from('batches')
-                .update({
-                    unit_selected: mismatchFile.detectedUnit,
-                    status: 'processing' // Reset to processing to continue
-                })
-                .eq('id', batchId);
-
-            if (updateError) {
-                console.error('❌ [Rectify] Error updating batch:', updateError);
-                alert(`Error actualizando unidad: ${updateError.message}`);
-                return;
-            }
-
-            console.log('✅ [Rectify] Batch unit updated successfully');
-
-            // Refresh batch data
-            await fetchBatchData();
-
-            // Automatically continue processing (trigger MAP phase)
-            console.log('🔄 [Rectify] Auto-continuing to MAP phase...');
-
-            // Small delay to ensure DB update is reflected
-            await new Promise(resolve => setTimeout(resolve, 500));
-
-            // Trigger processing which will skip EXTRACT and go to MAP
-            handleStartProcessing();
-
-        } catch (err) {
-            console.error('❌ [Rectify] Unexpected error:', err);
-            alert('Error al rectificar unidad');
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
         if (batchId) fetchBatchData();
 
