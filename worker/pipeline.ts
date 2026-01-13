@@ -291,59 +291,67 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
 
         console.log(`AI Refining ${lowConfidenceRows.length} items with Dimensional Analysis...`);
 
-        // Simple batch processing
-        for (const row of lowConfidenceRows) {
-            try {
-                const aiResult = await matchItemFlow({
-                    item_description: row.excel_item_text,
-                    item_unit: row.excel_unit,
-                    candidate_layers: candidatePayload
-                });
+        // Parallel batch processing (5 items at a time to avoid rate limits)
+        const BATCH_SIZE = 5;
+        for (let i = 0; i < lowConfidenceRows.length; i += BATCH_SIZE) {
+            const batch = lowConfidenceRows.slice(i, i + BATCH_SIZE);
+            console.log(`Processing AI batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(lowConfidenceRows.length / BATCH_SIZE)} (items ${i + 1}-${Math.min(i + BATCH_SIZE, lowConfidenceRows.length)}/${lowConfidenceRows.length})`);
 
-                if (aiResult.selected_layer && aiResult.confidence > 0.5) {
-                    // Find the items belonging to this layer
-                    let betterMatches: ItemDetectado[] = [];
+            await Promise.all(batch.map(async (row) => {
+                try {
+                    const aiResult = await matchItemFlow({
+                        item_description: row.excel_item_text,
+                        item_unit: row.excel_unit,
+                        candidate_layers: candidatePayload
+                    });
 
-                    // Parse "BlockName (Layer: LayerName)" format used for Blocks in candidateMap
-                    const granularMatch = aiResult.selected_layer.match(/^(.*) \(Layer: (.*)\)$/);
+                    if (aiResult.selected_layer && aiResult.confidence > 0.5) {
+                        // Find the items belonging to this layer
+                        let betterMatches: ItemDetectado[] = [];
 
-                    if (granularMatch) {
-                        // CASE A: Specific Block selected
-                        const bName = granularMatch[1];
-                        const bLayer = granularMatch[2];
-                        // STRICT FILTER: Only return BLOCKS with that name and layer. Ignore lines.
-                        betterMatches = dxfItems.filter(i =>
-                            i.layer_normalized === bLayer &&
-                            i.name_raw === bName &&
-                            i.type === 'block'
-                        );
-                    } else {
-                        // CASE B: Whole Layer selected (Typical for Lengths/Areas)
-                        // STRICT FILTER: Exclude blocks to avoid mixing types (e.g. 4 blocks + 0.9m length)
-                        // If the AI selected a whole layer, it usually means linear elements.
-                        betterMatches = dxfItems.filter(i =>
-                            i.layer_normalized === aiResult.selected_layer &&
-                            i.type !== 'block'
-                        );
+                        // Parse "BlockName (Layer: LayerName)" format used for Blocks in candidateMap
+                        const granularMatch = aiResult.selected_layer.match(/^(.*) \(Layer: (.*)\)$/);
+
+                        if (granularMatch) {
+                            // CASE A: Specific Block selected
+                            const bName = granularMatch[1];
+                            const bLayer = granularMatch[2];
+                            // STRICT FILTER: Only return BLOCKS with that name and layer. Ignore lines.
+                            betterMatches = dxfItems.filter(i =>
+                                i.layer_normalized === bLayer &&
+                                i.name_raw === bName &&
+                                i.type === 'block'
+                            );
+                        } else {
+                            // CASE B: Whole Layer selected (Typical for Lengths/Areas)
+                            // STRICT FILTER: Exclude blocks to avoid mixing types (e.g. 4 blocks + 0.9m length)
+                            // If the AI selected a whole layer, it usually means linear elements.
+                            betterMatches = dxfItems.filter(i =>
+                                i.layer_normalized === aiResult.selected_layer &&
+                                i.type !== 'block'
+                            );
+                        }
+
+                        if (betterMatches.length > 0) {
+                            (row as any).matched_items = betterMatches;
+                            (row as any).match_confidence = aiResult.confidence;
+                            (row as any).match_reason = "AI: " + aiResult.reasoning;
+                            // Auto-approve high confidence
+                            (row as any).status = aiResult.confidence > 0.8 ? 'approved' : 'pending';
+
+                            // Recalculate Qty
+                            let qty = 0;
+                            betterMatches.forEach(m => qty += m.value_m);
+                            row.qty_final = qty;
+                        }
                     }
-
-                    if (betterMatches.length > 0) {
-                        (row as any).matched_items = betterMatches;
-                        (row as any).match_confidence = aiResult.confidence;
-                        (row as any).match_reason = "AI: " + aiResult.reasoning;
-                        // Auto-approve high confidence
-                        (row as any).status = aiResult.confidence > 0.8 ? 'approved' : 'pending';
-
-                        // Recalculate Qty
-                        let qty = 0;
-                        betterMatches.forEach(m => qty += m.value_m);
-                        row.qty_final = qty;
-                    }
+                } catch (err) {
+                    console.error("AI Match Error for", row.excel_item_text, err);
                 }
-            } catch (err) {
-                console.error("AI Match Error for", row.excel_item_text, err);
-            }
+            }));
         }
+
+        console.log(`AI Refinement complete. Processed ${lowConfidenceRows.length} items.`);
     }
 
     // 5. Insert into Staging
