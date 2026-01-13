@@ -26,7 +26,7 @@ export const PriceSourceSchema = z.object({
     vendor: z.string().min(1)
 });
 
-export const PriceSourcesArraySchema = z.array(PriceSourceSchema);
+export const PriceSourcesArraySchema = z.array(PriceSourceSchema).nullable();
 
 // Price Candidates Schema (legacy field, for staging_rows.price_candidates)
 export const PriceCandidateSchema = z.object({
@@ -42,6 +42,8 @@ export const PriceCandidatesArraySchema = z.array(PriceCandidateSchema);
 export function validateSourceItems(data: unknown): z.infer<typeof SourceItemsArraySchema> | null {
     const result = SourceItemsArraySchema.safeParse(data);
     if (!result.success) {
+        // If null, just return null (valid empty state)
+        if (data === null) return [];
         console.error('Invalid source_items:', result.error);
         return null;
     }
@@ -49,6 +51,9 @@ export function validateSourceItems(data: unknown): z.infer<typeof SourceItemsAr
 }
 
 export function validatePriceSources(data: unknown): z.infer<typeof PriceSourcesArraySchema> | null {
+    // If null/undefined, return valid empty state to prevent Zod Error
+    if (data === null || data === undefined) return [];
+
     const result = PriceSourcesArraySchema.safeParse(data);
     if (!result.success) {
         console.error('Invalid price_sources:', result.error);
