@@ -64,7 +64,8 @@ export interface StagingRow {
 
   match_reason?: string; // AI reasoning
   confidence_reason?: string;
-  status: 'pending' | 'approved' | 'ignored';
+  status: 'pending' | 'approved' | 'ignored' | 'pending_semantics' | 'pending_no_geometry' | 'pending_no_match';
+  status_reason?: string; // Reason for refined status
   suggestions?: Suggestion[]; // Actionable suggestions for pending items
 }
 

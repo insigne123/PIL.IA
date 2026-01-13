@@ -279,8 +279,28 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
 
     const sheetTarget = batch.sheet_target || 'Presupuesto';
 
+    // 4. PRE-CLASSIFICATION (Quick Win 3: Force "Punto" items to low confidence)
+    // This ensures they go through AI refinement where the Block rule is applied
+    excelItems.forEach((item: any) => {
+        const desc = (item.description || '').toLowerCase();
+        if ((desc.startsWith('punto ') || desc.startsWith('puntos ')) &&
+            !desc.includes('canaliz') && !desc.includes('ducto') && !desc.includes('tuber')) {
+            // Mark for AI refinement by forcing low initial confidence
+            item._force_ai_refinement = true;
+        }
+    });
+
     // 4. Match Items (Hybrid: Fuzzy + AI)
     let stagingRows = matchItems(excelItems, dxfItems, sheetTarget);
+
+    // Apply forced low confidence for pre-classified items
+    stagingRows = stagingRows.map((row: any) => {
+        if (row.excel_item_text && excelItems.find((ei: any) =>
+            ei.description === row.excel_item_text && ei._force_ai_refinement)) {
+            return { ...row, match_confidence: 0.3 };
+        }
+        return row;
+    });
 
     // AI ENHANCEMENT:
     // Filter rows with low confidence to refine with AI
@@ -335,6 +355,27 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                     const desc = row.excel_item_text.toLowerCase();
                     const unit = (row.excel_unit || '').toLowerCase().trim();
                     let enforcedType: 'block' | 'length' | 'global' | null = null;
+
+                    // QUICK WIN 2: Auto-classify GLOBAL/SERVICE items
+                    // These items don't depend on drawings and should be approved immediately
+                    const isServiceScope =
+                        desc.includes('instalacion electrica') ||
+                        desc.includes('instalación eléctrica') ||
+                        desc.includes('provision e instalacion') ||
+                        desc.includes('provisión e instalación') ||
+                        (desc.includes('certificado') && !desc.includes('rotulado')) ||
+                        desc.includes('tramite') ||
+                        desc.includes('trámite') ||
+                        desc.includes('legaliz');
+
+                    if (isServiceScope) {
+                        (row as any).matched_items = [];
+                        (row as any).match_confidence = 0.95;
+                        (row as any).match_reason = "Logic: Item de Servicio/Alcance (No requiere dibujo)";
+                        (row as any).status = 'approved';
+                        row.qty_final = 1;
+                        return; // Skip AI matching
+                    }
 
                     // 0. Explicit Unit Detection (Hard Rules)
                     if (['m', 'ml', 'mts', 'metro', 'metros'].includes(unit)) {
@@ -460,15 +501,17 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                             }
                             row.qty_final = qty;
 
-                            // --- SANITY CHECKS (Tri-state) ---
+                            // --- SANITY CHECKS (Tri-state) + REFINED STATUS ---
                             let status = aiResult.confidence > 0.8 ? 'approved' : 'pending';
                             let warning = "";
+                            let statusReason = ""; // For refined status categorization
 
                             // 1. Linear Sanity
                             if (enforcedType === 'length') {
-                                // A. INVALID (Noise) - Hard Fail
+                                // A. INVALID (Noise) - Hard Fail → pending_no_geometry
                                 if (qty < 0.5) {
-                                    status = 'pending';
+                                    status = 'pending_no_geometry';
+                                    statusReason = 'insufficient_geometry';
                                     row.qty_final = 0; // Force to 0 to prevent pricing
                                     warning = `[CRITICAL] Longitud < 0.5m (${qty.toFixed(2)}m). Invalidada por ser ruido gráfico.`;
                                     (row as any).match_reason += ` | ERR: ${warning}`;
@@ -486,6 +529,11 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                                     warning = `[Sanity Warn] Longitud extrema (${qty.toFixed(2)}m). Posible error de escala DXF.`;
                                     (row as any).match_reason += ` | WARN: ${warning}`;
                                 }
+                                // QUICK WIN 4: Auto-approve valid lengths
+                                else if (qty >= 1.0 && !warning) {
+                                    status = 'approved';
+                                    console.log(`[Auto-approve] Valid length ${qty.toFixed(2)}m for '${row.excel_item_text}'`);
+                                }
                             }
 
                             // 2. Block Keyword Overlap (Quick Win)
@@ -497,7 +545,8 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                                     const hasOverlap = matchName.includes('ups') || matchName.includes('nobreak') || matchName.includes('rack') || matchName.includes('gab') || matchName.includes('cabinet');
 
                                     if (!hasOverlap) {
-                                        status = 'pending';
+                                        status = 'pending_semantics';
+                                        statusReason = 'semantic_mismatch';
                                         warning = `[Semantics] Block match '${betterMatches[0].name_raw}' does not contain required keywords for UPS/Rack.`;
                                         (row as any).match_reason += ` | WARN: ${warning}`;
                                     }
@@ -511,9 +560,10 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                             }
 
                             (row as any).status = status;
+                            (row as any).status_reason = statusReason;
 
                             // 3. Suggestions System (Victory Feature)
-                            if (status === 'pending') {
+                            if (status.startsWith('pending')) {
                                 const suggestions: Suggestion[] = [];
 
                                 // A. Invalid Length -> Suggest Alt Layer
