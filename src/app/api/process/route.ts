@@ -34,10 +34,18 @@ export async function POST(req: NextRequest) {
 
         // 2. Parse DXFs
         let allDxfItems: ItemDetectado[] = [];
+        const preflightResults: any[] = [];
+
         for (const file of dxfFiles) {
             const text = await file.text();
-            const { items } = await parseDxf(text, planUnit);
+            const { items, preflight } = await parseDxf(text, planUnit);
             allDxfItems = [...allDxfItems, ...items];
+            preflightResults.push({
+                fileName: file.name,
+                summary: preflight,
+                warnings: preflight.warnings,
+                recommendations: preflight.recommendations
+            });
         }
 
         // 3. Aggregate
@@ -54,6 +62,7 @@ export async function POST(req: NextRequest) {
             data: {
                 stagingRows,
                 structure: structure, // Return header info for writer
+                preflightResults, // Include preflight diagnostics
                 stats: {
                     excelRows: excelItems.length,
                     dxfItems: aggregatedDxfItems.length,

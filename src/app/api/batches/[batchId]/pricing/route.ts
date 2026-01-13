@@ -146,8 +146,8 @@ export async function POST(
                     unit_price_ref: Math.round(minPrice),
                     total_price_ref: Math.round(minPrice) * (item.qty_final ?? 0),
                     price_sources: validSources, // Only save sources with valid URLs
-                    price_confidence: finalConfidence
-                    // price_metadata: priceMetadata // TODO: Add migration for this column
+                    price_confidence: finalConfidence,
+                    price_metadata: priceMetadata
                 }).eq('id', item.id);
 
                 const maxPrice = priceResult.sources.length > 0 ? Math.max(...priceResult.sources.map(s => s.price)) : minPrice;

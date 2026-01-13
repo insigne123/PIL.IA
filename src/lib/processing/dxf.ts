@@ -1,23 +1,48 @@
 import DxfParser from 'dxf-parser';
 import { ItemDetectado, Unit } from '@/types';
 import { v4 as uuidv4 } from 'uuid';
+import { runPreflight, hasBlockingIssues, getPreflightSummary, type PreflightResult } from './preflight';
+import {
+    buildBlockDefinitionsMap,
+    resolveBlockRecursive,
+    extractTransformFromInsert,
+    measureTransformedEntity
+} from './block-resolver';
+import { profileAllLayers, filterAnnotationItems, getLayerProfilingSummary, type LayerProfile } from './layer-profiling';
+import { extractBlockInstances, deduplicateBlocks, getDeduplicationSummary } from './spatial-dedup';
 
 const parser = new DxfParser();
 
-export async function parseDxf(fileContent: string, planUnitPreference?: Unit): Promise<{ items: ItemDetectado[], detectedUnit: Unit | null }> {
+export async function parseDxf(fileContent: string, planUnitPreference?: Unit): Promise<{ items: ItemDetectado[], detectedUnit: Unit | null, preflight: PreflightResult }> {
+    // Run preflight checks FIRST
+    let cleanContent = fileContent;
+
+    // Remove BOM if present
+    if (cleanContent.charCodeAt(0) === 0xFEFF) {
+        cleanContent = cleanContent.slice(1);
+    }
+
+    // Normalize line endings
+    cleanContent = cleanContent.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+    const preflight = runPreflight(cleanContent);
+    console.log('[DXF Preflight]', getPreflightSummary(preflight));
+
+    // Check for blocking issues
+    if (hasBlockingIssues(preflight)) {
+        const errorParts = [
+            'El archivo DXF tiene problemas críticos que impiden el procesamiento:',
+            ...preflight.warnings,
+            '',
+            'Recomendaciones:',
+            ...preflight.recommendations
+        ];
+        throw new Error(errorParts.join('\n'));
+    }
+
+    // Parse DXF
     let dxf: any;
     try {
-        // Try to clean the content first (remove BOM and normalize line endings)
-        let cleanContent = fileContent;
-
-        // Remove BOM if present
-        if (cleanContent.charCodeAt(0) === 0xFEFF) {
-            cleanContent = cleanContent.slice(1);
-        }
-
-        // Normalize line endings
-        cleanContent = cleanContent.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
-
         dxf = parser.parseSync(cleanContent);
     } catch (e: any) {
         console.error("DXF Parse Error", e);
@@ -34,25 +59,45 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
         }
     }
 
-    // 1. Auto-Detect Unit from $INSUNITS
-    let detectedUnit: Unit | null = null;
-    const insUnits = (dxf.header || {})['$INSUNITS'];
-    if (insUnits !== undefined) {
-        if (insUnits === 4) detectedUnit = 'mm';
-        else if (insUnits === 5) detectedUnit = 'cm';
-        else if (insUnits === 6) detectedUnit = 'm';
-    }
-
-    // 2. Decide effective unit
-    // If user provided a preference (and it's not 'pending' or similar?), use it.
-    // Otherwise use detected. Fallback to 'm'.
+    // 1. Use preflight-detected unit or user preference
+    const detectedUnit = preflight.detectedUnit;
     const effectiveUnit: Unit = planUnitPreference || detectedUnit || 'm';
 
-    const items: ItemDetectado[] = [];
-    const entities = dxf.entities || [];
+    console.log(`[DXF Parser] Using unit: ${effectiveUnit} (detected: ${detectedUnit || 'none'}, preference: ${planUnitPreference || 'none'})`);
 
-    if (entities.length === 0) {
+    // 2. Use dynamic minimum length from preflight
+    const minLengthDynamic = preflight.dynamicMinLength;
+    console.log(`[DXF Parser] Dynamic min length: ${minLengthDynamic.toFixed(3)}m (based on bbox diagonal: ${preflight.boundingBox.diagonal.toFixed(2)}m)`);
+
+    const items: ItemDetectado[] = [];
+    const allEntities = dxf.entities || [];
+
+    // 3. Separate ModelSpace vs PaperSpace entities
+    const modelSpaceEntities = allEntities.filter((e: any) => {
+        // PaperSpace entities have ownerHandle pointing to a layout
+        // or have a space property = 1 (67 group code)
+        // ModelSpace is default (no space property or space = 0)
+        return !e.space || e.space === 0;
+    });
+
+    const paperSpaceEntities = allEntities.filter((e: any) => e.space === 1);
+
+    console.log(`[DXF Parser] Entities - ModelSpace: ${modelSpaceEntities.length}, PaperSpace: ${paperSpaceEntities.length}`);
+
+    if (modelSpaceEntities.length === 0) {
         console.warn("DXF parser found 0 entities in Model Space.");
+    }
+
+    // Extract text context from PaperSpace (for future semantic matching)
+    const paperSpaceTexts: string[] = [];
+    for (const entity of paperSpaceEntities) {
+        if (entity.type === 'TEXT' || entity.type === 'MTEXT') {
+            const text = entity.text || entity.string;
+            if (text) paperSpaceTexts.push(text);
+        }
+    }
+    if (paperSpaceTexts.length > 0) {
+        console.log(`[DXF Parser] Found ${paperSpaceTexts.length} text annotations in PaperSpace`);
     }
 
     // Helper to normalize to meters
@@ -68,7 +113,12 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
     const blockCounts = new Map<string, { count: number; layer: string }>();
     const layerLengths = new Map<string, number>();
 
-    for (const entity of entities) {
+    // Build block definitions map for nested resolution
+    const blockDefinitions = buildBlockDefinitionsMap(dxf);
+    const nestedBlockItems: ItemDetectado[] = [];
+
+    // 4. Process ONLY ModelSpace entities for cubication
+    for (const entity of modelSpaceEntities) {
         try {
             if (entity.type === 'INSERT') {
                 let name = (entity as any).name || (entity as any).block || 'UnknownBlock';
@@ -76,6 +126,31 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
                 const key = `${name}::${layer}`;
                 if (!blockCounts.has(key)) blockCounts.set(key, { count: 0, layer });
                 blockCounts.get(key)!.count++;
+
+                // Resolve nested blocks if definition exists
+                if (blockDefinitions.has(name)) {
+                    const transform = extractTransformFromInsert(entity);
+                    const resolvedEntities = resolveBlockRecursive(
+                        name,
+                        blockDefinitions,
+                        transform,
+                        toMeters,
+                        5 // max depth
+                    );
+
+                    // Measure resolved entities
+                    for (const { entity: nestedEntity, transform: nestedTransform } of resolvedEntities) {
+                        const measured = measureTransformedEntity(
+                            nestedEntity,
+                            nestedTransform,
+                            toMeters,
+                            layer
+                        );
+                        if (measured) {
+                            nestedBlockItems.push(measured);
+                        }
+                    }
+                }
             }
             else if (entity.type === 'LINE') {
                 const layer = (entity as any).layer || '0';
@@ -148,10 +223,15 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
         });
     }
 
-    // Convert Lengths
+    // Convert Lengths (with dynamic threshold)
     for (const [layer, length] of layerLengths.entries()) {
         const lengthM = toMeters(length);
-        if (lengthM < 0.01) continue;
+
+        // Use dynamic threshold instead of fixed 0.01
+        if (lengthM < minLengthDynamic) {
+            console.log(`[DXF Parser] Skipping layer "${layer}" - length ${lengthM.toFixed(3)}m below threshold ${minLengthDynamic.toFixed(3)}m`);
+            continue;
+        }
         items.push({
             id: uuidv4(),
             type: 'length',
@@ -165,7 +245,15 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
         });
     }
 
-    return { items, detectedUnit };
+    console.log(`[DXF Parser] Extracted ${items.length} items (${items.filter(i => i.type === 'block').length} blocks, ${items.filter(i => i.type === 'length').length} lengths, ${items.filter(i => i.type === 'text').length} texts)`);
+
+    // Add nested block items
+    if (nestedBlockItems.length > 0) {
+        console.log(`[DXF Parser] Found ${nestedBlockItems.length} items from nested blocks`);
+        items.push(...nestedBlockItems);
+    }
+
+    return { items, detectedUnit, preflight };
 }
 
 export function aggregateDxfItems(allItems: ItemDetectado[]): ItemDetectado[] {
