@@ -82,7 +82,7 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
                     console.log('[DXF] Successfully parsed with Latin-1 encoding');
                 } catch (secondError: any) {
                     console.error('[DXF] Both UTF-8 and Latin-1 parsing failed');
-                    throw new Error(`Error al procesar archivo DXF: ${parseError.message}. El archivo puede estar corrupto o tener un formato incompatible.`);
+                    throw new Error(`Error al procesar archivo DXF: ${parseError?.message || 'Unknown'}. El archivo puede estar corrupto o tener un formato incompatible.`);
                 }
             }
         } else if (file.file_type === 'excel') {
@@ -330,10 +330,67 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
 
             await Promise.all(batch.map(async (row) => {
                 try {
+                    // --- TYPE ENFORCEMENT LOGIC ---
+                    const desc = row.excel_item_text.toLowerCase();
+                    const unit = (row.excel_unit || '').toLowerCase().trim();
+                    let enforcedType: 'block' | 'length' | 'global' | null = null;
+
+                    // 0. Explicit Unit Detection (Hard Rules)
+                    if (['m', 'ml', 'mts', 'metro', 'metros'].includes(unit)) {
+                        enforcedType = 'length';
+                    } else if (['un', 'u', 'c/u', 'und', 'unidad', 'c/u.', 'pza', 'pieza'].includes(unit)) {
+                        enforcedType = 'block';
+                    } else if (['gl', 'glb', 'global', 'est', 'est.'].includes(unit)) {
+                        enforcedType = 'global';
+                    }
+
+                    // Fallback to Description Regex
+                    if (!enforcedType) {
+                        // 1. Global Items (Non-Geometric)
+                        if (desc.includes('instalacion') || desc.includes('instalación') || desc.includes('certificado') || desc.includes('plano') || desc.includes('tramite') || desc.includes('inscripcion') || desc.includes('legaliz')) {
+                            enforcedType = 'global';
+                        }
+                        // 2. Block Items (Countable)
+                        else if (desc.includes('tablero') || desc.includes('punto') || desc.includes('gabinete') || desc.includes('ups') || desc.includes('sensor') || desc.includes('caja') || desc.includes('modulo') || desc.includes('remarcador') || desc.includes('equipo')) {
+                            enforcedType = 'block';
+                        }
+                        // 3. Length Items (Linear)
+                        else if (desc.includes('canalizad') || desc.includes('tuber') || desc.includes('alimentador') || desc.includes('enlauchado') || desc.includes('cable') || desc.includes('conductor')) {
+                            enforcedType = 'length';
+                        }
+                    }
+
+                    // HANDLE GLOBAL ITEMS IMMEDIATELY
+                    if (enforcedType === 'global') {
+                        (row as any).matched_items = [];
+                        (row as any).match_confidence = 0.9;
+                        (row as any).match_reason = "Logic: Item Global/Administrativo (No requiere dibujo)";
+                        (row as any).status = 'approved';
+                        row.qty_final = 1;
+                        return; // Skip AI matching
+                    }
+
+                    // FILTER CANDIDATES BASED ON TYPE
+                    let filteredCandidates = candidatePayload;
+                    if (enforcedType === 'block') {
+                        filteredCandidates = candidatePayload.filter(c => c.type === 'block');
+                        if (filteredCandidates.length === 0) {
+                            // Fallback: if no blocks found, maybe they are drawn as lines? 
+                            // But for now, strict enforcement is better to avoid "0.95m Tablero".
+                            console.warn(`[Type Enforcement] Item '${row.excel_item_text}' requires BLOCK but no block candidates found.`);
+                        }
+                    } else if (enforcedType === 'length') {
+                        filteredCandidates = candidatePayload.filter(c => c.type === 'length');
+                    }
+
+                    // If we filtered out everything, fallback to original or skip
+                    const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+
                     const aiResult = await matchItemFlow({
                         item_description: row.excel_item_text,
                         item_unit: row.excel_unit,
-                        candidate_layers: candidatePayload
+                        item_class_hint: enforcedType || undefined, // Pass hint to AI
+                        candidate_layers: candidatesToUse // Use filtered candidates
                     });
 
                     if (aiResult.selected_layer && aiResult.confidence > 0.5) {
@@ -363,17 +420,55 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                             );
                         }
 
+                        // FINAL TYPE CHECK (Post-AI)
+                        // If we enforced BLOCK but ended up with LENGTH items (shouldn't happen with filtered candidates but safety first)
+                        if (enforcedType === 'block' && betterMatches.some(m => m.type !== 'block')) {
+                            console.warn(`[Type Enforcement] Rejected AI match for '${row.excel_item_text}' because it returned non-block items.`);
+                            betterMatches = [];
+                        }
+
                         if (betterMatches.length > 0) {
                             (row as any).matched_items = betterMatches;
                             (row as any).match_confidence = aiResult.confidence;
                             (row as any).match_reason = "AI: " + aiResult.reasoning;
-                            // Auto-approve high confidence
-                            (row as any).status = aiResult.confidence > 0.8 ? 'approved' : 'pending';
 
                             // Recalculate Qty
                             let qty = 0;
-                            betterMatches.forEach(m => qty += m.value_m);
+                            if (betterMatches[0].type === 'block') {
+                                qty = betterMatches.length; // Count items for blocks
+                            } else {
+                                betterMatches.forEach(m => qty += m.value_m); // Sum length
+                            }
                             row.qty_final = qty;
+
+                            // --- SANITY CHECKS ---
+                            let status = aiResult.confidence > 0.8 ? 'approved' : 'pending';
+                            let warning = "";
+
+                            // 1. Ant-Man Check (Tiny Lengths)
+                            // AI Suggestion: Increase threshold to 2.0m to filter out symbolic lines safer
+                            if (enforcedType === 'length' && qty < 2.0) {
+                                status = 'pending';
+                                warning = `[Sanity Check] Longitud sospechosamente baja (${qty.toFixed(2)}m). Mínimo esperado: 2.0m para infraestructura real.`;
+                                (row as any).match_reason += ` | WARN: ${warning}`;
+                                console.warn(`[Sanity] ${row.excel_item_text}: ${warning}`);
+                            }
+                            // 2. High Length Check (Scale Error)
+                            if (enforcedType === 'length' && qty > 5000) {
+                                status = 'pending';
+                                warning = `[Sanity Check] Longitud extremadamente alta (${qty.toFixed(2)}m). Posible error de escala (mm vs m).`;
+                                (row as any).match_reason += ` | WARN: ${warning}`;
+                            }
+
+                            // 3. Half-Toilet Check (Non-integer Blocks)
+                            // (Usually implicit by counting logic, but good generic check)
+                            if (enforcedType === 'block' && !Number.isInteger(qty)) {
+                                status = 'pending';
+                                warning = `[Sanity Check] Cantidad fraccionaria para bloque (${qty}).`;
+                                (row as any).match_reason += ` | WARN: ${warning}`;
+                            }
+
+                            (row as any).status = status;
                         }
                     }
                 } catch (err) {

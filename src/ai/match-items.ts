@@ -15,6 +15,7 @@ export const matchItemFlow = ai.defineFlow(
         inputSchema: z.object({
             item_description: z.string(),
             item_unit: z.string(),
+            item_class_hint: z.string().optional().describe("Hint for the item type: 'block', 'length', or 'global'"),
             candidate_layers: z.array(z.object({
                 name: z.string(),
                 type: z.string().describe("block (count) or length (linear m)"),
@@ -24,7 +25,7 @@ export const matchItemFlow = ai.defineFlow(
         outputSchema: MatchOutputSchema,
     },
     async (input) => {
-        const { item_description, item_unit, candidate_layers } = input;
+        const { item_description, item_unit, candidate_layers, item_class_hint } = input;
 
         const prompt = `
     Eres un experto Ingeniero de Costos y Técnico CAD.
@@ -33,15 +34,20 @@ export const matchItemFlow = ai.defineFlow(
     
     Ítem del Presupuesto: "${item_description}"
     Unidad del Ítem: "${item_unit}"
+    Clase Sugerida: "${item_class_hint || 'Desconocida'}"
     
     Capas Candidatas (JSON):
     ${JSON.stringify(candidate_layers.slice(0, 400))} 
     
     Instrucciones:
-    1. **FILTRADO DIMENSIONAL (MANDATORIO)**: 
-       - Si Unidad es **"m", "ml", "mts", "metro"**: DESCARTA candidatos que NO sean 'length'. Solo considera 'length'.
-       - Si Unidad es **"un", "uni", "c/u", "unidad", "n°", "n"**: DESCARTA candidatos que NO sean 'block'. Solo considera 'block'.
-       - Si la unidad es ambigua o vacía, usa tu mejor juicio semántico.
+    1. **FILTRADO DIMENSIONAL ESTRICTO**: 
+       ${item_class_hint === 'block' ?
+                "- CLASE SUGERIDA ES 'BLOCK' (Contable). IGNORA COMPLETAMENTE cualquier candidato de tipo 'length'. Solo selecciona candidatos de tipo 'block'." :
+                item_class_hint === 'length' ?
+                    "- CLASE SUGERIDA ES 'LENGTH' (Lineal). IGNORA COMPLETAMENTE cualquier candidato de tipo 'block'. Solo selecciona candidatos de tipo 'length'." :
+                    "- Si Unidad es 'm', 'ml', 'mts': Prioriza 'length'. Si Unidad es 'un', 'c/u', 'pza': Prioriza 'block'."
+            }
+       
     2. **Coincidencia Semántica**: Una vez filtrado por tipo, busca el nombre que mejor describa el ítem.
        - Analiza sinónimos técnicos (ej: "Enchufe" = Tomada/Socket, "Muro" = Wall).
     3. **Selección**: Retorna el nombre EXACTO de la capa seleccionada.
@@ -49,7 +55,7 @@ export const matchItemFlow = ai.defineFlow(
        - 0.95: Coincidencia perfecta de Nombre + Tipo correcto.
        - 0.1: Si no encontraste ningún candidato del tipo correcto (recomienda null).
     
-    IMPORTANTE: Responde SIEMPRE en español. Reasoning debe explicar por qué el tipo coincide con la unidad.
+    IMPORTANTE: Responde SIEMPRE en español. Reasoning debe explicar por qué el tipo coincide con la unidad y la clase sugerida.
     `;
 
         const result = await ai.generate({

@@ -61,10 +61,31 @@ export async function POST(
                 return;
             }
 
+            // Determine Pricing Mode
+            const desc = (item.excel_item_text || '').toLowerCase();
+            const unit = (item.excel_unit || '').toLowerCase().trim();
+
+            let mode: 'material' | 'service' | 'mixed' = 'material'; // Default logic
+
+            // Heuristic to detect services
+            if (
+                ['gl', 'glb', 'global', 'est', 'est.'].includes(unit) ||
+                desc.includes('instalacion') || desc.includes('instalación') ||
+                desc.includes('tramite') || desc.includes('inscripcion') ||
+                desc.includes('certificado') || desc.includes('legaliz') ||
+                desc.includes('mano de obra')
+            ) {
+                mode = 'service';
+            }
+
+            // Heuristic for mixed (e.g. Point + Install, but usually we want materials for points first)
+            // Keeping it simple: Points -> Material (to get the cost of components)
+
             const priceResult = await findPriceFlow({
                 item_description: item.excel_item_text, // ✅ Fixed: was excel_item
                 item_unit: item.excel_unit || '',
-                country: 'Chile'
+                country: 'Chile',
+                pricing_mode: mode
             });
 
             if (priceResult.found) {

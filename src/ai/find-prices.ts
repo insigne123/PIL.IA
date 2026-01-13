@@ -24,25 +24,47 @@ export const findPriceFlow = ai.defineFlow(
         inputSchema: z.object({
             item_description: z.string(),
             item_unit: z.string(), // 'm', 'un', 'gl'
-            country: z.string().default('Chile')
+            country: z.string().default('Chile'),
+            pricing_mode: z.enum(['material', 'service', 'mixed']).default('material')
         }),
         outputSchema: PriceOutputSchema,
     },
     async (input) => {
-        const { item_description, item_unit, country } = input;
+        const { item_description, item_unit, country, pricing_mode } = input;
+
+        // MODE SPECIFIC INSTRUCTIONS
+        let modeInstructions = "";
+        if (pricing_mode === 'service') {
+            modeInstructions = `
+            🛑 MODO SERVICIO DETECTADO:
+            - Este ítem es un SERVICIO (Mano de obra, Instalación, Trámite, Certificación).
+            - NO busques productos físicos (cables, tubos, módulos).
+            - Busca tarifas de referencia de mano de obra, costos por metro lineal de instalación, o valores de trámites.
+            - Si no encuentras una tarifa exacta, busca "Costo mano de obra electricista ${country}" o similar.
+            - Evita URLs de Sodimac/Easy a menos que sean servicios de instalación ofrecidos por la tienda.
+            `;
+        } else if (pricing_mode === 'material') {
+            modeInstructions = `
+            🛑 MODO MATERIAL DETECTADO:
+            - Este ítem es un PRODUCTO FÍSICO.
+            - Prioriza Sodimac, Easy, Rexel, sitios de ferretería.
+            - Si el ítem es "Punto de X", cotiza los MATERIALES para armar ese punto (cajas, placa, cable estimado).
+            `;
+        }
 
         // STEP 1: RESEARCH (Text Output + Search Tool)
-        // We prompt the model to search and return a text summary.
-        // This is allowed because we are NOT asking for JSON output here.
         const searchPrompt = `
         Investiga el precio de mercado actual en ${country} para: "${item_description}"
         Unidad requerida: "${item_unit}"
+        Modo de Pricing: "${pricing_mode}"
         
         Instrucciones:
-        1. **Enfoque Materiales**: Si el ítem es "Punto de X" (ej: enchufe, datos), busca el precio de los MATERIALES (placa + módulo + caja). Evita precios de "servicio de instalación" a menos que se especifique "Mano de obra".
-        2. **Proveedores**: Prioriza Sodimac, Easy, Rexel, sitios de ferretería online.
-        3. **Referencia**: Intenta encontrar 3 referencias.
-        4. **Packs**: Fíjate si el precio es por unidad o por pack/tira/caja (ej: "tira 3m", "pack 10 un"). Anótalo claramente.
+        ${modeInstructions}
+        
+        Reglas Generales:
+        1. **Proveedores**: Prioriza fuentes confiables locales.
+        2. **Referencia**: Intenta encontrar 3 referencias.
+        3. **Packs**: Fíjate si el precio es por unidad o por pack/tira/caja (ej: "tira 3m", "pack 10 un"). Anótalo claramente.
         
         Resume los hallazgos en un texto detallado que incluya:
            - Nombre del proveedor
@@ -50,7 +72,7 @@ export const findPriceFlow = ai.defineFlow(
            - Descripción exacta (incluyendo si es pack o unidad)
            - URL (INDISPENSABLE)
         
-        Si no encuentras el producto exacto, busca el sustituto más cercano (ej: 'Canaleta 20x10' si no hay medida exacta).
+        Si no encuentras el producto exacto, busca el sustituto más cercano.
         Responde SOLO con el resumen de la investigación en texto plano.
         `;
 
@@ -64,7 +86,7 @@ export const findPriceFlow = ai.defineFlow(
             });
 
             const researchText = searchResult.text;
-            console.log(`[PricingAI] Research for '${item_description}':`, researchText.substring(0, 100) + "...");
+            console.log(`[PricingAI] Research for '${item_description}' (Mode: ${pricing_mode}):`, researchText.substring(0, 100) + "...");
 
             // STEP 2: EXTRACTION (JSON Output + No Tool)
             // We feed the research text back to the model to structure it.
@@ -80,6 +102,7 @@ export const findPriceFlow = ai.defineFlow(
             """
             
             Item Buscado: "${item_description}" (${item_unit})
+            Modo: ${pricing_mode}
             
             Instrucciones Específicas:
             1. **Normalización de Precio**:
@@ -87,9 +110,9 @@ export const findPriceFlow = ai.defineFlow(
                - Si el título dice "2 mt", "3 metros", etc., divide por los metros.
             
             2. **Materiales vs Servicios**:
-               - Prioriza siempre MATERIALES de tiendas de construcción (Sodimac, Easy, etc.).
-               - Solo si es explícitamente una instalación (mano de obra), busca tarifas de servicios.
-               - Si el ítem es "Punto de X" (ej: enchufes), cotiza los MATERIALES para armar ese punto (cajas, placa, cable estimado), NO solo el módulo.
+               ${pricing_mode === 'service' ?
+                    "- Prioriza TARIFAS de mano de obra o servicios. Si hay productos mezclados, IGNÓRALOS o dales baja prioridad." :
+                    "- Prioriza MATERIALES de construcción. Si hay servicios mezclados, IGNÓRALOS."}
             
             3. **Validación**:
                - **URL es OBLIGATORIA**. Si no hay URL válida, descarta esa fuente o marca confidence='low'.
