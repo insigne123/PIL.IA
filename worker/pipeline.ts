@@ -486,6 +486,15 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                     displayName = `${i.name_raw} (Layer: ${i.layer_normalized})`;
                 }
 
+                // FIX: Also include TEXT entities as candidates for "Point" items (e.g. "T-1", "E")
+                if (i.type === 'text' && (i.value_raw || i.name_raw)) {
+                    const content = String(i.value_raw || i.name_raw).trim();
+                    if (content.length > 0 && content.length < 20) { // Only short texts, likely codes
+                        key = `${i.layer_normalized}::TEXT::${content}`;
+                        displayName = `TEXT: "${content}" (Layer: ${i.layer_normalized})`;
+                    }
+                }
+
                 if (!candidateMap.has(key)) {
                     candidateMap.set(key, {
                         name: displayName,
@@ -540,11 +549,12 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                         // FILTER CANDIDATES BASED ON TYPE
                         let filteredCandidates = candidatePayload;
                         if (enforcedType === 'block') {
-                            filteredCandidates = candidatePayload.filter(c => c.type === 'block');
+                            // FIX: Allow 'text' candidates too, as they serve as point markers (e.g. "T-1")
+                            filteredCandidates = candidatePayload.filter(c => c.type === 'block' || c.type === 'text');
                             if (filteredCandidates.length === 0) {
                                 // Fallback: if no blocks found, maybe they are drawn as lines? 
                                 // But for now, strict enforcement is better to avoid "0.95m Tablero".
-                                console.warn(`[Type Enforcement] Item '${row.excel_item_text}' requires BLOCK but no block candidates found.`);
+                                console.warn(`[Type Enforcement] Item '${row.excel_item_text}' requires BLOCK but no block/text candidates found.`);
                             }
                         } else if (enforcedType === 'length') {
                             filteredCandidates = candidatePayload.filter(c => c.type === 'length');
@@ -564,10 +574,22 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                             // Find the items belonging to this layer
                             let betterMatches: ItemDetectado[] = [];
 
+                            // Parse "TEXT: "Content" (Layer: LayerName)"
+                            const textMatch = aiResult.selected_layer.match(/^TEXT: "(.*)" \(Layer: (.*)\)$/);
+
                             // Parse "BlockName (Layer: LayerName)" format used for Blocks in candidateMap
                             const granularMatch = aiResult.selected_layer.match(/^(.*) \(Layer: (.*)\)$/);
 
-                            if (granularMatch) {
+                            if (textMatch) {
+                                // CASE TEXT: Specific Text Content selected
+                                const tContent = textMatch[1];
+                                const tLayer = textMatch[2];
+                                betterMatches = dxfItems.filter(i =>
+                                    i.type === 'text' &&
+                                    i.layer_normalized === tLayer &&
+                                    (String(i.value_raw || i.name_raw).trim() === tContent)
+                                );
+                            } else if (granularMatch) {
                                 // CASE A: Specific Block selected
                                 const bName = granularMatch[1];
                                 const bLayer = granularMatch[2];
@@ -581,16 +603,20 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                                 // CASE B: Whole Layer selected (Typical for Lengths/Areas)
                                 // STRICT FILTER: Exclude blocks to avoid mixing types (e.g. 4 blocks + 0.9m length)
                                 // If the AI selected a whole layer, it usually means linear elements.
-                                betterMatches = dxfItems.filter(i =>
-                                    i.layer_normalized === aiResult.selected_layer &&
-                                    i.type !== 'block'
-                                );
+                                betterMatches = dxfItems.filter(i => {
+                                    const layerMatch = i.layer_normalized === aiResult.selected_layer;
+                                    if (!layerMatch) return false;
+                                    if (enforcedType === 'block') return i.type === 'block' || i.type === 'text';
+                                    if (enforcedType === 'length') return i.type === 'length';
+                                    return true;
+                                });
                             }
 
                             // FINAL TYPE CHECK (Post-AI)
                             // If we enforced BLOCK but ended up with LENGTH items (shouldn't happen with filtered candidates but safety first)
-                            if (enforcedType === 'block' && betterMatches.some(m => m.type !== 'block')) {
-                                console.warn(`[Type Enforcement] Rejected AI match for '${row.excel_item_text}' because it returned non-block items.`);
+                            // FIX: Allow 'text' in block mode
+                            if (enforcedType === 'block' && betterMatches.some(m => m.type !== 'block' && m.type !== 'text')) {
+                                console.warn(`[Type Enforcement] Rejected AI match for '${row.excel_item_text}' because it returned non-block/text items.`);
                                 betterMatches = [];
                             }
 
@@ -601,11 +627,14 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
 
                                 // Recalculate Qty with Clean Length Filter
                                 let qty = 0;
-                                if (betterMatches[0].type === 'block') {
-                                    // VICTORY FIX: Sum values instead of counting items, for multi-insertion blocks
+                                const firstType = betterMatches[0].type;
+
+                                if (firstType === 'block' || firstType === 'text') {
+                                    // Count items (Blocks or Texts)
+                                    // For blocks, use value_raw if available (multi-insertion), otherwise 1
                                     qty = betterMatches.reduce((acc, m) => acc + (m.value_raw || 1), 0);
                                 } else {
-                                    // CLEAN LENGTH FILTER: Ignore tiny segments < 0.2m (Noise)
+                                    // FLOW/LENGTH: Ignore tiny segments < 0.2m (Noise)
                                     betterMatches.forEach(m => {
                                         if (m.value_m > 0.2) {
                                             qty += m.value_m;

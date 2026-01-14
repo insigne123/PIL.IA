@@ -18,7 +18,7 @@ export const matchItemFlow = ai.defineFlow(
             item_class_hint: z.string().optional().describe("Hint for the item type: 'block', 'length', or 'global'"),
             candidate_layers: z.array(z.object({
                 name: z.string(),
-                type: z.string().describe("block (count) or length (linear m)"),
+                type: z.string().describe("block (count), text (marker/code) or length (linear m)"),
                 sample_value: z.number().optional()
             })),
         }),
@@ -42,10 +42,10 @@ export const matchItemFlow = ai.defineFlow(
     Instrucciones:
     1. **FILTRADO DIMENSIONAL ESTRICTO**: 
        ${item_class_hint === 'block' ?
-                "- CLASE SUGERIDA ES 'BLOCK' (Contable). IGNORA COMPLETAMENTE cualquier candidato de tipo 'length'. Solo selecciona candidatos de tipo 'block'." :
+                "- CLASE SUGERIDA ES 'BLOCK' (Contable). IGNORA COMPLETAMENTE 'length'. Selecciona candidatos de tipo 'block' o 'text' (marcas/códigos de ubicación)." :
                 item_class_hint === 'length' ?
-                    "- CLASE SUGERIDA ES 'LENGTH' (Lineal). IGNORA COMPLETAMENTE cualquier candidato de tipo 'block'. Solo selecciona candidatos de tipo 'length'." :
-                    "- Si Unidad es 'm', 'ml', 'mts': Prioriza 'length'. Si Unidad es 'un', 'c/u', 'pza': Prioriza 'block'."
+                    "- CLASE SUGERIDA ES 'LENGTH' (Lineal). IGNORA COMPLETAMENTE 'block' y 'text'. Solo selecciona candidatos de tipo 'length'." :
+                    "- Si Unidad es 'm', 'ml', 'mts': Prioriza 'length'. Si Unidad es 'un', 'c/u', 'pza': Prioriza 'block' o 'text'."
             }
        
     2. **Coincidencia Semántica**: Una vez filtrado por tipo, busca el nombre que mejor describa el ítem.
