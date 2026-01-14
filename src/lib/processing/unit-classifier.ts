@@ -109,18 +109,18 @@ export function classifyExpectedType(
  * Check if a DXF item type matches the expected type
  */
 export function typeMatches(
-    dxfItemType: 'block' | 'length' | 'text',
+    dxfItemType: 'block' | 'length' | 'text' | 'area',
     expectedType: ExpectedType
 ): boolean {
     if (expectedType === 'UNKNOWN') return true; // Accept any match if unknown
     if (expectedType === 'GLOBAL') return false; // Global items don't match CAD geometry
 
-    const matchMap: Record<ExpectedType, Array<'block' | 'length' | 'text'>> = {
+    const matchMap: Record<ExpectedType, Array<'block' | 'length' | 'text' | 'area'>> = {
         'LENGTH': ['length'],
         'BLOCK': ['block'],
-        'AREA': ['length'], // Area can be derived from length (perimeter)
+        'AREA': ['area'],
         'GLOBAL': [],
-        'UNKNOWN': ['block', 'length', 'text']
+        'UNKNOWN': ['block', 'length', 'text', 'area']
     };
 
     return matchMap[expectedType]?.includes(dxfItemType) || false;

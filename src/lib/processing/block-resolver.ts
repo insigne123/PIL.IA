@@ -18,6 +18,20 @@ export interface BlockDefinition {
     entities: any[];
 }
 
+export interface LayerResolution {
+    original_layer: string;
+    insert_layer: string;
+    resolved_layer: string;
+    block_name?: string;
+}
+
+export interface ResolvedEntity {
+    entity: any;
+    transform: Transform;
+    depth: number;
+    layerResolution: LayerResolution;
+}
+
 /**
  * Compose two transformations (parent * child)
  */
@@ -83,7 +97,7 @@ export function extractTransformFromInsert(insertEntity: any): Transform {
         z: insertEntity.position?.z || 0
     };
 
-    const rotation = insertEntity.rotation || 0; // Already in radians in dxf-parser
+    const rotation = insertEntity.rotation || 0;
 
     const scale: Point = {
         x: insertEntity.xScale || insertEntity.scaleX || 1,
@@ -95,17 +109,60 @@ export function extractTransformFromInsert(insertEntity: any): Transform {
 }
 
 /**
+ * Resolve layer for entity inside block
+ * Handles BYBLOCK, BYLAYER, and Layer "0" inheritance
+ */
+export function resolveEntityLayer(
+    entity: any,
+    insertEntity: any,
+    blockName: string
+): LayerResolution {
+    const original = entity.layer || '0';
+    const insertLayer = insertEntity.layer || '0';
+
+    // Rule 1: Layer "0" inherits from INSERT
+    if (original === '0' || original === '0') {
+        return {
+            original_layer: original,
+            insert_layer: insertLayer,
+            resolved_layer: insertLayer,
+            block_name: blockName
+        };
+    }
+
+    // Rule 2: BYLAYER/BYBLOCK inherits from INSERT
+    const originalUpper = original.toUpperCase();
+    if (originalUpper === 'BYLAYER' || originalUpper === 'BYBLOCK') {
+        return {
+            original_layer: original,
+            insert_layer: insertLayer,
+            resolved_layer: insertLayer,
+            block_name: blockName
+        };
+    }
+
+    // Rule 3: Explicit layer is maintained
+    return {
+        original_layer: original,
+        insert_layer: insertLayer,
+        resolved_layer: original,
+        block_name: blockName
+    };
+}
+
+/**
  * Recursively resolve a block and its nested blocks
- * Returns array of resolved entities with their absolute transformations
+ * Returns array of resolved entities with transformations and layer resolution
  */
 export function resolveBlockRecursive(
     blockName: string,
     blocks: Map<string, BlockDefinition>,
     transform: Transform,
     toMeters: (val: number) => number,
+    insertEntity: any, // Parent INSERT entity for layer resolution
     maxDepth: number = 5,
     currentDepth: number = 0
-): Array<{ entity: any; transform: Transform; depth: number }> {
+): ResolvedEntity[] {
     if (currentDepth >= maxDepth) {
         console.warn(`[Block Resolver] Max depth ${maxDepth} reached for block "${blockName}"`);
         return [];
@@ -113,13 +170,15 @@ export function resolveBlockRecursive(
 
     const blockDef = blocks.get(blockName);
     if (!blockDef) {
-        // Block not found - might be a standard AutoCAD block or missing definition
         return [];
     }
 
-    const resolvedEntities: Array<{ entity: any; transform: Transform; depth: number }> = [];
+    const resolvedEntities: ResolvedEntity[] = [];
 
     for (const entity of blockDef.entities) {
+        // Resolve layer for this entity
+        const layerResolution = resolveEntityLayer(entity, insertEntity, blockName);
+
         if (entity.type === 'INSERT') {
             // Nested block: compose transformations and recurse
             const childTransform = extractTransformFromInsert(entity);
@@ -132,17 +191,19 @@ export function resolveBlockRecursive(
                     blocks,
                     composedTransform,
                     toMeters,
+                    entity, // Pass child INSERT for layer resolution
                     maxDepth,
                     currentDepth + 1
                 );
                 resolvedEntities.push(...nestedResults);
             }
         } else {
-            // Geometric entity: store with current transformation
+            // Geometric entity: store with transformation and layer resolution
             resolvedEntities.push({
                 entity,
                 transform,
-                depth: currentDepth
+                depth: currentDepth,
+                layerResolution
             });
         }
     }
@@ -151,14 +212,15 @@ export function resolveBlockRecursive(
 }
 
 /**
- * Measure a geometric entity with applied transformation
+ * Measure a geometric entity with applied transformation and layer resolution
  */
 export function measureTransformedEntity(
-    entity: any,
-    transform: Transform,
-    toMeters: (val: number) => number,
-    layer: string
+    resolvedEntity: ResolvedEntity,
+    toMeters: (val: number) => number
 ): ItemDetectado | null {
+    const { entity, transform, layerResolution } = resolvedEntity;
+    const layer = layerResolution.resolved_layer;
+
     try {
         if (entity.type === 'LINE') {
             // Validate that start and end points exist
@@ -186,7 +248,12 @@ export function measureTransformedEntity(
                 value_raw: dist,
                 unit_raw: 'm',
                 value_m: distM,
-                evidence: `LINE in nested block`
+                evidence: `LINE in nested block`,
+                layer_metadata: {
+                    original: layerResolution.original_layer,
+                    resolved: layerResolution.resolved_layer,
+                    block_name: layerResolution.block_name
+                }
             };
         }
 
@@ -230,7 +297,12 @@ export function measureTransformedEntity(
                 value_raw: totalDist,
                 unit_raw: 'm',
                 value_m: distM,
-                evidence: `${entity.type} in nested block`
+                evidence: `${entity.type} in nested block`,
+                layer_metadata: {
+                    original: layerResolution.original_layer,
+                    resolved: layerResolution.resolved_layer,
+                    block_name: layerResolution.block_name
+                }
             };
         }
 

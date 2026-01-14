@@ -3,6 +3,7 @@ import { ItemDetectado, StagingRow, Unit, Suggestion } from '@/types';
 import { ExtractedExcelItem } from './excel';
 import { v4 as uuidv4 } from 'uuid';
 import { classifyExpectedType, typeMatches, type ExpectedType } from './unit-classifier';
+import { determineCalcMethod, isCompatibleType, type CalcMethod } from './calc-method';
 
 export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetectado[], sheetName: string): StagingRow[] {
 
@@ -16,7 +17,11 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
     });
 
     const rows: StagingRow[] = excelItems.map(excelItem => {
-        // 1. Classify expected type deterministically
+        // 1. Determine calculation method (deterministic)
+        const calcMethodResult = determineCalcMethod(excelItem.unit, excelItem.description);
+        const calcMethod = calcMethodResult.method;
+
+        // 2. Classify expected type deterministically
         const classification = classifyExpectedType(excelItem.unit, excelItem.description);
         const expectedType = classification.type;
 
@@ -101,7 +106,10 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             price_candidates: [],
             status,
             status_reason: getStatusReason(status, classification, confidence),
-            suggestions: suggestions.length > 0 ? suggestions : undefined
+            suggestions: suggestions.length > 0 ? suggestions : undefined,
+            // NEW: Calculation method
+            calc_method: calcMethod,
+            method_detail: calcMethodResult.method_detail
         };
     });
 

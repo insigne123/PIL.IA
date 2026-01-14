@@ -1,9 +1,9 @@
-export type Unit = 'mm' | 'cm' | 'm';
+export type Unit = 'mm' | 'cm' | 'm' | 'm²';
 
 // M2/M5: Extracted from CAD
 export interface ItemDetectado {
   id: string; // uuid
-  type: 'block' | 'length' | 'text';
+  type: 'block' | 'length' | 'text' | 'area';
   name_raw: string;
   name_effective?: string; // For dynamic blocks
   layer_raw: string;
@@ -12,6 +12,16 @@ export interface ItemDetectado {
   unit_raw: Unit | 'txt' | 'u';
   value_m: number; // Normalized to meters or count
   evidence?: string; // 'ATTRIB', 'MTEXT vicinity', etc.
+  // Layer resolution metadata
+  layer_metadata?: {
+    original: string;
+    resolved: string;
+    block_name?: string;
+  };
+  // Suspect geometry flagging
+  suspect_geometry?: boolean;
+  suspect_reason?: string;
+  geometry_threshold?: number;
 }
 
 // Unified Price Source
@@ -69,6 +79,10 @@ export interface StagingRow {
   status: 'pending' | 'approved' | 'ignored' | 'pending_semantics' | 'pending_no_geometry' | 'pending_no_match';
   status_reason?: string; // Reason for refined status
   suggestions?: Suggestion[]; // Actionable suggestions for pending items
+
+  // Calculation method (deterministic)
+  calc_method?: 'COUNT' | 'LENGTH' | 'AREA' | 'GLOBAL';
+  method_detail?: string; // 'block_count' | 'polyline_length' | 'hatch_area' | etc.
 }
 
 export interface Suggestion {
