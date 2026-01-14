@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from 'uuid';
+import { detectDiscipline } from '@/lib/processing/discipline';
 import { SupabaseClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 import { parseDxf } from '../src/lib/processing/dxf';
@@ -35,52 +37,54 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
 
         if (downloadError || !fileData) throw new Error("Download failed");
 
-        const buffer = await fileData.arrayBuffer();
-        let extractedItems: any = null;
-        let detectedUnitVal: any = null; // Scoped variable for update
+        const buffer = Buffer.from(fileData);
+        let extractedItems: any[] = [];
+        let detectedUnitVal: string = 'unknown';
+
+        // --- HOTFIX 6: Detect Discipline ---
+        const fileDiscipline = detectDiscipline(file.original_filename);
+
+        // Get Batch Unit Preference
+        const { data: batchData } = await supabase.from('batches').select('unit_selected').eq('id', file.batch_id).single();
+        const planUnit = (batchData?.unit_selected as any) || 'm';
 
         if (file.file_type === 'dxf') {
-            // Try to read with different encodings
-            let text: string;
             let parseError: Error | null = null;
 
+            // Try parsing
             try {
-                // First attempt: UTF-8 (default)
-                text = await new Response(fileData).text();
+                // Attempt 1: UTF-8
+                const fileContent = buffer.toString('utf-8');
+                const result = await parseDxf(fileContent, planUnit);
+                extractedItems = result.items;
+                detectedUnitVal = result.detectedUnit || 'unknown';
 
-                // Get Batch Unit Preference
-                const { data: batchData } = await supabase.from('batches').select('unit_selected').eq('id', file.batch_id).single();
-                const planUnit = (batchData?.unit_selected as any) || 'm';
+                // Tag items with discipline
+                extractedItems.forEach(item => { item.discipline = fileDiscipline; });
 
-                const { items, detectedUnit } = await parseDxf(text, planUnit);
-                detectedUnitVal = detectedUnit;
-
-                if (detectedUnit && detectedUnit !== planUnit) {
-                    console.warn(`[Unit Mismatch] Batch says '${planUnit}' but DXF header says '${detectedUnit}'. Using '${planUnit}'.`);
+                if (detectedUnitVal && detectedUnitVal !== planUnit) {
+                    console.warn(`[Unit Mismatch] Batch says '${planUnit}' but DXF header says '${detectedUnitVal}'. Using '${planUnit}'.`);
                 }
 
-                extractedItems = items;
+                console.log(`[DXF] Parsed ${extractedItems.length} items from ${file.original_filename} (UTF-8)`);
+
             } catch (firstError: any) {
                 parseError = firstError;
                 console.warn('[DXF] UTF-8 parsing failed, trying Latin-1 encoding...', firstError.message);
 
                 try {
-                    // Second attempt: Latin-1 (Windows-1252)
+                    // Attempt 2: Latin-1 (Windows-1252)
                     const decoder = new TextDecoder('windows-1252');
-                    text = decoder.decode(buffer);
+                    const text = decoder.decode(buffer);
 
-                    const { data: batchData } = await supabase.from('batches').select('unit_selected').eq('id', file.batch_id).single();
-                    const planUnit = (batchData?.unit_selected as any) || 'm';
+                    const result = await parseDxf(text, planUnit);
+                    extractedItems = result.items;
+                    detectedUnitVal = result.detectedUnit || 'unknown';
 
-                    const { items, detectedUnit } = await parseDxf(text, planUnit);
-                    detectedUnitVal = detectedUnit;
+                    // Tag items with discipline
+                    extractedItems.forEach(item => { item.discipline = fileDiscipline; });
 
-                    if (detectedUnit && detectedUnit !== planUnit) {
-                        console.warn(`[Unit Mismatch] Batch says '${planUnit}' but DXF header says '${detectedUnit}'. Using '${planUnit}'.`);
-                    }
-
-                    extractedItems = items;
-                    console.log('[DXF] Successfully parsed with Latin-1 encoding');
+                    console.log(`[DXF] Parsed ${extractedItems.length} items from ${file.original_filename} (Latin-1)`);
                 } catch (secondError: any) {
                     console.error('[DXF] Both UTF-8 and Latin-1 parsing failed');
                     throw new Error(`Error al procesar archivo DXF: ${parseError?.message || 'Unknown'}. El archivo puede estar corrupto o tener un formato incompatible.`);
@@ -279,6 +283,12 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
 
     const sheetTarget = batch.sheet_target || 'Presupuesto';
 
+    // --- HOTFIX 6: Detect Excel Discipline ---
+    // Find the Excel file in the file list to get its name
+    const excelFile = files.find(f => f.file_type === 'excel');
+    const excelDiscipline = excelFile ? detectDiscipline(excelFile.original_filename) : 'UNKNOWN';
+    console.log(`[Mapping] Excel Discipline: ${excelDiscipline}`);
+
     // 4. PRE-CLASSIFICATION (Quick Win 3: Force "Punto" items to low confidence)
     // This ensures they go through AI refinement where the Block rule is applied
     excelItems.forEach((item: any) => {
@@ -291,7 +301,8 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
     });
 
     // 4. Match Items (Hybrid: Fuzzy + AI)
-    let stagingRows = matchItems(excelItems, dxfItems, sheetTarget);
+    // Pass discipline to filter candidates
+    let stagingRows = matchItems(excelItems, dxfItems, sheetTarget, excelDiscipline);
 
     // POST-FUZZY PROCESSING: Apply all classification rules
     stagingRows = stagingRows.map((row: any) => {
@@ -390,7 +401,11 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
         const candidatePayload = Array.from(candidateMap.values())
             .map(c => ({ name: c.name, type: c.type, sample_value: c.sample_value }));
 
-        const lowConfidenceRows = stagingRows.filter(r => (r as any).match_confidence < 0.6);
+        const lowConfidenceRows = stagingRows.filter(r =>
+            (r as any).match_confidence < 0.6 &&
+            (r as any).status !== 'ignored' &&
+            (r as any).status !== 'approved'
+        );
 
         console.log(`AI Refining ${lowConfidenceRows.length} items with Dimensional Analysis...`);
 

@@ -78,7 +78,7 @@ export const findPriceFlow = ai.defineFlow(
 
         try {
             const searchResult = await ai.generate({
-                model: 'googleai/gemini-2.5-flash',
+                model: 'googleai/gemini-1.5-flash',
                 prompt: searchPrompt,
                 config: {
                     googleSearchRetrieval: {} // ✅ Allowed with Text output
@@ -131,7 +131,7 @@ export const findPriceFlow = ai.defineFlow(
             `;
 
             const extractionResult = await ai.generate({
-                model: 'googleai/gemini-2.5-flash',
+                model: 'googleai/gemini-1.5-flash',
                 prompt: extractionPrompt,
                 output: { format: 'json', schema: PriceOutputSchema } // ✅ Allowed without Tools
             });

@@ -1,8 +1,10 @@
 export type Unit = 'mm' | 'cm' | 'm' | 'm²';
+export type Discipline = 'ELEC' | 'SANI' | 'ARQUI' | 'ESTR' | 'CLIMA' | 'GAS' | 'GENERAL' | 'UNKNOWN';
 
 // M2/M5: Extracted from CAD
 export interface ItemDetectado {
   id: string; // uuid
+  discipline?: Discipline; // Hotfix 6
   type: 'block' | 'length' | 'text' | 'area';
   name_raw: string;
   name_effective?: string; // For dynamic blocks
@@ -46,6 +48,7 @@ export interface StagingRow {
   excel_row_index: number;
   excel_item_text: string; // Description from Excel
   excel_unit: string; // Unit from Excel (could be 'gl', 'un', 'm', 'm2')
+  row_type?: 'item' | 'section_header' | 'note' | 'service'; // Classification of the row
 
   // Mapping Result
   source_items: ItemDetectado[]; // Items contributing to this row
@@ -57,6 +60,14 @@ export interface StagingRow {
   qty_final: number | null; // null = couldn't measure, 0 = measured as zero, >0 = valid
   raw_qty?: number; // What was actually measured before sanity checks
   sanity_flag?: string; // Reason if qty_final was nullified (e.g., 'insufficient_geometry')
+
+  // Scoping (Hotfix 6)
+  discipline?: Discipline;
+
+  // Method Metadata (Hotfix 2/3)
+  calc_method?: string;
+  method_detail?: string;
+
   height_factor?: number; // For m -> m2 conversion (default 2.4 or user override)
 
   unit_final?: string; // Normalized unit to write if Excel was empty

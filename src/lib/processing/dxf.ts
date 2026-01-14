@@ -133,38 +133,110 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
     // 4. Process ONLY ModelSpace entities for cubication
     for (const entity of modelSpaceEntities) {
         try {
-            if (entity.type === 'INSERT') {
-                let name = (entity as any).name || (entity as any).block || 'UnknownBlock';
-                const layer = (entity as any).layer || '0';
-                const key = `${name}::${layer}`;
-                if (!blockCounts.has(key)) blockCounts.set(key, { count: 0, layer });
-                blockCounts.get(key)!.count++;
+            // Classification of Entity Type
+            const type = entity.type;
+            const rawLayer = (entity as any).layer || '0';
+            const resolvedLayer = rawLayer; // At root level, resolved is same as raw (unless byblock logic needed later)
 
-                // Resolve nested blocks if definition exists
-                if (blockDefinitions.has(name)) {
-                    const transform = extractTransformFromInsert(entity);
-                    const resolvedEntities = resolveBlockRecursive(
-                        name,
-                        blockDefinitions,
-                        transform,
-                        toMeters,
-                        entity, // Pass INSERT entity for layer resolution
-                        5 // max depth
-                    );
+            const layerResolutionData = {
+                original: rawLayer,
+                resolved: resolvedLayer
+            };
 
-                    // Measure resolved entities
-                    for (const resolvedEntity of resolvedEntities) {
-                        const measured = measureTransformedEntity(
-                            resolvedEntity,
-                            toMeters
+            // --- HOTFIX 2: ANNOTATION vs MEASURABLE GEOMETRY ---
+            const isAnnotation = ['TEXT', 'MTEXT', 'DIMENSION', 'LEADER', 'MULTILEADER', 'ATTRIB', 'ATTDEF'].includes(type);
+            const isMeasurable = ['LINE', 'LWPOLYLINE', 'POLYLINE', 'CIRCLE', 'ARC', 'ELLIPSE', 'SPLINE', 'HATCH', 'SOLID', 'INSERT'].includes(type);
+
+            if (isAnnotation) {
+                // Processing Annotation (Text)
+                // Just extract the text content for metadata/search, but value_m MUST be 0
+                if (type === 'TEXT' || type === 'MTEXT') {
+                    const textVal = (entity as any).text || (entity as any).string;
+                    if (textVal) {
+                        items.push({
+                            id: uuidv4(),
+                            type: 'text',
+                            name_raw: textVal.trim(),
+                            layer_raw: resolvedLayer,
+                            layer_normalized: resolvedLayer.toLowerCase().trim(),
+                            value_raw: 0, // CRITICAL: No quantity
+                            unit_raw: 'txt',
+                            value_m: 0, // CRITICAL: No quantity
+                            evidence: 'TEXT entity',
+                            layer_metadata: layerResolutionData
+                        });
+                    }
+                }
+                // Skip other annotations (dimensions, etc) for now
+                continue;
+            }
+
+            if (!isMeasurable) {
+                // Unknown/Unsupported geometry (RAY, XLINE, POINT, etc)
+                continue;
+            }
+
+            // --- MEASURABLE GEOMETRY PROCESSING ---
+
+            // 1. BLOCK (INSERT) processing
+            if (type === 'INSERT') {
+                const blockName = (entity as any).name;
+                if (blockName) {
+                    const point = { x: (entity as any).x || 0, y: (entity as any).y || 0, z: (entity as any).z || 0 };
+
+                    // Add Block Item
+                    items.push({
+                        id: uuidv4(),
+                        type: 'block',
+                        name_raw: blockName,
+                        layer_raw: resolvedLayer,
+                        layer_normalized: resolvedLayer.toLowerCase().trim(),
+                        value_raw: 1,
+                        unit_raw: 'u',
+                        value_m: 1, // 1 block instance
+                        evidence: 'INSERT entity',
+                        layer_metadata: layerResolutionData // Persist layer origin
+                    });
+
+                    // Update aggregate stats
+                    const key = `BLOCK::${resolvedLayer}::${blockName}`;
+                    const entry = blockCounts.get(key);
+                    if (entry) {
+                        entry.count++;
+                    } else {
+                        blockCounts.set(key, { count: 1, layer: resolvedLayer });
+                    }
+
+                    // Resolve nested blocks if definition exists
+                    if (blockDefinitions.has(blockName)) {
+                        const transform = extractTransformFromInsert(entity);
+                        const resolvedEntities = resolveBlockRecursive(
+                            blockName,
+                            blockDefinitions,
+                            transform,
+                            toMeters,
+                            entity, // Pass INSERT entity for layer resolution
+                            5, // max depth
+                            [(entity as any).handle || 'root'] // Start path
                         );
-                        if (measured) {
-                            nestedBlockItems.push(measured);
+
+                        // Measure resolved entities
+                        for (const resolvedEntity of resolvedEntities) {
+                            const measured = measureTransformedEntity(
+                                resolvedEntity,
+                                toMeters
+                            );
+                            if (measured) {
+                                // --- HOTFIX 4: Stable ID Assignment ---
+                                measured.id = resolvedEntity.stableId || uuidv4();
+                                nestedBlockItems.push(measured);
+                            }
                         }
                     }
                 }
             }
-            else if (entity.type === 'LINE') {
+            // 2. LINEAR & AREA PROCESSING
+            else if (type === 'LINE') {
                 const layer = (entity as any).layer || '0';
                 // FIX: LINE entities use start/end points, not vertices array
                 const start = (entity as any).start;
@@ -176,7 +248,7 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
                     layerLengths.set(layer, (layerLengths.get(layer) || 0) + dist);
                 }
             }
-            else if (entity.type === 'LWPOLYLINE' || entity.type === 'POLYLINE') {
+            else if (type === 'LWPOLYLINE' || type === 'POLYLINE') {
                 const layer = (entity as any).layer || '0';
                 const vertices = (entity as any).vertices || [];
                 let totalDist = 0;
@@ -372,6 +444,42 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
     if (nestedBlockItems.length > 0) {
         console.log(`[DXF Parser] Found ${nestedBlockItems.length} items from nested blocks`);
         items.push(...nestedBlockItems);
+    }
+
+    // 5. Aggregate Areas by Layer
+    // (Existing logic...)
+
+    // --- HOTFIX 4: Statistical Symbol Filtering ---
+    // Detect repetitive micro-geometry (e.g. 0.218m lines repeated 50 times) which are likely symbols
+    const lengthGroups = new Map<string, Map<number, number>>();
+
+    // Build stats
+    for (const item of items) {
+        if (item.type === 'length' && item.value_m < 0.5) {
+            const layer = item.layer_normalized;
+            if (!lengthGroups.has(layer)) lengthGroups.set(layer, new Map());
+
+            // Round to 3 decimals to catch variations
+            const val = Math.round(item.value_m * 1000) / 1000;
+            const group = lengthGroups.get(layer)!;
+            group.set(val, (group.get(val) || 0) + 1);
+        }
+    }
+
+    // Tag items
+    for (const item of items) {
+        if (item.type === 'length' && item.value_m < 0.5) {
+            const layer = item.layer_normalized;
+            const val = Math.round(item.value_m * 1000) / 1000;
+            const count = lengthGroups.get(layer)?.get(val) || 0;
+
+            // Threshold: If small length (<0.5m) appears more than 20 times in the same layer
+            if (count > 20) {
+                item.suspect_geometry = true;
+                item.suspect_reason = `Symbol-like geometry: ${count} occurrences of ${val}m length`;
+                // Optional: We could set value_m = 0 if we are very confident
+            }
+        }
     }
 
     return { items, detectedUnit, preflight };

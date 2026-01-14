@@ -1,11 +1,14 @@
 import ExcelJS from 'exceljs';
 
+export type RowType = 'item' | 'section_header' | 'note' | 'service';
+
 export interface ExtractedExcelItem {
     row: number;
     description: string;
     unit: string;
     qty: number | null;
     price: number | null;
+    type: RowType; // New field
 }
 
 export interface ExcelStructure {
@@ -15,9 +18,93 @@ export interface ExcelStructure {
         unit: number;
         qty: number;
         price: number;
+        total: number;
     };
     sheetName: string;
+    columns_detected_by: string; // Diagnostic field
 }
+
+/**
+ * Validates if a column mapping is sane by checking data types in the next N rows
+ */
+function validateMapping(worksheet: ExcelJS.Worksheet, headerRow: number, columns: ExcelStructure['columns']): number {
+    let score = 0;
+    const checkLimit = 30; // Check up to 30 rows
+    let rowsChecked = 0;
+    let validUnits = 0;
+    let validNumbers = 0;
+
+    worksheet.eachRow((row, rowNumber) => {
+        if (rowNumber <= headerRow || rowsChecked >= checkLimit) return;
+
+        // Check Unit: should match common units
+        const unitVal = columns.unit !== -1 ? row.getCell(columns.unit).text?.toLowerCase().trim() : '';
+        if (['m', 'ml', 'm2', 'm²', 'm3', 'm³', 'u', 'un', 'und', 'gl', 'glb', 'global'].includes(unitVal)) {
+            validUnits++;
+        }
+
+        // Check Qty/Price: should be numeric
+        const qtyVal = columns.qty !== -1 ? row.getCell(columns.qty).value : null;
+        if (typeof qtyVal === 'number') validNumbers++;
+
+        const priceVal = columns.price !== -1 ? row.getCell(columns.price).value : null;
+        if (typeof priceVal === 'number') validNumbers++;
+
+        rowsChecked++;
+    });
+
+    if (rowsChecked === 0) return 0;
+
+    // Scoring: High weight on valid units (strong signal)
+    const unitScore = (validUnits / rowsChecked) * 100;
+    const numScore = (validNumbers / (rowsChecked * 2)) * 100; // *2 because checking both qty and price
+
+    return (unitScore * 0.7) + (numScore * 0.3);
+}
+
+/**
+ * Classifies a row based on content heuristics
+ */
+function classifyRow(description: string, unit: string, qty: number | null, price: number | null, hasMerge: boolean = false, isBold: boolean = false): RowType {
+    const descLower = description.toLowerCase().trim();
+
+    // 1. NOTES / EXCLUSIONS
+    if (descLower.startsWith('nota') ||
+        descLower.includes('importante:') ||
+        descLower.includes('otros no considerados') ||
+        descLower === 'otros') {
+        return 'note';
+    }
+
+    // 2. SECTION HEADERS (Titles)
+    // Heuristic: No Unit + No Price + (Bold OR Uppercase short text OR Merged)
+    // Also check for numbering like "1. OBRAS CIVILES"
+    const isUppercase = description === description.toUpperCase() && description.length > 3;
+    const hasNoData = !unit && (!qty && qty !== 0) && (!price && price !== 0);
+
+    if (hasNoData) {
+        if (isBold || hasMerge || isUppercase || /^\d+(\.\d+)*\.?\s+[A-Z]/.test(description)) {
+            return 'section_header';
+        }
+    }
+
+    // 3. SERVICE ITEMS
+    // Known service keywords
+    if (unit === 'gl' ||
+        descLower.includes('tramite') ||
+        descLower.includes('trámite') ||
+        descLower.includes('certificacion') ||
+        descLower.includes('certificación') ||
+        descLower.includes('limpieza') ||
+        descLower.includes('aseo') ||
+        descLower.includes('planos as-built')) {
+        return 'service';
+    }
+
+    // 4. Default: ITEM
+    return 'item';
+}
+
 
 export async function parseExcel(buffer: ArrayBuffer, targetSheetName?: string): Promise<{ items: ExtractedExcelItem[]; structure: ExcelStructure }> {
     const workbook = new ExcelJS.Workbook();
@@ -25,77 +112,121 @@ export async function parseExcel(buffer: ArrayBuffer, targetSheetName?: string):
 
     let worksheet = targetSheetName ? workbook.getWorksheet(targetSheetName) : undefined;
     if (!worksheet) {
-        // If not found or not provided, try heuristics: find "Presupuesto" or take first visible
-        worksheet = workbook.worksheets.find(ws => ws.name.toLowerCase().includes('presupuesto')) || workbook.worksheets[0];
+        // Search heuristic
+        worksheet = workbook.worksheets.find(ws => {
+            const name = ws.name.toLowerCase();
+            return name.includes('presupuesto') || name.includes('cotiza') || name.includes('itemizado');
+        }) || workbook.worksheets[0];
     }
 
     if (!worksheet) throw new Error("No worksheet found");
 
-    // Detect Headers
-    const structure: ExcelStructure = {
-        headerRow: -1,
-        columns: { description: -1, unit: -1, qty: -1, price: -1 },
-        sheetName: worksheet.name
-    };
+    // --- HOTFIX 0: Robust Header Detection ---
+    let bestHeaderRow = -1;
+    let bestCols = { description: -1, unit: -1, qty: -1, price: -1, total: -1 };
+    let bestScore = -1;
+    let detectionMethod = 'heuristic';
 
     const KEYWORDS = {
-        description: ['descripcia', 'descripcio', 'partida', 'designation', 'description', 'nombre'],
+        description: ['descripcion', 'descripción', 'partida', 'designation', 'description', 'nombre', 'ítem', 'item'],
         unit: ['unidad', 'und', 'unid', 'unit', 'u.'],
         qty: ['cantidad', 'cant', 'qty', 'quantity'],
-        price: ['precio', 'unitario', 'p.u', 'price', 'costo']
+        price: ['valor unitario', 'precio unitario', 'p.u', 'unit price', 'precio', 'valor u.'],
+        total: ['total', 'valor total', 'precio total']
     };
 
-    // Scan first 50 rows
+    // Scan first 50 rows for the Best Header Candidate
     worksheet.eachRow((row, rowNumber) => {
-        if (rowNumber > 50 || structure.headerRow !== -1) return;
+        if (rowNumber > 50) return;
 
-        let score = 0;
-        const cols = { description: -1, unit: -1, qty: -1, price: -1 };
+        const currentCols = { description: -1, unit: -1, qty: -1, price: -1, total: -1 };
+        let matches = 0;
 
         row.eachCell((cell, colNumber) => {
-            const val = cell.text ? cell.text.toLowerCase() : '';
+            const val = (cell.text || '').toLowerCase().trim();
+            if (!val) return;
 
-            if (KEYWORDS.description.some(k => val.includes(k))) { cols.description = colNumber; score++; }
-            else if (KEYWORDS.unit.some(k => val.includes(k))) { cols.unit = colNumber; score++; }
-            else if (KEYWORDS.qty.some(k => val.includes(k))) { cols.qty = colNumber; score++; }
-            else if (KEYWORDS.price.some(k => val.includes(k))) { cols.price = colNumber; score++; }
+            // Strict checking for headers
+            if (KEYWORDS.description.some(k => val === k || val.includes(k))) { currentCols.description = colNumber; matches++; }
+            else if (KEYWORDS.unit.some(k => val === k || val.includes(k))) { currentCols.unit = colNumber; matches++; }
+            else if (KEYWORDS.qty.some(k => val === k || val.includes(k))) { currentCols.qty = colNumber; matches++; }
+            else if (KEYWORDS.price.some(k => val === k || val.includes(k))) { currentCols.price = colNumber; matches++; }
+            else if (KEYWORDS.total.some(k => val === k || val.includes(k))) { currentCols.total = colNumber; matches++; }
         });
 
-        // If we found at least Description and one other, assume this is header
-        if (cols.description !== -1 && (cols.qty !== -1 || cols.unit !== -1 || cols.price !== -1)) {
-            structure.headerRow = rowNumber;
-            structure.columns = cols;
+        // Must have at least Description AND (Unit OR Qty OR Price)
+        if (currentCols.description !== -1 && (currentCols.unit !== -1 || currentCols.qty !== -1 || currentCols.price !== -1)) {
+            // Validate this mapping with data below
+            const mappingScore = validateMapping(worksheet!, rowNumber, currentCols);
+
+            // Context score (matches count) + Validation score
+            const totalScore = matches * 10 + mappingScore;
+
+            if (totalScore > bestScore) {
+                bestScore = totalScore;
+                bestHeaderRow = rowNumber;
+                bestCols = currentCols;
+                detectionMethod = `header_match (score: ${totalScore.toFixed(1)})`;
+            }
         }
     });
 
-    if (structure.headerRow === -1) {
-        throw new Error("Could not detect headers in Excel. Please ensure headers like 'Descripción', 'Unidad', 'Cantidad'.");
+    if (bestHeaderRow === -1) {
+        throw new Error("Could not detect valid headers (Descripción, Unidad, Cantidad) in the first 50 rows.");
     }
 
+    const structure: ExcelStructure = {
+        headerRow: bestHeaderRow,
+        columns: bestCols,
+        sheetName: worksheet.name,
+        columns_detected_by: detectionMethod
+    };
+
+    // Extract Items
     const items: ExtractedExcelItem[] = [];
 
-    // Extract items
     worksheet.eachRow((row, rowNumber) => {
         if (rowNumber <= structure.headerRow) return;
 
-        const desc = structure.columns.description !== -1 ? row.getCell(structure.columns.description).text : '';
+        const descCell = structure.columns.description !== -1 ? row.getCell(structure.columns.description) : null;
+        const desc = descCell ? (descCell.text || '').trim() : '';
 
-        // Basic filter: skip empty descriptions or "Total" rows
-        if (!desc || desc.trim() === '' || desc.toLowerCase().includes('total')) return;
+        // Basic clean filter
+        if (!desc || desc === '' || desc.toLowerCase().includes('total neto') || desc.toLowerCase().includes('subtotal')) return;
 
-        const unit = structure.columns.unit !== -1 ? row.getCell(structure.columns.unit).text : '';
-        const qtyVal = structure.columns.qty !== -1 ? row.getCell(structure.columns.qty).value : null;
-        const priceVal = structure.columns.price !== -1 ? row.getCell(structure.columns.price).value : null;
+        const unit = structure.columns.unit !== -1 ? (row.getCell(structure.columns.unit).text || '').trim() : '';
 
-        const qty = typeof qtyVal === 'number' ? qtyVal : null;
-        const price = typeof priceVal === 'number' ? priceVal : null;
+        // Robust numeric parsing
+        const parseNum = (cell: ExcelJS.Cell) => {
+            if (!cell) return null;
+            if (typeof cell.value === 'number') return cell.value;
+            // Handle strings like "$ 1.000" or "1,000.50"
+            if (typeof cell.value === 'string') {
+                const clean = cell.value.replace(/[^0-9.,-]/g, '').replace(',', '.'); // naive replace, usually safer to strip non-numeric
+                const num = parseFloat(clean);
+                return isNaN(num) ? null : num;
+            }
+            return null;
+        };
+
+        const qty = structure.columns.qty !== -1 ? parseNum(row.getCell(structure.columns.qty)) : null;
+        const price = structure.columns.price !== -1 ? parseNum(row.getCell(structure.columns.price)) : null;
+
+        // --- HOTFIX 1: Row Classification ---
+        // Check formatting (bold/merged) if possible. ExcelJS cell.style.font.bold
+        let isBold = false;
+        if (descCell?.style?.font?.bold) isBold = true;
+        // Merge check is expensive O(N), skip for now unless critical.
+
+        const rowType = classifyRow(desc, unit, qty, price, false, isBold);
 
         items.push({
             row: rowNumber,
             description: desc,
             unit: unit,
             qty,
-            price
+            price,
+            type: rowType
         });
     });
 

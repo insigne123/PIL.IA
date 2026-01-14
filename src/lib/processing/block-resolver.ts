@@ -30,6 +30,7 @@ export interface ResolvedEntity {
     transform: Transform;
     depth: number;
     layerResolution: LayerResolution;
+    stableId?: string; // Hotfix 4
 }
 
 /**
@@ -154,61 +155,83 @@ export function resolveEntityLayer(
  * Recursively resolve a block and its nested blocks
  * Returns array of resolved entities with transformations and layer resolution
  */
+// Helper to generate stable ID
+// format: [INSERT_HANDLE_PATH]::[ENTITY_HANDLE]
+function generateStableId(pathHandles: string[], entityHandle: string): string {
+    return `${pathHandles.join('/')}::${entityHandle}`;
+}
+
 export function resolveBlockRecursive(
     blockName: string,
-    blocks: Map<string, BlockDefinition>,
-    transform: Transform,
+    definitions: Map<string, BlockDefinition>,
+    parentTransform: Transform,
     toMeters: (val: number) => number,
-    insertEntity: any, // Parent INSERT entity for layer resolution
+    parentInsertEntity: any, // The INSERT entity that triggered this
     maxDepth: number = 5,
-    currentDepth: number = 0
+    pathHandles: string[] = [] // Track handles for stable ID
 ): ResolvedEntity[] {
-    if (currentDepth >= maxDepth) {
-        console.warn(`[Block Resolver] Max depth ${maxDepth} reached for block "${blockName}"`);
-        return [];
-    }
+    if (maxDepth <= 0) return [];
 
-    const blockDef = blocks.get(blockName);
-    if (!blockDef) {
-        return [];
-    }
+    const def = definitions.get(blockName);
+    if (!def) return [];
 
-    const resolvedEntities: ResolvedEntity[] = [];
+    let results: ResolvedEntity[] = [];
 
-    for (const entity of blockDef.entities) {
-        // Resolve layer for this entity
-        const layerResolution = resolveEntityLayer(entity, insertEntity, blockName);
+    // Add current INSERT handle to path
+    const currentPath = [...pathHandles, parentInsertEntity.handle || 'unknown'];
+
+    for (const entity of def.entities) {
+        // Resolve Layer: Nested entities inherit from parent INSERT if on '0'
+        // Logic:
+        // 1. Get entity's raw layer
+        // 2. If '0' or 'BYBLOCK', use parent's RESOLVED layer
+
+        let resolvedLayerName = entity.layer || '0';
+        const parentLayerName = (parentInsertEntity as any).resolvedLayer || (parentInsertEntity as any).layer || '0';
+
+        if (resolvedLayerName === '0' || resolvedLayerName.toUpperCase() === 'DEFPOINTS') {
+            resolvedLayerName = parentLayerName;
+        }
+
+        const layerResolution: LayerResolution = {
+            original_layer: entity.layer || '0',
+            insert_layer: parentLayerName,
+            resolved_layer: resolvedLayerName,
+            block_name: blockName
+        };
+
+        // Pass resolved layer to entity for next recursion level
+        (entity as any).resolvedLayer = resolvedLayerName;
 
         if (entity.type === 'INSERT') {
-            // Nested block: compose transformations and recurse
+            // Recursive resolution
             const childTransform = extractTransformFromInsert(entity);
-            const composedTransform = composeTransforms(transform, childTransform);
+            const compositeTransform = composeTransforms(parentTransform, childTransform);
 
-            const nestedName = entity.name || entity.block;
-            if (nestedName) {
-                const nestedResults = resolveBlockRecursive(
-                    nestedName,
-                    blocks,
-                    composedTransform,
-                    toMeters,
-                    entity, // Pass child INSERT for layer resolution
-                    maxDepth,
-                    currentDepth + 1
-                );
-                resolvedEntities.push(...nestedResults);
-            }
-        } else {
-            // Geometric entity: store with transformation and layer resolution
-            resolvedEntities.push({
+            // Nested recursion
+            const nested = resolveBlockRecursive(
+                entity.name,
+                definitions,
+                compositeTransform,
+                toMeters,
                 entity,
-                transform,
-                depth: currentDepth,
-                layerResolution
+                maxDepth - 1,
+                currentPath // Pass growing path
+            );
+            results.push(...nested);
+        } else {
+            // Leaf entity (Line, Polyline, etc)
+            results.push({
+                entity,
+                transform: parentTransform,
+                depth: 6 - maxDepth,
+                layerResolution,
+                stableId: generateStableId(currentPath, entity.handle || uuidv4()) // Generate ID
             });
         }
     }
 
-    return resolvedEntities;
+    return results;
 }
 
 /**

@@ -1,14 +1,25 @@
 import Fuse from 'fuse.js';
-import { ItemDetectado, StagingRow, Unit, Suggestion } from '@/types';
+import { ItemDetectado, StagingRow, Unit, Suggestion, Discipline } from '@/types';
 import { ExtractedExcelItem } from './excel';
 import { v4 as uuidv4 } from 'uuid';
 import { classifyExpectedType, typeMatches, type ExpectedType } from './unit-classifier';
 import { determineCalcMethod, isCompatibleType, type CalcMethod } from './calc-method';
+import { isDisciplineMatch } from './discipline';
 
-export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetectado[], sheetName: string): StagingRow[] {
+export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetectado[], sheetName: string, excelDiscipline: Discipline = 'UNKNOWN'): StagingRow[] {
 
     // Configure Fuse to search within CAD items
-    const fuse = new Fuse(dxfItems, {
+    // Pre-filtering: Ideally we filter dxfItems passed to this function.
+    // However, if we receive specific discipline, we can filter here silently or penalize.
+
+    // Let's filter Fuse candidates to reduce noise if discipline is known
+    let candidateItems = dxfItems;
+    if (excelDiscipline !== 'UNKNOWN' && excelDiscipline !== 'GENERAL') {
+        candidateItems = dxfItems.filter(i => isDisciplineMatch(i.discipline || 'UNKNOWN', excelDiscipline));
+        // If we filtered everything, maybe fallback to all? NO, strict scoping requested.
+    }
+
+    const fuse = new Fuse(candidateItems, {
         keys: ['name_raw', 'layer_normalized'],
         includeScore: true,
         threshold: 0.6,
@@ -17,6 +28,50 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
     });
 
     const rows: StagingRow[] = excelItems.map(excelItem => {
+        // --- HOTFIX 1: Handle Non-Measurable Rows ---
+        if (excelItem.type === 'section_header' || excelItem.type === 'note') {
+            return {
+                id: uuidv4(),
+                excel_sheet: sheetName,
+                excel_row_index: excelItem.row,
+                excel_item_text: excelItem.description,
+                excel_unit: excelItem.unit,
+                row_type: excelItem.type, // Pass through
+                source_items: [],
+                matched_items: [],
+                match_confidence: 0,
+                confidence: 'low',
+                match_reason: excelItem.type === 'section_header' ? 'Skipped: Section Header' : 'Skipped: Note/Exclusion',
+                qty_final: null,
+                status: 'ignored', // Marked as ignored
+                calc_method: 'GLOBAL',
+                discipline: excelDiscipline
+            };
+        }
+
+        if (excelItem.type === 'service') {
+            return {
+                id: uuidv4(),
+                excel_sheet: sheetName,
+                excel_row_index: excelItem.row,
+                excel_item_text: excelItem.description,
+                excel_unit: excelItem.unit,
+                row_type: excelItem.type,
+                source_items: [],
+                matched_items: [],
+                match_confidence: 1.0, // High confidence manual/global
+                confidence: 'high',
+                match_reason: 'Auto-Approved: Service/Global Item',
+                qty_final: 1, // Default quantity for services is 1 (GL)
+                status: 'approved',
+                calc_method: 'GLOBAL',
+                method_detail: 'service_auto_approve',
+                discipline: excelDiscipline
+            };
+        }
+
+        // --- NORMAL ITEM MATCHING ---
+
         // 1. Determine calculation method (deterministic)
         const calcMethodResult = determineCalcMethod(excelItem.unit, excelItem.description);
         const calcMethod = calcMethodResult.method;
@@ -53,6 +108,12 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 reason = `Matched "${match.item.name_raw || match.item.layer_raw}" (${(confidence * 100).toFixed(0)}%)`;
             }
 
+            // --- HOTFIX 5: Exclude Layer 0 default ---
+            if (match.item.layer_normalized === '0' || match.item.layer_normalized === 'defpoints') {
+                confidence = confidence * 0.1; // 90% Penalty
+                reason += " | LAYER 0 PENALTY";
+            }
+
             if (confidence > 0.4) {
                 bestMatch = [match.item];
             } else {
@@ -70,16 +131,60 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
         if (bestMatch.length > 0) {
             const match = bestMatch[0];
-            // Logic: 
-            // If Excel unit is m2 and match is length, apply default height (handled in UI or here? Here default 1, UI applies factor)
-            // But StagingRow has 'height_factor'.
-            // If unit is matches (m vs m, un vs block), just take value.
 
-            qtyFinal = match.value_m;
+            // --- HOTFIX 3: Unit-Based Quantity Calculation ---
+            // We use calcMethod to decide how to derive qty from CAD geometry
 
-            if (excelItem.unit.toLowerCase().includes('m2') && match.type === 'length') {
-                heightFactor = 2.4; // Default
-                qtyFinal = match.value_m * heightFactor;
+            if (calcMethod === 'COUNT') {
+                // For blocks, sum value_raw (usually 1, but could be N for Arrays if we support them later)
+                // If match is length type but we want count? (e.g. 5m of cable is not 5 units)
+                // Strict checking:
+                qtyFinal = match.type === 'block' ? (match.value_raw || 1) : 0;
+
+                // If we matched a length item for a count unit -> Semantic Error
+                if (match.type === 'length') {
+                    confidence = 0.2;
+                    reason = "Mismatch: Expected COUNT/BLOCK, got LENGTH geometry";
+                    // Maybe convert length to count? e.g. 1 strip? hard to say.
+                    qtyFinal = 1; // Default to 1 unit if forced?
+                }
+            }
+
+            else if (calcMethod === 'LENGTH') {
+                qtyFinal = match.value_m; // Meters
+            }
+
+            else if (calcMethod === 'AREA') {
+                // Case A: Geometry is Area (HATCH/Polyline Region)
+                if (match.type === 'area') {
+                    qtyFinal = match.value_m; // m2
+                }
+                // Case B: Geometry is Length (Muros/Tabiques lines) -> Convert to Area
+                else if (match.type === 'length') {
+                    heightFactor = 2.4; // Default Height
+                    qtyFinal = match.value_m * heightFactor;
+                    reason += " | Derivada: Largo * 2.4m";
+                }
+                else {
+                    qtyFinal = 0;
+                }
+            }
+
+            else if (calcMethod === 'VOLUME') {
+                // Naive implementation: Area * Thickness
+                // If we have Area items:
+                const thickness = 0.1; // 10cm default
+                if (match.type === 'area') {
+                    qtyFinal = match.value_m * thickness;
+                } else if (match.type === 'length') {
+                    // Length * Height * Thickness
+                    qtyFinal = match.value_m * 2.4 * thickness;
+                }
+            }
+
+            else {
+                // Global or Unknown
+                qtyFinal = match.value_m;
             }
         } else {
             // Keep existing Excel qty if present for "Manual" verification
@@ -95,6 +200,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             excel_row_index: excelItem.row,
             excel_item_text: excelItem.description,
             excel_unit: excelItem.unit,
+            row_type: excelItem.type, // Pass through
             source_items: bestMatch,
             matched_items: bestMatch,
             match_confidence: confidence,
@@ -109,7 +215,8 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             suggestions: suggestions.length > 0 ? suggestions : undefined,
             // NEW: Calculation method
             calc_method: calcMethod,
-            method_detail: calcMethodResult.method_detail
+            method_detail: calcMethodResult.method_detail,
+            discipline: excelDiscipline
         };
     });
 
@@ -142,6 +249,12 @@ function generateSuggestions(
             reasons.push(`Type matches expected (${expectedType})`);
         } else {
             reasons.push(`⚠️ Type mismatch: found ${item.type}, expected ${expectedType}`);
+        }
+
+        // --- HOTFIX 5: Layer 0 Warning ---
+        if (item.layer_normalized === '0' || item.layer_normalized === 'defpoints') {
+            reasons.push(`⚠️ Layer 0/Defpoints (High Risk)`);
+            // We heavily penalize this in the score logic if we haven't already
         }
 
         // Reason 3: Quantity reasonableness

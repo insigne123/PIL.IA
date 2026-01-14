@@ -3,7 +3,7 @@
  * Replaces LLM guessing with deterministic rules
  */
 
-export type CalcMethod = 'COUNT' | 'LENGTH' | 'AREA' | 'GLOBAL';
+export type CalcMethod = 'COUNT' | 'LENGTH' | 'AREA' | 'VOLUME' | 'GLOBAL';
 
 export interface CalcMethodResult {
     method: CalcMethod;
@@ -22,105 +22,80 @@ export function determineCalcMethod(
     const unitLower = excelUnit.toLowerCase().trim();
     const descLower = description.toLowerCase();
 
-    // COUNT: discrete items (highest priority for explicit units)
-    if (/\b(un|u|punto|puntos|unidad|unidades|pza|pieza|piezas|equipo|equipos)\b/.test(unitLower)) {
+    // 1. UNIT-BASED HARD RULES (Highest Priority)
+
+    // COUNT (u, un, pza, est, glb - wait global is diff)
+    if (['un', 'u', 'und', 'unidad', 'unidades', 'pza', 'pieza', 'c/u', 'num', 'nº'].includes(unitLower)) {
         return {
             method: 'COUNT',
-            method_detail: 'block_count',
-            confidence: 0.95,
-            reason: 'Unit indicates discrete items (punto/unidad)'
+            method_detail: 'unit_count',
+            confidence: 0.99,
+            reason: `Explicit Unit: ${excelUnit} -> COUNT`
         };
     }
 
-    // AREA: square meters
-    if (/\b(m2|m²|metro cuadrado|metros cuadrados)\b/.test(unitLower)) {
+    // AREA (m2)
+    if (['m2', 'm²', 'mt2'].includes(unitLower)) {
         return {
             method: 'AREA',
-            method_detail: 'hatch_area',
-            confidence: 0.95,
-            reason: 'Unit indicates area measurement (m²)'
+            method_detail: 'area_m2',
+            confidence: 0.99,
+            reason: `Explicit Unit: ${excelUnit} -> AREA`
         };
     }
 
-    // LENGTH: linear meters (check not m2 first)
-    if (/\b(m|ml|metro|metros|mts|mt)\b/.test(unitLower) &&
-        !/\b(m2|m²|cuadrado)\b/.test(unitLower)) {
+    // VOLUME (m3)
+    if (['m3', 'm³', 'mt3'].includes(unitLower)) {
+        return {
+            method: 'VOLUME',
+            method_detail: 'volume_m3',
+            confidence: 0.99,
+            reason: `Explicit Unit: ${excelUnit} -> VOLUME`
+        };
+    }
 
-        // High confidence if infrastructure keywords present
-        if (/\b(alimentador|alim|canalización|canalizado|tubería|tubo|ducto|cable|conductor|enlauchado|bandeja)\b/.test(descLower)) {
-            return {
-                method: 'LENGTH',
-                method_detail: 'infrastructure_length',
-                confidence: 0.95,
-                reason: 'Linear measurement with infrastructure keywords (alimentador/canalización)'
-            };
-        }
-
+    // LENGTH (m, ml)
+    if (['m', 'ml', 'mts', 'metro', 'metros', 'mt'].includes(unitLower)) {
         return {
             method: 'LENGTH',
-            method_detail: 'line_length',
-            confidence: 0.85,
-            reason: 'Unit indicates linear measurement (m/metros)'
+            method_detail: 'length_m',
+            confidence: 0.99,
+            reason: `Explicit Unit: ${excelUnit} -> LENGTH`
         };
     }
 
-    // GLOBAL: services/documentation
-    if (/\b(gl|global|servicio|servicios|alcance)\b/.test(unitLower)) {
+    // GLOBAL (gl, est, pa) - Note: 'est' = Global/Estimate
+    if (['gl', 'glb', 'global', 'est', 'est.', 'estimado', 'pa'].includes(unitLower)) {
         return {
             method: 'GLOBAL',
-            method_detail: 'global_service',
-            confidence: 0.9,
-            reason: 'Unit indicates global/service item (gl/global)'
+            method_detail: 'global_estimate',
+            confidence: 0.99,
+            reason: `Explicit Unit: ${excelUnit} -> GLOBAL`
         };
     }
 
-    if (/\b(certificado|as-built|as built|proyecto|ingeniería|tramitación|gestión|coordinación|instalación general)\b/.test(descLower)) {
-        return {
-            method: 'GLOBAL',
-            method_detail: 'global_documentation',
-            confidence: 0.85,
-            reason: 'Description suggests service/documentation item'
-        };
+    // 2. FALLBACK BY DESCRIPTION
+
+    // Discrete items
+    if (descLower.includes('punto') || descLower.includes('tablero') || descLower.includes('equipo')) {
+        return { method: 'COUNT', method_detail: 'inferred_count', confidence: 0.7, reason: 'Description suggests COUNT' };
     }
 
-    // FALLBACK: Infer from description keywords
-
-    // Discrete equipment
-    if (/\b(enchufe|toma|tomada|tomacorriente|luminaria|lámpara|lampara|interruptor|caja|tablero|equipo|ups|rack|cámara|camara|detector|sensor)\b/.test(descLower)) {
-        return {
-            method: 'COUNT',
-            method_detail: 'equipment_inferred',
-            confidence: 0.7,
-            reason: 'Description suggests discrete equipment (enchufe/luminaria)'
-        };
+    // Linear items
+    if (descLower.includes('tubería') || descLower.includes('canalización') || descLower.includes('conductor')) {
+        return { method: 'LENGTH', method_detail: 'inferred_length', confidence: 0.7, reason: 'Description suggests LENGTH' };
     }
 
-    // Area work
-    if (/\b(pintura|revestimiento|piso|cielo|muro|pared|superficie|pavimento)\b/.test(descLower)) {
-        return {
-            method: 'AREA',
-            method_detail: 'surface_inferred',
-            confidence: 0.65,
-            reason: 'Description suggests surface work (pintura/revestimiento)'
-        };
+    // Surface work
+    if (descLower.includes('pintura') || descLower.includes('piso')) {
+        return { method: 'AREA', method_detail: 'inferred_area', confidence: 0.7, reason: 'Description suggests AREA' };
     }
 
-    // Linear work
-    if (/\b(trazado|recorrido|tendido|instalación de|montaje de)\b/.test(descLower)) {
-        return {
-            method: 'LENGTH',
-            method_detail: 'linear_inferred',
-            confidence: 0.6,
-            reason: 'Description suggests linear work (trazado/tendido)'
-        };
-    }
-
-    // DEFAULT: COUNT (most conservative)
     return {
-        method: 'COUNT',
-        method_detail: 'default_unknown',
-        confidence: 0.3,
-        reason: 'Could not determine from unit or description - defaulting to COUNT'
+        method: 'GLOBAL', // Default safest fallback? Or COUNT? Global is safer to avoid false positives.
+        method_detail: 'unknown_fallback',
+        confidence: 0.1,
+        reason: 'Unknown unit/description'
     };
 }
 
@@ -134,8 +109,9 @@ export function isCompatibleType(
     const compatibility: Record<CalcMethod, Array<'block' | 'length' | 'area' | 'text'>> = {
         'COUNT': ['block'],
         'LENGTH': ['length'],
-        'AREA': ['area'],
-        'GLOBAL': [] // No geometry expected
+        'AREA': ['area', 'length'], // Length allowed for Area (Walls)
+        'VOLUME': ['area', 'length'], // Allowed
+        'GLOBAL': []
     };
 
     return compatibility[calcMethod]?.includes(dxfItemType) || false;
@@ -173,6 +149,7 @@ export function getCalcMethodStats(results: CalcMethodResult[]): {
         'COUNT': 0,
         'LENGTH': 0,
         'AREA': 0,
+        'VOLUME': 0,
         'GLOBAL': 0
     };
 
