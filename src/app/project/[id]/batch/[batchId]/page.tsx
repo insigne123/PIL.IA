@@ -202,6 +202,38 @@ export default function BatchPage() {
         }
     };
 
+    // Auto-poll worker when batch is processing
+    useEffect(() => {
+        if (!batch || batch.status !== 'processing') return;
+
+        let isActive = true;
+        const pollWorker = async () => {
+            while (isActive && batch.status === 'processing') {
+                try {
+                    const res = await fetch('/api/worker/run', { method: 'POST' });
+                    if (!res.ok) break;
+                    const json = await res.json();
+                    if (json.message === "No jobs pending") break;
+
+                    // Refresh batch data
+                    await fetchBatchData();
+
+                    // Wait 2 seconds before next poll
+                    await new Promise(r => setTimeout(r, 2000));
+                } catch (error) {
+                    console.error('Worker poll error:', error);
+                    break;
+                }
+            }
+        };
+
+        pollWorker();
+
+        return () => {
+            isActive = false;
+        };
+    }, [batch?.status, fetchBatchData]);
+
     useEffect(() => {
         if (batchId) fetchBatchData();
 
