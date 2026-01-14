@@ -8,6 +8,7 @@ import {
     extractTransformFromInsert,
     measureTransformedEntity
 } from './block-resolver';
+import { enrichItemsWithNearbyText } from './spatial-text-enrichment';
 import { profileAllLayers, filterAnnotationItems, getLayerProfilingSummary, type LayerProfile } from './layer-profiling';
 import { extractBlockInstances, deduplicateBlocks, getDeduplicationSummary } from './spatial-dedup';
 
@@ -85,7 +86,8 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
     const minLengthDynamic = preflight.dynamicMinLength;
     console.log(`[DXF Parser] Dynamic min length: ${minLengthDynamic.toFixed(3)}m (based on bbox diagonal: ${preflight.boundingBox.diagonal.toFixed(2)}m)`);
 
-    const items: ItemDetectado[] = [];
+    // Use let instead of const to allow reassignment for spatial enrichment
+    let items: ItemDetectado[] = [];
     const allEntities = dxf.entities || [];
 
     // 3. Separate ModelSpace vs PaperSpace entities
@@ -228,15 +230,17 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
 
                     // Resolve nested blocks if definition exists
                     if (blockDefinitions.has(blockName)) {
-                        const transform = extractTransformFromInsert(entity);
+                        const insertPosition = (entity as any).position;
+
+                        // Resolve nested blocks
                         const resolvedEntities = resolveBlockRecursive(
                             blockName,
                             blockDefinitions,
-                            transform,
+                            extractTransformFromInsert(entity),
                             toMeters,
-                            entity, // Pass INSERT entity for layer resolution
-                            5, // max depth
-                            [(entity as any).handle || 'root'] // Start path
+                            entity,
+                            5,
+                            []
                         );
 
                         // Measure resolved entities
@@ -248,6 +252,10 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
                             if (measured) {
                                 // --- HOTFIX 4: Stable ID Assignment ---
                                 measured.id = resolvedEntity.stableId || uuidv4();
+                                // Add position from INSERT entity
+                                if (insertPosition) {
+                                    measured.position = { x: insertPosition.x || 0, y: insertPosition.y || 0 };
+                                }
                                 nestedBlockItems.push(measured);
                             }
                         }
@@ -372,19 +380,24 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
                     console.log(`[DXF Parser] HATCH on "${layer}" - Final area: ${areaM2.toFixed(2)} m²`);
                 }
             }
-            else if (entity.type === 'TEXT' || entity.type === 'MTEXT') {
-                const text = (entity as any).text || (entity as any).string;
-                if (text) {
+            // TEXT / MTEXT
+            else if (type === 'TEXT' || type === 'MTEXT') {
+                const layer = (entity as any).layer || '0';
+                const text = (entity as any).text || (entity as any).string || '';
+                const position = (entity as any).position || (entity as any).insertionPoint;
+
+                if (text && text.trim()) {
                     items.push({
                         id: uuidv4(),
                         type: 'text',
-                        name_raw: text.slice(0, 50),
-                        layer_raw: (entity as any).layer || '0',
-                        layer_normalized: ((entity as any).layer || '0').toLowerCase(),
+                        name_raw: text.trim(),
+                        layer_raw: layer,
+                        layer_normalized: layer.toLowerCase(),
                         value_raw: 1,
                         unit_raw: 'txt',
-                        value_m: 0,
-                        evidence: 'TEXT entity'
+                        value_m: 1,
+                        evidence: type,
+                        position: position ? { x: position.x || 0, y: position.y || 0 } : undefined
                     });
                 }
             }
@@ -521,39 +534,21 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
     // (Implementation omitted for brevity to keep it safe, but we can do bounding box overlap for text association first)
 
     // --- SPATIAL INTELLIGENCE: TEXT CONTEXT ---
-    // Associate TEXT entities with nearby geometry (within 0.5m)
-    // This helps when layer is generic 'LAYER_01' but text says 'MESA'
+    // Associate TEXT entities with nearby geometry for improved semantic matching
+    const textItems = items.filter(i => i.type === 'text' && i.position);
+    const geometryItems = items.filter(i => i.type !== 'text' && i.position);
 
-    const textItems = items.filter(i => i.type === 'text');
-    const geometryItems = items.filter(i => i.type !== 'text');
-
-    // Build spatial index for texts (simple grid or direct check if N is small)
-    // For MVP, if N < 1000, brute force is acceptable.
     if (textItems.length > 0 && geometryItems.length > 0) {
-        console.log(`[Spatial] associating ${textItems.length} texts with geometry...`);
+        console.log(`[Spatial Text] Enriching ${geometryItems.length} items with ${textItems.length} nearby texts...`);
 
-        for (const geom of geometryItems) {
-            // Get center/centroid of geometry?
-            // We don't have exact coordinates in ItemDetectado...
-            // Wait, we need coordinates. ItemDetectado currently relies on aggregated values/counts.
-            // Oh right, `dxf.ts` aggregates linear items into single ItemDetectado per layer if we look at `dxf.ts:446`.
-            // BUT `modelSpaceEntities` loop pushes raw items first (lines), THEN we aggregate?
-            // Actually `dxf.ts` loop pushes:
-            // - Blocks: separate items with metadata?
-            // - Lines: "layerLengths.set(...)" -> Agregados!
-            // - Areas: "layerAreas.set(...)" -> Agregados!
+        const textEntities = textItems.map(t => ({
+            text: t.name_raw,
+            position: t.position!,
+            layer: t.layer_raw
+        }));
 
-            // PROBLEM: We lost spatial info for Lines/Areas by aggregating them too early in the loop.
-            // Blocks DO have items pushed individually.
-
-            // To fix this for Lines/Areas, we need to keep raw entities longer or do spatial analysis BEFORE aggregation.
-        }
+        items = enrichItemsWithNearbyText(items, textEntities, 5.0);
     }
-
-    // --- SHAPE DETECTION (Pre-Aggregation) --
-    // We need to look at 'modelSpaceEntities' loop again. 
-    // It currently calculates `layerLengths` and `layerAreas`.
-    // We should probably define a helper function `detectShapes(entities)` called before the main loop.
 
     return { items, detectedUnit, preflight };
 }

@@ -84,13 +84,10 @@ export class SpatialTextIndex {
 
 /**
  * Get approximate position of an item for spatial lookup
- * This is a simplified implementation - in production would use actual geometry
  */
 function getItemApproximatePosition(item: ItemDetectado): { x: number; y: number } | null {
-    // For now, we can't determine position without geometry data
-    // This would need to be enhanced with actual coordinate extraction
-    // from the DXF entities
-    return null;
+    // Use stored position if available
+    return item.position || null;
 }
 
 /**

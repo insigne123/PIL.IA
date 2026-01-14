@@ -27,6 +27,7 @@ export interface ItemDetectado {
 
   // Spatial semantic enrichment
   nearby_text_tokens?: string[];
+  position?: { x: number; y: number }; // Approximate position for spatial operations
 }
 
 // Unified Price Source
