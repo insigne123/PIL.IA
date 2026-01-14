@@ -831,16 +831,35 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
         }));
 
         // Batch Insert to prevent Timeouts with large payloads
-        const CHUNK_SIZE = 50;
+        // Batch Insert with Retry Logic and Smaller Chunks
+        const CHUNK_SIZE = 10; // Reduced to 10 to avoid timeouts
         console.log(`[Mapping] Inserting ${dbRows.length} rows in chunks of ${CHUNK_SIZE}...`);
 
         for (let i = 0; i < dbRows.length; i += CHUNK_SIZE) {
             const chunk = dbRows.slice(i, i + CHUNK_SIZE);
-            const { error } = await supabase.from('staging_rows').insert(chunk);
 
-            if (error) {
-                console.error(`[Mapping] Error inserting staging rows chunk ${Math.floor(i / CHUNK_SIZE) + 1}:`, error);
-                throw new Error(`Failed to insert staging rows chunk: ${error.message}`);
+            // Retry Loop
+            let attempts = 0;
+            let success = false;
+            let lastError = null;
+
+            while (attempts < 3 && !success) {
+                attempts++;
+                // @ts-ignore
+                const { error } = await supabase.from('staging_rows').insert(chunk);
+
+                if (!error) {
+                    success = true;
+                } else {
+                    lastError = error;
+                    console.warn(`[Mapping] Chunk ${Math.floor(i / CHUNK_SIZE) + 1} insert failed (Attempt ${attempts}/3). Retrying in 2s... Error: ${error.message}`);
+                    await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2s
+                }
+            }
+
+            if (!success) {
+                console.error(`[Mapping] Error inserting staging rows chunk ${Math.floor(i / CHUNK_SIZE) + 1} after 3 attempts:`, lastError);
+                throw new Error(`Failed to insert staging rows chunk after retries: ${lastError?.message}`);
             }
         }
         console.log(`[Mapping] Successfully inserted all ${dbRows.length} rows.`);
