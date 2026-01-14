@@ -250,453 +250,497 @@ async function checkAndTriggerMatching(supabase: SupabaseClient, batchId: string
 }
 
 async function executeMapping(supabase: SupabaseClient, batchId: string) {
-    // 0. Get Batch Info
-    const { data: batch } = await supabase.from('batches').select('*').eq('id', batchId).single();
-    if (!batch) return;
+    try {
+        console.log(`[Mapping] Starting mapping for batch ${batchId}...`);
 
-    // 1. Get all extracted JSONs
-    const { data: files } = await supabase.from('batch_files').select('*').eq('batch_id', batchId);
-    if (!files) return;
+        // 0. Get Batch Info
+        const { data: batch, error: batchError } = await supabase.from('batches').select('*').eq('id', batchId).single();
+        if (batchError) {
+            console.error(`[Mapping] Error fetching batch:`, batchError);
+            throw new Error(`Failed to fetch batch: ${batchError.message}`);
+        }
+        if (!batch) {
+            console.error(`[Mapping] Batch ${batchId} not found`);
+            return;
+        }
+        console.log(`[Mapping] Batch loaded: ${batch.id}`);
 
-    let excelItems: any[] = [];
-    let dxfItems: ItemDetectado[] = [];
+        // 1. Get all extracted JSONs
+        const { data: files, error: filesError } = await supabase.from('batch_files').select('*').eq('batch_id', batchId);
+        if (filesError) {
+            console.error(`[Mapping] Error fetching files:`, filesError);
+            throw new Error(`Failed to fetch files: ${filesError.message}`);
+        }
+        if (!files || files.length === 0) {
+            console.error(`[Mapping] No files found for batch ${batchId}`);
+            return;
+        }
+        console.log(`[Mapping] Found ${files.length} files`);
 
-    // Load Data
-    for (const f of files) {
-        if (!f.storage_json_path) continue;
-        const { data } = await supabase.storage.from('yago-processing').download(f.storage_json_path);
-        if (!data) continue;
-        const json = JSON.parse(await data.text());
+        let excelItems: any[] = [];
+        let dxfItems: ItemDetectado[] = [];
 
-        if (f.file_type === 'excel') {
-            excelItems = json;
-        } else {
-            // Ensure json is an array before spreading
-            if (Array.isArray(json)) {
-                dxfItems = [...dxfItems, ...json];
+        // Load Data
+        for (const f of files) {
+            if (!f.storage_json_path) {
+                console.warn(`[Mapping] File ${f.id} has no storage_json_path, skipping`);
+                continue;
+            }
+
+            console.log(`[Mapping] Loading ${f.file_type} file: ${f.storage_json_path}`);
+            const { data, error: downloadError } = await supabase.storage.from('yago-processing').download(f.storage_json_path);
+            if (downloadError || !data) {
+                console.error(`[Mapping] Error downloading file ${f.storage_json_path}:`, downloadError);
+                continue;
+            }
+
+            const json = JSON.parse(await data.text());
+            console.log(`[Mapping] Parsed ${f.file_type} file: ${Array.isArray(json) ? json.length : 'N/A'} items`);
+
+            if (f.file_type === 'excel') {
+                excelItems = json;
             } else {
-                console.warn(`DXF file ${f.id} returned non-array data, skipping`);
-            }
-        }
-    }
-
-    if (excelItems.length === 0) {
-        console.warn("No Excel items found");
-        return;
-    }
-
-    const sheetTarget = batch.sheet_target || 'Presupuesto';
-
-    // --- HOTFIX 6: Detect Excel Discipline ---
-    // Find the Excel file in the file list to get its name
-    const excelFile = files.find(f => f.file_type === 'excel');
-    const excelDiscipline = excelFile ? detectDiscipline(excelFile.original_filename) : 'UNKNOWN';
-    console.log(`[Mapping] Excel Discipline: ${excelDiscipline}`);
-
-    // 4. PRE-CLASSIFICATION (Quick Win 3: Force "Punto" items to low confidence)
-    // This ensures they go through AI refinement where the Block rule is applied
-    excelItems.forEach((item: any) => {
-        const desc = (item.description || '').toLowerCase();
-        if ((desc.startsWith('punto ') || desc.startsWith('puntos ')) &&
-            !desc.includes('canaliz') && !desc.includes('ducto') && !desc.includes('tuber')) {
-            // Mark for AI refinement by forcing low initial confidence
-            item._force_ai_refinement = true;
-        }
-    });
-
-    // 4. Match Items (Hybrid: Fuzzy + AI)
-    // Pass discipline to filter candidates
-    let stagingRows = matchItems(excelItems, dxfItems, sheetTarget, excelDiscipline);
-
-    // 4.1. Apply Historical Feedback (Pre-computation)
-    // We do this before classification to allow "Learning" to override logic
-    stagingRows = await Promise.all(stagingRows.map(async (row) => {
-        const feedback = await FeedbackService.findHistoricalMatch(row.excel_item_text, row.excel_unit);
-        if (feedback && feedback.cadItem) {
-            // Apply feedback
-            console.log(`[Feedback] Applied historical match for '${row.excel_item_text}'`);
-            return {
-                ...row,
-                matched_items: [feedback.cadItem as any],
-                source_items: [feedback.cadItem as any],
-                match_confidence: 0.95,
-                match_reason: "Historical Feedback: Learned from previous correction",
-                status: 'approved',
-                qty_final: feedback.cadItem.value_m ?? null  // Use null instead of undefined
-                // CAUTION: Feedback usually maps to a Layer, but specific qty comes from NEW DXF.
-                // We need to re-scan the DXF for the "Learned Layer".
-                // Detailed implementation requires re-scanning `dxfItems` for the feedback layer.
-                // For MVP stub, we skip deep re-scan and just mark it.
-                // Ideally: stored feedback includes "Target Layer Name".
-                // We then search `dxfItems` for that layer.
-            };
-
-            // BETTER LOGIC:
-            // If feedback says "Layer X", we look for Layer X in CURRENT dxfItems.
-            // const targetLayer = feedback.targetLayer;
-            // const newMatches = dxfItems.filter(i => i.layer_normalized === targetLayer);
-            // return { ...row, matched_items: newMatches, ... };
-        }
-        return row;
-    }));
-
-    // POST-FUZZY PROCESSING: Apply all classification rules
-    stagingRows = stagingRows.map((row: any) => {
-        const desc = (row.excel_item_text || '').toLowerCase();
-
-        // FIX 1: Auto-classify GLOBAL/SERVICE items (with proper normalization)
-        const isServiceScope =
-            desc.includes('instalacion') ||  // Normalized (no tilde)
-            desc.includes('instalación') ||  // With tilde
-            desc.includes('provision e instalacion') ||
-            desc.includes('provisión e instalación') ||
-            (desc.includes('certificado') && !desc.includes('rotulado')) ||
-            desc.includes('tramite') ||
-            desc.includes('trámite') ||
-            desc.includes('legaliz');
-
-        if (isServiceScope) {
-            return {
-                ...row,
-                matched_items: [],
-                source_items: [],
-                match_confidence: 0.95,
-                match_reason: "Logic: Item de Servicio/Alcance (No requiere dibujo)",
-                status: 'approved',
-                qty_final: 1
-            };
-        }
-
-        // FIX 1.5: Auto-classify "por mandante" items as GLOBAL
-        const unit = (row.excel_unit || '').toLowerCase();
-        if (unit.includes('mandante') || unit.includes('cliente')) {
-            return {
-                ...row,
-                matched_items: [],
-                source_items: [],
-                match_confidence: 0.9,
-                match_reason: "Logic: Unidad 'por mandante' indica provisión (GLOBAL)",
-                status: 'approved',
-                qty_final: 1
-            };
-        }
-
-        // FIX 2: Pre-classify "Punto" items to force AI refinement
-        if ((desc.startsWith('punto ') || desc.startsWith('puntos ')) &&
-            !desc.includes('canaliz') && !desc.includes('ducto') && !desc.includes('tuber')) {
-            console.log(`[Punto Pre-classification] Forcing 'c:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA{row.excel_item_text}' to AI refinement`);
-            return { ...row, match_confidence: 0.3, confidence: 'low' }; // Force AI refinement
-        }
-
-        // FIX 3: Auto-approve valid lengths from fuzzy matcher
-        if (row.source_items && row.source_items.length > 0) {
-            const firstItem = row.source_items[0];
-            if (firstItem.type === 'length' && row.qty_final >= 1.0 && row.match_confidence >= 0.5) {
-                console.log(`[Auto-approve Fuzzy] Valid length ${row.qty_final.toFixed(2)}m for '${row.excel_item_text}'`);
-                return { ...row, status: 'approved' };
+                // Ensure json is an array before spreading
+                if (Array.isArray(json)) {
+                    dxfItems = [...dxfItems, ...json];
+                } else {
+                    console.warn(`DXF file ${f.id} returned non-array data, skipping`);
+                }
             }
         }
 
-        return row;
-    });
+        if (excelItems.length === 0) {
+            console.error("[Mapping] No Excel items found - cannot proceed with matching");
+            throw new Error("No Excel items found");
+        }
 
-    // AI ENHANCEMENT:
-    // Filter rows with low confidence to refine with AI
-    // We process them in parallel batches to speed up
-    if (process.env.GOOGLE_GENAI_API_KEY) {
-        const { matchItemFlow } = await import('@/ai/match-items');
+        console.log(`[Mapping] Loaded ${excelItems.length} Excel items and ${dxfItems.length} DXF items`);
 
-        // Prepare Rich Candidates (Name + Type)
-        // Deduplicate by layer name but keep type info 
-        // (If layer has both blocks and lines, we prefer block if it has more items? or keep both?)
-        // Simplification: One entry per layer, prioritizing 'block' if mixed.
-        // Prepare Rich Candidates (Name + Type)
-        // IMPROVED: Group by Layer + BlockName for blocks to distinguish specific components
-        const candidateMap = new Map<string, { name: string, type: string, sample_value: number, ids: string[] }>();
+        const sheetTarget = batch.sheet_target || 'Presupuesto';
 
-        dxfItems.forEach(i => {
-            // Skip tiny text or noise if needed, but for now let's focus on logic
-            let key = i.layer_normalized;
-            let displayName = i.layer_normalized;
+        // --- HOTFIX 6: Detect Excel Discipline ---
+        // Find the Excel file in the file list to get its name
+        const excelFile = files.find(f => f.file_type === 'excel');
+        const excelDiscipline = excelFile ? detectDiscipline(excelFile.original_filename) : 'UNKNOWN';
+        console.log(`[Mapping] Excel Discipline: ${excelDiscipline}`);
 
-            // For Blocks, distinguishing by name is CRITICAL (e.g. UPS vs Socket)
-            if (i.type === 'block' && i.name_raw) {
-                key = `${i.layer_normalized}::${i.name_raw}`;
-                displayName = `${i.name_raw} (Layer: ${i.layer_normalized})`;
-            }
-
-            if (!candidateMap.has(key)) {
-                candidateMap.set(key, {
-                    name: displayName,
-                    type: i.type,
-                    sample_value: i.value_m,
-                    ids: [i.id] // Keep track of representant IDs? No, we filter later by match
-                });
+        // 4. PRE-CLASSIFICATION (Quick Win 3: Force "Punto" items to low confidence)
+        // This ensures they go through AI refinement where the Block rule is applied
+        excelItems.forEach((item: any) => {
+            const desc = (item.description || '').toLowerCase();
+            if ((desc.startsWith('punto ') || desc.startsWith('puntos ')) &&
+                !desc.includes('canaliz') && !desc.includes('ducto') && !desc.includes('tuber')) {
+                // Mark for AI refinement by forcing low initial confidence
+                item._force_ai_refinement = true;
             }
         });
-        const candidatePayload = Array.from(candidateMap.values())
-            .map(c => ({ name: c.name, type: c.type, sample_value: c.sample_value }));
 
-        const lowConfidenceRows = stagingRows.filter(r =>
-            (r as any).match_confidence < 0.6 &&
-            (r as any).status !== 'ignored' &&
-            (r as any).status !== 'approved'
-        );
+        // 4. Match Items (Hybrid: Fuzzy + AI)
+        // Pass discipline to filter candidates
+        let stagingRows = matchItems(excelItems, dxfItems, sheetTarget, excelDiscipline);
 
-        console.log(`AI Refining ${lowConfidenceRows.length} items with Dimensional Analysis...`);
+        // 4.1. Apply Historical Feedback (Pre-computation)
+        // We do this before classification to allow "Learning" to override logic
+        stagingRows = await Promise.all(stagingRows.map(async (row) => {
+            const feedback = await FeedbackService.findHistoricalMatch(row.excel_item_text, row.excel_unit);
+            if (feedback && feedback.cadItem) {
+                // Apply feedback
+                console.log(`[Feedback] Applied historical match for '${row.excel_item_text}'`);
+                return {
+                    ...row,
+                    matched_items: [feedback.cadItem as any],
+                    source_items: [feedback.cadItem as any],
+                    match_confidence: 0.95,
+                    match_reason: "Historical Feedback: Learned from previous correction",
+                    status: 'approved',
+                    qty_final: feedback.cadItem.value_m ?? null  // Use null instead of undefined
+                    // CAUTION: Feedback usually maps to a Layer, but specific qty comes from NEW DXF.
+                    // We need to re-scan the DXF for the "Learned Layer".
+                    // Detailed implementation requires re-scanning `dxfItems` for the feedback layer.
+                    // For MVP stub, we skip deep re-scan and just mark it.
+                    // Ideally: stored feedback includes "Target Layer Name".
+                    // We then search `dxfItems` for that layer.
+                };
 
-        // Parallel batch processing (10 items at a time to speed up)
-        const BATCH_SIZE = 10;
-        for (let i = 0; i < lowConfidenceRows.length; i += BATCH_SIZE) {
-            const batch = lowConfidenceRows.slice(i, i + BATCH_SIZE);
-            console.log(`Processing AI batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(lowConfidenceRows.length / BATCH_SIZE)} (items ${i + 1}-${Math.min(i + BATCH_SIZE, lowConfidenceRows.length)}/${lowConfidenceRows.length})`);
+                // BETTER LOGIC:
+                // If feedback says "Layer X", we look for Layer X in CURRENT dxfItems.
+                // const targetLayer = feedback.targetLayer;
+                // const newMatches = dxfItems.filter(i => i.layer_normalized === targetLayer);
+                // return { ...row, matched_items: newMatches, ... };
+            }
+            return row;
+        }));
 
-            await Promise.all(batch.map(async (row) => {
-                try {
-                    // --- TYPE ENFORCEMENT LOGIC ---
-                    // --- TYPE ENFORCEMENT LOGIC ---
-                    // REFACTORED: Use centralized classifier
-                    const classification = classifyItemIntent(row.excel_item_text, row.excel_unit);
+        // POST-FUZZY PROCESSING: Apply all classification rules
+        stagingRows = stagingRows.map((row: any) => {
+            const desc = (row.excel_item_text || '').toLowerCase();
 
-                    let enforcedType: 'block' | 'length' | 'global' | 'area' | null = null;
-                    if (classification.confidence >= 0.7 && classification.type !== 'UNKNOWN') {
-                        // Convert UPPERCASE to lowercase
-                        enforcedType = classification.type.toLowerCase() as 'block' | 'length' | 'global' | 'area';
-                    }
+            // FIX 1: Auto-classify GLOBAL/SERVICE items (with proper normalization)
+            const isServiceScope =
+                desc.includes('instalacion') ||  // Normalized (no tilde)
+                desc.includes('instalación') ||  // With tilde
+                desc.includes('provision e instalacion') ||
+                desc.includes('provisión e instalación') ||
+                (desc.includes('certificado') && !desc.includes('rotulado')) ||
+                desc.includes('tramite') ||
+                desc.includes('trámite') ||
+                desc.includes('legaliz');
 
+            if (isServiceScope) {
+                return {
+                    ...row,
+                    matched_items: [],
+                    source_items: [],
+                    match_confidence: 0.95,
+                    match_reason: "Logic: Item de Servicio/Alcance (No requiere dibujo)",
+                    status: 'approved',
+                    qty_final: 1
+                };
+            }
 
-                    // HANDLE GLOBAL ITEMS IMMEDIATELY
-                    if (enforcedType === 'global') {
-                        (row as any).matched_items = [];
-                        (row as any).match_confidence = 0.9;
-                        (row as any).match_reason = "Logic: Item Global/Administrativo (No requiere dibujo)";
-                        (row as any).status = 'approved';
-                        row.qty_final = 1;
-                        // Suggestion: None needed for approved global
-                        return; // Skip AI matching
-                    }
+            // FIX 1.5: Auto-classify "por mandante" items as GLOBAL
+            const unit = (row.excel_unit || '').toLowerCase();
+            if (unit.includes('mandante') || unit.includes('cliente')) {
+                return {
+                    ...row,
+                    matched_items: [],
+                    source_items: [],
+                    match_confidence: 0.9,
+                    match_reason: "Logic: Unidad 'por mandante' indica provisión (GLOBAL)",
+                    status: 'approved',
+                    qty_final: 1
+                };
+            }
 
-                    // FILTER CANDIDATES BASED ON TYPE
-                    let filteredCandidates = candidatePayload;
-                    if (enforcedType === 'block') {
-                        filteredCandidates = candidatePayload.filter(c => c.type === 'block');
-                        if (filteredCandidates.length === 0) {
-                            // Fallback: if no blocks found, maybe they are drawn as lines? 
-                            // But for now, strict enforcement is better to avoid "0.95m Tablero".
-                            console.warn(`[Type Enforcement] Item '${row.excel_item_text}' requires BLOCK but no block candidates found.`);
-                        }
-                    } else if (enforcedType === 'length') {
-                        filteredCandidates = candidatePayload.filter(c => c.type === 'length');
-                    }
+            // FIX 2: Pre-classify "Punto" items to force AI refinement
+            if ((desc.startsWith('punto ') || desc.startsWith('puntos ')) &&
+                !desc.includes('canaliz') && !desc.includes('ducto') && !desc.includes('tuber')) {
+                console.log(`[Punto Pre-classification] Forcing 'c:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA{row.excel_item_text}' to AI refinement`);
+                return { ...row, match_confidence: 0.3, confidence: 'low' }; // Force AI refinement
+            }
 
-                    // If we filtered out everything, fallback to original or skip
-                    const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+            // FIX 3: Auto-approve valid lengths from fuzzy matcher
+            if (row.source_items && row.source_items.length > 0) {
+                const firstItem = row.source_items[0];
+                if (firstItem.type === 'length' && row.qty_final >= 1.0 && row.match_confidence >= 0.5) {
+                    console.log(`[Auto-approve Fuzzy] Valid length ${row.qty_final.toFixed(2)}m for '${row.excel_item_text}'`);
+                    return { ...row, status: 'approved' };
+                }
+            }
 
-                    const aiResult = await matchItemFlow({
-                        item_description: row.excel_item_text,
-                        item_unit: row.excel_unit,
-                        item_class_hint: enforcedType || undefined, // Pass hint to AI
-                        candidate_layers: candidatesToUse // Use filtered candidates
+            return row;
+        });
+
+        // AI ENHANCEMENT:
+        // Filter rows with low confidence to refine with AI
+        // We process them in parallel batches to speed up
+        if (process.env.GOOGLE_GENAI_API_KEY) {
+            const { matchItemFlow } = await import('@/ai/match-items');
+
+            // Prepare Rich Candidates (Name + Type)
+            // Deduplicate by layer name but keep type info 
+            // (If layer has both blocks and lines, we prefer block if it has more items? or keep both?)
+            // Simplification: One entry per layer, prioritizing 'block' if mixed.
+            // Prepare Rich Candidates (Name + Type)
+            // IMPROVED: Group by Layer + BlockName for blocks to distinguish specific components
+            const candidateMap = new Map<string, { name: string, type: string, sample_value: number, ids: string[] }>();
+
+            dxfItems.forEach(i => {
+                // Skip tiny text or noise if needed, but for now let's focus on logic
+                let key = i.layer_normalized;
+                let displayName = i.layer_normalized;
+
+                // For Blocks, distinguishing by name is CRITICAL (e.g. UPS vs Socket)
+                if (i.type === 'block' && i.name_raw) {
+                    key = `${i.layer_normalized}::${i.name_raw}`;
+                    displayName = `${i.name_raw} (Layer: ${i.layer_normalized})`;
+                }
+
+                if (!candidateMap.has(key)) {
+                    candidateMap.set(key, {
+                        name: displayName,
+                        type: i.type,
+                        sample_value: i.value_m,
+                        ids: [i.id] // Keep track of representant IDs? No, we filter later by match
                     });
+                }
+            });
+            const candidatePayload = Array.from(candidateMap.values())
+                .map(c => ({ name: c.name, type: c.type, sample_value: c.sample_value }));
 
-                    if (aiResult.selected_layer && aiResult.confidence > 0.5) {
-                        // Find the items belonging to this layer
-                        let betterMatches: ItemDetectado[] = [];
+            const lowConfidenceRows = stagingRows.filter(r =>
+                (r as any).match_confidence < 0.6 &&
+                (r as any).status !== 'ignored' &&
+                (r as any).status !== 'approved'
+            );
 
-                        // Parse "BlockName (Layer: LayerName)" format used for Blocks in candidateMap
-                        const granularMatch = aiResult.selected_layer.match(/^(.*) \(Layer: (.*)\)$/);
+            console.log(`AI Refining ${lowConfidenceRows.length} items with Dimensional Analysis...`);
 
-                        if (granularMatch) {
-                            // CASE A: Specific Block selected
-                            const bName = granularMatch[1];
-                            const bLayer = granularMatch[2];
-                            // STRICT FILTER: Only return BLOCKS with that name and layer. Ignore lines.
-                            betterMatches = dxfItems.filter(i =>
-                                i.layer_normalized === bLayer &&
-                                i.name_raw === bName &&
-                                i.type === 'block'
-                            );
-                        } else {
-                            // CASE B: Whole Layer selected (Typical for Lengths/Areas)
-                            // STRICT FILTER: Exclude blocks to avoid mixing types (e.g. 4 blocks + 0.9m length)
-                            // If the AI selected a whole layer, it usually means linear elements.
-                            betterMatches = dxfItems.filter(i =>
-                                i.layer_normalized === aiResult.selected_layer &&
-                                i.type !== 'block'
-                            );
+            // Parallel batch processing (10 items at a time to speed up)
+            const BATCH_SIZE = 10;
+            for (let i = 0; i < lowConfidenceRows.length; i += BATCH_SIZE) {
+                const batch = lowConfidenceRows.slice(i, i + BATCH_SIZE);
+                console.log(`Processing AI batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(lowConfidenceRows.length / BATCH_SIZE)} (items ${i + 1}-${Math.min(i + BATCH_SIZE, lowConfidenceRows.length)}/${lowConfidenceRows.length})`);
+
+                await Promise.all(batch.map(async (row) => {
+                    try {
+                        // --- TYPE ENFORCEMENT LOGIC ---
+                        // --- TYPE ENFORCEMENT LOGIC ---
+                        // REFACTORED: Use centralized classifier
+                        const classification = classifyItemIntent(row.excel_item_text, row.excel_unit);
+
+                        let enforcedType: 'block' | 'length' | 'global' | 'area' | null = null;
+                        if (classification.confidence >= 0.7 && classification.type !== 'UNKNOWN') {
+                            // Convert UPPERCASE to lowercase
+                            enforcedType = classification.type.toLowerCase() as 'block' | 'length' | 'global' | 'area';
                         }
 
-                        // FINAL TYPE CHECK (Post-AI)
-                        // If we enforced BLOCK but ended up with LENGTH items (shouldn't happen with filtered candidates but safety first)
-                        if (enforcedType === 'block' && betterMatches.some(m => m.type !== 'block')) {
-                            console.warn(`[Type Enforcement] Rejected AI match for '${row.excel_item_text}' because it returned non-block items.`);
-                            betterMatches = [];
+
+                        // HANDLE GLOBAL ITEMS IMMEDIATELY
+                        if (enforcedType === 'global') {
+                            (row as any).matched_items = [];
+                            (row as any).match_confidence = 0.9;
+                            (row as any).match_reason = "Logic: Item Global/Administrativo (No requiere dibujo)";
+                            (row as any).status = 'approved';
+                            row.qty_final = 1;
+                            // Suggestion: None needed for approved global
+                            return; // Skip AI matching
                         }
 
-                        if (betterMatches.length > 0) {
-                            (row as any).matched_items = betterMatches;
-                            (row as any).match_confidence = aiResult.confidence;
-                            (row as any).match_reason = "AI: " + aiResult.reasoning;
+                        // FILTER CANDIDATES BASED ON TYPE
+                        let filteredCandidates = candidatePayload;
+                        if (enforcedType === 'block') {
+                            filteredCandidates = candidatePayload.filter(c => c.type === 'block');
+                            if (filteredCandidates.length === 0) {
+                                // Fallback: if no blocks found, maybe they are drawn as lines? 
+                                // But for now, strict enforcement is better to avoid "0.95m Tablero".
+                                console.warn(`[Type Enforcement] Item '${row.excel_item_text}' requires BLOCK but no block candidates found.`);
+                            }
+                        } else if (enforcedType === 'length') {
+                            filteredCandidates = candidatePayload.filter(c => c.type === 'length');
+                        }
 
-                            // Recalculate Qty with Clean Length Filter
-                            let qty = 0;
-                            if (betterMatches[0].type === 'block') {
-                                // VICTORY FIX: Sum values instead of counting items, for multi-insertion blocks
-                                qty = betterMatches.reduce((acc, m) => acc + (m.value_raw || 1), 0);
+                        // If we filtered out everything, fallback to original or skip
+                        const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+
+                        const aiResult = await matchItemFlow({
+                            item_description: row.excel_item_text,
+                            item_unit: row.excel_unit,
+                            item_class_hint: enforcedType || undefined, // Pass hint to AI
+                            candidate_layers: candidatesToUse // Use filtered candidates
+                        });
+
+                        if (aiResult.selected_layer && aiResult.confidence > 0.5) {
+                            // Find the items belonging to this layer
+                            let betterMatches: ItemDetectado[] = [];
+
+                            // Parse "BlockName (Layer: LayerName)" format used for Blocks in candidateMap
+                            const granularMatch = aiResult.selected_layer.match(/^(.*) \(Layer: (.*)\)$/);
+
+                            if (granularMatch) {
+                                // CASE A: Specific Block selected
+                                const bName = granularMatch[1];
+                                const bLayer = granularMatch[2];
+                                // STRICT FILTER: Only return BLOCKS with that name and layer. Ignore lines.
+                                betterMatches = dxfItems.filter(i =>
+                                    i.layer_normalized === bLayer &&
+                                    i.name_raw === bName &&
+                                    i.type === 'block'
+                                );
                             } else {
-                                // CLEAN LENGTH FILTER: Ignore tiny segments < 0.2m (Noise)
-                                betterMatches.forEach(m => {
-                                    if (m.value_m > 0.2) {
-                                        qty += m.value_m;
+                                // CASE B: Whole Layer selected (Typical for Lengths/Areas)
+                                // STRICT FILTER: Exclude blocks to avoid mixing types (e.g. 4 blocks + 0.9m length)
+                                // If the AI selected a whole layer, it usually means linear elements.
+                                betterMatches = dxfItems.filter(i =>
+                                    i.layer_normalized === aiResult.selected_layer &&
+                                    i.type !== 'block'
+                                );
+                            }
+
+                            // FINAL TYPE CHECK (Post-AI)
+                            // If we enforced BLOCK but ended up with LENGTH items (shouldn't happen with filtered candidates but safety first)
+                            if (enforcedType === 'block' && betterMatches.some(m => m.type !== 'block')) {
+                                console.warn(`[Type Enforcement] Rejected AI match for '${row.excel_item_text}' because it returned non-block items.`);
+                                betterMatches = [];
+                            }
+
+                            if (betterMatches.length > 0) {
+                                (row as any).matched_items = betterMatches;
+                                (row as any).match_confidence = aiResult.confidence;
+                                (row as any).match_reason = "AI: " + aiResult.reasoning;
+
+                                // Recalculate Qty with Clean Length Filter
+                                let qty = 0;
+                                if (betterMatches[0].type === 'block') {
+                                    // VICTORY FIX: Sum values instead of counting items, for multi-insertion blocks
+                                    qty = betterMatches.reduce((acc, m) => acc + (m.value_raw || 1), 0);
+                                } else {
+                                    // CLEAN LENGTH FILTER: Ignore tiny segments < 0.2m (Noise)
+                                    betterMatches.forEach(m => {
+                                        if (m.value_m > 0.2) {
+                                            qty += m.value_m;
+                                        }
+                                    });
+                                }
+                                row.qty_final = qty;
+
+                                // --- SANITY CHECKS (Tri-state) + REFINED STATUS ---
+                                let status = aiResult.confidence > 0.8 ? 'approved' : 'pending';
+                                let warning = "";
+                                let statusReason = ""; // For refined status categorization
+
+                                // 1. Linear Sanity
+                                if (enforcedType === 'length') {
+                                    // A. INVALID (Noise) - Hard Fail → pending_no_geometry
+                                    if (qty < 0.5) {
+                                        status = 'pending_no_geometry';
+                                        statusReason = 'insufficient_geometry';
+                                        (row as any).raw_qty = qty; // Save what was measured
+                                        (row as any).sanity_flag = 'insufficient_geometry';
+                                        row.qty_final = null; // null = couldn't measure reliably
+                                        warning = `[CRITICAL] Longitud < 0.5m (${qty.toFixed(2)}m). Invalidada por ser ruido gráfico.`;
+                                        (row as any).match_reason += ` | ERR: ${warning}`;
+                                        console.warn(`[Sanity Critical] ${row.excel_item_text}: ${warning}`);
                                     }
-                                });
-                            }
-                            row.qty_final = qty;
-
-                            // --- SANITY CHECKS (Tri-state) + REFINED STATUS ---
-                            let status = aiResult.confidence > 0.8 ? 'approved' : 'pending';
-                            let warning = "";
-                            let statusReason = ""; // For refined status categorization
-
-                            // 1. Linear Sanity
-                            if (enforcedType === 'length') {
-                                // A. INVALID (Noise) - Hard Fail → pending_no_geometry
-                                if (qty < 0.5) {
-                                    status = 'pending_no_geometry';
-                                    statusReason = 'insufficient_geometry';
-                                    (row as any).raw_qty = qty; // Save what was measured
-                                    (row as any).sanity_flag = 'insufficient_geometry';
-                                    row.qty_final = null; // null = couldn't measure reliably
-                                    warning = `[CRITICAL] Longitud < 0.5m (${qty.toFixed(2)}m). Invalidada por ser ruido gráfico.`;
-                                    (row as any).match_reason += ` | ERR: ${warning}`;
-                                    console.warn(`[Sanity Critical] ${row.excel_item_text}: ${warning}`);
+                                    // B. REVIEW REQUIRED (Suspicious) - Soft Fail
+                                    else if (qty < 2.0) {
+                                        status = 'pending';
+                                        warning = `[Sanity Warn] Longitud baja (${qty.toFixed(2)}m). Revisar si es simbología.`;
+                                        (row as any).match_reason += ` | WARN: ${warning}`;
+                                    }
+                                    // C. HIGH SCALE ERROR
+                                    else if (qty > 5000) {
+                                        status = 'pending';
+                                        warning = `[Sanity Warn] Longitud extrema (${qty.toFixed(2)}m). Posible error de escala DXF.`;
+                                        (row as any).match_reason += ` | WARN: ${warning}`;
+                                    }
+                                    // QUICK WIN 4: Auto-approve valid lengths
+                                    else if (qty >= 1.0 && !warning) {
+                                        status = 'approved';
+                                        console.log(`[Auto-approve] Valid length ${qty.toFixed(2)}m for '${row.excel_item_text}'`);
+                                    }
                                 }
-                                // B. REVIEW REQUIRED (Suspicious) - Soft Fail
-                                else if (qty < 2.0) {
-                                    status = 'pending';
-                                    warning = `[Sanity Warn] Longitud baja (${qty.toFixed(2)}m). Revisar si es simbología.`;
-                                    (row as any).match_reason += ` | WARN: ${warning}`;
-                                }
-                                // C. HIGH SCALE ERROR
-                                else if (qty > 5000) {
-                                    status = 'pending';
-                                    warning = `[Sanity Warn] Longitud extrema (${qty.toFixed(2)}m). Posible error de escala DXF.`;
-                                    (row as any).match_reason += ` | WARN: ${warning}`;
-                                }
-                                // QUICK WIN 4: Auto-approve valid lengths
-                                else if (qty >= 1.0 && !warning) {
-                                    status = 'approved';
-                                    console.log(`[Auto-approve] Valid length ${qty.toFixed(2)}m for '${row.excel_item_text}'`);
-                                }
-                            }
 
-                            // 2. Block Keyword Overlap (Quick Win)
-                            if (enforcedType === 'block') {
-                                // Critical items must match semantically
-                                const iDesc = row.excel_item_text.toLowerCase(); // already lowercased
-                                if ((iDesc.includes('ups') || iDesc.includes('gabinete') || iDesc.includes('rack')) && betterMatches.length > 0) {
-                                    const matchName = betterMatches[0].name_raw.toLowerCase();
-                                    const hasOverlap = matchName.includes('ups') || matchName.includes('nobreak') || matchName.includes('rack') || matchName.includes('gab') || matchName.includes('cabinet');
+                                // 2. Block Keyword Overlap (Quick Win)
+                                if (enforcedType === 'block') {
+                                    // Critical items must match semantically
+                                    const iDesc = row.excel_item_text.toLowerCase(); // already lowercased
+                                    if ((iDesc.includes('ups') || iDesc.includes('gabinete') || iDesc.includes('rack')) && betterMatches.length > 0) {
+                                        const matchName = betterMatches[0].name_raw.toLowerCase();
+                                        const hasOverlap = matchName.includes('ups') || matchName.includes('nobreak') || matchName.includes('rack') || matchName.includes('gab') || matchName.includes('cabinet');
 
-                                    if (!hasOverlap) {
-                                        status = 'pending_semantics';
-                                        statusReason = 'semantic_mismatch';
-                                        warning = `[Semantics] Block match '${betterMatches[0].name_raw}' does not contain required keywords for UPS/Rack.`;
+                                        if (!hasOverlap) {
+                                            status = 'pending_semantics';
+                                            statusReason = 'semantic_mismatch';
+                                            warning = `[Semantics] Block match '${betterMatches[0].name_raw}' does not contain required keywords for UPS/Rack.`;
+                                            (row as any).match_reason += ` | WARN: ${warning}`;
+                                        }
+                                    }
+
+                                    if (!Number.isInteger(qty)) {
+                                        status = 'pending';
+                                        warning = `[Sanity] Cantidad fraccionaria para bloque (${qty}).`;
                                         (row as any).match_reason += ` | WARN: ${warning}`;
                                     }
                                 }
 
-                                if (!Number.isInteger(qty)) {
-                                    status = 'pending';
-                                    warning = `[Sanity] Cantidad fraccionaria para bloque (${qty}).`;
-                                    (row as any).match_reason += ` | WARN: ${warning}`;
-                                }
-                            }
+                                (row as any).status = status;
+                                (row as any).status_reason = statusReason;
 
-                            (row as any).status = status;
-                            (row as any).status_reason = statusReason;
+                                // 3. Suggestions System (Victory Feature)
+                                if (status.startsWith('pending')) {
+                                    const suggestions: Suggestion[] = [];
 
-                            // 3. Suggestions System (Victory Feature)
-                            if (status.startsWith('pending')) {
-                                const suggestions: Suggestion[] = [];
+                                    // A. Invalid Length -> Suggest Alt Layer
+                                    if (enforcedType === 'length' && qty < 0.5) {
+                                        // Search for same-keyword layers with valid length
+                                        const keywords = row.excel_item_text.toLowerCase().split(' ').filter((w: string) => w.length > 4);
+                                        const altLinears = candidatesToUse.filter((c: any) =>
+                                            c.type === 'length' &&
+                                            c.sample_value > 2.0 &&
+                                            keywords.some((k: string) => c.name.toLowerCase().includes(k))
+                                        );
 
-                                // A. Invalid Length -> Suggest Alt Layer
-                                if (enforcedType === 'length' && qty < 0.5) {
-                                    // Search for same-keyword layers with valid length
-                                    const keywords = row.excel_item_text.toLowerCase().split(' ').filter((w: string) => w.length > 4);
-                                    const altLinears = candidatesToUse.filter((c: any) =>
-                                        c.type === 'length' &&
-                                        c.sample_value > 2.0 &&
-                                        keywords.some((k: string) => c.name.toLowerCase().includes(k))
-                                    );
+                                        altLinears.slice(0, 2).forEach(alt => {
+                                            suggestions.push({
+                                                id: crypto.randomUUID(),
+                                                action_type: 'SELECT_ALT_LAYER',
+                                                label: `Usar capa alternativa: ${alt.name} (${alt.sample_value.toFixed(1)}m)`,
+                                                payload: { layer: alt.name, value: alt.sample_value },
+                                                confidence: 'medium'
+                                            });
+                                        });
 
-                                    altLinears.slice(0, 2).forEach(alt => {
+                                        // Suggest Manual Qty
                                         suggestions.push({
                                             id: crypto.randomUUID(),
-                                            action_type: 'SELECT_ALT_LAYER',
-                                            label: `Usar capa alternativa: ${alt.name} (${alt.sample_value.toFixed(1)}m)`,
-                                            payload: { layer: alt.name, value: alt.sample_value },
-                                            confidence: 'medium'
+                                            action_type: 'MANUAL_QTY',
+                                            label: 'Ingresar Metros Manualmente',
+                                            confidence: 'high'
                                         });
-                                    });
+                                    }
 
-                                    // Suggest Manual Qty
-                                    suggestions.push({
-                                        id: crypto.randomUUID(),
-                                        action_type: 'MANUAL_QTY',
-                                        label: 'Ingresar Metros Manualmente',
-                                        confidence: 'high'
-                                    });
+                                    // B. Semantic Mismatch (UPS vs Tomada)
+                                    if (warning.includes('[Semantics]')) {
+                                        suggestions.push({
+                                            id: crypto.randomUUID(),
+                                            action_type: 'MARK_GLOBAL',
+                                            label: 'Convertir a Global (No Dibujado)',
+                                            payload: { qty: 1 },
+                                            confidence: 'high'
+                                        });
+                                    }
+
+                                    (row as any).suggestions = suggestions;
                                 }
-
-                                // B. Semantic Mismatch (UPS vs Tomada)
-                                if (warning.includes('[Semantics]')) {
-                                    suggestions.push({
-                                        id: crypto.randomUUID(),
-                                        action_type: 'MARK_GLOBAL',
-                                        label: 'Convertir a Global (No Dibujado)',
-                                        payload: { qty: 1 },
-                                        confidence: 'high'
-                                    });
-                                }
-
-                                (row as any).suggestions = suggestions;
                             }
                         }
+                    } catch (err) {
+                        console.error("AI Match Error for", row.excel_item_text, err);
                     }
-                } catch (err) {
-                    console.error("AI Match Error for", row.excel_item_text, err);
-                }
-            }));
+                }));
+            }
+
+            console.log(`AI Refinement complete. Processed ${lowConfidenceRows.length} items.`);
         }
 
-        console.log(`AI Refinement complete. Processed ${lowConfidenceRows.length} items.`);
-    }
+        // 5. Insert into Staging
+        const dbRows = stagingRows.map(row => ({
+            id: row.id,
+            batch_id: batchId,
+            excel_sheet: row.excel_sheet,
+            excel_row_index: row.excel_row_index,
+            excel_item_text: row.excel_item_text,
+            excel_unit: row.excel_unit,
+            source_items: (row as any).matched_items,
+            qty_final: row.qty_final,
+            height_factor: row.height_factor || 1.0,
+            price_selected: row.price_selected,
+            price_candidates: row.price_candidates,
+            confidence: (row as any).match_confidence > 0.8 ? 'high' : ((row as any).match_confidence > 0.4 ? 'medium' : 'low'),
+            match_confidence: (row as any).match_confidence,
+            match_reason: (row as any).match_reason || null,
+            status: (row as any).status || 'pending',
+            suggestions: (row as any).suggestions || null
+        }));
 
-    // 5. Insert into Staging
-    const dbRows = stagingRows.map(row => ({
-        id: row.id,
-        batch_id: batchId,
-        excel_sheet: row.excel_sheet,
-        excel_row_index: row.excel_row_index,
-        excel_item_text: row.excel_item_text,
-        excel_unit: row.excel_unit,
-        source_items: (row as any).matched_items,
-        qty_final: row.qty_final,
-        height_factor: row.height_factor || 1.0,
-        price_selected: row.price_selected,
-        price_candidates: row.price_candidates,
-        confidence: (row as any).match_confidence > 0.8 ? 'high' : ((row as any).match_confidence > 0.4 ? 'medium' : 'low'),
-        match_confidence: (row as any).match_confidence,
-        match_reason: (row as any).match_reason || null,
-        status: (row as any).status || 'pending',
-        suggestions: (row as any).suggestions || null
-    }));
+        const { error } = await supabase.from('staging_rows').insert(dbRows);
+        if (error) {
+            console.error("[Mapping] Error inserting staging rows:", error);
+            throw new Error(`Failed to insert staging rows: ${error.message}`);
+        }
 
-    const { error } = await supabase.from('staging_rows').insert(dbRows);
-    if (error) {
-        console.error("Error inserting staging rows", error);
-    } else {
         await supabase.from('batches').update({ status: 'ready' }).eq('id', batchId);
+        console.log(`[Mapping] Batch ${batchId} mapping complete. Status updated to 'ready'.`);
+
+    } catch (error) {
+        console.error(`[Mapping] FATAL ERROR in executeMapping for batch ${batchId}:`, error);
+        // Update batch status to error
+        await supabase.from('batches').update({
+            status: 'error',
+            // @ts-ignore - error_message might not exist in schema
+            error_message: error instanceof Error ? error.message : String(error)
+        }).eq('id', batchId);
+        throw error; // Re-throw to be caught by worker
     }
 }
