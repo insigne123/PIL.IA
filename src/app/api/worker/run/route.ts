@@ -4,7 +4,7 @@ import { executeJob } from '../../../../../worker/pipeline';
 
 // Configure for long running - This works on Vercel Pro / Netlify / Cloud Run
 // On Firebase/Google Cloud Functions, timeouts are configured in firebase.json
-export const maxDuration = 900; // 15 minutes
+export const maxDuration = 1500; // 25 minutes
 export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
@@ -46,10 +46,10 @@ export async function POST(req: NextRequest) {
     // 3. Execute with timeout protection
     try {
         // FIX: Add timeout to prevent hanging jobs (Bug 1.8)
-        const JOB_TIMEOUT_MS = 15 * 60 * 1000; // 15 minutes
+        const JOB_TIMEOUT_MS = 25 * 60 * 1000; // 25 minutes
 
         const timeoutPromise = new Promise<never>((_, reject) => {
-            setTimeout(() => reject(new Error('Job timeout exceeded (15 minutes)')), JOB_TIMEOUT_MS);
+            setTimeout(() => reject(new Error('Job timeout exceeded (25 minutes)')), JOB_TIMEOUT_MS);
         });
 
         // Race between job execution and timeout

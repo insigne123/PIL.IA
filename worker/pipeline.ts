@@ -394,8 +394,8 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
 
         console.log(`AI Refining ${lowConfidenceRows.length} items with Dimensional Analysis...`);
 
-        // Parallel batch processing (5 items at a time to avoid rate limits)
-        const BATCH_SIZE = 5;
+        // Parallel batch processing (10 items at a time to speed up)
+        const BATCH_SIZE = 10;
         for (let i = 0; i < lowConfidenceRows.length; i += BATCH_SIZE) {
             const batch = lowConfidenceRows.slice(i, i + BATCH_SIZE);
             console.log(`Processing AI batch ${Math.floor(i / BATCH_SIZE) + 1}/${Math.ceil(lowConfidenceRows.length / BATCH_SIZE)} (items ${i + 1}-${Math.min(i + BATCH_SIZE, lowConfidenceRows.length)}/${lowConfidenceRows.length})`);
