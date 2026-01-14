@@ -41,7 +41,7 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
 
         const buffer = Buffer.from(await fileData.arrayBuffer());
         let extractedItems: any[] = [];
-        let detectedUnitVal: string = 'unknown';
+        let detectedUnitVal: string | null = null;
 
         // --- HOTFIX 6: Detect Discipline ---
         const fileDiscipline = detectDiscipline(file.original_filename);
@@ -59,7 +59,7 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
                 const fileContent = buffer.toString('utf-8');
                 const result = await parseDxf(fileContent, planUnit);
                 extractedItems = result.items;
-                detectedUnitVal = result.detectedUnit || 'unknown';
+                detectedUnitVal = result.detectedUnit || null;
 
                 // Tag items with discipline
                 extractedItems.forEach(item => { item.discipline = fileDiscipline; });
@@ -81,7 +81,7 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
 
                     const result = await parseDxf(text, planUnit);
                     extractedItems = result.items;
-                    detectedUnitVal = result.detectedUnit || 'unknown';
+                    detectedUnitVal = result.detectedUnit || null;
 
                     // Tag items with discipline
                     extractedItems.forEach(item => { item.discipline = fileDiscipline; });
