@@ -207,19 +207,41 @@ async function executeGeneration(supabase: SupabaseClient, batchId: string, exce
 }
 
 async function checkAndTriggerMatching(supabase: SupabaseClient, batchId: string) {
+    console.log(`[Pipeline] Checking trigger for batch ${batchId}...`);
+
+    // 1. Get ALL files to check status
     const { data: files } = await supabase
         .from('batch_files')
-        .select('*')
+        .select('id, original_filename, status, detected_unit')
         .eq('batch_id', batchId);
 
-    if (!files) return;
+    if (!files) {
+        console.log(`[Pipeline] No files found for batch ${batchId}`);
+        return;
+    }
+
+    // Log status of each file
+    const statuses = files.map(f => `${f.original_filename}: ${f.status}`).join(', ');
+    console.log(`[Pipeline] File statuses: [${statuses}]`);
+
     const allExtracted = files.every(f => f.status === 'extracted');
+
+    if (!allExtracted) {
+        console.log(`[Pipeline] Not all files extracted yet. Waiting...`);
+        return;
+    }
 
     if (allExtracted) {
         // FAST VALIDATION: Check Units BEFORE starting slow Matching
         const { data: batch } = await supabase.from('batches').select('unit_selected, status').eq('id', batchId).single();
-        const batchUnit = batch?.unit_selected;
 
+        if (!batch) {
+            console.error(`[Pipeline] Batch ${batchId} not found in DB`);
+            return;
+        }
+
+        console.log(`[Pipeline] Batch status: ${batch.status}`);
+        const batchUnit = batch?.unit_selected;
         const mismatchFile = files.find(f => f.detected_unit && f.detected_unit !== 'unknown' && f.detected_unit !== batchUnit);
 
         if (mismatchFile) {
@@ -230,6 +252,7 @@ async function checkAndTriggerMatching(supabase: SupabaseClient, batchId: string
 
         // FIX: Atomic update to prevent race condition
         // Only trigger matching if batch is still in 'processing' state
+        console.log(`[Pipeline] Attempting to lock batch for mapping...`);
         const { data: updatedBatch, error: updateError } = await supabase
             .from('batches')
             .update({ status: 'mapping' })
@@ -240,7 +263,7 @@ async function checkAndTriggerMatching(supabase: SupabaseClient, batchId: string
 
         if (updateError || !updatedBatch) {
             // Another worker already started mapping, or batch is in different state
-            console.log(`[Pipeline] Batch ${batchId} already being mapped or in different state. Skipping.`);
+            console.log(`[Pipeline] Failed to lock batch. Current status might not be 'processing' or already locked. Error: ${updateError?.message}`);
             return;
         }
 
