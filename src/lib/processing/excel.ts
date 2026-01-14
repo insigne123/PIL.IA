@@ -298,12 +298,7 @@ export async function parseExcel(buffer: ArrayBuffer, targetSheetName?: string):
             price: price,
             type: rowType
         });
-        unit: unit,
-            qty,
-            price,
-            type: rowType
     });
-});
 
-return { items, structure };
+    return { items, structure };
 }
