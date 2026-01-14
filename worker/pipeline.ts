@@ -116,12 +116,19 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
             .upload(jsonPath, JSON.stringify(extractedItems), { upsert: true });
 
         // Update Batch File
-        await supabase.from('batch_files').update({
+        const { error: updateError } = await supabase.from('batch_files').update({
             status: 'extracted',
             // @ts-ignore: Assuming column exists in updated migration
             storage_json_path: jsonPath,
             detected_unit: detectedUnitVal
         }).eq('id', file.id);
+
+        if (updateError) {
+            console.error(`[Pipeline] FATAL: Could not update file status for ${file.original_filename}:`, updateError);
+            throw new Error(`DB Update failed: ${updateError.message}`);
+        }
+
+        console.log(`[Pipeline] Successfully updated file ${file.original_filename} to 'extracted'`);
 
         // Check Trigger
         await checkAndTriggerMatching(supabase, file.batch_id);
