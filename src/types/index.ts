@@ -90,7 +90,7 @@ export interface StagingRow {
 
   match_reason?: string; // AI reasoning
   confidence_reason?: string;
-  status: 'pending' | 'approved' | 'ignored' | 'pending_semantics' | 'pending_no_geometry' | 'pending_no_match';
+  status: 'pending' | 'approved' | 'ignored' | 'pending_semantics' | 'pending_no_geometry' | 'pending_no_match' | 'title';
   status_reason?: string; // Reason for refined status
   suggestions?: Suggestion[]; // Actionable suggestions for pending items
 
@@ -109,6 +109,10 @@ export interface StagingRow {
   }>;
   hard_reject_reasons?: string[];
   warnings?: string[];
+
+  // Phase 2 improvements
+  is_title?: boolean; // True if row is a section title (no unit)
+  suggestion?: string; // Contextual suggestion for user
 }
 
 export interface Suggestion {

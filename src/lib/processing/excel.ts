@@ -103,16 +103,26 @@ function classifyRow(description: string, unit: string, qty: number | null, pric
         return 'note';
     }
 
-    // 2. SECTION HEADERS (Titles)
-    // Heuristic: No Unit + No Price + (Bold OR Uppercase short text OR Merged)
-    // Also check for numbering like "1. OBRAS CIVILES"
-    const isUppercase = description === description.toUpperCase() && description.length > 3;
-    const hasNoData = !unit && (!qty && qty !== 0) && (!price && price !== 0);
+    // 2. SECTION HEADERS (Titles) - STRICT RULE
+    // ⭐ MEJORA 1: Sin unidad + tiene descripción = título
+    // This is the highest precision rule for title detection
+    const hasNoUnit = !unit || unit.trim() === '';
+    const hasDescription = description && description.trim().length > 0;
 
-    if (hasNoData) {
-        if (isBold || hasMerge || isUppercase || /^\d+(\.\d+)*\.?\s+[A-Z]/.test(description)) {
+    if (hasNoUnit && hasDescription) {
+        // Additional confidence: Bold, Uppercase, Merged, or Numbered
+        const isUppercase = description === description.toUpperCase() && description.length > 3;
+        const hasNoData = (!qty && qty !== 0) && (!price && price !== 0);
+        const isNumbered = /^\d+(\.\d+)*\.?\s+[A-Z]/.test(description);
+
+        // If any formatting hint OR no data at all, definitely a title
+        if (isBold || hasMerge || isUppercase || isNumbered || hasNoData) {
             return 'section_header';
         }
+
+        // Even without formatting, if it has no unit, treat as title
+        // (This is the key improvement - prevents false positives)
+        return 'section_header';
     }
 
     // 3. SERVICE ITEMS
@@ -284,11 +294,16 @@ export async function parseExcel(buffer: ArrayBuffer, targetSheetName?: string):
             row: rowNumber,
             description: desc,
             unit: unit,
+            qty: qty,
+            price: price,
+            type: rowType
+        });
+        unit: unit,
             qty,
             price,
             type: rowType
-        });
     });
+});
 
-    return { items, structure };
+return { items, structure };
 }

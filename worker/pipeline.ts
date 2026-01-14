@@ -354,10 +354,18 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
         const excelDiscipline = excelFile ? detectDiscipline(excelFile.original_filename) : 'UNKNOWN';
         console.log(`[Mapping] Excel Discipline: ${excelDiscipline}`);
 
-        // 4. PRE-CLASSIFICATION (Quick Win 3: Force "Punto" items to low confidence)
+        // 4. PRE-CLASSIFICATION (Quick Win 3 + Phase 2 Improvements)
         // This ensures they go through AI refinement where the Block rule is applied
+        const debugLogs: string[] = [];
+
         excelItems.forEach((item: any) => {
             const desc = (item.description || '').toLowerCase();
+
+            // MEJORA 1: Title Detection
+            if (item.type === 'section_header') {
+                item._is_title = true;
+            }
+
             if ((desc.startsWith('punto ') || desc.startsWith('puntos ')) &&
                 !desc.includes('canaliz') && !desc.includes('ducto') && !desc.includes('tuber')) {
                 // Mark for AI refinement by forcing low initial confidence
@@ -403,6 +411,21 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
 
         // POST-FUZZY PROCESSING: Apply all classification rules
         stagingRows = stagingRows.map((row: any) => {
+            // MEJORA 1: Filter Titles
+            // If marked as title during Excel parsing, skip matching
+            // @ts-ignore
+            if (row._original_item?.type === 'section_header' || (row._original_item?._is_title)) {
+                return {
+                    ...row,
+                    is_title: true, // New field for UI
+                    status: 'title', // New status
+                    match_confidence: 1.0,
+                    match_reason: "Clasificado como Título de Sección (Sin Unidad)",
+                    matched_items: [],
+                    qty_final: null
+                };
+            }
+
             const desc = (row.excel_item_text || '').toLowerCase();
 
             // FIX 1: Auto-classify GLOBAL/SERVICE items (with proper normalization)
@@ -625,6 +648,30 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                                 (row as any).match_confidence = aiResult.confidence;
                                 (row as any).match_reason = "AI: " + aiResult.reasoning;
 
+                                // MEJORA 2: Coherencia Unidad ↔ Geometría
+                                // Penalizar mismatch severo (e.g. m2 vs block)
+                                const detectedType = betterMatches[0]?.type;
+                                if (enforcedType === 'area' && detectedType === 'block') {
+                                    (row as any).match_confidence = 0.1;
+                                    (row as any).match_reason += " | ⚠️ ALERTA: Unidad 'm2' indica AREA, pero se encontró geometría tipo BLOCK.";
+                                    (row as any).suggestion = "Verifica la unidad en Excel o cambia el tipo de capa a Área.";
+                                }
+
+                                // MEJORA 3: Auto-Aprobar con Unidad Explícita
+                                // Si unidad es clara Y tipo coincide Y confianza AI es decente → Boost
+                                const explicitUnits = ['m', 'ml', 'm2', 'un', 'c/u', 'pza'];
+                                const unitIsExplicit = explicitUnits.includes(row.excel_unit?.toLowerCase());
+                                const typeMatches = (enforcedType === 'block' && (detectedType === 'block' || detectedType === 'text')) ||
+                                    (enforcedType === 'length' && detectedType === 'length');
+
+                                if (unitIsExplicit && typeMatches && aiResult.confidence > 0.6) {
+                                    (row as any).match_confidence += 0.15; // Boost +15%
+                                    console.log(`[Auto-Approve Boost] +15% for '${row.excel_item_text}' (Explicit Unit + Type Match)`);
+                                }
+
+                                // MEJORA 4: Logging Mejorado
+                                console.log(`[Match Debug] Item: "${row.excel_item_text}" | Unit: "${row.excel_unit}" | Expected: "${enforcedType}" | Found: "${detectedType}" | Conf: ${(row as any).match_confidence.toFixed(2)}`);
+
                                 // Recalculate Qty with Clean Length Filter
                                 let qty = 0;
                                 const firstType = betterMatches[0].type;
@@ -783,11 +830,20 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
             suggestions: (row as any).suggestions || null
         }));
 
-        const { error } = await supabase.from('staging_rows').insert(dbRows);
-        if (error) {
-            console.error("[Mapping] Error inserting staging rows:", error);
-            throw new Error(`Failed to insert staging rows: ${error.message}`);
+        // Batch Insert to prevent Timeouts with large payloads
+        const CHUNK_SIZE = 50;
+        console.log(`[Mapping] Inserting ${dbRows.length} rows in chunks of ${CHUNK_SIZE}...`);
+
+        for (let i = 0; i < dbRows.length; i += CHUNK_SIZE) {
+            const chunk = dbRows.slice(i, i + CHUNK_SIZE);
+            const { error } = await supabase.from('staging_rows').insert(chunk);
+
+            if (error) {
+                console.error(`[Mapping] Error inserting staging rows chunk ${Math.floor(i / CHUNK_SIZE) + 1}:`, error);
+                throw new Error(`Failed to insert staging rows chunk: ${error.message}`);
+            }
         }
+        console.log(`[Mapping] Successfully inserted all ${dbRows.length} rows.`);
 
         await supabase.from('batches').update({ status: 'ready' }).eq('id', batchId);
         console.log(`[Mapping] Batch ${batchId} mapping complete. Status updated to 'ready'.`);
