@@ -24,6 +24,9 @@ export interface ItemDetectado {
   suspect_geometry?: boolean;
   suspect_reason?: string;
   geometry_threshold?: number;
+
+  // Spatial semantic enrichment
+  nearby_text_tokens?: string[];
 }
 
 // Unified Price Source
@@ -91,8 +94,20 @@ export interface StagingRow {
   suggestions?: Suggestion[]; // Actionable suggestions for pending items
 
   // Calculation method (deterministic)
-  calc_method?: 'COUNT' | 'LENGTH' | 'AREA' | 'GLOBAL';
+  calc_method?: 'COUNT' | 'LENGTH' | 'AREA' | 'VOLUME' | 'GLOBAL';
   method_detail?: string; // 'block_count' | 'polyline_length' | 'hatch_area' | etc.
+
+  // Debug Outputs (Phase 1 improvements)
+  expected_measure_type?: 'LENGTH' | 'AREA' | 'BLOCK' | 'GLOBAL' | 'UNKNOWN';
+  top_candidates?: Array<{
+    layer: string;
+    type: string;
+    score: number;
+    rejected: boolean;
+    reject_reason?: string;
+  }>;
+  hard_reject_reasons?: string[];
+  warnings?: string[];
 }
 
 export interface Suggestion {
@@ -101,6 +116,17 @@ export interface Suggestion {
   label: string;
   payload?: any;
   confidence?: 'high' | 'medium' | 'low';
+}
+
+// Matching Feedback for Learning System
+export interface MatchingFeedback {
+  id: string;
+  excel_item_text: string;
+  excel_unit: string;
+  cadItem?: ItemDetectado;
+  targetLayer?: string;
+  suggestedMatchId?: string;
+  created_at?: string;
 }
 
 // M1: Project & Batch

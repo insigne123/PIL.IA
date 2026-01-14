@@ -2,7 +2,7 @@ import Fuse from 'fuse.js';
 import { ItemDetectado, StagingRow, Unit, Suggestion, Discipline } from '@/types';
 import { ExtractedExcelItem } from './excel';
 import { v4 as uuidv4 } from 'uuid';
-import { classifyExpectedType, typeMatches, type ExpectedType } from './unit-classifier';
+import { classifyItemIntent, typeMatches, getExpectedMeasureType, type ExpectedType } from './unit-classifier';
 import { determineCalcMethod, isCompatibleType, type CalcMethod } from './calc-method';
 import { isDisciplineMatch } from './discipline';
 
@@ -76,32 +76,60 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
         const calcMethodResult = determineCalcMethod(excelItem.unit, excelItem.description);
         const calcMethod = calcMethodResult.method;
 
-        // 2. Classify expected type deterministically
-        const classification = classifyExpectedType(excelItem.unit, excelItem.description);
+        // 2. Derive expected measure type from Excel unit (for hard filtering)
+        const expectedMeasureType = getExpectedMeasureType(excelItem.unit);
+
+        // 3. Classify expected type deterministically (for soft matching)
+        // Switch to new classifyItemIntent (desc, unit) order
+        const classification = classifyItemIntent(excelItem.description, excelItem.unit);
         const expectedType = classification.type;
 
-        // 2. Search for matches
+        // Debug logging
+        console.log(`[Matcher] Row ${excelItem.row}: "${excelItem.description}"`);
+        console.log(`  Excel Unit: "${excelItem.unit}" → Expected Measure Type: ${expectedMeasureType}`);
+        console.log(`  Classification: ${expectedType} (confidence: ${classification.confidence})`);
+
+        // 4. Search for matches
         const allResults = fuse.search(excelItem.description);
 
-        // 3. Filter by expected type if known
-        const filteredResults = expectedType !== 'UNKNOWN' && expectedType !== 'GLOBAL'
-            ? allResults.filter(r => typeMatches(r.item.type, expectedType))
+        // 5. Apply HARD filter by measurement type
+        const hardFilteredResults = expectedMeasureType !== 'UNKNOWN' && expectedMeasureType !== 'GLOBAL'
+            ? allResults.filter(r => {
+                // Convert lowercase type to uppercase for comparison
+                const itemTypeUpper = r.item.type.toUpperCase() as 'BLOCK' | 'LENGTH' | 'TEXT' | 'AREA';
+                const isCompatible = typeMatches(itemTypeUpper, expectedMeasureType);
+                if (!isCompatible) {
+                    console.log(`  [Hard Reject] "${r.item.layer_normalized}" - Type ${r.item.type} incompatible with expected ${expectedMeasureType}`);
+                }
+                return isCompatible;
+            })
             : allResults;
 
-        const result = filteredResults.length > 0 ? filteredResults : allResults;
+        const result = hardFilteredResults.length > 0 ? hardFilteredResults : [];
 
         let bestMatch: ItemDetectado[] = [];
         let confidence = 0;
         let reason = "No valid match found";
         let suggestions: Suggestion[] = [];
+        const hardRejectReasons: string[] = [];
+        const warnings: string[] = [];
+
+        // Track hard rejects
+        if (expectedMeasureType !== 'UNKNOWN' && hardFilteredResults.length === 0 && allResults.length > 0) {
+            const foundTypes = [...new Set(allResults.slice(0, 3).map(r => r.item.type))].join(', ');
+            hardRejectReasons.push(
+                `Unidad Excel "${excelItem.unit}" requiere tipo ${expectedMeasureType}, pero solo se encontraron: ${foundTypes}`
+            );
+        }
 
         if (result.length > 0) {
             const match = result[0];
             const score = match.score || 1;
             confidence = 1 - score;
 
-            // Type matching bonus
-            if (typeMatches(match.item.type, expectedType)) {
+            // Type matching bonus - convert to UPPERCASE for comparison
+            const matchTypeUpper = match.item.type.toUpperCase() as 'BLOCK' | 'LENGTH' | 'TEXT' | 'AREA';
+            if (typeMatches(matchTypeUpper, expectedType)) {
                 confidence = Math.min(1.0, confidence * 1.1); // 10% bonus
                 reason = `Type-matched "${match.item.name_raw || match.item.layer_raw}" (${(confidence * 100).toFixed(0)}%)`;
             } else {
@@ -216,7 +244,21 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             // NEW: Calculation method
             calc_method: calcMethod,
             method_detail: calcMethodResult.method_detail,
-            discipline: excelDiscipline
+            discipline: excelDiscipline,
+
+            // Debug Outputs (Phase 1 improvements)
+            expected_measure_type: expectedMeasureType,
+            top_candidates: allResults.slice(0, 5).map(r => ({
+                layer: r.item.layer_normalized,
+                type: r.item.type,
+                score: 1 - (r.score || 1),
+                rejected: !hardFilteredResults.includes(r),
+                reject_reason: !hardFilteredResults.includes(r)
+                    ? `Type ${r.item.type} incompatible with expected ${expectedMeasureType}`
+                    : undefined
+            })),
+            hard_reject_reasons: hardRejectReasons.length > 0 ? hardRejectReasons : undefined,
+            warnings: warnings.length > 0 ? warnings : undefined
         };
     });
 
@@ -245,7 +287,7 @@ function generateSuggestions(
         }
 
         // Reason 2: Type compatibility
-        if (typeMatches(item.type, expectedType)) {
+        if (typeMatches(item.type.toUpperCase() as any, expectedType)) {
             reasons.push(`Type matches expected (${expectedType})`);
         } else {
             reasons.push(`⚠️ Type mismatch: found ${item.type}, expected ${expectedType}`);
@@ -307,7 +349,7 @@ function determineStatus(
     }
 
     // Type mismatch
-    if (expectedType !== 'UNKNOWN' && !typeMatches(match.type, expectedType)) {
+    if (expectedType !== 'UNKNOWN' && !typeMatches(match.type.toUpperCase() as any, expectedType)) {
         return 'pending_semantics';
     }
 

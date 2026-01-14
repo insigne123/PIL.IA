@@ -63,6 +63,33 @@ function validateMapping(worksheet: ExcelJS.Worksheet, headerRow: number, column
 }
 
 /**
+ * Validates if a unit column contains valid unit values by sampling data rows
+ */
+function validateUnitColumn(worksheet: ExcelJS.Worksheet, headerRow: number, unitCol: number): number {
+    if (unitCol === -1) return 0;
+
+    const VALID_UNITS = /^(m|ml|m2|m²|m3|m³|u|un|und|unidad|unidades|gl|glb|global|pa|est|kg|ton)$/i;
+    let validCount = 0;
+    let totalSampled = 0;
+    const MAX_SAMPLES = 20;
+
+    worksheet.eachRow((row, rowNumber) => {
+        if (rowNumber <= headerRow || totalSampled >= MAX_SAMPLES) return;
+
+        const unitVal = row.getCell(unitCol).text?.toLowerCase().trim();
+        if (unitVal && unitVal !== '') {
+            totalSampled++;
+            if (VALID_UNITS.test(unitVal)) {
+                validCount++;
+            }
+        }
+    });
+
+    // Return score: % of valid values
+    return totalSampled > 0 ? (validCount / totalSampled) * 100 : 0;
+}
+
+/**
  * Classifies a row based on content heuristics
  */
 function classifyRow(description: string, unit: string, qty: number | null, price: number | null, hasMerge: boolean = false, isBold: boolean = false): RowType {
@@ -129,7 +156,14 @@ export async function parseExcel(buffer: ArrayBuffer, targetSheetName?: string):
 
     const KEYWORDS = {
         description: ['descripcion', 'descripción', 'partida', 'designation', 'description', 'nombre', 'ítem', 'item'],
-        unit: ['unidad', 'und', 'unid', 'unit', 'u.'],
+        unit: [
+            'unidad',
+            'unidades',
+            /\bund\b/i,      // Word boundary to avoid matching "Valor Und" or "P.U."
+            /\bunid\b/i,
+            /\bunit\b/i,
+            /^u\.?$/i        // Only "u" or "u." as standalone
+        ],
         qty: ['cantidad', 'cant', 'qty', 'quantity'],
         price: ['valor unitario', 'precio unitario', 'p.u', 'unit price', 'precio', 'valor u.'],
         total: ['total', 'valor total', 'precio total']
@@ -147,26 +181,52 @@ export async function parseExcel(buffer: ArrayBuffer, targetSheetName?: string):
             if (!val) return;
 
             // Strict checking for headers
-            if (KEYWORDS.description.some(k => val === k || val.includes(k))) { currentCols.description = colNumber; matches++; }
-            else if (KEYWORDS.unit.some(k => val === k || val.includes(k))) { currentCols.unit = colNumber; matches++; }
-            else if (KEYWORDS.qty.some(k => val === k || val.includes(k))) { currentCols.qty = colNumber; matches++; }
-            else if (KEYWORDS.price.some(k => val === k || val.includes(k))) { currentCols.price = colNumber; matches++; }
-            else if (KEYWORDS.total.some(k => val === k || val.includes(k))) { currentCols.total = colNumber; matches++; }
+            if (KEYWORDS.description.some(k => val === k || val.includes(k))) {
+                currentCols.description = colNumber;
+                matches++;
+            }
+            // Special handling for unit column with regex support
+            else if (KEYWORDS.unit.some(k => {
+                if (k instanceof RegExp) {
+                    return k.test(val);
+                }
+                return val === k || val.includes(k);
+            })) {
+                currentCols.unit = colNumber;
+                matches++;
+            }
+            else if (KEYWORDS.qty.some(k => val === k || val.includes(k))) {
+                currentCols.qty = colNumber;
+                matches++;
+            }
+            else if (KEYWORDS.price.some(k => val === k || val.includes(k))) {
+                currentCols.price = colNumber;
+                matches++;
+            }
+            else if (KEYWORDS.total.some(k => val === k || val.includes(k))) {
+                currentCols.total = colNumber;
+                matches++;
+            }
         });
 
         // Must have at least Description AND (Unit OR Qty OR Price)
         if (currentCols.description !== -1 && (currentCols.unit !== -1 || currentCols.qty !== -1 || currentCols.price !== -1)) {
+            // Validate unit column with sampling
+            const unitValidationScore = validateUnitColumn(worksheet!, rowNumber, currentCols.unit);
+
             // Validate this mapping with data below
             const mappingScore = validateMapping(worksheet!, rowNumber, currentCols);
 
-            // Context score (matches count) + Validation score
-            const totalScore = matches * 10 + mappingScore;
+            // Context score (matches count) + Validation score + Unit validation
+            const totalScore = matches * 10 + mappingScore + unitValidationScore;
+
+            console.log(`[Excel Parser] Row ${rowNumber} candidate - Unit validation: ${unitValidationScore.toFixed(1)}%, Total score: ${totalScore.toFixed(1)}`);
 
             if (totalScore > bestScore) {
                 bestScore = totalScore;
                 bestHeaderRow = rowNumber;
                 bestCols = currentCols;
-                detectionMethod = `header_match (score: ${totalScore.toFixed(1)})`;
+                detectionMethod = `header_match (score: ${totalScore.toFixed(1)}, unit_validation: ${unitValidationScore.toFixed(1)}%)`;
             }
         }
     });
