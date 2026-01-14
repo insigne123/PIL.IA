@@ -29,15 +29,10 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
     console.log('[DXF Preflight]', getPreflightSummary(preflight));
 
     // Check for blocking issues
+    // Check for blocking issues (RELAXED: Log only, don't block)
     if (hasBlockingIssues(preflight)) {
-        const errorParts = [
-            'El archivo DXF tiene problemas críticos que impiden el procesamiento:',
-            ...preflight.warnings,
-            '',
-            'Recomendaciones:',
-            ...preflight.recommendations
-        ];
-        throw new Error(errorParts.join('\n'));
+        console.warn('[DXF Preflight] Potential issues detected:', preflight.warnings);
+        // We do NOT throw here anymore to allow new converters to pass if dxf-parser can handle them.
     }
 
     // Parse DXF
@@ -59,8 +54,17 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
         }
     }
 
-    // 1. Use preflight-detected unit or user preference
-    const detectedUnit = preflight.detectedUnit;
+    // 1. Use preflight-detected unit, parser header, or user preference
+    let detectedUnit = preflight.detectedUnit;
+
+    // Fallback: Check parser header if preflight missed it
+    if (!detectedUnit && dxf.header && dxf.header['$INSUNITS']) {
+        const val = dxf.header['$INSUNITS'];
+        if (val === 4) detectedUnit = 'mm';
+        else if (val === 5) detectedUnit = 'cm';
+        else if (val === 6) detectedUnit = 'm';
+    }
+
     const effectiveUnit: Unit = planUnitPreference || detectedUnit || 'm';
 
     console.log(`[DXF Parser] Using unit: ${effectiveUnit} (detected: ${detectedUnit || 'none'}, preference: ${planUnitPreference || 'none'})`);
