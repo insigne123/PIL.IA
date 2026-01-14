@@ -37,7 +37,7 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
 
         if (downloadError || !fileData) throw new Error("Download failed");
 
-        const buffer = Buffer.from(fileData);
+        const buffer = Buffer.from(await fileData.arrayBuffer());
         let extractedItems: any[] = [];
         let detectedUnitVal: string = 'unknown';
 
@@ -91,7 +91,7 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
                 }
             }
         } else if (file.file_type === 'excel') {
-            const result = await parseExcel(buffer);
+            const result = await parseExcel(buffer.buffer);
             extractedItems = result.items;
 
             // Save Excel Map structure
@@ -158,8 +158,10 @@ async function executeGeneration(supabase: SupabaseClient, batchId: string, exce
             description: map.col_desc,
             unit: map.col_unit,
             qty: map.col_qty,
-            price: map.col_price
-        }
+            price: map.col_price,
+            total: map.col_total || -1
+        },
+        columns_detected_by: map.detected_by || 'manual'
     };
 
     // 3. Get Original File

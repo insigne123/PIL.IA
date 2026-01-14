@@ -65,8 +65,7 @@ export interface StagingRow {
   discipline?: Discipline;
 
   // Method Metadata (Hotfix 2/3)
-  calc_method?: string;
-  method_detail?: string;
+
 
   height_factor?: number; // For m -> m2 conversion (default 2.4 or user override)
 
@@ -145,6 +144,8 @@ export interface ExcelStructure {
     unit: number;
     qty: number;
     price: number;
+    total: number;
   };
   sheetName: string;
+  columns_detected_by?: string;
 }
