@@ -118,12 +118,27 @@ export interface StagingRow {
 
   // Debug Outputs (Phase 1 improvements)
   expected_measure_type?: 'LENGTH' | 'AREA' | 'VOLUME' | 'BLOCK' | 'GLOBAL' | 'UNKNOWN';
+
+  // P1.5: Subtype classification
+  excel_subtype?: string; // 'floor_area', 'wall_area', etc.
+  excel_subtype_confidence?: number;
+  excel_subtype_keywords?: string[];
+
   top_candidates?: Array<{
     layer: string;
     type: string;
     score: number;
     rejected: boolean;
     reject_reason?: string;
+    // P1.2: Enhanced with geometry metrics
+    geometry?: {
+      area?: number;
+      length?: number;
+      blocks?: number;
+      hatches?: number;
+      closed_polys?: number;
+    };
+    selected?: boolean;
   }>;
   hard_reject_reasons?: string[];
   warnings?: string[];
@@ -135,7 +150,7 @@ export interface StagingRow {
 
 export interface Suggestion {
   id: string; // unique
-  action_type: 'SELECT_ALT_LAYER' | 'MARK_GLOBAL' | 'SPLIT_ITEM' | 'MANUAL_QTY' | 'RETRY_EXTRACTION';
+  action_type: 'SELECT_ALT_LAYER' | 'MARK_GLOBAL' | 'SPLIT_ITEM' | 'MANUAL_QTY' | 'RETRY_EXTRACTION' | 'REVIEW_QUALITY';
   label: string;
   payload?: any;
   confidence?: 'high' | 'medium' | 'low';

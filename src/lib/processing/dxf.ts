@@ -18,6 +18,21 @@ import {
     getConversionSummary,
     type DxfUnitMetadata
 } from './dxf-unit-normalizer';
+import {
+    calculateBoundingBoxFromEntities,
+    getBBoxFromExtents,
+    getBoundingBoxInfo,
+    calculateDiagonal,
+    type BoundingBox
+} from './bbox-calculator';
+import {
+    deduplicateAreaItems,
+    getPolygonDedupSummary
+} from './polygon-dedup';
+import {
+    filterGeometryOnly,
+    getBlacklistSummary
+} from './layer-blacklist';
 
 const parser = new DxfParser();
 
@@ -105,8 +120,16 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
     let items: ItemDetectado[] = [];
     const allEntities = dxf.entities || [];
 
+    // ✅ P1.1: FILTER ANNOTATION LAYERS before processing
+    const blacklistResult = filterGeometryOnly(allEntities);
+    const filteredEntities = blacklistResult.filtered;
+
+    if (blacklistResult.excluded > 0) {
+        console.log(`[Layer Blacklist] ${getBlacklistSummary(blacklistResult)}`);
+    }
+
     // 3. Separate ModelSpace vs PaperSpace entities
-    const modelSpaceEntities = allEntities.filter((e: any) => {
+    const modelSpaceEntities = filteredEntities.filter((e: any) => {
         // PaperSpace entities have ownerHandle pointing to a layout
         // or have a space property = 1 (67 group code)
         // ModelSpace is default (no space property or space = 0)
@@ -589,6 +612,56 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
 
         items = enrichItemsWithNearbyText(items, textEntities, 5.0);
     }
+
+    // ✅ P0.3: APPLY POLYGON DEDUPLICATION
+    // This fixes Layer 0 bug where DWG→DXF creates duplicate polygons
+    const dedupStats = deduplicateAreaItems(items);
+    items = dedupStats.deduplicated;
+
+    if (dedupStats.duplicatesRemoved > 0) {
+        console.log(`[Dedup] ${getPolygonDedupSummary(dedupStats)}`);
+    }
+
+    // ✅ P0.2: RECALCULATE BBOX AFTER UNIT CONVERSION
+    // This fixes the bbox=0 bug by calculating  from entities AFTER toMeters applied
+    let accurateBBox = calculateBoundingBoxFromEntities(modelSpaceEntities, unitMetadata.toMeters);
+    let accurateDiagonal = calculateDiagonal(accurateBBox);
+
+    // Fallback 1: Try DXF header extents if bbox is still invalid
+    if (accurateDiagonal < 0.01 && dxf.header) {
+        const extentsBBox = getBBoxFromExtents(dxf.header, unitMetadata.toMeters);
+        if (extentsBBox) {
+            const extentsDiag = calculateDiagonal(extentsBBox);
+            if (extentsDiag > accurateDiagonal) {
+                console.log(`[BBox] Using DXF $EXTMIN/$EXTMAX: ${extentsDiag.toFixed(2)} m`);
+                accurateBBox = extentsBBox;
+                accurateDiagonal = extentsDiag;
+            }
+        }
+    }
+
+    // Fallback 2: If still invalid, use reasonable default
+    if (accurateDiagonal < 0.01) {
+        console.warn(`[BBox] Diagonal still < 0.01m after fallbacks, using default 100m`);
+        accurateDiagonal = 100;
+        accurateBBox = {
+            min: { x: 0, y: 0, z: 0 },
+            max: { x: 100, y: 100, z: 0 }
+        };
+    }
+
+    const bboxInfo = getBoundingBoxInfo(accurateBBox);
+    console.log(`[BBox] ✅ Accurate Bounding Box (post-conversion):`);
+    console.log(`  Min: (${accurateBBox.min.x.toFixed(2)}, ${accurateBBox.min.y.toFixed(2)})`);
+    console.log(`  Max: (${accurateBBox.max.x.toFixed(2)}, ${accurateBBox.max.y.toFixed(2)})`);
+    console.log(`  Diagonal: ${accurateDiagonal.toFixed(2)} m`);
+    console.log(`  Size: ${bboxInfo.width.toFixed(2)}m × ${bboxInfo.height.toFixed(2)}m`);
+
+    // Update preflight with accurate bbox
+    preflight.boundingBox.diagonal = accurateDiagonal;
+    preflight.dynamicMinLength = Math.max(0.001, accurateDiagonal * 0.0001);
+
+    console.log(`[BBox] ✅ Updated dynamic min length: ${preflight.dynamicMinLength.toFixed(4)}m`);
 
     return { items, detectedUnit, preflight };
 }
