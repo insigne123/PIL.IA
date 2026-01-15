@@ -9,15 +9,35 @@ import { isDisciplineMatch } from './discipline';
 import { getMeasureKind } from './unit-normalizer';
 import { checkQuantitySanity, getSanitySummary } from './sanity-checker';
 import { matchLayerKeywords, getLayerKeywords } from './layer-mapping';
-import { buildLayerProfiles, validateGeometrySupport, getLayerProfilesSummary } from './geometry-validator';
+import { buildLayerProfiles, validateGeometrySupport, getLayerProfilesSummary, type LayerGeometryProfile } from './geometry-validator';
 import { classifyExcelSubtype, getSubtypeLabel } from './subtype-classifier';
 import { runQualityGates, getQualityCheckSummary, qualityFailuresToSuggestions } from './quality-gates';
+// Phase 3 imports
+import { calculateDerivedArea, canUseDerivedAreaFallback, detectSurfaceOrientation } from './derived-area-calculator';
+import { classifyBlock, getBlockPenalty, canAutoApproveBlock } from './block-classifier';
+import { inferDiscipline } from './discipline-inferrer';
+import { normalizeText } from './text-normalizer';
 
 export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetectado[], sheetName: string, excelDiscipline: Discipline = 'UNKNOWN'): StagingRow[] {
 
     // ✅ P0.1: BUILD LAYER GEOMETRY PROFILES ONCE
     const layerProfiles = buildLayerProfiles(dxfItems);
     console.log(`[Matcher] ${getLayerProfilesSummary(layerProfiles)}`);
+
+    // P1.C: INFER DISCIPLINE if UNKNOWN
+    let effectiveDiscipline = excelDiscipline;
+    if (excelDiscipline === 'UNKNOWN') {
+        const layerNames = Array.from(layerProfiles.keys());
+        const disciplineInference = inferDiscipline({
+            sheetName,
+            layers: layerNames
+        });
+
+        if (disciplineInference.discipline !== 'UNKNOWN') {
+            effectiveDiscipline = disciplineInference.discipline as Discipline;
+            console.log(`[Discipline] Inferred: ${effectiveDiscipline} (${disciplineInference.confidence}) from ${disciplineInference.source}`);
+        }
+    }
 
     // Configure Fuse to search within CAD items
     // We compare: block name, layer name
@@ -31,16 +51,65 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
         return item.type !== 'text'; // lowercase to match ItemDetectado.type
     });
 
+    // P1.A: Filter out nested block items (only use model space geometry for quantities)
+    const modelSpaceItems = candidateItems.filter(item => {
+        // If item has nested_path, it's from a nested block (check with optional chaining)
+        const isNested = (item as any).nested_path?.length > 0;
+        if (isNested) {
+            return false; // Exclude nested items from quantity pool
+        }
+        return true;
+    });
+
+    if (modelSpaceItems.length < candidateItems.length) {
+        const nestedCount = candidateItems.length - modelSpaceItems.length;
+        console.log(`[Matcher] P1.A: Filtered ${nestedCount} nested block items (using ${modelSpaceItems.length} model space items)`);
+        candidateItems = modelSpaceItems;
+    }
+
     // Let's filter Fuse candidates to reduce noise if discipline is known
-    if (excelDiscipline !== 'UNKNOWN' && excelDiscipline !== 'GENERAL') {
-        candidateItems = candidateItems.filter(i => isDisciplineMatch(i.discipline || 'UNKNOWN', excelDiscipline));
+    if (effectiveDiscipline !== 'UNKNOWN' && effectiveDiscipline !== 'GENERAL') {
+        candidateItems = candidateItems.filter(i => isDisciplineMatch(i.discipline || 'UNKNOWN', effectiveDiscipline));
         // If we filtered everything, maybe fallback to all? NO, strict scoping requested.
     }
 
-    // 1. Build layernames + block names index (for fuzzy)
+    // P0.C: BUILD LAYER-FIRST CANDIDATES
+    // Instead of fuzzy matching entities, we match against layer profiles
+    interface LayerCandidate {
+        layer: string;
+        layer_normalized: string;
+        profile: LayerGeometryProfile;
+        sampleItem: ItemDetectado; // Representative item for this layer
+    }
+
+    const layerCandidates: LayerCandidate[] = [];
+    for (const [layerName, profile] of layerProfiles.entries()) {
+        // Find a sample item from this layer
+        const sampleItem = candidateItems.find(i => i.layer_normalized === layerName);
+        if (sampleItem) {
+            layerCandidates.push({
+                layer: sampleItem.layer_raw,
+                layer_normalized: layerName,
+                profile,
+                sampleItem
+            });
+        }
+    }
+
+    console.log(`[Matcher] P0.C: Built ${layerCandidates.length} layer candidates for matching`);
+
+    // 1. Build layer names index (for fuzzy) - P0.C: Layer-first matching
     // Fuse.js: lower threshold = more strict
-    // Keys: what fields to search in
-    const fuse = new Fuse(candidateItems, {
+    const fuse = new Fuse(layerCandidates, {
+        keys: ['layer', 'layer_normalized'],
+        includeScore: true,
+        threshold: 0.6,
+        shouldSort: true,
+        ignoreLocation: true
+    });
+
+    // Also keep entity-level fuse for block name matching
+    const entityFuse = new Fuse(candidateItems, {
         keys: ['name_raw', 'layer_normalized'],
         includeScore: true,
         threshold: 0.6,
@@ -123,22 +192,39 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
         console.log(`  Excel Unit: "${excelItem.unit}" → Expected Measure Type: ${expectedMeasureType}`);
         console.log(`  Classification: ${expectedType} (confidence: ${classification.confidence})`);
 
-        // 4. Search for matches
-        const allResults = fuse.search(excelItem.description);
+        // P0.A: PRE-FILTER LAYER CANDIDATES BY GEOMETRY TYPE (BEFORE FUZZY MATCH)
+        let typeFilteredLayers = layerCandidates;
+        if (expectedMeasureType === 'AREA') {
+            typeFilteredLayers = layerCandidates.filter(lc =>
+                lc.profile.has_area_support || lc.profile.has_length_support
+            );
+        } else if (expectedMeasureType === 'BLOCK') {
+            typeFilteredLayers = layerCandidates.filter(lc => lc.profile.has_block_support);
+        } else if (expectedMeasureType === 'LENGTH') {
+            typeFilteredLayers = layerCandidates.filter(lc => lc.profile.has_length_support);
+        }
 
-        // \u2705 P0.1: GEOMETRY VALIDATION before accepting match
-        // This prevents blocks being matched for m2 items (→ qty_final = 0)
+        if (typeFilteredLayers.length < layerCandidates.length) {
+            console.log(`  [P0.A] Pre-filtered ${layerCandidates.length - typeFilteredLayers.length} layers without ${expectedMeasureType} support`);
+        }
+
+        // 4. Search for matches using TYPE-FILTERED layers (P0.C Layer-first)
+        const typeFilteredFuse = new Fuse(typeFilteredLayers, {
+            keys: ['layer', 'layer_normalized'],
+            includeScore: true,
+            threshold: 0.6,
+            shouldSort: true,
+            ignoreLocation: true
+        });
+
+        const allResults = typeFilteredFuse.search(excelItem.description);
+
+        // P0.1: GEOMETRY VALIDATION (now using LayerCandidate which has profile directly)
         const geometryValidatedResults = allResults.filter(r => {
-            const profile = layerProfiles.get(r.item.layer_normalized);
-            if (!profile) {
-                console.log(`  [Geometry] No profile for layer "${r.item.layer_normalized}"`);
-                return false;
-            }
-
             const validation = validateGeometrySupport(
                 r.item.layer_normalized,
                 expectedMeasureType,
-                profile
+                r.item.profile
             );
 
             if (!validation.supported) {
@@ -155,43 +241,8 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             console.log(`  [Geometry Filter] Rejected ${rejected}/${allResults.length} candidates (missing geometry support)`);
         }
 
-        // 5. Apply HARD filter by measurement type (after geometry validation)
-        const rejectedByType = new Map<string, string[]>(); // Track rejections with examples
-
-        const hardFilteredResults = expectedMeasureType !== 'UNKNOWN' && expectedMeasureType !== 'GLOBAL'
-            ? geometryValidatedResults.filter(r => {
-                // Convert lowercase type to uppercase for comparison
-                const itemTypeUpper = r.item.type.toUpperCase() as 'BLOCK' | 'LENGTH' | 'TEXT' | 'AREA';
-                const isCompatible = typeMatches(itemTypeUpper, expectedMeasureType);
-                if (!isCompatible) {
-                    // Group rejections by type and keep examples
-                    const key = `${r.item.type}→${expectedMeasureType}`;
-                    if (!rejectedByType.has(key)) {
-                        rejectedByType.set(key, []);
-                    }
-                    // Keep first 3 examples of each rejection type
-                    if (rejectedByType.get(key)!.length < 3) {
-                        rejectedByType.get(key)!.push(r.item.layer_normalized);
-                    }
-                }
-                return isCompatible;
-            })
-            : allResults;
-
-        // Log rejection summary with examples
-        if (rejectedByType.size > 0) {
-            console.log(`  [Hard Reject Summary] "${excelItem.description}" expected ${expectedMeasureType}:`);
-            for (const [typeCombo, examples] of rejectedByType.entries()) {
-                const count = geometryValidatedResults.filter(r => {
-                    const itemTypeUpper = r.item.type.toUpperCase() as 'BLOCK' | 'LENGTH' | 'TEXT' | 'AREA';
-                    return !typeMatches(itemTypeUpper, expectedMeasureType) &&
-                        `${r.item.type}→${expectedMeasureType}` === typeCombo;
-                }).length;
-                console.log(`    • ${count}x ${typeCombo} (examples: ${examples.join(', ')}${count > 3 ? ', ...' : ''})`);
-            }
-        }
-
-        const result = hardFilteredResults.length > 0 ? hardFilteredResults : [];
+        // P0.A: Hard filter already done BEFORE fuzzy match, so we just use geometry validated results
+        const result = geometryValidatedResults;
 
         let bestMatch: ItemDetectado[] = [];
         let confidence = 0;
@@ -200,22 +251,23 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
         const hardRejectReasons: string[] = [];
         const warnings: string[] = [];
 
-        // Track hard rejects
-        if (expectedMeasureType !== 'UNKNOWN' && hardFilteredResults.length === 0 && allResults.length > 0) {
-            const foundTypes = [...new Set(allResults.slice(0, 3).map(r => r.item.type))].join(', ');
+        // Track if no compatible layers found
+        if (result.length === 0 && layerCandidates.length > 0) {
             hardRejectReasons.push(
-                `Unidad Excel "${excelItem.unit}" requiere tipo ${expectedMeasureType}, pero solo se encontraron: ${foundTypes}`
+                `No layers found with ${expectedMeasureType} geometry support for "${excelItem.unit}"`
             );
         }
 
         if (result.length > 0) {
             const match = result[0];
+            const layerCandidate = match.item; // This is a LayerCandidate
+            const matchedItem = layerCandidate.sampleItem; // Get the actual ItemDetectado
             const score = match.score || 1;
             confidence = 1 - score;
 
             // ✅ LAYER KEYWORD BOOST
             // Check if match improves with layer keyword mapping
-            const keywordMatch = matchLayerKeywords(excelItem.description, match.item.layer_raw);
+            const keywordMatch = matchLayerKeywords(excelItem.description, layerCandidate.layer);
             let keywordBoost = 0;
             let usedKeywordMapping = false;
 
@@ -225,20 +277,23 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 confidence = Math.min(1.0, confidence + keywordBoost);
                 usedKeywordMapping = true;
 
-                console.log(`[Matcher] 🎯 Keyword boost for "${excelItem.description}" → layer "${match.item.layer_raw}"`);
+                console.log(`[Matcher] 🎯 Keyword boost for "${excelItem.description}" → layer "${layerCandidate.layer}"`);
                 console.log(`  • Matched keywords: [${keywordMatch.matchedKeywords.map(k => `"${k}"`).join(', ')}]`);
                 console.log(`  • Method: ${keywordMatch.method}`);
                 console.log(`  • Keyword score: ${(keywordMatch.score * 100).toFixed(0)}%`);
                 console.log(`  • Confidence boost: +${(keywordBoost * 100).toFixed(0)}% → Final: ${(confidence * 100).toFixed(0)}%`);
             }
 
-            // Type matching bonus - convert to UPPERCASE for comparison
-            const matchTypeUpper = match.item.type.toUpperCase() as 'BLOCK' | 'LENGTH' | 'TEXT' | 'AREA';
-            if (typeMatches(matchTypeUpper, expectedType)) {
+            // Type matching bonus - use profile to determine dominant type
+            const dominantType = layerCandidate.profile.has_area_support ? 'AREA'
+                : layerCandidate.profile.has_length_support ? 'LENGTH'
+                    : layerCandidate.profile.has_block_support ? 'BLOCK' : 'UNKNOWN';
+
+            if (typeMatches(dominantType as any, expectedType)) {
                 confidence = Math.min(1.0, confidence * 1.1); // 10% bonus
-                reason = `Type-matched "${match.item.name_raw || match.item.layer_raw}" (${(confidence * 100).toFixed(0)}%)`;
+                reason = `Type-matched layer "${layerCandidate.layer}" (${(confidence * 100).toFixed(0)}%)`;
             } else {
-                reason = `Matched "${match.item.name_raw || match.item.layer_raw}" (${(confidence * 100).toFixed(0)}%)`;
+                reason = `Matched layer "${layerCandidate.layer}" (${(confidence * 100).toFixed(0)}%)`;
             }
 
             // Add keyword mapping info to reason
@@ -248,27 +303,27 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
             // ✅ P0.3: Don't auto-penalize layer 0 (valid geometry after DWG conversion)
             // Only penalize defpoints
-            if (match.item.layer_normalized === 'defpoints') {
+            if (layerCandidate.layer_normalized === 'defpoints') {
                 confidence = confidence * 0.1; // 90% Penalty for defpoints only
                 reason += " | DEFPOINTS PENALTY";
             }
 
             // Layer 0 gets normal treatment but with explicit warning
-            if (match.item.layer_normalized === '0') {
+            if (layerCandidate.layer_normalized === '0') {
                 console.log(`  ⚠️ Using Layer 0 - verify this is correct (DWG conversion artifact)`);
                 reason += " | From Layer 0";
             }
 
             if (confidence > 0.4) {
-                bestMatch = [match.item];
+                bestMatch = [matchedItem];
 
                 // Enhanced logging for successful match
                 if (usedKeywordMapping) {
-                    console.log(`[Matcher] ✅ Matched "${excelItem.description}" → layer "${match.item.layer_raw}" usando keywords [${keywordMatch.matchedKeywords.join(', ')}] con score FINAL: ${(confidence * 100).toFixed(0)}%`);
+                    console.log(`[Matcher] ✅ Matched "${excelItem.description}" → layer "${layerCandidate.layer}" usando keywords [${keywordMatch.matchedKeywords.join(', ')}] con score FINAL: ${(confidence * 100).toFixed(0)}%`);
                 }
 
-                // P1.3: ENHANCE MATCH REASON with geometry metrics
-                const profile = layerProfiles.get(match.item.layer_normalized);
+                // P1.3: ENHANCE MATCH REASON with geometry metrics (use profile directly)
+                const profile = layerCandidate.profile;
                 if (profile) {
                     const geometryParts: string[] = [];
                     if (profile.total_area > 0) {
@@ -287,12 +342,20 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                     }
                 }
             } else {
-                // Generate suggestions for low confidence
-                suggestions = generateSuggestions(result.slice(0, 3), excelItem, expectedType);
+                // Generate suggestions for low confidence - convert LayerCandidates to items
+                const itemsForSuggestions = result.slice(0, 3).map(r => ({
+                    item: r.item.sampleItem,
+                    score: r.score
+                }));
+                suggestions = generateSuggestions(itemsForSuggestions, excelItem, expectedType);
             }
         } else {
             // No matches found - generate suggestions from all items
-            suggestions = generateSuggestions(allResults.slice(0, 3), excelItem, expectedType);
+            const itemsForSuggestions = allResults.slice(0, 3).map(r => ({
+                item: r.item.sampleItem,
+                score: r.score
+            }));
+            suggestions = generateSuggestions(itemsForSuggestions, excelItem, expectedType);
         }
 
         // Calculate Qty
@@ -308,6 +371,27 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             if (calcMethod === 'COUNT') {
                 // ✅ Use value_si for count (blocks)
                 qtyFinal = match.type === 'block' ? (match.value_si || 1) : 0;
+
+                // P0.D: Check if block is generic/untrusted
+                if (match.type === 'block') {
+                    const blockClassification = classifyBlock(
+                        match.name_raw || '',
+                        match.layer_normalized
+                    );
+
+                    if (blockClassification.isGeneric) {
+                        console.log(`  [Block Classifier] ⚠️ Generic block detected: "${match.name_raw}" - ${blockClassification.reason}`);
+                        confidence *= (1 - blockClassification.penaltyScore);
+                        warnings.push(`Generic block: ${blockClassification.reason}`);
+
+                        // Don't auto-approve generic blocks
+                        if (!canAutoApproveBlock(blockClassification)) {
+                            reason += ` | GENERIC BLOCK (requires review)`;
+                        }
+                    } else {
+                        console.log(`  [Block Classifier] ✅ Trusted block: "${match.name_raw}" (${blockClassification.confidence})`);
+                    }
+                }
 
                 // If we matched a length item for a count unit -> Semantic Error
                 if (match.type === 'length') {
@@ -326,11 +410,25 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 if (match.type === 'area') {
                     qtyFinal = match.value_si; // ✅ SI units (m²)
                 }
-                // Case B: Geometry is Length (Muros/Tabiques lines) -> Convert to Area
+                // Case B: Geometry is Length (Muros/Tabiques lines) -> Convert to Area using P0.B
                 else if (match.type === 'length') {
-                    heightFactor = 2.4; // Default Height
-                    qtyFinal = match.value_si * heightFactor;  // ✅ SI units
-                    reason += " | Derivada: Largo * 2.4m";
+                    // Use derived area calculator for intelligent height detection
+                    const derivedResult = calculateDerivedArea(
+                        match.value_si,
+                        excelItem.description
+                    );
+
+                    if (derivedResult.canDerive) {
+                        qtyFinal = derivedResult.area_m2;
+                        heightFactor = derivedResult.height_m;
+                        reason += ` | ${derivedResult.reason}`;
+                        console.log(`  [Derived Area] ${derivedResult.reason}`);
+                    } else {
+                        // Fallback to default height
+                        heightFactor = 2.4;
+                        qtyFinal = match.value_si * heightFactor;
+                        reason += ` | Derivada: Largo * 2.4m (default)`;
+                    }
                 }
                 else {
                     qtyFinal = 0;
@@ -413,42 +511,43 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             }
         }
 
-        // P1.2: CAPTURE TOP-K CANDIDATES with geometry metrics
+        // P1.2: CAPTURE TOP-K CANDIDATES with geometry metrics (using LayerCandidate)
         const topCandidates = allResults.slice(0, 5).map(r => {
-            const profile = layerProfiles.get(r.item.layer_normalized);
-            const isSelected = bestMatch.some(m => m.id === r.item.id);
+            const layerCandidate = r.item;
+            const profile = layerCandidate.profile;
+            const isSelected = bestMatch.some(m => m.id === layerCandidate.sampleItem.id);
 
             // Check if rejected by geometry validation
-            const geometryValidation = profile ? validateGeometrySupport(
-                r.item.layer_normalized,
+            const geometryValidation = validateGeometrySupport(
+                layerCandidate.layer_normalized,
                 expectedMeasureType,
                 profile
-            ) : { supported: false, reason: 'No profile' };
+            );
 
-            // Check if rejected by type filter
-            const itemTypeUpper = r.item.type.toUpperCase() as 'BLOCK' | 'LENGTH' | 'TEXT' | 'AREA';
-            const typeCompatible = typeMatches(itemTypeUpper, expectedMeasureType);
+            // Determine dominant type from profile
+            const dominantType = profile.has_area_support ? 'area'
+                : profile.has_length_support ? 'length'
+                    : profile.has_block_support ? 'block' : 'unknown';
 
+            // Check if rejected by type filter (already done by P0.A pre-filter)
             let rejectReason: string | undefined;
             if (!geometryValidation.supported) {
                 rejectReason = geometryValidation.reason;
-            } else if (!typeCompatible) {
-                rejectReason = `Type mismatch: ${r.item.type}→${expectedMeasureType}`;
             }
 
             return {
-                layer: r.item.layer_normalized,
-                type: r.item.type,
+                layer: layerCandidate.layer_normalized,
+                type: dominantType,
                 score: 1 - r.score!, // Fuse score is distance, convert to similarity
                 rejected: !isSelected,
                 reject_reason: rejectReason,
-                geometry: profile ? {
+                geometry: {
                     area: profile.total_area > 0 ? profile.total_area : undefined,
                     length: profile.total_length > 0 ? profile.total_length : undefined,
                     blocks: profile.block_count > 0 ? profile.block_count : undefined,
                     hatches: profile.hatch_count > 0 ? profile.hatch_count : undefined,
                     closed_polys: profile.closed_poly_count > 0 ? profile.closed_poly_count : undefined
-                } : undefined,
+                },
                 selected: isSelected
             };
         });
