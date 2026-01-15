@@ -270,7 +270,8 @@ export function measureTransformedEntity(
                 layer_normalized: layer.toLowerCase(),
                 value_raw: dist,
                 unit_raw: 'm',
-                value_m: distM,
+                value_si: distM,  // ✅ Length in SI
+                value_m: distM,   // Legacy
                 evidence: `LINE in nested block`,
                 layer_metadata: {
                     original: layerResolution.original_layer,
@@ -319,7 +320,8 @@ export function measureTransformedEntity(
                 layer_normalized: layer.toLowerCase(),
                 value_raw: totalDist,
                 unit_raw: 'm',
-                value_m: distM,
+                value_si: distM,  // ✅ Length in SI
+                value_m: distM,   // Legacy
                 evidence: `${entity.type} in nested block`,
                 layer_metadata: {
                     original: layerResolution.original_layer,

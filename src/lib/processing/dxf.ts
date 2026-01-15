@@ -11,6 +11,13 @@ import {
 import { enrichItemsWithNearbyText } from './spatial-text-enrichment';
 import { profileAllLayers, filterAnnotationItems, getLayerProfilingSummary, type LayerProfile } from './layer-profiling';
 import { extractBlockInstances, deduplicateBlocks, getDeduplicationSummary } from './spatial-dedup';
+import {
+    detectDxfUnits,
+    convertToMeters,
+    convertToMetersSquared,
+    getConversionSummary,
+    type DxfUnitMetadata
+} from './dxf-unit-normalizer';
 
 const parser = new DxfParser();
 
@@ -67,20 +74,28 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
         }
     }
 
-    // 1. Use preflight-detected unit, parser header, or user preference
-    let detectedUnit = preflight.detectedUnit;
+    // === PHASE 2: USE NEW UNIT NORMALIZER ===
+    const unitMetadata = detectDxfUnits(
+        dxf,
+        planUnitPreference,
+        preflight.boundingBox.diagonal
+    );
 
-    // Fallback: Check parser header if preflight missed it
-    if (!detectedUnit && dxf.header && dxf.header['$INSUNITS']) {
-        const val = dxf.header['$INSUNITS'];
-        if (val === 4) detectedUnit = 'mm';
-        else if (val === 5) detectedUnit = 'cm';
-        else if (val === 6) detectedUnit = 'm';
+    console.log('[DXF Unit Detection]', getConversionSummary(unitMetadata));
+
+    // Report warnings to user
+    if (unitMetadata.warnings.length > 0) {
+        console.warn('[DXF Unit Detection] Warnings:', unitMetadata.warnings);
     }
 
-    const effectiveUnit: Unit = planUnitPreference || detectedUnit || 'm';
+    // Map back to Unit type for compatibility
+    const detectedUnit: Unit | null =
+        unitMetadata.originalUnit.includes('mm') ? 'mm' :
+            unitMetadata.originalUnit.includes('cm') ? 'cm' :
+                unitMetadata.originalUnit.includes('m') ? 'm' :
+                    null;
 
-    console.log(`[DXF Parser] Using unit: ${effectiveUnit} (detected: ${detectedUnit || 'none'}, preference: ${planUnitPreference || 'none'})`);
+    console.log(`[DXF Parser] Using unit: ${unitMetadata.originalUnit} (confidence: ${(unitMetadata.confidence * 100).toFixed(0)}%)`);
 
     // 2. Use dynamic minimum length from preflight
     const minLengthDynamic = preflight.dynamicMinLength;
@@ -118,14 +133,12 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
         console.log(`[DXF Parser] Found ${paperSpaceTexts.length} text annotations in PaperSpace`);
     }
 
-    // Helper to normalize to meters
-    const toMeters = (val: number) => {
-        if (effectiveUnit === 'mm') return val / 1000;
-        if (effectiveUnit === 'cm') return val / 100;
-        return val;
-    };
+    // === PHASE 2: CONVERSION FACTORS FROM NORMALIZER ===
+    // These replace the old toMeters helper function
+    const toMeters = (val: number) => convertToMeters(val, unitMetadata);
+    const toMetersSquared = (val: number) => convertToMetersSquared(val, unitMetadata);
 
-    // ... (rest of the logic uses effectiveUnit via toMeters)
+    // ... (rest of the logic uses effectiveUnit via conversion functions)
 
     // Grouping for counts, lengths, and areas
     const blockCounts = new Map<string, { count: number; layer: string }>();
@@ -146,10 +159,6 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
         }
         return Math.abs(area) / 2;
     };
-
-    // Calculate conversion factor (Draw Units -> Meters)
-    const factor = toMeters(1.0);
-    const factorArea = factor * factor; // Squared for Area
 
 
     // Build block definitions map for nested resolution
@@ -220,11 +229,10 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
                         layer_normalized: resolvedLayer.toLowerCase().trim(),
                         value_raw: 1,
                         unit_raw: 'u',
-                        value_m: 1,
-                        value_si: 1,
-
+                        value_si: 1,  // ✅ Each block instance = 1 count
+                        value_m: 1,   // Legacy
                         evidence: 'INSERT entity',
-                        layer_metadata: layerResolutionData // Persist layer origin
+                        layer_metadata: layerResolutionData
                     });
 
                     // Update aggregate stats
@@ -292,8 +300,8 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
 
                     if (areaM2 > 0.01) {
                         const key = `AREA::${layer}`;
-                        // area calculated in draw units, need to apply squared factor
-                        const areaSI = area * factorArea;
+                        // area calculated in draw units, convert to SI
+                        const areaSI = toMetersSquared(area);
                         layerAreas.set(key, (layerAreas.get(key) || 0) + areaSI);
                         console.log(`[DXF Parser] Closed ${type} on "${layer}" → Area SI: ${areaSI.toFixed(2)} m² (Raw: ${area.toFixed(2)})`);
                     }
@@ -384,7 +392,7 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
                 }
 
                 if (areaRaw > 0) {
-                    const areaSI = areaRaw * factorArea; // Apply Squared Factor
+                    const areaSI = toMetersSquared(areaRaw); // Apply Squared Factor
                     const key = `AREA::${layer}`;
                     layerAreas.set(key, (layerAreas.get(key) || 0) + areaSI);
                     console.log(`[DXF Parser] HATCH on "${layer}" - Final area SI: ${areaSI.toFixed(2)} m²`);
@@ -403,10 +411,10 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
                         name_raw: text.trim(),
                         layer_raw: layer,
                         layer_normalized: layer.toLowerCase(),
-                        value_raw: 1,
+                        value_raw: 0,  // Text has no numeric value
                         unit_raw: 'txt',
-                        value_m: 1,
-                        value_si: 1,
+                        value_si: 0,   // ✅ Text items don't contribute to quantity
+                        value_m: 0,    // Legacy
                         evidence: type,
                         position: position ? { x: position.x || 0, y: position.y || 0 } : undefined
                     });
@@ -426,8 +434,8 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
             layer_normalized: layer.toLowerCase(),
             value_raw: data.count,
             unit_raw: 'u',
-            value_m: data.count,
-            value_si: data.count,
+            value_si: data.count,  // ✅ Count in SI (same as raw for blocks)
+            value_m: data.count,   // Legacy
             evidence: 'INSERT entity'
         });
     }
@@ -437,16 +445,16 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
         const layer = key.replace('AREA::', '');
         items.push({
             id: uuidv4(),
-            type: 'area', // NEW TYPE
+            type: 'area',
             name_raw: `Área en ${layer}`,
             layer_raw: layer,
             layer_normalized: layer.toLowerCase(),
-            value_raw: area,
+            value_raw: area,  // Already in m² from toMetersSquared()
             unit_raw: 'm²',
-            value_m: area, // Use area as value
-            value_si: area, // Correctly scaled in loop above
+            value_si: area,   // ✅ Area in SI (m²)
+            value_m: area,    // Legacy
             evidence: 'Closed Polyline / Hatch',
-            value_area: area
+            value_area: area  // Deprecated
         });
     }
 
@@ -487,8 +495,9 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
             layer_normalized: layer.toLowerCase(),
             value_raw: length,
             unit_raw: 'm',
-            value_m: lengthM,
-            evidence: `LINE/POLYLINE sum (${effectiveUnit}→m)`,
+            value_si: lengthM,  // ✅ Length in SI (meters)
+            value_m: lengthM,   // Legacy
+            evidence: `LINE/POLYLINE sum (${unitMetadata.originalUnit}→m)`,
             suspect_geometry: suspect,
             suspect_reason: suspectReason || undefined
         });
@@ -504,9 +513,10 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
                 name_raw: `Area on ${layer}`,
                 layer_raw: layer,
                 layer_normalized: layer.toLowerCase(),
-                value_raw: areaM2,
+                value_raw: areaM2,  // Already in m²
                 unit_raw: 'm²',
-                value_m: areaM2,
+                value_si: areaM2,   // ✅ Area in SI (m²)
+                value_m: areaM2,    // Legacy
                 evidence: 'HATCH or closed polyline area'
             });
         }
@@ -596,8 +606,8 @@ export function aggregateDxfItems(allItems: ItemDetectado[]): ItemDetectado[] {
         if (map.has(key)) {
             const existing = map.get(key)!;
             existing.value_raw += item.value_raw;
-            existing.value_m += item.value_m;
-            // append evidence or source?
+            existing.value_si += item.value_si;  // ✅ Sum SI values
+            existing.value_m += item.value_m;    // Legacy
         } else {
             // Clone to avoid mutation issues
             map.set(key, { ...item, id: uuidv4() });

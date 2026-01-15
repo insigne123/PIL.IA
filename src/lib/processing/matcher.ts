@@ -2,9 +2,12 @@ import Fuse from 'fuse.js';
 import { ItemDetectado, StagingRow, Unit, Suggestion, Discipline } from '@/types';
 import { ExtractedExcelItem } from './excel';
 import { v4 as uuidv4 } from 'uuid';
+// Use legacy-compatible functions from unit-classifier (which now has VOLUME support)
 import { classifyItemIntent, typeMatches, getExpectedMeasureType, type ExpectedType } from './unit-classifier';
 import { determineCalcMethod, isCompatibleType, type CalcMethod } from './calc-method';
 import { isDisciplineMatch } from './discipline';
+import { getMeasureKind } from './unit-normalizer';
+import { checkQuantitySanity, getSanitySummary } from './sanity-checker';
 
 export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetectado[], sheetName: string, excelDiscipline: Discipline = 'UNKNOWN'): StagingRow[] {
 
@@ -164,33 +167,30 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             // We use calcMethod to decide how to derive qty from CAD geometry
 
             if (calcMethod === 'COUNT') {
-                // For blocks, sum value_raw (usually 1, but could be N for Arrays if we support them later)
-                // If match is length type but we want count? (e.g. 5m of cable is not 5 units)
-                // Strict checking:
-                qtyFinal = match.type === 'block' ? (match.value_raw || 1) : 0;
+                // ✅ Use value_si for count (blocks)
+                qtyFinal = match.type === 'block' ? (match.value_si || 1) : 0;
 
                 // If we matched a length item for a count unit -> Semantic Error
                 if (match.type === 'length') {
                     confidence = 0.2;
                     reason = "Mismatch: Expected COUNT/BLOCK, got LENGTH geometry";
-                    // Maybe convert length to count? e.g. 1 strip? hard to say.
                     qtyFinal = 1; // Default to 1 unit if forced?
                 }
             }
 
             else if (calcMethod === 'LENGTH') {
-                qtyFinal = match.value_m; // Meters
+                qtyFinal = match.value_si; // ✅ SI units (meters)
             }
 
             else if (calcMethod === 'AREA') {
                 // Case A: Geometry is Area (HATCH/Polyline Region)
                 if (match.type === 'area') {
-                    qtyFinal = match.value_m; // m2
+                    qtyFinal = match.value_si; // ✅ SI units (m²)
                 }
                 // Case B: Geometry is Length (Muros/Tabiques lines) -> Convert to Area
                 else if (match.type === 'length') {
                     heightFactor = 2.4; // Default Height
-                    qtyFinal = match.value_m * heightFactor;
+                    qtyFinal = match.value_si * heightFactor;  // ✅ SI units
                     reason += " | Derivada: Largo * 2.4m";
                 }
                 else {
@@ -200,23 +200,41 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
             else if (calcMethod === 'VOLUME') {
                 // Naive implementation: Area * Thickness
-                // If we have Area items:
                 const thickness = 0.1; // 10cm default
                 if (match.type === 'area') {
-                    qtyFinal = match.value_m * thickness;
+                    qtyFinal = match.value_si * thickness;  //✅ SI units
                 } else if (match.type === 'length') {
                     // Length * Height * Thickness
-                    qtyFinal = match.value_m * 2.4 * thickness;
+                    qtyFinal = match.value_si * 2.4 * thickness;  // ✅ SI units
                 }
             }
 
             else {
                 // Global or Unknown
-                qtyFinal = match.value_m;
+                qtyFinal = match.value_si;  // ✅ SI units
             }
         } else {
             // Keep existing Excel qty if present for "Manual" verification
             if (excelItem.qty !== null) qtyFinal = excelItem.qty;
+        }
+
+        // ✅ SANITY CHECK: Detect suspicious values
+        const measureKind = getMeasureKind(excelItem.unit);
+        const sanityCheck = checkQuantitySanity(qtyFinal, measureKind, {
+            description: excelItem.description,
+            unit: excelItem.unit
+        });
+
+        // If sanity check failed, add warnings and potentially adjust status
+        if (!sanityCheck.passed) {
+            sanityCheck.issues.forEach(issue => {
+                warnings.push(`${issue.type}: ${issue.message}`);
+            });
+
+            // For errors (not just warnings), mark as pending
+            if (sanityCheck.severity === 'error') {
+                confidence = Math.min(confidence, 0.3); // Reduce confidence
+            }
         }
 
         // Determine refined status
@@ -300,8 +318,8 @@ function generateSuggestions(
         }
 
         // Reason 3: Quantity reasonableness
-        if (item.value_m > 0) {
-            reasons.push(`Qty: ${item.value_m.toFixed(2)} ${item.unit_raw}`);
+        if (item.value_si > 0) {
+            reasons.push(`Qty: ${item.value_si.toFixed(2)} ${item.unit_raw}`);
         }
 
         suggestions.push({

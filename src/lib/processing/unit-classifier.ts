@@ -1,10 +1,12 @@
 import { Unit } from '@/types';
+import { normalizeUnit } from './unit-validator';
 
 /**
  * Expected type classification for Excel items
  * Uses UPPERCASE to match StagingRow.expected_measure_type
+ * Now includes VOLUME for m3 support
  */
-export type ExpectedType = 'LENGTH' | 'BLOCK' | 'AREA' | 'GLOBAL' | 'UNKNOWN';
+export type ExpectedType = 'LENGTH' | 'BLOCK' | 'AREA' | 'VOLUME' | 'GLOBAL' | 'UNKNOWN';
 
 export interface ClassificationResult {
     type: ExpectedType;
@@ -14,48 +16,25 @@ export interface ClassificationResult {
 }
 
 /**
- * Hard mapping of Units to Expected Geometry Types
+ * CANONICAL unit to type mapping
+ * This uses NORMALIZED units from unit-validator
+ * This is the SINGLE SOURCE OF TRUTH for unit→type classification
  */
 const UNIT_TYPE_MAP: Record<string, ExpectedType> = {
-    // Length
+    // Length - Only normalized 'm'
     'm': 'LENGTH',
-    'ml': 'LENGTH',
-    'mts': 'LENGTH',
-    'metro': 'LENGTH',
-    'metros': 'LENGTH',
-    'mt': 'LENGTH',
 
-    // Area
+    // Area - Only normalized 'm2'
     'm2': 'AREA',
-    'm²': 'AREA',
-    'metro cuadrado': 'AREA',
-    'metros cuadrados': 'AREA',
 
-    // Block/Unit
-    'u': 'BLOCK',
+    // Volume - Only normalized 'm3'
+    'm3': 'VOLUME',
+
+    // Block/Unit - Only normalized 'un'
     'un': 'BLOCK',
-    'und': 'BLOCK',
-    'unid': 'BLOCK',
-    'unidad': 'BLOCK',
-    'unidades': 'BLOCK',
-    'pza': 'BLOCK',
-    'pieza': 'BLOCK',
-    'piezas': 'BLOCK',
-    'punto': 'BLOCK',
-    'puntos': 'BLOCK',
-    'pto': 'BLOCK',
-    'ptos': 'BLOCK',
 
-    // Global
+    // Global - Only normalized 'gl'
     'gl': 'GLOBAL',
-    'glb': 'GLOBAL',
-    'global': 'GLOBAL',
-    'alcance': 'GLOBAL',
-    'servicio': 'GLOBAL',
-    'instalación': 'GLOBAL',
-    'instalacion': 'GLOBAL',
-    'por mandante': 'GLOBAL',
-    'mandante': 'GLOBAL',
 };
 
 /**
@@ -125,103 +104,115 @@ const KEYWORD_TYPE_MAP: Record<string, 'LENGTH' | 'BLOCK' | 'AREA' | 'GLOBAL'> =
 
 /**
  * Centralized logic to classify what kind of geometry we expect for an item
+ * 
+ * NEW LOGIC (Phase 1):
+ * 1. Unit is ALWAYS the authority if it's recognized
+ * 2. Keywords are ONLY hints when unit is UNKNOWN
+ * 3. No keyword can override an explicit unit
+ * 
+ * This ensures type consistency and prevents mismatches
  */
 export function classifyItemIntent(description: string, unit: string = ''): ClassificationResult {
     const descLower = description.toLowerCase();
-    const unitLower = unit.toLowerCase().trim().replace('.', ''); // remove dots (c.u -> cu)
 
-    // 1. Check Unit (Highest Authority for Hard Constraints)
-    // Priority 1: GLOBAL Unit overrides everything
-    if (['gl', 'glb', 'global', 'pa', 'est'].includes(unitLower)) {
+    // Step 1: Normalize the unit using the validator
+    const normalizedUnit = normalizeUnit(unit);
+
+    // Step 2: If we have a normalized unit, IT IS THE AUTHORITY
+    if (normalizedUnit && UNIT_TYPE_MAP[normalizedUnit]) {
+        const type = UNIT_TYPE_MAP[normalizedUnit];
         return {
-            type: 'GLOBAL',
+            type: type,
             confidence: 1.0,
-            reason: `Unit '${unit}' implies Global/Service`,
+            reason: `Unit '${unit}' (normalized: '${normalizedUnit}') strictly defines ${type}`,
             method: 'unit_hard'
         };
     }
 
-    // Priority 2: Explicit "By Mandante" or "Service" keywords override Geometry
-    if (unitLower.includes('mandante') || unitLower.includes('cliente')) {
+    // Step 3: If unit is present but not recognized (shouldn't happen after validation)
+    if (unit && !normalizedUnit) {
         return {
-            type: 'GLOBAL',
-            confidence: 0.9,
-            reason: "Unit implies provided by client",
-            method: 'keyword_strong'
+            type: 'UNKNOWN',
+            confidence: 0.0,
+            reason: `Unit '${unit}' is not recognized`,
+            method: 'default'
         };
     }
 
-    // Priority 3: Strong Keywords (Geometry)
-    // We check description keywords.
-    for (const [key, type] of Object.entries(KEYWORD_TYPE_MAP)) {
-        if (descLower.includes(key)) {
-            // Special Exception: "Caja" is Block, but "Alimentador desde caja" is Length.
-            // Check context or allow longer matches to override shorter ones?
-            // "Alimentador" is already checked.
+    // Step 4: No unit provided - use keywords as HINTS ONLY
+    // Check for strong global keywords first
+    const globalKeywords = [
+        'instalacion', 'instalación', 'certificado', 'tramite', 'trámite',
+        'legaliza', 'inscripcion', 'rotulacion', 'limpieza', 'aseo',
+        'capacitacion', 'ingeneria', 'planos', 'as built', 'puesta en marcha'
+    ];
 
-            // Refinement for "Punto":
-            // "Punto de red" -> Block
-            // "Punto electrico" -> Block
-            if (key === 'punto' && (descLower.includes('canaliz') || descLower.includes('tuber'))) {
-                continue; // It's likely describing the pipe to the point
-            }
-
+    for (const keyword of globalKeywords) {
+        if (descLower.includes(keyword)) {
             return {
-                type: type,
+                type: 'GLOBAL',
                 confidence: 0.85,
-                reason: `Description contains strong keyword '${key}'`,
+                reason: `Description contains global keyword '${keyword}' (no unit provided)`,
                 method: 'keyword_strong'
             };
         }
     }
 
-    // Priority 4: Unit-based Geometry
-    if (UNIT_TYPE_MAP[unitLower]) {
-        return {
-            type: UNIT_TYPE_MAP[unitLower],
-            confidence: 0.8,
-            reason: `Unit '${unit}' implies ${UNIT_TYPE_MAP[unitLower]}`,
-            method: 'unit_hard'
-        };
+    // Check description keywords (only as hints since no unit)
+    for (const [key, type] of Object.entries(KEYWORD_TYPE_MAP)) {
+        if (descLower.includes(key)) {
+            // Special context refinements
+            if (key === 'punto' && (descLower.includes('canaliz') || descLower.includes('tuber'))) {
+                continue; // "Punto" in context of piping is likely the pipe itself
+            }
+
+            return {
+                type: type,
+                confidence: 0.7,
+                reason: `Description contains keyword '${key}' (no unit provided, using hint)`,
+                method: 'keyword_strong'
+            };
+        }
     }
 
-    // Priority 5: Weak/Heuristic Rules
+    // Weak heuristics
     if (descLower.startsWith('punto ') || descLower.startsWith('puntos ')) {
         return {
             type: 'BLOCK',
-            confidence: 0.7,
-            reason: "Starts with 'Punto'",
+            confidence: 0.6,
+            reason: "Starts with 'Punto' (weak heuristic, no unit)",
             method: 'keyword_weak'
         };
     }
 
-    // Default
+    // Default: Unknown
     return {
         type: 'UNKNOWN',
         confidence: 0.0,
-        reason: "No clear classifier found",
+        reason: "No unit provided and no clear keyword classifier found",
         method: 'default'
     };
 }
 
 /**
  * Check if a DXF item type matches an expected type
- * @param dxfItemType - Type from DXF item (now in UPPERCASE)
+ * @param dxfItemType - Type from DXF item (uppercase)
  * @param expectedType - Expected type from classification
  */
 export function typeMatches(
-    dxfItemType: 'BLOCK' | 'LENGTH' | 'TEXT' | 'AREA',
+    dxfItemType: 'BLOCK' | 'LENGTH' | 'TEXT' | 'AREA' | 'VOLUME',
     expectedType: ExpectedType
 ): boolean {
     if (expectedType === 'UNKNOWN') return true;
     if (expectedType === 'GLOBAL') return false;
 
-    const matchMap: Record<ExpectedType, Array<'BLOCK' | 'LENGTH' | 'TEXT' | 'AREA'>> = {
+    const matchMap: Record<ExpectedType, Array<'BLOCK' | 'LENGTH' | 'TEXT' | 'AREA' | 'VOLUME'>> = {
         'LENGTH': ['LENGTH'],
         'BLOCK': ['BLOCK'],
         'AREA': ['AREA'],
+        'VOLUME': ['VOLUME'],
         'GLOBAL': [],
-        'UNKNOWN': ['BLOCK', 'LENGTH', 'TEXT', 'AREA']
+        'UNKNOWN': ['BLOCK', 'LENGTH', 'TEXT', 'AREA', 'VOLUME']
     };
 
     return matchMap[expectedType]?.includes(dxfItemType) || false;
@@ -229,10 +220,20 @@ export function typeMatches(
 
 /**
  * Helper to get strictly what the UNIT allows (for filtering candidates)
+ * Uses normalized units from validator
  */
 export function getExpectedMeasureType(unit: string): ExpectedType {
-    const unitLower = unit.toLowerCase().trim().replace('.', '');
-    return UNIT_TYPE_MAP[unitLower] || 'UNKNOWN';
+    const normalizedUnit = normalizeUnit(unit);
+    if (!normalizedUnit) return 'UNKNOWN';
+    return UNIT_TYPE_MAP[normalizedUnit] || 'UNKNOWN';
+}
+
+/**
+ * NEW: Single source of truth for getting type from unit
+ * This function MUST be used in the matching pipeline
+ */
+export function getTypeForUnit(unit: string): ExpectedType {
+    return getExpectedMeasureType(unit);
 }
 
 /**

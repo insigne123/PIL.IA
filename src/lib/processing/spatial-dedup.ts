@@ -103,7 +103,8 @@ export function deduplicateItemDetectadoBlocks(
             // Merge into single item with summed count
             const merged = { ...groupItems[0] };
             merged.value_raw = groupItems.reduce((sum, item) => sum + item.value_raw, 0);
-            merged.value_m = groupItems.reduce((sum, item) => sum + item.value_m, 0);
+            merged.value_si = groupItems.reduce((sum, item) => sum + item.value_si, 0);  // ✅ Sum SI values
+            merged.value_m = groupItems.reduce((sum, item) => sum + item.value_m, 0);    // Legacy
             merged.evidence = `${merged.evidence} (merged ${groupItems.length} duplicates)`;
             deduplicatedBlocks.push(merged);
         }

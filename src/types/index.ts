@@ -1,4 +1,9 @@
-export type Unit = 'mm' | 'cm' | 'm' | 'm²';
+// Unit is now flexible - any string is valid, classification happens via MeasureKind
+export type Unit = string;
+
+// MeasureKind defines the type of measurement (the "what" we're measuring)
+export type MeasureKind = 'length' | 'area' | 'volume' | 'count' | 'service' | 'unknown';
+
 export type Discipline = 'ELEC' | 'SANI' | 'ARQUI' | 'ESTR' | 'CLIMA' | 'GAS' | 'GENERAL' | 'UNKNOWN';
 
 // M2/M5: Extracted from CAD
@@ -10,12 +15,23 @@ export interface ItemDetectado {
   name_effective?: string; // For dynamic blocks
   layer_raw: string;
   layer_normalized: string;
-  value_raw: number; // Count or Length in original unit
-  unit_raw: Unit | 'txt' | 'u';
-  value_m: number; // Legacy: Normalized to meters or count. Deprecated in favor of value_si?
-  value_si?: number; // P0: Normalized SI value (m, m2, count). Truth.
+
+  // === UNITS & VALUES ===
+  value_raw: number; // Original value in draw units (for debugging/validation)
+  unit_raw: Unit | 'txt' | 'u'; // Unit of value_raw
+
+  value_si: number; // ✅ MANDATORY - Normalized SI value (m, m², count). THE TRUTH.
+
+  /** @deprecated Use value_si instead. Kept for backward compatibility. */
+  value_m: number; // Legacy: Normalized to meters or count
+
+  /** @deprecated Use value_si for area measurements */
   value_area?: number; // M2 area for closed polygons
+
+  // === METADATA ===
   evidence?: string; // 'ATTRIB', 'MTEXT vicinity', etc.
+  measureKind?: MeasureKind; // Optional: What kind of measurement this is
+
   // Layer resolution metadata
   layer_metadata?: {
     original: string;
@@ -101,7 +117,7 @@ export interface StagingRow {
   method_detail?: string; // 'block_count' | 'polyline_length' | 'hatch_area' | etc.
 
   // Debug Outputs (Phase 1 improvements)
-  expected_measure_type?: 'LENGTH' | 'AREA' | 'BLOCK' | 'GLOBAL' | 'UNKNOWN';
+  expected_measure_type?: 'LENGTH' | 'AREA' | 'VOLUME' | 'BLOCK' | 'GLOBAL' | 'UNKNOWN';
   top_candidates?: Array<{
     layer: string;
     type: string;
