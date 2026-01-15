@@ -1,0 +1,62 @@
+{
+    "$schema": "./layer-mapping.schema.json",
+    "version": "1.0",
+    "mappings": {
+        "FA-PAVIMENTO": {
+            "keywords": [
+                "pavimento",
+                "piso",
+                "sobrelosa",
+                "losa"
+            ],
+            "description": "Pavimentos y losas de piso"
+        },
+        "FA-MURO": {
+            "keywords": [
+                "muro",
+                "tabique",
+                "partition",
+                "wall"
+            ],
+            "description": "Muros y tabiques"
+        },
+        "FA-CIELO": {
+            "keywords": [
+                "cielo",
+                "raso",
+                "plafon",
+                "ceiling"
+            ],
+            "description": "Cielos y plafones"
+        },
+        "FA-REVESTIMIENTO": {
+            "keywords": [
+                "revestimiento",
+                "enchape",
+                "ceramica",
+                "porcelanato"
+            ],
+            "description": "Revestimientos de muros y pisos"
+        }
+    },
+    "wildcards": {
+        "ELEC": [
+            "electrico",
+            "electrica",
+            "tablero",
+            "luz",
+            "enchufe"
+        ],
+        "SANI": [
+            "sanitaria",
+            "sanitario",
+            "cañeria",
+            "tuberia",
+            "agua"
+        ],
+        "ARQ": [
+            "arquitectura",
+            "arquitectonico"
+        ]
+    }
+}

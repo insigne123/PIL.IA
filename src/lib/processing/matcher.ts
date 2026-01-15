@@ -8,6 +8,7 @@ import { determineCalcMethod, isCompatibleType, type CalcMethod } from './calc-m
 import { isDisciplineMatch } from './discipline';
 import { getMeasureKind } from './unit-normalizer';
 import { checkQuantitySanity, getSanitySummary } from './sanity-checker';
+import { matchLayerKeywords, getLayerKeywords } from './layer-mapping';
 
 export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetectado[], sheetName: string, excelDiscipline: Discipline = 'UNKNOWN'): StagingRow[] {
 
@@ -130,6 +131,25 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             const score = match.score || 1;
             confidence = 1 - score;
 
+            // ✅ LAYER KEYWORD BOOST
+            // Check if match improves with layer keyword mapping
+            const keywordMatch = matchLayerKeywords(excelItem.description, match.item.layer_raw);
+            let keywordBoost = 0;
+            let usedKeywordMapping = false;
+
+            if (keywordMatch.score > 0) {
+                // Keyword match found - boost confidence
+                keywordBoost = keywordMatch.score * 0.4; // Up to 40% boost
+                confidence = Math.min(1.0, confidence + keywordBoost);
+                usedKeywordMapping = true;
+
+                console.log(`[Matcher] 🎯 Keyword boost for "${excelItem.description}" → layer "${match.item.layer_raw}"`);
+                console.log(`  • Matched keywords: [${keywordMatch.matchedKeywords.map(k => `"${k}"`).join(', ')}]`);
+                console.log(`  • Method: ${keywordMatch.method}`);
+                console.log(`  • Keyword score: ${(keywordMatch.score * 100).toFixed(0)}%`);
+                console.log(`  • Confidence boost: +${(keywordBoost * 100).toFixed(0)}% → Final: ${(confidence * 100).toFixed(0)}%`);
+            }
+
             // Type matching bonus - convert to UPPERCASE for comparison
             const matchTypeUpper = match.item.type.toUpperCase() as 'BLOCK' | 'LENGTH' | 'TEXT' | 'AREA';
             if (typeMatches(matchTypeUpper, expectedType)) {
@@ -137,6 +157,11 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 reason = `Type-matched "${match.item.name_raw || match.item.layer_raw}" (${(confidence * 100).toFixed(0)}%)`;
             } else {
                 reason = `Matched "${match.item.name_raw || match.item.layer_raw}" (${(confidence * 100).toFixed(0)}%)`;
+            }
+
+            // Add keyword mapping info to reason
+            if (usedKeywordMapping) {
+                reason += ` | Keywords: [${keywordMatch.matchedKeywords.join(', ')}]`;
             }
 
             // --- HOTFIX 5: Exclude Layer 0 default ---
@@ -147,6 +172,11 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
             if (confidence > 0.4) {
                 bestMatch = [match.item];
+
+                // Enhanced logging for successful match
+                if (usedKeywordMapping) {
+                    console.log(`[Matcher] ✅ Matched "${excelItem.description}" → layer "${match.item.layer_raw}" usando keywords ${JSON.stringify(keywordMatch.matchedKeywords)} con score FINAL: ${(confidence * 100).toFixed(0)}%`);
+                }
             } else {
                 // Generate suggestions for low confidence
                 suggestions = generateSuggestions(result.slice(0, 3), excelItem, expectedType);
