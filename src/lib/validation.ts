@@ -4,8 +4,9 @@
 import { z } from 'zod';
 
 // Source Item Schema (for staging_rows.source_items)
+// Note: id field accepts any string (not just UUID) to support legacy data
 export const SourceItemSchema = z.object({
-    id: z.string().uuid(),
+    id: z.string(), // Relaxed: accept any string ID (legacy data may not be UUID)
     type: z.enum(['block', 'length', 'area', 'text']),
     value_m: z.number().nonnegative(),
     evidence: z.string(),
