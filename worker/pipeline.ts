@@ -636,12 +636,51 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                             // FINAL TYPE CHECK (Post-AI)
                             // If we enforced BLOCK but ended up with LENGTH items (shouldn't happen with filtered candidates but safety first)
                             // FIX: Allow 'text' in block mode
-                            if (enforcedType === 'block' && betterMatches.some(m => m.type !== 'block' && m.type !== 'text')) {
-                                console.warn(`[Type Enforcement] Rejected AI match for '${row.excel_item_text}' because it returned non-block/text items.`);
-                                betterMatches = [];
+                            // Detect Intent (P1)
+                            let intent = 'PLANAR_AREA'; // Default for m2
+                            if (row.excel_unit?.toLowerCase() === 'm2') {
+                                const descUpper = row.excel_item_text.toUpperCase();
+                                if (/TABIQUE|SOBRETABIQUE|MURO|PINTURA MURO|REVESTIMIENTO/.test(descUpper)) {
+                                    intent = 'WALL_SURFACE';
+                                }
                             }
 
                             if (betterMatches.length > 0) {
+                                // P1: Label Filtering (TAB 01, P-1, etc) to associate Text w/ Geometry
+                                // Extract codes from description: e.g. "Tabique TAB 01" -> "TAB 01"
+                                // Heuristic: Upper case words followed by numbers
+                                const descUpper = row.excel_item_text.toUpperCase();
+                                const codes = descUpper.match(/\b(TAB|P|V|C|E|PT)-?\s?\d{1,3}\b/g);
+
+                                if (codes && codes.length > 0) {
+                                    // Sanitize codes for matching (remove spaces/dashes)
+                                    const cleanCodes = codes.map(c => c.replace(/[- ]/g, ''));
+                                    console.log(`[Label Filter] Detected codes in item: ${cleanCodes.join(', ')}`);
+
+                                    const labelFiltered = betterMatches.filter(m => {
+                                        if (!m.nearby_text_tokens) return false;
+                                        // Check if ANY nearby token matches ANY code (fuzzy match)
+                                        return m.nearby_text_tokens.some(t => {
+                                            const cleanToken = t.toUpperCase().replace(/[- ]/g, '');
+                                            return cleanCodes.some(code => cleanToken.includes(code));
+                                        });
+                                    });
+
+                                    if (labelFiltered.length > 0) {
+                                        console.log(`[Label Filter] Restricted to ${labelFiltered.length} items near labels ${codes.join(',')}`);
+                                        betterMatches = labelFiltered;
+                                    } else {
+                                        // No geometry near the specific label found.
+                                        // If we enforce this strictly, we return nothing.
+                                        // User said: "Si no los asocias espacialmente... nunca podrás repartir cantidades". 
+                                        // Implies strictness.
+                                        console.warn(`[Label Filter] Item expects labels ${codes} but no geometry found nearby.`);
+                                        // betterMatches = []; // Strict? Or warn?
+                                        // For now, warn but don't empty to avoid 0s if text is missing in DXF.
+                                        (row as any).match_reason += ` | WARN: No geometry found near label ${codes[0]}`;
+                                    }
+                                }
+
                                 // P1: Spatial Filtering
                                 const locationKeywords = ['bodega', 'logia', 'baño', 'cocina', 'sala', 'dormitorio', 'pasillo', 'terraza', 'estar', 'comedor', 'hall'];
                                 const rowDesc = row.excel_item_text.toLowerCase();
@@ -699,7 +738,14 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
 
 
                                 // P0: Strict Typed Calculation
-                                const qty = computeQty(row.excel_unit, betterMatches);
+                                // P0: Strict Typed Calculation (Final Phase)
+                                // Only pass intent if m2, otherwise null
+                                const qty = computeQtyFinal(row.excel_unit, betterMatches, intent);
+                                row.qty_final = qty;
+
+                                if (intent === 'WALL_SURFACE' && qty > 0) {
+                                    (row as any).match_reason += " | Intent: WALL (H=2.4m)";
+                                }
                                 row.qty_final = qty;
 
                                 // --- SANITY CHECKS (Tri-state) + REFINED STATUS ---
@@ -972,5 +1018,63 @@ function computeQty(unit: string | null | undefined, items: ItemDetectado[]) {
         }
     }
 
+    return 0;
+}
+
+/**
+ * P0: Strict Typed Calculation Helper (Final)
+ * Uses value_si (System International normalized) and strictly enforces types
+ * Supports Wall Surface intent for m2 from length
+ */
+function computeQtyFinal(unit: string | null | undefined, items: ItemDetectado[], intent: string = 'PLANAR_AREA') {
+    const u = unit ? unit.toLowerCase().trim() : '';
+
+    // 1. AREA (m2)
+    if (u === 'm2') {
+        // A. Planar Area (Floors, Ceilings) -> Expects Area Geometry
+        if (intent === 'PLANAR_AREA') {
+            const areaItems = items.filter(i => i.type === 'area');
+            if (areaItems.length === 0) return 0;
+            return areaItems.reduce((acc, i) => acc + (i.value_si || 0), 0);
+        }
+
+        // B. Wall Surface (Walls, Painting) -> Expects Length * Height
+        if (intent === 'WALL_SURFACE') {
+            // Allow Lengths
+            const lengthItems = items.filter(i => i.type === 'length');
+            if (lengthItems.length > 0) {
+                const totalLen = lengthItems.reduce((acc, i) => acc + (i.value_si || 0), 0);
+                const WALL_HEIGHT = 2.40; // Configurable default
+                // Maybe faces? Default 1 face for now (e.g. constructing a wall). 
+                // Painting might need 2 faces if "ambas caras" specified, but let's stick to 1 per length for base construction.
+                return totalLen * WALL_HEIGHT;
+            }
+            // Also allow Area if found (e.g. elevation hatched)
+            const areaItems = items.filter(i => i.type === 'area');
+            if (areaItems.length > 0) return areaItems.reduce((acc, i) => acc + (i.value_si || 0), 0);
+
+            return 0;
+        }
+    }
+
+    // 2. LENGTH (ml, m) -> Only sum 'length' items using value_si
+    if (u === 'ml' || u === 'm') {
+        const lengthItems = items.filter(i => i.type === 'length');
+        if (lengthItems.length === 0) return 0; // Strict: No length geometry = 0
+        return lengthItems.reduce((acc, i) => acc + (i.value_si || 0), 0);
+    }
+
+    // 3. COUNT (un, c/u, pza) -> Only sum 'block' or 'text' using value_si (count)
+    if (u === 'un' || u === 'c/u' || u === 'pza' || u === 'ud') {
+        const blockItems = items.filter(i => i.type === 'block' || i.type === 'text');
+        if (blockItems.length === 0) return 0; // Strict
+        return blockItems.reduce((acc, i) => acc + (i.value_si || 1), 0);
+    }
+
+    // 4. GLOBAL (gl) -> Always 1
+    if (u === 'gl') return 1;
+
+    // Fallback? Strict mode says NO default summing.
+    // If unit unknown, return 0.
     return 0;
 }

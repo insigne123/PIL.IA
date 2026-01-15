@@ -147,6 +147,11 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
         return Math.abs(area) / 2;
     };
 
+    // Calculate conversion factor (Draw Units -> Meters)
+    const factor = toMeters(1.0);
+    const factorArea = factor * factor; // Squared for Area
+
+
     // Build block definitions map for nested resolution
     const blockDefinitions = buildBlockDefinitionsMap(dxf);
     const nestedBlockItems: ItemDetectado[] = [];
@@ -180,9 +185,10 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
                             name_raw: textVal.trim(),
                             layer_raw: resolvedLayer,
                             layer_normalized: resolvedLayer.toLowerCase().trim(),
-                            value_raw: 0, // CRITICAL: No quantity
+                            value_raw: 0,
                             unit_raw: 'txt',
-                            value_m: 0, // CRITICAL: No quantity
+                            value_m: 0,
+                            value_si: 0,
                             evidence: 'TEXT entity',
                             layer_metadata: layerResolutionData
                         });
@@ -214,7 +220,9 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
                         layer_normalized: resolvedLayer.toLowerCase().trim(),
                         value_raw: 1,
                         unit_raw: 'u',
-                        value_m: 1, // 1 block instance
+                        value_m: 1,
+                        value_si: 1,
+
                         evidence: 'INSERT entity',
                         layer_metadata: layerResolutionData // Persist layer origin
                     });
@@ -284,8 +292,10 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
 
                     if (areaM2 > 0.01) {
                         const key = `AREA::${layer}`;
-                        layerAreas.set(key, (layerAreas.get(key) || 0) + areaM2);
-                        console.log(`[DXF Parser] Closed ${type} on "${layer}" → Area: ${areaM2.toFixed(2)} m²`);
+                        // area calculated in draw units, need to apply squared factor
+                        const areaSI = area * factorArea;
+                        layerAreas.set(key, (layerAreas.get(key) || 0) + areaSI);
+                        console.log(`[DXF Parser] Closed ${type} on "${layer}" → Area SI: ${areaSI.toFixed(2)} m² (Raw: ${area.toFixed(2)})`);
                     }
                 } else {
                     // Calculate length (existing code)
@@ -373,201 +383,208 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
                     }
                 }
 
-                if (areaRaw > 0) {
-                    const areaM2 = toMeters(Math.sqrt(areaRaw)) * toMeters(Math.sqrt(areaRaw)); // Convert to m²
-                    const key = `AREA::${layer}`;
-                    layerAreas.set(key, (layerAreas.get(key) || 0) + areaM2);
-                    console.log(`[DXF Parser] HATCH on "${layer}" - Final area: ${areaM2.toFixed(2)} m²`);
-                }
             }
+        }
+                }
+
+    if (areaRaw > 0) {
+        const areaSI = areaRaw * factorArea; // Apply Squared Factor
+        const key = `AREA::${layer}`;
+        layerAreas.set(key, (layerAreas.get(key) || 0) + areaSI);
+        console.log(`[DXF Parser] HATCH on "${layer}" - Final area SI: ${areaSI.toFixed(2)} m²`);
+    }
+}
             // TEXT / MTEXT
             else if (type === 'TEXT' || type === 'MTEXT') {
-                const layer = (entity as any).layer || '0';
-                const text = (entity as any).text || (entity as any).string || '';
-                const position = (entity as any).position || (entity as any).insertionPoint;
+    const layer = (entity as any).layer || '0';
+    const text = (entity as any).text || (entity as any).string || '';
+    const position = (entity as any).position || (entity as any).insertionPoint;
 
-                if (text && text.trim()) {
-                    items.push({
-                        id: uuidv4(),
-                        type: 'text',
-                        name_raw: text.trim(),
-                        layer_raw: layer,
-                        layer_normalized: layer.toLowerCase(),
-                        value_raw: 1,
-                        unit_raw: 'txt',
-                        value_m: 1,
-                        evidence: type,
-                        position: position ? { x: position.x || 0, y: position.y || 0 } : undefined
-                    });
-                }
-            }
+    if (text && text.trim()) {
+        items.push({
+            id: uuidv4(),
+            type: 'text',
+            name_raw: text.trim(),
+            layer_raw: layer,
+            layer_normalized: layer.toLowerCase(),
+            value_raw: 1,
+            unit_raw: 'txt',
+            value_m: 1,
+            value_si: 1,
+            evidence: type,
+            position: position ? { x: position.x || 0, y: position.y || 0 } : undefined
+        });
+    }
+}
         } catch (err) { continue; }
     }
 
-    // Convert Blocks (Existing Logic)
-    for (const [key, data] of blockCounts.entries()) {
-        const [name, layer] = key.split('::');
-        items.push({
-            id: uuidv4(),
-            type: 'block',
-            name_raw: name,
-            layer_raw: layer,
-            layer_normalized: layer.toLowerCase(),
-            value_raw: data.count,
-            unit_raw: 'u',
-            value_m: data.count,
-            evidence: 'INSERT entity'
-        });
+// Convert Blocks (Existing Logic)
+for (const [key, data] of blockCounts.entries()) {
+    const [name, layer] = key.split('::');
+    items.push({
+        id: uuidv4(),
+        type: 'block',
+        name_raw: name,
+        layer_raw: layer,
+        layer_normalized: layer.toLowerCase(),
+        value_raw: data.count,
+        unit_raw: 'u',
+        value_m: data.count,
+        value_si: data.count,
+        evidence: 'INSERT entity'
+    });
+}
+
+// Convert Areas
+for (const [key, area] of layerAreas.entries()) {
+    const layer = key.replace('AREA::', '');
+    items.push({
+        id: uuidv4(),
+        type: 'area', // NEW TYPE
+        name_raw: `Área en ${layer}`,
+        layer_raw: layer,
+        layer_normalized: layer.toLowerCase(),
+        value_raw: area,
+        unit_raw: 'm²',
+        value_m: area, // Use area as value
+        value_si: area, // Correctly scaled in loop above
+        evidence: 'Closed Polyline / Hatch',
+        value_area: area
+    });
+}
+
+// SPATIAL: Run Shape Detection on Raw Lines
+const { rectangles, remainingLines } = detectRectangles(rawLines);
+if (rectangles.length > 0) {
+    console.log(`[DXF Spatial] Detected ${rectangles.length} rectangular shapes`);
+    items.push(...rectangles);
+}
+
+// Aggregate Remaining Lines (after shape detection)
+for (const line of remainingLines) {
+    const dx = line.end.x - line.start.x;
+    const dy = line.end.y - line.start.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    layerLengths.set(line.layer, (layerLengths.get(line.layer) || 0) + dist);
+}
+
+// Convert Lengths (with dynamic threshold)
+for (const [layer, length] of layerLengths.entries()) {
+    const lengthM = toMeters(length);
+
+    // ✅ PHASE 3: Don't discard, mark as suspect instead
+    let suspect = false;
+    let suspectReason = '';
+
+    if (lengthM < minLengthDynamic) {
+        suspect = true;
+        suspectReason = `Longitud ${lengthM.toFixed(3)}m por debajo del umbral dinámico ${minLengthDynamic.toFixed(3)}m (puede ser ruido)`;
+        console.warn(`[DXF Parser] ⚠️ Suspect geometry on "${layer}": ${suspectReason}`);
     }
 
-    // Convert Areas
-    for (const [key, area] of layerAreas.entries()) {
-        const layer = key.replace('AREA::', '');
+    items.push({
+        id: uuidv4(),
+        type: 'length',
+        name_raw: `Lines on ${layer}`,
+        layer_raw: layer,
+        layer_normalized: layer.toLowerCase(),
+        value_raw: length,
+        unit_raw: 'm',
+        value_m: lengthM,
+        evidence: `LINE/POLYLINE sum (${effectiveUnit}→m)`,
+        suspect_geometry: suspect,
+        suspect_reason: suspectReason || undefined
+    });
+}
+
+// Convert Areas
+for (const [key, areaM2] of layerAreas.entries()) {
+    const layer = key.replace('AREA::', '');
+    if (areaM2 > 0.01) { // Minimum 0.01 m²
         items.push({
             id: uuidv4(),
-            type: 'area', // NEW TYPE
-            name_raw: `Área en ${layer}`,
+            type: 'area',
+            name_raw: `Area on ${layer}`,
             layer_raw: layer,
             layer_normalized: layer.toLowerCase(),
-            value_raw: area,
+            value_raw: areaM2,
             unit_raw: 'm²',
-            value_m: area, // Use area as value
-            evidence: 'Closed Polyline / Hatch',
-            value_area: area
+            value_m: areaM2,
+            evidence: 'HATCH or closed polyline area'
         });
     }
+}
 
-    // SPATIAL: Run Shape Detection on Raw Lines
-    const { rectangles, remainingLines } = detectRectangles(rawLines);
-    if (rectangles.length > 0) {
-        console.log(`[DXF Spatial] Detected ${rectangles.length} rectangular shapes`);
-        items.push(...rectangles);
+console.log(`[DXF Parser] Extracted ${items.length} items (${items.filter(i => i.type === 'block').length} blocks, ${items.filter(i => i.type === 'length').length} lengths, ${items.filter(i => i.type === 'area').length} areas, ${items.filter(i => i.type === 'text').length} texts)`);
+
+// Add nested block items
+if (nestedBlockItems.length > 0) {
+    console.log(`[DXF Parser] Found ${nestedBlockItems.length} items from nested blocks`);
+    items.push(...nestedBlockItems);
+}
+
+// 5. Aggregate Areas by Layer
+// (Existing logic...)
+
+// --- HOTFIX 4: Statistical Symbol Filtering ---
+// Detect repetitive micro-geometry (e.g. 0.218m lines repeated 50 times) which are likely symbols
+const lengthGroups = new Map<string, Map<number, number>>();
+
+// Build stats
+for (const item of items) {
+    if (item.type === 'length' && item.value_m < 0.5) {
+        const layer = item.layer_normalized;
+        if (!lengthGroups.has(layer)) lengthGroups.set(layer, new Map());
+
+        // Round to 3 decimals to catch variations
+        const val = Math.round(item.value_m * 1000) / 1000;
+        const group = lengthGroups.get(layer)!;
+        group.set(val, (group.get(val) || 0) + 1);
     }
+}
 
-    // Aggregate Remaining Lines (after shape detection)
-    for (const line of remainingLines) {
-        const dx = line.end.x - line.start.x;
-        const dy = line.end.y - line.start.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        layerLengths.set(line.layer, (layerLengths.get(line.layer) || 0) + dist);
-    }
+// Tag items
+for (const item of items) {
+    if (item.type === 'length' && item.value_m < 0.5) {
+        const layer = item.layer_normalized;
+        const val = Math.round(item.value_m * 1000) / 1000;
+        const count = lengthGroups.get(layer)?.get(val) || 0;
 
-    // Convert Lengths (with dynamic threshold)
-    for (const [layer, length] of layerLengths.entries()) {
-        const lengthM = toMeters(length);
-
-        // ✅ PHASE 3: Don't discard, mark as suspect instead
-        let suspect = false;
-        let suspectReason = '';
-
-        if (lengthM < minLengthDynamic) {
-            suspect = true;
-            suspectReason = `Longitud ${lengthM.toFixed(3)}m por debajo del umbral dinámico ${minLengthDynamic.toFixed(3)}m (puede ser ruido)`;
-            console.warn(`[DXF Parser] ⚠️ Suspect geometry on "${layer}": ${suspectReason}`);
-        }
-
-        items.push({
-            id: uuidv4(),
-            type: 'length',
-            name_raw: `Lines on ${layer}`,
-            layer_raw: layer,
-            layer_normalized: layer.toLowerCase(),
-            value_raw: length,
-            unit_raw: 'm',
-            value_m: lengthM,
-            evidence: `LINE/POLYLINE sum (${effectiveUnit}→m)`,
-            suspect_geometry: suspect,
-            suspect_reason: suspectReason || undefined
-        });
-    }
-
-    // Convert Areas
-    for (const [key, areaM2] of layerAreas.entries()) {
-        const layer = key.replace('AREA::', '');
-        if (areaM2 > 0.01) { // Minimum 0.01 m²
-            items.push({
-                id: uuidv4(),
-                type: 'area',
-                name_raw: `Area on ${layer}`,
-                layer_raw: layer,
-                layer_normalized: layer.toLowerCase(),
-                value_raw: areaM2,
-                unit_raw: 'm²',
-                value_m: areaM2,
-                evidence: 'HATCH or closed polyline area'
-            });
+        // Threshold: If small length (<0.5m) appears more than 20 times in the same layer
+        if (count > 20) {
+            item.suspect_geometry = true;
+            item.suspect_reason = `Symbol-like geometry: ${count} occurrences of ${val}m length`;
+            // Optional: We could set value_m = 0 if we are very confident
         }
     }
+}
 
-    console.log(`[DXF Parser] Extracted ${items.length} items (${items.filter(i => i.type === 'block').length} blocks, ${items.filter(i => i.type === 'length').length} lengths, ${items.filter(i => i.type === 'area').length} areas, ${items.filter(i => i.type === 'text').length} texts)`);
+// --- SPATIAL INTELLIGENCE: SHAPE DETECTION ---
+const looseLines = items.filter(i => i.type === 'length' && i.evidence?.includes('LINE'));
 
-    // Add nested block items
-    if (nestedBlockItems.length > 0) {
-        console.log(`[DXF Parser] Found ${nestedBlockItems.length} items from nested blocks`);
-        items.push(...nestedBlockItems);
-    }
+// Quick & Dirty Rectangle Detector (4 lines forming a closed loop)
+// Map endpoints to line IDs
+// (Implementation omitted for brevity to keep it safe, but we can do bounding box overlap for text association first)
 
-    // 5. Aggregate Areas by Layer
-    // (Existing logic...)
+// --- SPATIAL INTELLIGENCE: TEXT CONTEXT ---
+// Associate TEXT entities with nearby geometry for improved semantic matching
+const textItems = items.filter(i => i.type === 'text' && i.position);
+const geometryItems = items.filter(i => i.type !== 'text' && i.position);
 
-    // --- HOTFIX 4: Statistical Symbol Filtering ---
-    // Detect repetitive micro-geometry (e.g. 0.218m lines repeated 50 times) which are likely symbols
-    const lengthGroups = new Map<string, Map<number, number>>();
+if (textItems.length > 0 && geometryItems.length > 0) {
+    console.log(`[Spatial Text] Enriching ${geometryItems.length} items with ${textItems.length} nearby texts...`);
 
-    // Build stats
-    for (const item of items) {
-        if (item.type === 'length' && item.value_m < 0.5) {
-            const layer = item.layer_normalized;
-            if (!lengthGroups.has(layer)) lengthGroups.set(layer, new Map());
+    const textEntities = textItems.map(t => ({
+        text: t.name_raw,
+        position: t.position!,
+        layer: t.layer_raw
+    }));
 
-            // Round to 3 decimals to catch variations
-            const val = Math.round(item.value_m * 1000) / 1000;
-            const group = lengthGroups.get(layer)!;
-            group.set(val, (group.get(val) || 0) + 1);
-        }
-    }
+    items = enrichItemsWithNearbyText(items, textEntities, 5.0);
+}
 
-    // Tag items
-    for (const item of items) {
-        if (item.type === 'length' && item.value_m < 0.5) {
-            const layer = item.layer_normalized;
-            const val = Math.round(item.value_m * 1000) / 1000;
-            const count = lengthGroups.get(layer)?.get(val) || 0;
-
-            // Threshold: If small length (<0.5m) appears more than 20 times in the same layer
-            if (count > 20) {
-                item.suspect_geometry = true;
-                item.suspect_reason = `Symbol-like geometry: ${count} occurrences of ${val}m length`;
-                // Optional: We could set value_m = 0 if we are very confident
-            }
-        }
-    }
-
-    // --- SPATIAL INTELLIGENCE: SHAPE DETECTION ---
-    const looseLines = items.filter(i => i.type === 'length' && i.evidence?.includes('LINE'));
-
-    // Quick & Dirty Rectangle Detector (4 lines forming a closed loop)
-    // Map endpoints to line IDs
-    // (Implementation omitted for brevity to keep it safe, but we can do bounding box overlap for text association first)
-
-    // --- SPATIAL INTELLIGENCE: TEXT CONTEXT ---
-    // Associate TEXT entities with nearby geometry for improved semantic matching
-    const textItems = items.filter(i => i.type === 'text' && i.position);
-    const geometryItems = items.filter(i => i.type !== 'text' && i.position);
-
-    if (textItems.length > 0 && geometryItems.length > 0) {
-        console.log(`[Spatial Text] Enriching ${geometryItems.length} items with ${textItems.length} nearby texts...`);
-
-        const textEntities = textItems.map(t => ({
-            text: t.name_raw,
-            position: t.position!,
-            layer: t.layer_raw
-        }));
-
-        items = enrichItemsWithNearbyText(items, textEntities, 5.0);
-    }
-
-    return { items, detectedUnit, preflight };
+return { items, detectedUnit, preflight };
 }
 
 // ... existing aggregateDxfItems ...

@@ -12,7 +12,8 @@ export interface ItemDetectado {
   layer_normalized: string;
   value_raw: number; // Count or Length in original unit
   unit_raw: Unit | 'txt' | 'u';
-  value_m: number; // Normalized to meters or count
+  value_m: number; // Legacy: Normalized to meters or count. Deprecated in favor of value_si?
+  value_si?: number; // P0: Normalized SI value (m, m2, count). Truth.
   value_area?: number; // M2 area for closed polygons
   evidence?: string; // 'ATTRIB', 'MTEXT vicinity', etc.
   // Layer resolution metadata
