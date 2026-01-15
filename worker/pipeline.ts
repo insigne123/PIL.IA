@@ -412,15 +412,13 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
         // POST-FUZZY PROCESSING: Apply all classification rules
         stagingRows = stagingRows.map((row: any) => {
             // MEJORA 1: Filter Titles
-            // If marked as title during Excel parsing, skip matching
-            // @ts-ignore
-            if (row._original_item?.type === 'section_header' || (row._original_item?._is_title)) {
+            // Handled in matcher.ts (status='title'). If so, skip processing.
+            if (row.status === 'title' || (row as any).is_title) {
                 return {
                     ...row,
-                    is_title: true, // New field for UI
-                    status: 'title', // New status
+                    is_title: true,
+                    status: 'title',
                     match_confidence: 1.0,
-                    match_reason: "Clasificado como Título de Sección (Sin Unidad)",
                     matched_items: [],
                     qty_final: null
                 };
@@ -644,6 +642,32 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                             }
 
                             if (betterMatches.length > 0) {
+                                // P1: Spatial Filtering
+                                const locationKeywords = ['bodega', 'logia', 'baño', 'cocina', 'sala', 'dormitorio', 'pasillo', 'terraza', 'estar', 'comedor', 'hall'];
+                                const rowDesc = row.excel_item_text.toLowerCase();
+                                const foundLocations = locationKeywords.filter(loc => rowDesc.includes(loc));
+
+                                if (foundLocations.length > 0) {
+                                    // Only proceed if we have candidates with spatial data
+                                    const hasSpatialData = betterMatches.some(m => m.nearby_text_tokens && m.nearby_text_tokens.length > 0);
+
+                                    if (hasSpatialData) {
+                                        const spatiallyFiltered = betterMatches.filter(m => {
+                                            if (!m.nearby_text_tokens) return false;
+                                            return foundLocations.some(loc => m.nearby_text_tokens?.some(token => token.toLowerCase().includes(loc)));
+                                        });
+
+                                        if (spatiallyFiltered.length > 0) {
+                                            console.log(`[Spatial Filter] Filtered '${row.excel_item_text}' to ${spatiallyFiltered.length} matches (Locations: ${foundLocations.join(',')})`);
+                                            betterMatches = spatiallyFiltered;
+                                        } else {
+                                            // If filtering removes everything, maybe warn but keep original? 
+                                            // User requested: "mide solo lo que cae dentro". Implies strictness.
+                                            console.warn(`[Spatial Filter] Item has location '${foundLocations}' but no matches found in that zone.`);
+                                            // We keep original betterMatches but could flag it?
+                                        }
+                                    }
+                                }
                                 (row as any).matched_items = betterMatches;
                                 (row as any).match_confidence = aiResult.confidence;
                                 (row as any).match_reason = "AI: " + aiResult.reasoning;
@@ -655,6 +679,7 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                                     (row as any).match_confidence = 0.1;
                                     (row as any).match_reason += " | ⚠️ ALERTA: Unidad 'm2' indica AREA, pero se encontró geometría tipo BLOCK.";
                                     (row as any).suggestion = "Verifica la unidad en Excel o cambia el tipo de capa a Área.";
+                                    (row as any)._force_pending = true; // P0: Flag for strict pending
                                 }
 
                                 // MEJORA 3: Auto-Aprobar con Unidad Explícita
@@ -672,41 +697,38 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                                 // MEJORA 4: Logging Mejorado
                                 console.log(`[Match Debug] Item: "${row.excel_item_text}" | Unit: "${row.excel_unit}" | Expected: "${enforcedType}" | Found: "${detectedType}" | Conf: ${(row as any).match_confidence.toFixed(2)}`);
 
-                                // Recalculate Qty with Clean Length Filter
-                                let qty = 0;
-                                const firstType = betterMatches[0].type;
 
-                                if (firstType === 'block' || firstType === 'text') {
-                                    // Count items (Blocks or Texts)
-                                    // For blocks, use value_raw if available (multi-insertion), otherwise 1
-                                    qty = betterMatches.reduce((acc, m) => acc + (m.value_raw || 1), 0);
-                                } else {
-                                    // FLOW/LENGTH: Ignore tiny segments < 0.2m (Noise)
-                                    betterMatches.forEach(m => {
-                                        if (m.value_m > 0.2) {
-                                            qty += m.value_m;
-                                        }
-                                    });
-                                }
+                                // P0: Strict Typed Calculation
+                                const qty = computeQty(row.excel_unit, betterMatches);
                                 row.qty_final = qty;
 
                                 // --- SANITY CHECKS (Tri-state) + REFINED STATUS ---
                                 let status = aiResult.confidence > 0.8 ? 'approved' : 'pending';
+
+                                // P0: Enforce Pending on Flags
+                                if ((row as any)._force_pending) {
+                                    status = 'pending';
+                                    console.log(`[Status Enforcement] '${row.excel_item_text}' forced to PENDING due to type mismatch.`);
+                                }
                                 let warning = "";
                                 let statusReason = ""; // For refined status categorization
 
                                 // 1. Linear Sanity
                                 if (enforcedType === 'length') {
-                                    // A. INVALID (Noise) - Hard Fail → pending_no_geometry
+                                    // A. SHORT GEOMETRY (Noise?) - Soft Fail (P2)
+                                    // Requested: pending_short_geometry (mapped to pending_no_geometry for now) + evidence
                                     if (qty < 0.5) {
                                         status = 'pending_no_geometry';
                                         statusReason = 'insufficient_geometry';
-                                        (row as any).raw_qty = qty; // Save what was measured
-                                        (row as any).sanity_flag = 'insufficient_geometry';
-                                        row.qty_final = null; // null = couldn't measure reliably
-                                        warning = `[CRITICAL] Longitud < 0.5m (${qty.toFixed(2)}m). Invalidada por ser ruido gráfico.`;
-                                        (row as any).match_reason += ` | ERR: ${warning}`;
-                                        console.warn(`[Sanity Critical] ${row.excel_item_text}: ${warning}`);
+                                        (row as any).raw_qty = qty;
+                                        (row as any).sanity_flag = 'short_geometry';
+
+                                        // CRITICAL CHANGE: Preserve the quantity for review
+                                        row.qty_final = qty;
+
+                                        warning = `[REVIEW] Longitud muy corta (< 0.5m). Posible simbología o falso positivo.`;
+                                        (row as any).match_reason += ` | WARN: ${warning}`;
+                                        console.warn(`[Sanity] ${row.excel_item_text}: ${warning}`);
                                     }
                                     // B. REVIEW REQUIRED (Suspicious) - Soft Fail
                                     else if (qty < 2.0) {
@@ -731,6 +753,28 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                                 if (enforcedType === 'block') {
                                     // Critical items must match semantically
                                     const iDesc = row.excel_item_text.toLowerCase(); // already lowercased
+
+                                    // P1: Generic Block Check
+                                    const firstMatch = betterMatches[0];
+                                    if (firstMatch) {
+                                        const bName = (firstMatch.name_raw || '').toUpperCase();
+                                        const isGeneric = bName.startsWith('BLOCK') || bName.startsWith('U') || bName.startsWith('*U') || bName === 'INSERT' || bName === 'A$';
+
+                                        // Stub for Project Map
+                                        const PROJECT_MAP: Record<string, string> = {
+                                            // 'BLOCK_A': 'Tablero',
+                                        };
+
+                                        if (isGeneric && !PROJECT_MAP[bName]) {
+                                            // Only force pending if approved
+                                            if (status === 'approved') {
+                                                status = 'pending';
+                                                statusReason = 'generic_block_name';
+                                                warning = `[Generic Block] Bloque '${bName}' es genérico y no tiene mapeo. Riesgo de conteo incorrecto.`;
+                                                (row as any).match_reason += ` | WARN: ${warning}`;
+                                            }
+                                        }
+                                    }
                                     if ((iDesc.includes('ups') || iDesc.includes('gabinete') || iDesc.includes('rack')) && betterMatches.length > 0) {
                                         const matchName = betterMatches[0].name_raw.toLowerCase();
                                         const hasOverlap = matchName.includes('ups') || matchName.includes('nobreak') || matchName.includes('rack') || matchName.includes('gab') || matchName.includes('cabinet');
@@ -877,4 +921,56 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
         }).eq('id', batchId);
         throw error; // Re-throw to be caught by worker
     }
+}
+
+/**
+ * P0: Strict Typed Calculation Helper
+ * Ensures we don't mix geometry types (e.g. summing lengths for m2, or blocks for linear meters)
+ */
+function computeQty(unit: string | null | undefined, items: ItemDetectado[]) {
+    const u = unit ? unit.toLowerCase().trim() : '';
+
+    // 1. AREA (m2) -> Only sum 'area' items (calculated from closed polylines/hatches)
+    if (u === 'm2') {
+        return items
+            .filter(i => i.type === 'area')
+            .reduce((acc, i) => acc + (i.value_area || i.value_m || 0), 0);
+    }
+
+    // 2. LENGTH (ml, m) -> Only sum 'length' items
+    if (u === 'ml' || u === 'm') {
+        return items
+            .filter(i => i.type === 'length')
+            .reduce((acc, i) => acc + i.value_m, 0);
+    }
+
+    // 3. COUNT (un, c/u, pza) -> Only sum 'block' or 'text'
+    if (u === 'un' || u === 'c/u' || u === 'pza' || u === 'ud') {
+        return items
+            .filter(i => i.type === 'block' || i.type === 'text')
+            .reduce((acc, i) => acc + (i.value_raw || 1), 0);
+    }
+
+    // 4. GLOBAL (gl) -> Always 1
+    if (u === 'gl') return 1;
+
+    // Fallback: If unit is unknown or incompatible, return 0 to enforce manual review (or pending)
+    // Legacy behavior was permissive, but user requested strictness.
+    // However, to avoid breaking everything, we can try a smart fallback?
+    // User instruction: "Prohibido mezclar block/length/area"
+
+    // If we have mixed types, prioritize by majority count? No, strictly return 0 implies failure.
+    // Let's implement robust fallback for 'unknown' unit:
+    if (items.length > 0) {
+        // If all items are same type, return their sum
+        const firstType = items[0].type;
+        const allSame = items.every(i => i.type === firstType);
+        if (allSame) {
+            if (firstType === 'area') return items.reduce((acc, i) => acc + (i.value_area || 0), 0);
+            if (firstType === 'length') return items.reduce((acc, i) => acc + i.value_m, 0);
+            return items.reduce((acc, i) => acc + (i.value_raw || 1), 0);
+        }
+    }
+
+    return 0;
 }

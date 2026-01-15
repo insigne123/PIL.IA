@@ -13,6 +13,7 @@ export interface ItemDetectado {
   value_raw: number; // Count or Length in original unit
   unit_raw: Unit | 'txt' | 'u';
   value_m: number; // Normalized to meters or count
+  value_area?: number; // M2 area for closed polygons
   evidence?: string; // 'ATTRIB', 'MTEXT vicinity', etc.
   // Layer resolution metadata
   layer_metadata?: {

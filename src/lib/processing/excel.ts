@@ -110,6 +110,7 @@ function classifyRow(description: string, unit: string, qty: number | null, pric
     const hasDescription = description && description.trim().length > 0;
 
     if (hasNoUnit && hasDescription) {
+        console.log(`[Excel Classify] Detected POSSIBLE TITLE: "${description}" (Unit: "${unit}")`);
         // Additional confidence: Bold, Uppercase, Merged, or Numbered
         const isUppercase = description === description.toUpperCase() && description.length > 3;
         const hasNoData = (!qty && qty !== 0) && (!price && price !== 0);

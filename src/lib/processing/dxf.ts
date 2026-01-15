@@ -420,6 +420,23 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
         });
     }
 
+    // Convert Areas
+    for (const [key, area] of layerAreas.entries()) {
+        const layer = key.replace('AREA::', '');
+        items.push({
+            id: uuidv4(),
+            type: 'area', // NEW TYPE
+            name_raw: `Área en ${layer}`,
+            layer_raw: layer,
+            layer_normalized: layer.toLowerCase(),
+            value_raw: area,
+            unit_raw: 'm²',
+            value_m: area, // Use area as value
+            evidence: 'Closed Polyline / Hatch',
+            value_area: area
+        });
+    }
+
     // SPATIAL: Run Shape Detection on Raw Lines
     const { rectangles, remainingLines } = detectRectangles(rawLines);
     if (rectangles.length > 0) {

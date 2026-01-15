@@ -41,9 +41,9 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 matched_items: [],
                 match_confidence: 0,
                 confidence: 'low',
-                match_reason: excelItem.type === 'section_header' ? 'Skipped: Section Header' : 'Skipped: Note/Exclusion',
+                match_reason: excelItem.type === 'section_header' ? 'Clasificado como Título de Sección' : 'Skipped: Note/Exclusion',
                 qty_final: null,
-                status: 'ignored', // Marked as ignored
+                status: excelItem.type === 'section_header' ? 'title' : 'ignored',
                 calc_method: 'GLOBAL',
                 discipline: excelDiscipline
             };
