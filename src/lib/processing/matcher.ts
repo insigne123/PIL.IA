@@ -97,17 +97,40 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
         const allResults = fuse.search(excelItem.description);
 
         // 5. Apply HARD filter by measurement type
+        const rejectedByType = new Map<string, string[]>(); // Track rejections with examples
+
         const hardFilteredResults = expectedMeasureType !== 'UNKNOWN' && expectedMeasureType !== 'GLOBAL'
             ? allResults.filter(r => {
                 // Convert lowercase type to uppercase for comparison
                 const itemTypeUpper = r.item.type.toUpperCase() as 'BLOCK' | 'LENGTH' | 'TEXT' | 'AREA';
                 const isCompatible = typeMatches(itemTypeUpper, expectedMeasureType);
                 if (!isCompatible) {
-                    console.log(`  [Hard Reject] "${r.item.layer_normalized}" - Type ${r.item.type} incompatible with expected ${expectedMeasureType}`);
+                    // Group rejections by type and keep examples
+                    const key = `${r.item.type}→${expectedMeasureType}`;
+                    if (!rejectedByType.has(key)) {
+                        rejectedByType.set(key, []);
+                    }
+                    // Keep first 3 examples of each rejection type
+                    if (rejectedByType.get(key)!.length < 3) {
+                        rejectedByType.get(key)!.push(r.item.layer_normalized);
+                    }
                 }
                 return isCompatible;
             })
             : allResults;
+
+        // Log rejection summary with examples
+        if (rejectedByType.size > 0) {
+            console.log(`  [Hard Reject Summary] "${excelItem.description}" expected ${expectedMeasureType}:`);
+            for (const [typeCombo, examples] of rejectedByType.entries()) {
+                const count = allResults.filter(r => {
+                    const itemTypeUpper = r.item.type.toUpperCase() as 'BLOCK' | 'LENGTH' | 'TEXT' | 'AREA';
+                    return !typeMatches(itemTypeUpper, expectedMeasureType) &&
+                        `${r.item.type}→${expectedMeasureType}` === typeCombo;
+                }).length;
+                console.log(`    • ${count}x ${typeCombo} (examples: ${examples.join(', ')}${count > 3 ? ', ...' : ''})`);
+            }
+        }
 
         const result = hardFilteredResults.length > 0 ? hardFilteredResults : [];
 
