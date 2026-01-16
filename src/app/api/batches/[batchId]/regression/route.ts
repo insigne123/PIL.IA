@@ -104,7 +104,8 @@ export async function GET(
                 continue;
             }
 
-            const expected = row.excel_qty_original ?? null;
+            // Step A: Use Phase 6's expected qty field (parsed from Col D) first, fallback to original
+            const expected = row.excel_qty_expected ?? row.excel_qty_original ?? null;
             const computed = row.qty_final ?? null;
             const unit = (row.excel_unit || '').toLowerCase();
 
@@ -196,7 +197,14 @@ export async function GET(
 
         // Sort by absolute error and get top 20
         errors.sort((a, b) => b.absError - a.absError);
-        const topErrors = errors.slice(0, 20);
+
+        // Step D: Filter to only truly comparable items (has both expected AND predicted, not pending)
+        const comparableErrors = errors.filter(e =>
+            e.predictedQty !== null &&
+            e.expectedQty !== null &&
+            !e.status.startsWith('pending')
+        );
+        const topErrors = comparableErrors.slice(0, 20);
 
         // P0.5: Filter suspects = m² items with text/block matchedType (invalid evidence)
         const suspects = errors.filter(e => {

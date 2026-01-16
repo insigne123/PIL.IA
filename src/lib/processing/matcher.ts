@@ -795,6 +795,20 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             };
         });
 
+        // ========== STEP B: FINAL ENFORCEMENT ==========
+        // Phase 8: NEVER return a quantity for pending items - this prevents false errors in regression
+        if (status.startsWith('pending') && qtyFinal !== null) {
+            console.warn(`[Phase 8] Nullifying qtyFinal (${qtyFinal}) for pending status: ${status}`);
+            qtyFinal = null;
+        }
+
+        // Also ensure calcMethod is set if we have a qty
+        if (qtyFinal !== null && (!methodDetail || methodDetail === 'null')) {
+            console.warn(`[Phase 8] calcMethod missing for qty ${qtyFinal}, status: ${status}`);
+            // Don't nullify, but flag
+            warnings.push('CALC_METHOD_MISSING');
+        }
+
         return {
             id: uuidv4(),
             excel_sheet: sheetName,
