@@ -212,10 +212,34 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
         // P0.A: PRE-FILTER LAYER CANDIDATES BY GEOMETRY TYPE (BEFORE FUZZY MATCH)
         let typeFilteredLayers = layerCandidates;
+
+        // FIX 2/3: Detect WALL intent for m² items (tabique/muro/empaste)
+        const descLower = excelItem.description.toLowerCase();
+        const isWallIntent = [
+            'tabique', 'sobretabique', 'muro', 'empaste', 'huincha',
+            'pintura tabique', 'enlucido', 'estuco', 'revoco',
+            'revestimiento muro', 'ceramico muro', 'ceramica muro'
+        ].some(keyword => descLower.includes(keyword));
+
         if (expectedMeasureType === 'AREA') {
-            typeFilteredLayers = layerCandidates.filter(lc =>
-                lc.profile.has_area_support || lc.profile.has_length_support
-            );
+            if (isWallIntent) {
+                // FIX 3: For WALL items, PRIORITIZE layers with LENGTH support
+                // because walls are measured as length × height, not direct area
+                typeFilteredLayers = layerCandidates.filter(lc =>
+                    lc.profile.has_length_support || lc.profile.has_area_support
+                );
+                // Sort to put LENGTH layers first
+                typeFilteredLayers.sort((a, b) => {
+                    const aHasLength = a.profile.has_length_support ? 1 : 0;
+                    const bHasLength = b.profile.has_length_support ? 1 : 0;
+                    return bHasLength - aHasLength; // Length-first
+                });
+                console.log(`  [FIX 2/3] WALL intent detected for m² item - prioritizing LENGTH layers`);
+            } else {
+                typeFilteredLayers = layerCandidates.filter(lc =>
+                    lc.profile.has_area_support || lc.profile.has_length_support
+                );
+            }
         } else if (expectedMeasureType === 'BLOCK') {
             typeFilteredLayers = layerCandidates.filter(lc => lc.profile.has_block_support);
         } else if (expectedMeasureType === 'LENGTH') {
@@ -312,6 +336,29 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 console.log(`  [P1.7] Geometry prior: +${(geometryPrior * 100).toFixed(1)}% (layer has ${layerCandidate.profile.total_area.toFixed(0)} m²)`);
             }
 
+            // ✅ FIX 3 COMPLETE: Layer name bonus for WALL items
+            // Boost if layer name contains tabique/muro/wall keywords
+            if (isWallIntent) {
+                const layerLower = layerCandidate.layer_normalized;
+                const wallLayerKeywords = ['tabique', 'muro', 'wall', 'partition', 'muros'];
+                const hasWallInName = wallLayerKeywords.some(k => layerLower.includes(k));
+
+                if (hasWallInName) {
+                    const wallBonus = 0.25; // 25% bonus
+                    confidence = Math.min(1.0, confidence + wallBonus);
+                    console.log(`  [FIX 3] WALL layer name bonus: +25% for "${layerCandidate.layer}"`);
+                }
+
+                // FIX 3: Penalty if layer has TEXT entities but no length (annotation layer)
+                const profile = layerCandidate.profile;
+                const hasTextEntities = profile.entity_types.has('TEXT') || profile.entity_types.has('MTEXT');
+                if (hasTextEntities && profile.total_length === 0) {
+                    const textPenalty = 0.4; // 40% penalty
+                    confidence = confidence * (1 - textPenalty);
+                    console.log(`  [FIX 3] Text-only layer penalty: -40% for "${layerCandidate.layer}" (has TEXT, 0m length)`);
+                }
+            }
+
             // Type matching bonus - use profile to determine dominant type
             const dominantType = layerCandidate.profile.has_area_support ? 'AREA'
                 : layerCandidate.profile.has_length_support ? 'LENGTH'
@@ -393,9 +440,10 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             suggestions = generateSuggestions(itemsForSuggestions, excelItem, expectedType);
         }
 
-        // Calculate Qty
-        let qtyFinal = 0;
-        let heightFactor = undefined;
+        // Calculate Qty (can be null if invariant violation)
+        let qtyFinal: number | null = 0;
+        let heightFactor: number | undefined = undefined;
+        let methodDetail: string | undefined = undefined; // FIX 2: Track calculation method
 
         if (bestMatch.length > 0) {
             const match = bestMatch[0];
@@ -444,10 +492,11 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 // Case A: Geometry is Area (HATCH/Polyline Region)
                 if (match.type === 'area') {
                     qtyFinal = match.value_si; // ✅ SI units (m²)
+                    methodDetail = 'direct_area';
                 }
                 // Case B: Geometry is Length (Muros/Tabiques lines) -> Convert to Area using P0.B
                 else if (match.type === 'length') {
-                    // Use derived area calculator for intelligent height detection
+                    // FIX 2: Use derived area calculator for intelligent height detection
                     const derivedResult = calculateDerivedArea(
                         match.value_si,
                         excelItem.description
@@ -456,17 +505,22 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                     if (derivedResult.canDerive) {
                         qtyFinal = derivedResult.area_m2;
                         heightFactor = derivedResult.height_m;
+                        methodDetail = 'length_x_height'; // FIX 2: Explicit method tracking
                         reason += ` | ${derivedResult.reason}`;
-                        console.log(`  [Derived Area] ${derivedResult.reason}`);
+                        console.log(`  [FIX 2] length_x_height: ${match.value_si.toFixed(2)}m × ${heightFactor}m = ${qtyFinal?.toFixed(2)}m²`);
                     } else {
                         // Fallback to default height
                         heightFactor = 2.4;
                         qtyFinal = match.value_si * heightFactor;
+                        methodDetail = 'length_x_height_default';
                         reason += ` | Derivada: Largo * 2.4m (default)`;
                     }
                 }
                 else {
+                    // match.type is neither area nor length (e.g., block)
+                    // FIX 2: This should NOT happen for m² items - invalid match
                     qtyFinal = 0;
+                    methodDetail = 'invalid_type_for_area';
                 }
             }
 
@@ -550,12 +604,19 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             if (invariantViolation) {
                 console.warn(`[Matcher] P0.3 Invariant Violation: ${invariantReason}`);
                 warnings.push(`Invariant: ${invariantReason}`);
-                confidence = Math.min(confidence, 0.2); // Severely reduce confidence
+                // P0 FIX 1: Force pending_type_mismatch - NEVER approve m² with TEXT/BLOCK
+                confidence = 0; // Zero confidence forces non-approved
+                qtyFinal = null; // Nullify the quantity - it's invalid
             }
         }
 
         // Determine refined status (FIX E.1/E.2: pass heightFactor for wall surface check)
         let status = determineStatus(confidence, bestMatch, expectedType, qtyFinal, heightFactor);
+
+        // P0 FIX 1: Override status to pending_type_mismatch if invariant violated
+        if (invariantViolation) {
+            status = 'pending_type_mismatch';
+        }
 
         // P2.1: RUN QUALITY GATES
         const qualityCheck = runQualityGates({
@@ -651,9 +712,9 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             status,
             status_reason: getStatusReason(status, classification, confidence),
             suggestions: suggestions.length > 0 ? suggestions : undefined,
-            // NEW: Calculation method
+            // NEW: Calculation method (use computed methodDetail if available)
             calc_method: calcMethod,
-            method_detail: calcMethodResult.method_detail,
+            method_detail: methodDetail || calcMethodResult.method_detail,
             discipline: excelDiscipline,
 
             // Debug Outputs (Phase 1 improvements)
@@ -818,6 +879,9 @@ function getStatusReason(
             return 'No suitable area layers found - please select a layer manually';
         case 'pending_needs_height':
             return 'Wall/surface requires height to calculate m² - please configure height or approve default (2.4m)';
+        // P0 FIX 1: Type mismatch status
+        case 'pending_type_mismatch':
+            return 'Evidence type does not match unit - m² requires AREA geometry (or LENGTH for walls), un requires BLOCK';
         default:
             return 'Unknown status';
     }

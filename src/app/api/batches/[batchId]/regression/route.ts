@@ -49,9 +49,16 @@ interface RegressionReport {
     topErrors: RegressionError[];
     summary: {
         avgAbsError: number;
-        avgPctError: number;
-        itemsWithLargeError: number; // >20% error
+        avgPctError: number; // Only for items WITH expected values
+        itemsWithLargeError: number; // >20% error OR exceeds unit threshold
         itemsWithNoComputed: number;
+        itemsWithNoExpected: number; // New: rows where we can't calc pct
+        // Unit-based outlier thresholds
+        outliersByUnit: {
+            m2: number; // absError > 50
+            ml: number; // absError > 20
+            un: number; // absError > 5
+        };
     };
 }
 
@@ -83,7 +90,10 @@ export async function GET(
         let totalPctError = 0;
         let pctErrorCount = 0;
         let noComputedCount = 0;
+        let noExpectedCount = 0;
         let largeErrorCount = 0;
+        // P0 Fix 4: Unit-based outlier counters
+        const outliersByUnit = { m2: 0, ml: 0, un: 0 };
 
         for (const row of stagingRows) {
             // Skip title/section header rows
@@ -93,6 +103,7 @@ export async function GET(
 
             const expected = row.excel_qty_original ?? null;
             const computed = row.qty_final ?? null;
+            const unit = (row.excel_unit || '').toLowerCase();
 
             // Calculate errors
             let absError = 0;
@@ -110,9 +121,21 @@ export async function GET(
                 if (pctError > 20) {
                     largeErrorCount++;
                 }
-            } else if (expected === null || expected === 0) {
-                // Expected was empty/zero, computed has value
-                absError = Math.abs(computed);
+            } else {
+                // Expected was empty/zero or null - can't calculate pct
+                noExpectedCount++;
+                if (computed !== null) {
+                    absError = Math.abs(computed);
+
+                    // P0 Fix 4: Use unit-based thresholds when no expected value
+                    if (unit.includes('m2') || unit === 'm²') {
+                        if (absError > 50) { outliersByUnit.m2++; largeErrorCount++; }
+                    } else if (unit === 'ml' || unit === 'm') {
+                        if (absError > 20) { outliersByUnit.ml++; largeErrorCount++; }
+                    } else if (unit === 'un' || unit === 'u' || unit === 'gl') {
+                        if (absError > 5) { outliersByUnit.un++; largeErrorCount++; }
+                    }
+                }
             }
 
             totalAbsError += absError;
@@ -181,7 +204,9 @@ export async function GET(
                 avgAbsError: errors.length > 0 ? totalAbsError / errors.length : 0,
                 avgPctError: pctErrorCount > 0 ? totalPctError / pctErrorCount : 0,
                 itemsWithLargeError: largeErrorCount,
-                itemsWithNoComputed: noComputedCount
+                itemsWithNoComputed: noComputedCount,
+                itemsWithNoExpected: noExpectedCount,
+                outliersByUnit
             }
         };
 
