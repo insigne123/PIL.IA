@@ -33,17 +33,19 @@ const BLACKLIST_ENTITY_TYPES = [
  * FIX D.2: Non-measurable layers
  * These layers should be penalized in matching - they typically contain
  * imported/annotation geometry that shouldn't compete with real CAD layers
+ * P1.8: Extended with more patterns
  */
 export const NON_MEASURABLE_LAYER_PATTERNS = [
     'dimen', 'dimension', 'dim',
-    'texto', 'text', 'txt',
+    'texto', 'text', 'txt', 'texto_m', 'a-txt',
     'pdf_geometry', 'pdf-',
     'g-dim', 'g-text', 'g-anno',
     'annotation', 'anno',
     'defpoints',
     'viewport', 'vport',
-    'import', 'dwf',
-    'acad_', 'acadiso'
+    'import', 'dwf', 'xref',
+    'acad_', 'acadiso',
+    'mv_textos', 'mv-textos'
 ];
 
 /**
@@ -57,13 +59,29 @@ export function isNonMeasurableLayer(layerName: string): boolean {
 }
 
 /**
- * Get penalty for non-measurable layers (0-1)
- * 0 = measurable (no penalty), 1 = non-measurable (high penalty)
+ * P1.8: Check if layer is "0" (default layer - often contains mixed content)
+ * Should be penalized for m² items unless user confirms
  */
-export function getNonMeasurablePenalty(layerName: string): number {
+export function isDefaultLayer(layerName: string): boolean {
+    return layerName === '0' || layerName.toLowerCase() === 'layer0' || layerName === '';
+}
+
+/**
+ * Get penalty for non-measurable layers (0-1)
+ * 0 = measurable (no penalty), up to 0.7 = high penalty
+ * P1.8: Also penalizes layer "0" for area items
+ */
+export function getNonMeasurablePenalty(layerName: string, measureType?: 'AREA' | 'LENGTH' | 'BLOCK'): number {
+    // Non-measurable layers get 50% penalty
     if (isNonMeasurableLayer(layerName)) {
-        return 0.5; // 50% confidence reduction
+        return 0.5;
     }
+
+    // P1.8: Layer "0" gets 40% penalty for AREA items (often contains mixed/import data)
+    if (isDefaultLayer(layerName) && measureType === 'AREA') {
+        return 0.4;
+    }
+
     return 0;
 }
 

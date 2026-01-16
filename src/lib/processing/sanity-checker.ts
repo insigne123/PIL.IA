@@ -138,12 +138,32 @@ function checkLengthSanity(
 
 /**
  * Check area values (m²)
+ * P0.6: Added specific checks for floor/losa/sobrelosa items
  */
 function checkAreaSanity(
     qty: number,
     issues: SanityIssue[],
     context?: any
 ): SanityCheckResult {
+    // P0.6: For floor/losa/pavimento items, reject if < 1 m²
+    const description = (context?.description || '').toLowerCase();
+    const isFloorItem = [
+        'piso', 'losa', 'pavimento', 'sobrelosa', 'radier',
+        'fundacion', 'contrapiso', 'alfombra', 'cerámico', 'ceramica',
+        'porcelanato', 'pvc', 'vinilico', 'floor', 'slab'
+    ].some(keyword => description.includes(keyword));
+
+    if (isFloorItem && qty < 1 && qty > 0) {
+        issues.push({
+            type: 'outlier',
+            message: `Área de piso/losa ${qty.toFixed(2)}m² es menor a 1m² - sospechoso para "${context?.description}"`,
+            detected_value: qty,
+            expected_range: { min: 1, max: 100000 },
+            suggestion: 'Verificar que match esté usando AREA correcta, no TEXT o fragmento'
+        });
+        return { passed: false, issues, severity: 'error' };
+    }
+
     // Suspiciously large (likely unconverted)
     if (qty > 1000000) {
         issues.push({
@@ -167,8 +187,8 @@ function checkAreaSanity(
         return { passed: false, issues, severity: 'warning' };
     }
 
-    // Very small
-    if (qty < 0.01 && qty > 0) {
+    // Very small (for non-floor items)
+    if (!isFloorItem && qty < 0.01 && qty > 0) {
         issues.push({
             type: 'outlier',
             message: `Área ${qty.toFixed(4)}m² es muy pequeña (<100cm²) - posible ruido`,

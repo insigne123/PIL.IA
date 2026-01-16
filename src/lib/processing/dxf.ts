@@ -33,6 +33,13 @@ import {
     filterGeometryOnly,
     getBlacklistSummary
 } from './layer-blacklist';
+// P0.1: Block Exploder for extracting geometry from INSERTs
+import {
+    explodeBlocksForMetrics,
+    calculateBBoxFromExploded,
+    aggregateExplodedToItems,
+    getExplodedSummary
+} from './block-exploder';
 
 const parser = new DxfParser();
 
@@ -180,6 +187,40 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
     // These replace the old toMeters helper function
     const toMeters = (val: number) => convertToMeters(val, unitMetadata);
     const toMetersSquared = (val: number) => convertToMetersSquared(val, unitMetadata);
+
+    // === P0.1/P0.2: BLOCK EXPLOSION FOR METRICS ===
+    // Explode all INSERTs to extract geometry - CRITICAL for files where all geometry is inside blocks
+    console.log(`[DXF Parser] P0.1: Exploding blocks to extract geometry...`);
+    const explodedGeometry = explodeBlocksForMetrics(
+        modelSpaceEntities,
+        dxf,
+        toMeters,
+        toMetersSquared,
+        10 // maxDepth
+    );
+    console.log(`[DXF Parser] ${getExplodedSummary(explodedGeometry)}`);
+
+    // Calculate BBox from exploded geometry (fixes P0.2: BBox was 0×0)
+    const explodedBBox = calculateBBoxFromExploded(explodedGeometry);
+    if (explodedBBox.diagonal > 0) {
+        // Use exploded bbox for better threshold calculation
+        const explodedBBoxSI = {
+            width: toMeters(explodedBBox.width),
+            height: toMeters(explodedBBox.height),
+            diagonal: toMeters(explodedBBox.diagonal)
+        };
+        console.log(`[DXF Parser] P0.2: Exploded BBox: ${explodedBBoxSI.width.toFixed(2)}m × ${explodedBBoxSI.height.toFixed(2)}m (diagonal: ${explodedBBoxSI.diagonal.toFixed(2)}m)`);
+
+        // Override dynamic min length if original was 0
+        if (preflight.boundingBox.diagonal === 0 && explodedBBoxSI.diagonal > 0) {
+            const newDynamicMin = Math.max(0.001, explodedBBoxSI.diagonal * 0.0001);
+            console.log(`[DXF Parser] P0.2: Updated dynamic min length: ${newDynamicMin.toFixed(4)}m (from exploded bbox)`);
+        }
+    }
+
+    // Convert exploded geometry to ItemDetectado array
+    const explodedItems = aggregateExplodedToItems(explodedGeometry);
+    console.log(`[DXF Parser] P0.1: Created ${explodedItems.length} items from block explosion`);
 
     // ... (rest of the logic uses effectiveUnit via conversion functions)
 
@@ -631,6 +672,13 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
         }));
 
         items = enrichItemsWithNearbyText(items, textEntities, 5.0);
+    }
+
+    // ✅ P0.1: MERGE EXPLODED ITEMS FROM BLOCK EXPLOSION
+    // These are areas/lengths extracted from inside INSERTs
+    if (explodedItems.length > 0) {
+        console.log(`[DXF Parser] P0.1: Merging ${explodedItems.length} items from block explosion into main list`);
+        items = [...items, ...explodedItems];
     }
 
     // ✅ P0.3: APPLY POLYGON DEDUPLICATION

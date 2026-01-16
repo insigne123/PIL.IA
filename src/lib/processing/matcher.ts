@@ -302,6 +302,16 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 console.log(`  • Confidence boost: +${(keywordBoost * 100).toFixed(0)}% → Final: ${(confidence * 100).toFixed(0)}%`);
             }
 
+            // ✅ P1.7: GEOMETRY PRIOR - Prefer layers with larger area for m² items
+            // Uses log-scale to avoid huge areas dominating
+            let geometryPrior = 0;
+            if (expectedMeasureType === 'AREA' && layerCandidate.profile.total_area > 0) {
+                // Log-scale: area of 100m² → ~2, area of 1000m² → ~3
+                geometryPrior = Math.min(0.2, Math.log10(layerCandidate.profile.total_area + 1) * 0.066);
+                confidence = Math.min(1.0, confidence + geometryPrior);
+                console.log(`  [P1.7] Geometry prior: +${(geometryPrior * 100).toFixed(1)}% (layer has ${layerCandidate.profile.total_area.toFixed(0)} m²)`);
+            }
+
             // Type matching bonus - use profile to determine dominant type
             const dominantType = layerCandidate.profile.has_area_support ? 'AREA'
                 : layerCandidate.profile.has_length_support ? 'LENGTH'
@@ -319,14 +329,21 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 reason += ` | Keywords: [${keywordMatch.matchedKeywords.join(', ')}]`;
             }
 
-            // ✅ P0.3: Don't auto-penalize layer 0 (valid geometry after DWG conversion)
-            // Only penalize defpoints
+            // ✅ P1.8: Apply non-measurable layer penalty (including layer 0 for AREA)
+            const layerPenalty = getNonMeasurablePenalty(layerCandidate.layer_normalized, expectedMeasureType as 'AREA' | 'LENGTH' | 'BLOCK');
+            if (layerPenalty > 0) {
+                confidence = confidence * (1 - layerPenalty);
+                reason += ` | Penalty: -${(layerPenalty * 100).toFixed(0)}%`;
+                console.log(`  [P1.8] Layer penalty: -${(layerPenalty * 100).toFixed(0)}% for "${layerCandidate.layer}"`);
+            }
+
+            // ✅ P0.3: Defpoints gets severe penalty
             if (layerCandidate.layer_normalized === 'defpoints') {
                 confidence = confidence * 0.1; // 90% Penalty for defpoints only
                 reason += " | DEFPOINTS PENALTY";
             }
 
-            // Layer 0 gets normal treatment but with explicit warning
+            // Layer 0 gets logged but penalty already applied above
             if (layerCandidate.layer_normalized === '0') {
                 console.log(`  ⚠️ Using Layer 0 - verify this is correct (DWG conversion artifact)`);
                 reason += " | From Layer 0";
@@ -489,6 +506,51 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             // For errors (not just warnings), mark as pending
             if (sanityCheck.severity === 'error') {
                 confidence = Math.min(confidence, 0.3); // Reduce confidence
+            }
+        }
+
+        // ✅ P0.3: INVARIANT ENFORCEMENT
+        // The evidence type MUST match the expected measure type
+        // m² MUST come from AREA geometry (or LENGTH→AREA if WALL)
+        // un MUST come from BLOCK geometry
+        // ml/m MUST come from LENGTH geometry
+        let invariantViolation = false;
+        let invariantReason = '';
+
+        if (bestMatch.length > 0) {
+            const match = bestMatch[0];
+            const matchType = match.type.toUpperCase();
+
+            // Rule 1: m² requires AREA (or LENGTH for walls)
+            if (expectedMeasureType === 'AREA') {
+                if (matchType === 'TEXT' || matchType === 'BLOCK') {
+                    invariantViolation = true;
+                    invariantReason = `m² cannot use ${matchType} as evidence (requires AREA or LENGTH for walls)`;
+                }
+                // LENGTH is OK for walls - height factor will be applied
+            }
+
+            // Rule 2: un requires BLOCK
+            if (expectedMeasureType === 'BLOCK') {
+                if (matchType !== 'BLOCK') {
+                    invariantViolation = true;
+                    invariantReason = `un (count) requires BLOCK as evidence, got ${matchType}`;
+                }
+            }
+
+            // Rule 3: ml/m requires LENGTH
+            if (expectedMeasureType === 'LENGTH') {
+                if (matchType === 'TEXT' || matchType === 'BLOCK') {
+                    invariantViolation = true;
+                    invariantReason = `m/ml requires LENGTH as evidence, got ${matchType}`;
+                }
+                // AREA could be used for perimeter - allow for now
+            }
+
+            if (invariantViolation) {
+                console.warn(`[Matcher] P0.3 Invariant Violation: ${invariantReason}`);
+                warnings.push(`Invariant: ${invariantReason}`);
+                confidence = Math.min(confidence, 0.2); // Severely reduce confidence
             }
         }
 
@@ -760,3 +822,55 @@ function getStatusReason(
             return 'Unknown status';
     }
 }
+
+/**
+ * P1.9: Build deterministic match reason from actual data
+ * No free-text that could contradict evidence
+ */
+export function buildDeterministicReason(params: {
+    expectedType: string;
+    matchedLayer: string;
+    evidenceType: string;
+    layerArea?: number;
+    layerLength?: number;
+    confidence: number;
+    keywords?: string[];
+    penalties?: string[];
+    formula?: string;
+}): string {
+    const parts: string[] = [];
+
+    // Expected vs Evidence
+    parts.push(`expected=${params.expectedType}`);
+    parts.push(`evidence=${params.evidenceType}`);
+    parts.push(`layer="${params.matchedLayer}"`);
+
+    // Geometry metrics
+    if (params.layerArea && params.layerArea > 0) {
+        parts.push(`area=${params.layerArea.toFixed(1)}m²`);
+    }
+    if (params.layerLength && params.layerLength > 0) {
+        parts.push(`length=${params.layerLength.toFixed(1)}m`);
+    }
+
+    // Confidence
+    parts.push(`confidence=${(params.confidence * 100).toFixed(0)}%`);
+
+    // Keywords used
+    if (params.keywords && params.keywords.length > 0) {
+        parts.push(`keywords=[${params.keywords.join(',')}]`);
+    }
+
+    // Penalties applied
+    if (params.penalties && params.penalties.length > 0) {
+        parts.push(`penalties=[${params.penalties.join(',')}]`);
+    }
+
+    // Formula used
+    if (params.formula) {
+        parts.push(`formula=${params.formula}`);
+    }
+
+    return parts.join(' | ');
+}
+
