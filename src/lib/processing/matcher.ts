@@ -655,6 +655,12 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             const match = bestMatch[0];
             // FIX 9.1b: Use LAYER NAME for profile lookup (object reference comparison fails)
             // The sampleItem can be TEXT even if the layer has real AREA geometry
+
+            // DEBUG: Log allResults content
+            console.log(`[Fix 9.1b] DEBUG: allResults has ${allResults.length} items`);
+            console.log(`[Fix 9.1b] DEBUG: Looking for layer "${match.layer_normalized}" in allResults`);
+            console.log(`[Fix 9.1b] DEBUG: allResults layers: [${allResults.map(r => r.item.layer_normalized).join(', ')}]`);
+
             const layerProfile = allResults.find(r => r.item.layer_normalized === match.layer_normalized)?.item.profile;
 
             // DEBUG: Log profile lookup result
