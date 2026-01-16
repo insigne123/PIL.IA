@@ -47,6 +47,8 @@ interface RegressionReport {
     totalItems: number;
     itemsCompared: number;
     topErrors: RegressionError[];
+    // P0.5: Suspects = m² items with invalid evidence (text/block)
+    suspects: RegressionError[];
     summary: {
         avgAbsError: number;
         avgPctError: number; // Only for items WITH expected values
@@ -59,6 +61,7 @@ interface RegressionReport {
             ml: number; // absError > 20
             un: number; // absError > 5
         };
+        suspectsCount: number; // P0.5: Count of m² with text/block
     };
 }
 
@@ -195,18 +198,27 @@ export async function GET(
         errors.sort((a, b) => b.absError - a.absError);
         const topErrors = errors.slice(0, 20);
 
+        // P0.5: Filter suspects = m² items with text/block matchedType (invalid evidence)
+        const suspects = errors.filter(e => {
+            const isM2 = e.unit.toLowerCase().includes('m2') || e.unit === 'm²';
+            const invalidType = e.matchedType === 'text' || e.matchedType === 'block';
+            return isM2 && invalidType;
+        });
+
         const report: RegressionReport = {
             batchId,
             totalItems: stagingRows.length,
             itemsCompared: stagingRows.length - noComputedCount,
             topErrors,
+            suspects, // P0.5
             summary: {
                 avgAbsError: errors.length > 0 ? totalAbsError / errors.length : 0,
                 avgPctError: pctErrorCount > 0 ? totalPctError / pctErrorCount : 0,
                 itemsWithLargeError: largeErrorCount,
                 itemsWithNoComputed: noComputedCount,
                 itemsWithNoExpected: noExpectedCount,
-                outliersByUnit
+                outliersByUnit,
+                suspectsCount: suspects.length // P0.5
             }
         };
 

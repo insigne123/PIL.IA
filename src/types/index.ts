@@ -108,7 +108,7 @@ export interface StagingRow {
 
   match_reason?: string; // AI reasoning
   confidence_reason?: string;
-  status: 'pending' | 'approved' | 'ignored' | 'pending_semantics' | 'pending_no_geometry' | 'pending_no_match' | 'pending_needs_layer_pick' | 'pending_needs_height' | 'pending_type_mismatch' | 'title';
+  status: 'pending' | 'approved' | 'ignored' | 'pending_semantics' | 'pending_no_geometry' | 'pending_no_match' | 'pending_needs_layer_pick' | 'pending_needs_height' | 'pending_type_mismatch' | 'pending_no_length_for_wall' | 'pending_sanity_check' | 'title';
   status_reason?: string; // Reason for refined status
   suggestions?: Suggestion[]; // Actionable suggestions for pending items
 

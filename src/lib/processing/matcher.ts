@@ -223,18 +223,22 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
         if (expectedMeasureType === 'AREA') {
             if (isWallIntent) {
-                // FIX 3: For WALL items, PRIORITIZE layers with LENGTH support
-                // because walls are measured as length × height, not direct area
+                // P0.2: For WALL items, ONLY accept layers with LENGTH support
+                // Walls MUST be measured as length × height, NOT blocks/text/direct-area
                 typeFilteredLayers = layerCandidates.filter(lc =>
-                    lc.profile.has_length_support || lc.profile.has_area_support
+                    lc.profile.has_length_support && lc.profile.total_length > 0
                 );
-                // Sort to put LENGTH layers first
-                typeFilteredLayers.sort((a, b) => {
-                    const aHasLength = a.profile.has_length_support ? 1 : 0;
-                    const bHasLength = b.profile.has_length_support ? 1 : 0;
-                    return bHasLength - aHasLength; // Length-first
-                });
-                console.log(`  [FIX 2/3] WALL intent detected for m² item - prioritizing LENGTH layers`);
+
+                if (typeFilteredLayers.length === 0) {
+                    // P0.2: No LENGTH layers found for WALL - this will trigger pending_no_length_for_wall
+                    console.log(`  [P0.2] ⚠️ WALL intent but NO layers with length_total_m > 0`);
+                    // Keep all layers but mark as problematic - will be caught by hard gate
+                    typeFilteredLayers = layerCandidates.filter(lc =>
+                        lc.profile.has_area_support || lc.profile.has_length_support
+                    );
+                } else {
+                    console.log(`  [P0.2] WALL intent: filtered to ${typeFilteredLayers.length} layers with LENGTH support`);
+                }
             } else {
                 typeFilteredLayers = layerCandidates.filter(lc =>
                     lc.profile.has_area_support || lc.profile.has_length_support
@@ -444,6 +448,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
         let qtyFinal: number | null = 0;
         let heightFactor: number | undefined = undefined;
         let methodDetail: string | undefined = undefined; // FIX 2: Track calculation method
+        let evidenceTypeUsed: 'area' | 'length' | 'block' | 'text' | 'none' = 'none'; // P0.3: Track actual evidence type
 
         if (bestMatch.length > 0) {
             const match = bestMatch[0];
@@ -454,6 +459,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             if (calcMethod === 'COUNT') {
                 // ✅ Use value_si for count (blocks)
                 qtyFinal = match.type === 'block' ? (match.value_si || 1) : 0;
+                evidenceTypeUsed = match.type as 'area' | 'length' | 'block' | 'text'; // P0.3
 
                 // P0.D: Check if block is generic/untrusted
                 if (match.type === 'block') {
@@ -486,6 +492,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
             else if (calcMethod === 'LENGTH') {
                 qtyFinal = match.value_si; // ✅ SI units (meters)
+                evidenceTypeUsed = 'length'; // P0.3
             }
 
             else if (calcMethod === 'AREA') {
@@ -493,6 +500,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 if (match.type === 'area') {
                     qtyFinal = match.value_si; // ✅ SI units (m²)
                     methodDetail = 'direct_area';
+                    evidenceTypeUsed = 'area'; // P0.3
                 }
                 // Case B: Geometry is Length (Muros/Tabiques lines) -> Convert to Area using P0.B
                 else if (match.type === 'length') {
@@ -506,6 +514,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                         qtyFinal = derivedResult.area_m2;
                         heightFactor = derivedResult.height_m;
                         methodDetail = 'length_x_height'; // FIX 2: Explicit method tracking
+                        evidenceTypeUsed = 'length'; // P0.3: Still using length as source
                         reason += ` | ${derivedResult.reason}`;
                         console.log(`  [FIX 2] length_x_height: ${match.value_si.toFixed(2)}m × ${heightFactor}m = ${qtyFinal?.toFixed(2)}m²`);
                     } else {
@@ -513,14 +522,16 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                         heightFactor = 2.4;
                         qtyFinal = match.value_si * heightFactor;
                         methodDetail = 'length_x_height_default';
+                        evidenceTypeUsed = 'length'; // P0.3
                         reason += ` | Derivada: Largo * 2.4m (default)`;
                     }
                 }
                 else {
-                    // match.type is neither area nor length (e.g., block)
-                    // FIX 2: This should NOT happen for m² items - invalid match
+                    // match.type is neither area nor length (e.g., block, text)
+                    // P0.3: This is INVALID for m² items
                     qtyFinal = 0;
                     methodDetail = 'invalid_type_for_area';
+                    evidenceTypeUsed = match.type as 'block' | 'text' | 'area' | 'length'; // P0.3: Track invalid type
                 }
             }
 
@@ -616,6 +627,44 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
         // P0 FIX 1: Override status to pending_type_mismatch if invariant violated
         if (invariantViolation) {
             status = 'pending_type_mismatch';
+        }
+
+        // ========== P0.1: HARD APPROVAL GATE FOR m² ==========
+        // m² can ONLY be approved if:
+        // (evidenceTypeUsed=area AND methodDetail=direct_area) OR
+        // (evidenceTypeUsed=length AND methodDetail in [length_x_height, length_x_height_default])
+        const unitLower = excelItem.unit?.toLowerCase() || '';
+        const isM2Unit = unitLower.includes('m2') || unitLower === 'm²';
+
+        if (isM2Unit && status === 'approved') {
+            const validAreaMethod = evidenceTypeUsed === 'area' && methodDetail === 'direct_area';
+            const validLengthMethod = evidenceTypeUsed === 'length' &&
+                (methodDetail === 'length_x_height' || methodDetail === 'length_x_height_default');
+
+            if (!validAreaMethod && !validLengthMethod) {
+                // P0.1: HARD REJECTION - cannot approve m² with invalid evidence
+                console.warn(`[P0.1] ❌ Hard rejection for m²: evidenceType=${evidenceTypeUsed}, method=${methodDetail}`);
+                status = 'pending_type_mismatch';
+                warnings.push('TYPE_MISMATCH_M2');
+                qtyFinal = null;
+            }
+        }
+
+        // ========== P0.2: WALL items need LENGTH layers ==========
+        if (isWallIntent && isM2Unit && status === 'approved') {
+            if (evidenceTypeUsed !== 'length' || !methodDetail?.includes('length_x_height')) {
+                console.warn(`[P0.2] ❌ WALL item approved without length_x_height: ${evidenceTypeUsed}/${methodDetail}`);
+                status = 'pending_no_length_for_wall';
+                warnings.push('WALL_NEEDS_LENGTH');
+                qtyFinal = null;
+            }
+        }
+
+        // ========== P0.4: SANITY CHECK for WALL m² > 500 ==========
+        if (isWallIntent && isM2Unit && qtyFinal !== null && qtyFinal > 500) {
+            console.warn(`[P0.4] ⚠️ WALL m² sanity check failed: ${qtyFinal.toFixed(0)}m² > 500m² threshold`);
+            status = 'pending_sanity_check';
+            warnings.push('M2_TOO_LARGE_FOR_WALL');
         }
 
         // P2.1: RUN QUALITY GATES
@@ -882,6 +931,12 @@ function getStatusReason(
         // P0 FIX 1: Type mismatch status
         case 'pending_type_mismatch':
             return 'Evidence type does not match unit - m² requires AREA geometry (or LENGTH for walls), un requires BLOCK';
+        // P0.2: WALL needs length
+        case 'pending_no_length_for_wall':
+            return 'WALL item requires LENGTH geometry (lines/polylines) to calculate m² via length × height';
+        // P0.4: Sanity check failed
+        case 'pending_sanity_check':
+            return 'Quantity exceeds sanity threshold - WALL m² > 500 is suspicious';
         default:
             return 'Unknown status';
     }
