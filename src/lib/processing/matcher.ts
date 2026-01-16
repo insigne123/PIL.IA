@@ -653,9 +653,16 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
         if (bestMatch.length > 0) {
             const match = bestMatch[0];
-            // FIX 9.1: Use PROFILE-BASED type instead of sampleItem.type
+            // FIX 9.1b: Use LAYER NAME for profile lookup (object reference comparison fails)
             // The sampleItem can be TEXT even if the layer has real AREA geometry
-            const layerProfile = allResults.find(r => r.item.sampleItem === match)?.item.profile;
+            const layerProfile = allResults.find(r => r.item.layer_normalized === match.layer_normalized)?.item.profile;
+
+            // DEBUG: Log profile lookup result
+            console.log(`[Fix 9.1b] Layer "${match.layer_normalized}" - Profile found: ${!!layerProfile}, sampleItem.type: ${match.type}`);
+            if (layerProfile) {
+                console.log(`[Fix 9.1b] Profile: has_area=${layerProfile.has_area_support}, has_length=${layerProfile.has_length_support}, has_block=${layerProfile.has_block_support}`);
+            }
+
             const profileBasedType = layerProfile
                 ? (layerProfile.has_area_support ? 'AREA'
                     : layerProfile.has_length_support ? 'LENGTH'
@@ -836,10 +843,11 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             warnings.push('CALC_METHOD_MISSING');
         }
 
-        // FIX 9.3: FINAL PROFILE-BASED GATE
+        // FIX 9.3b: FINAL PROFILE-BASED GATE
         // Even if gates above passed (using sampleItem), verify with actual layer profile
         if (bestMatch.length > 0 && qtyFinal !== null) {
-            const matchedLayerCandidate = allResults.find(r => r.item.sampleItem === bestMatch[0])?.item;
+            // FIX 9.3b: Use layer_normalized for lookup, not object reference
+            const matchedLayerCandidate = allResults.find(r => r.item.layer_normalized === bestMatch[0].layer_normalized)?.item;
             if (matchedLayerCandidate) {
                 const profile = matchedLayerCandidate.profile;
                 const unitLower = excelItem.unit?.toLowerCase() || '';
