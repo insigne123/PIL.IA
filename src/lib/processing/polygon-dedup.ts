@@ -153,8 +153,9 @@ function isAnnotationLayer(layerName: string): boolean {
 
 /**
  * Deduplicate area items based on polygon signature
- * FIX D.1: Now with two phases:
- *   1. Within-layer dedup (same as before)
+ * FIX D.1 + P5: Now with three phases:
+ *   0. Handle-based dedup (DXF handle/id when available) - NEW
+ *   1. Within-layer dedup (layer + area + centroid)
  *   2. Cross-layer dedup: annotation layers lose to measurable layers
  */
 export function deduplicateAreaItems(
@@ -164,13 +165,38 @@ export function deduplicateAreaItems(
     duplicatesRemoved: number;
     duplicatesByLayer: Map<string, number>;
 } {
-    // PHASE 1: Within-layer deduplication
-    const seen = new Map<string, { item: any; signature: PolygonSignature }>();
-    const phase1Result: any[] = [];
+    // PHASE 0 (NEW P5): Handle-based deduplication
+    // DXF entities have unique handles - use them first when available
+    const seenHandles = new Set<string>();
+    const phase0Result: any[] = [];
     let duplicatesRemoved = 0;
     const duplicatesByLayer = new Map<string, number>();
 
     for (const item of items) {
+        // Check if item has a DXF handle
+        const handle = item.handle || item.entity_handle || item.dxf_handle;
+
+        if (handle) {
+            if (seenHandles.has(handle)) {
+                // P5: Duplicate by handle - skip
+                duplicatesRemoved++;
+                const layer = item.layer_normalized || '0';
+                duplicatesByLayer.set(layer, (duplicatesByLayer.get(layer) || 0) + 1);
+                console.log(`[Dedup P5] Handle duplicate: ${handle} on layer "${layer}"`);
+                continue;
+            }
+            seenHandles.add(handle);
+        }
+
+        phase0Result.push(item);
+    }
+
+    // PHASE 1: Within-layer deduplication (geometry-based)
+    // Use (layer, type, area, centroid) for items without handles
+    const seen = new Map<string, { item: any; signature: PolygonSignature }>();
+    const phase1Result: any[] = [];
+
+    for (const item of phase0Result) {
         // Only deduplicate area items
         if (item.type !== 'area') {
             phase1Result.push(item);
@@ -180,8 +206,12 @@ export function deduplicateAreaItems(
         const layer = item.layer_normalized || '0';
         const area = Math.round(item.value_si * 100) / 100; // Round to 2 decimals
 
-        // Phase 1 key: layer::area (within-layer dedup)
-        const withinLayerKey = `${layer}::${area}`;
+        // P5: Use centroid for stricter matching when available
+        const centroidX = item.centroid?.x ? Math.round(item.centroid.x * 10) / 10 : 0;
+        const centroidY = item.centroid?.y ? Math.round(item.centroid.y * 10) / 10 : 0;
+
+        // P5: Enhanced key includes centroid for stricter dedup
+        const withinLayerKey = `${layer}::${area}::${centroidX}::${centroidY}`;
 
         if (seen.has(withinLayerKey)) {
             duplicatesRemoved++;
@@ -189,7 +219,7 @@ export function deduplicateAreaItems(
             continue;
         }
 
-        seen.set(withinLayerKey, { item, signature: { area, centroid: { x: 0, y: 0 }, vertexCount: 0, vertexHash: '' } });
+        seen.set(withinLayerKey, { item, signature: { area, centroid: { x: centroidX, y: centroidY }, vertexCount: 0, vertexHash: '' } });
         phase1Result.push(item);
     }
 

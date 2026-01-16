@@ -18,6 +18,10 @@ export interface LayerGeometryProfile {
     has_area_support: boolean;  // Has HATCHes or closed polys
     has_length_support: boolean;// Has lines/polylines
     has_block_support: boolean; // Has INSERTs
+    // P4: Channel Selection - sample items per type (max 3 each for debugging)
+    area_samples?: any[];       // Representative area items
+    length_samples?: any[];     // Representative length items
+    block_samples?: any[];      // Representative block items
 }
 
 export interface GeometryValidation {
@@ -51,7 +55,11 @@ export function buildLayerProfiles(items: ItemDetectado[]): Map<string, LayerGeo
                 entity_types: new Set<string>(),
                 has_area_support: false,
                 has_length_support: false,
-                has_block_support: false
+                has_block_support: false,
+                // P4: Initialize sample arrays for Channel Selection
+                area_samples: [],
+                length_samples: [],
+                block_samples: []
             });
         }
 
@@ -60,18 +68,28 @@ export function buildLayerProfiles(items: ItemDetectado[]): Map<string, LayerGeo
         // Add entity type
         profile.entity_types.add(item.type);
 
-        // Accumulate by type
+        // Accumulate by type AND collect samples (P4: Channel Selection)
         if (item.type === 'area') {
             profile.total_area += item.value_si;
             if (item.evidence?.includes('HATCH')) profile.hatch_count++;
             if (item.evidence?.includes('closed')) profile.closed_poly_count++;
             profile.has_area_support = true;
+            // P4: Keep up to 3 samples for debugging
+            if (profile.area_samples!.length < 3) {
+                profile.area_samples!.push(item);
+            }
         } else if (item.type === 'length') {
             profile.total_length += item.value_si;
             profile.has_length_support = true;
+            if (profile.length_samples!.length < 3) {
+                profile.length_samples!.push(item);
+            }
         } else if (item.type === 'block') {
             profile.block_count += item.value_si; // value_si holds count for blocks
             profile.has_block_support = true;
+            if (profile.block_samples!.length < 3) {
+                profile.block_samples!.push(item);
+            }
         }
     }
 
