@@ -17,12 +17,30 @@ import { calculateDerivedArea, canUseDerivedAreaFallback, detectSurfaceOrientati
 import { classifyBlock, getBlockPenalty, canAutoApproveBlock } from './block-classifier';
 import { inferDiscipline } from './discipline-inferrer';
 import { normalizeText } from './text-normalizer';
+// Phase 4 imports (AI-recommended fixes)
+import { detectFootprintCandidates, getFootprintSummary, getFootprintScore } from './footprint-detector';
+import { isNonMeasurableLayer, getNonMeasurablePenalty } from './layer-blacklist';
 
 export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetectado[], sheetName: string, excelDiscipline: Discipline = 'UNKNOWN'): StagingRow[] {
 
     // ✅ P0.1: BUILD LAYER GEOMETRY PROFILES ONCE
     const layerProfiles = buildLayerProfiles(dxfItems);
     console.log(`[Matcher] ${getLayerProfilesSummary(layerProfiles)}`);
+
+    // FIX C: DETECT FOOTPRINT CANDIDATES FOR AREA ITEMS
+    // Calculate global bbox from items for footprint detection
+    const xCoords = dxfItems.filter(i => i.position?.x).map(i => i.position!.x);
+    const yCoords = dxfItems.filter(i => i.position?.y).map(i => i.position!.y);
+    const globalBBox = {
+        width: xCoords.length > 0 ? Math.max(...xCoords) - Math.min(...xCoords) : 100,
+        height: yCoords.length > 0 ? Math.max(...yCoords) - Math.min(...yCoords) : 100
+    };
+
+    const footprintResult = detectFootprintCandidates(dxfItems, globalBBox);
+    if (footprintResult.candidates.length > 0) {
+        console.log(`[Footprint] ${getFootprintSummary(footprintResult)}`);
+    }
+
 
     // P1.C: INFER DISCIPLINE if UNKNOWN
     let effectiveDiscipline = excelDiscipline;
@@ -474,8 +492,8 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             }
         }
 
-        // Determine refined status
-        let status = determineStatus(confidence, bestMatch, expectedType, qtyFinal);
+        // Determine refined status (FIX E.1/E.2: pass heightFactor for wall surface check)
+        let status = determineStatus(confidence, bestMatch, expectedType, qtyFinal, heightFactor);
 
         // P2.1: RUN QUALITY GATES
         const qualityCheck = runQualityGates({
@@ -657,22 +675,41 @@ function generateSuggestions(
 
 /**
  * Determine refined status based on confidence and type matching
+ * FIX E.1/E.2: Added new status types for better user guidance
  */
 function determineStatus(
     confidence: number,
     bestMatch: ItemDetectado[],
     expectedType: ExpectedType,
-    qtyFinal: number | null
+    qtyFinal: number | null,
+    heightFactor?: number | null
 ): StagingRow['status'] {
     // No match found
     if (bestMatch.length === 0) {
+        // FIX E.1: If expecting AREA but no match, user needs to pick layer manually
+        if (expectedType === 'AREA') {
+            return 'pending_needs_layer_pick';
+        }
         return expectedType === 'GLOBAL' ? 'pending_semantics' : 'pending_no_match';
     }
 
     const match = bestMatch[0];
 
+    // FIX E.2: If AREA expected but only LENGTH geometry, and no height factor derived
+    if (expectedType === 'AREA' && match.type === 'length') {
+        // Check if we're using a default/assumed height (not properly derived)
+        if (!heightFactor || heightFactor === 2.4) {
+            // Using default height - user should confirm
+            return 'pending_needs_height';
+        }
+    }
+
     // No geometry extracted
     if (qtyFinal === null || qtyFinal === 0) {
+        // FIX E.1: If expecting AREA but qty is 0, user needs to pick layer
+        if (expectedType === 'AREA') {
+            return 'pending_needs_layer_pick';
+        }
         return 'pending_no_geometry';
     }
 
@@ -714,6 +751,11 @@ function getStatusReason(
             return 'No matching CAD items found';
         case 'pending_semantics':
             return `Type or semantic mismatch - ${classification.reason}`;
+        // FIX E.1/E.2: New status reasons
+        case 'pending_needs_layer_pick':
+            return 'No suitable area layers found - please select a layer manually';
+        case 'pending_needs_height':
+            return 'Wall/surface requires height to calculate m² - please configure height or approve default (2.4m)';
         default:
             return 'Unknown status';
     }

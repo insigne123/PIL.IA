@@ -130,8 +130,32 @@ export function signaturesMatch(
 }
 
 /**
+ * FIX D.1: Annotation/import layers that should be deprioritized in cross-layer dedup
+ * If a polygon exists in both a measurable layer AND an annotation layer, keep the measurable one
+ */
+const ANNOTATION_LAYER_PATTERNS = [
+    'pdf_geometry', 'pdf-', 'pdf',
+    'g-dim', 'g-text', 'g-anno',
+    'dimen', 'dimension', 'dim',
+    'annotation', 'anno',
+    'import', 'dwf', 'xref',
+    'defpoints'
+];
+
+/**
+ * Check if a layer is an annotation/import layer
+ */
+function isAnnotationLayer(layerName: string): boolean {
+    if (!layerName) return false;
+    const lower = layerName.toLowerCase();
+    return ANNOTATION_LAYER_PATTERNS.some(pattern => lower.includes(pattern));
+}
+
+/**
  * Deduplicate area items based on polygon signature
- * Returns deduplicated items and statistics
+ * FIX D.1: Now with two phases:
+ *   1. Within-layer dedup (same as before)
+ *   2. Cross-layer dedup: annotation layers lose to measurable layers
  */
 export function deduplicateAreaItems(
     items: any[]
@@ -140,45 +164,74 @@ export function deduplicateAreaItems(
     duplicatesRemoved: number;
     duplicatesByLayer: Map<string, number>;
 } {
+    // PHASE 1: Within-layer deduplication
     const seen = new Map<string, { item: any; signature: PolygonSignature }>();
-    const deduplicated: any[] = [];
+    const phase1Result: any[] = [];
     let duplicatesRemoved = 0;
     const duplicatesByLayer = new Map<string, number>();
 
     for (const item of items) {
         // Only deduplicate area items
         if (item.type !== 'area') {
-            deduplicated.push(item);
+            phase1Result.push(item);
             continue;
         }
 
-        // Skip if no polygon data available
-        // TODO: Extract vertices from item.evidence or metadata
-        // For now, use a simpler approach based on layer + area value
         const layer = item.layer_normalized || '0';
         const area = Math.round(item.value_si * 100) / 100; // Round to 2 decimals
 
-        // Create simple key: layer::area
-        // This catches most duplicates without needing full polygon data
-        const simpleKey = `${layer}::${area}`;
+        // Phase 1 key: layer::area (within-layer dedup)
+        const withinLayerKey = `${layer}::${area}`;
 
-        if (seen.has(simpleKey)) {
-            // Duplicate found
-            const existing = seen.get(simpleKey)!;
-            console.log(`[Dedup] Duplicate polygon detected:`);
-            console.log(`  Layer: ${layer}`);
-            console.log(`  Area: ${area.toFixed(2)} m²`);
-            console.log(`  → Skipping duplicate (keeping first occurrence)`);
-
+        if (seen.has(withinLayerKey)) {
             duplicatesRemoved++;
             duplicatesByLayer.set(layer, (duplicatesByLayer.get(layer) || 0) + 1);
             continue;
         }
 
-        // Store first occurrence
-        seen.set(simpleKey, { item, signature: { area, centroid: { x: 0, y: 0 }, vertexCount: 0, vertexHash: '' } });
-        deduplicated.push(item);
+        seen.set(withinLayerKey, { item, signature: { area, centroid: { x: 0, y: 0 }, vertexCount: 0, vertexHash: '' } });
+        phase1Result.push(item);
     }
+
+    // PHASE 2: Cross-layer deduplication (annotation layers lose to measurable)
+    // Build a map of area -> items across all layers
+    const areaToItems = new Map<number, any[]>();
+
+    for (const item of phase1Result) {
+        if (item.type !== 'area') continue;
+
+        const area = Math.round(item.value_si * 100) / 100;
+        const existing = areaToItems.get(area) || [];
+        existing.push(item);
+        areaToItems.set(area, existing);
+    }
+
+    // For each area value, if there are items from both measurable and annotation layers,
+    // keep only the measurable ones
+    const itemsToRemove = new Set<string>();
+
+    for (const [area, areaItems] of areaToItems.entries()) {
+        if (areaItems.length <= 1) continue;
+
+        const measurableItems = areaItems.filter(i => !isAnnotationLayer(i.layer_normalized));
+        const annotationItems = areaItems.filter(i => isAnnotationLayer(i.layer_normalized));
+
+        // Only remove annotation items if there's at least one measurable item with same area
+        if (measurableItems.length > 0 && annotationItems.length > 0) {
+            for (const annoItem of annotationItems) {
+                itemsToRemove.add(annoItem.id);
+                duplicatesRemoved++;
+
+                const layer = annoItem.layer_normalized || '0';
+                duplicatesByLayer.set(layer, (duplicatesByLayer.get(layer) || 0) + 1);
+
+                console.log(`[Dedup] Cross-layer: Removing ${area.toFixed(2)}m² from annotation layer "${layer}" (exists in measurable layer)`);
+            }
+        }
+    }
+
+    // Filter out annotation duplicates
+    const deduplicated = phase1Result.filter(item => !itemsToRemove.has(item.id));
 
     return {
         deduplicated,
@@ -204,3 +257,4 @@ export function getPolygonDedupSummary(stats: {
 
     return `Removed ${stats.duplicatesRemoved} duplicates from layers: ${layerSummary}`;
 }
+

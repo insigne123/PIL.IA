@@ -112,9 +112,29 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
 
     console.log(`[DXF Parser] Using unit: ${unitMetadata.originalUnit} (confidence: ${(unitMetadata.confidence * 100).toFixed(0)}%)`);
 
-    // 2. Use dynamic minimum length from preflight
+    // === FIX A.1: SCALE GUARDRAILS ===
+    // Verify conversion was applied correctly by checking bbox post-conversion
+    const bboxDiagonalRaw = preflight.boundingBox.diagonal;
+    const bboxDiagonalSI = bboxDiagonalRaw * unitMetadata.toMeters;
+
+    console.log(`[DXF Scale] Raw diagonal: ${bboxDiagonalRaw.toFixed(2)} ${unitMetadata.originalUnit} → SI: ${bboxDiagonalSI.toFixed(2)} m`);
+    console.log(`[DXF Scale] BBox size: ${(preflight.boundingBox.width * unitMetadata.toMeters).toFixed(2)}m × ${(preflight.boundingBox.height * unitMetadata.toMeters).toFixed(2)}m`);
+
+    // Guardrail: If detected mm but diagonal > 5000m after conversion, something is wrong
+    if (unitMetadata.originalUnit.includes('mm') && bboxDiagonalSI > 5000) {
+        console.error(`[DXF SCALE ERROR] ⚠️ Detected mm but SI diagonal=${bboxDiagonalSI.toFixed(2)}m is too large!`);
+        console.error(`[DXF SCALE ERROR] This suggests conversion factor was not applied correctly.`);
+        console.error(`[DXF SCALE ERROR] Raw: ${bboxDiagonalRaw}, Factor: ${unitMetadata.toMeters}`);
+    }
+
+    // Guardrail: If diagonal seems unrealistically large (> 10km), warn
+    if (bboxDiagonalSI > 10000) {
+        console.warn(`[DXF Scale Warning] Diagonal ${bboxDiagonalSI.toFixed(0)}m seems too large for a building. Check units.`);
+    }
+
+    // 2. Use dynamic minimum length from preflight (now uses improved calculation)
     const minLengthDynamic = preflight.dynamicMinLength;
-    console.log(`[DXF Parser] Dynamic min length: ${minLengthDynamic.toFixed(3)}m (based on bbox diagonal: ${preflight.boundingBox.diagonal.toFixed(2)}m)`);
+    console.log(`[DXF Parser] Dynamic min length: ${minLengthDynamic.toFixed(4)}m (SI diagonal: ${bboxDiagonalSI.toFixed(2)}m)`);
 
     // Use let instead of const to allow reassignment for spatial enrichment
     let items: ItemDetectado[] = [];

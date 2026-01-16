@@ -30,6 +30,44 @@ const BLACKLIST_ENTITY_TYPES = [
 ];
 
 /**
+ * FIX D.2: Non-measurable layers
+ * These layers should be penalized in matching - they typically contain
+ * imported/annotation geometry that shouldn't compete with real CAD layers
+ */
+export const NON_MEASURABLE_LAYER_PATTERNS = [
+    'dimen', 'dimension', 'dim',
+    'texto', 'text', 'txt',
+    'pdf_geometry', 'pdf-',
+    'g-dim', 'g-text', 'g-anno',
+    'annotation', 'anno',
+    'defpoints',
+    'viewport', 'vport',
+    'import', 'dwf',
+    'acad_', 'acadiso'
+];
+
+/**
+ * Check if a layer is non-measurable (import/annotation/system)
+ * Used by matcher to penalize these layers
+ */
+export function isNonMeasurableLayer(layerName: string): boolean {
+    if (!layerName) return false;
+    const lower = layerName.toLowerCase();
+    return NON_MEASURABLE_LAYER_PATTERNS.some(pattern => lower.includes(pattern));
+}
+
+/**
+ * Get penalty for non-measurable layers (0-1)
+ * 0 = measurable (no penalty), 1 = non-measurable (high penalty)
+ */
+export function getNonMeasurablePenalty(layerName: string): number {
+    if (isNonMeasurableLayer(layerName)) {
+        return 0.5; // 50% confidence reduction
+    }
+    return 0;
+}
+
+/**
  * Check if a layer should be excluded (annotation layer)
  */
 export function shouldExcludeLayer(layerName: string): boolean {

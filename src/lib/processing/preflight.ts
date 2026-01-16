@@ -192,8 +192,21 @@ export function runPreflight(dxfContent: string): PreflightResult {
                 result.boundingBox.width ** 2 + result.boundingBox.height ** 2
             );
 
-            // Calculate dynamic minimum length (0.2% of diagonal, min 0.5m)
-            result.dynamicMinLength = Math.max(0.5, result.boundingBox.diagonal * 0.002);
+            // FIX B.1: Dynamic minimum length calculation
+            // If bbox is valid, use 0.01% of diagonal (more permissive than before)
+            // If bbox is 0/NaN, use VERY LOW threshold (1mm) to not kill valid contours
+            if (result.boundingBox.diagonal > 0 && !isNaN(result.boundingBox.diagonal)) {
+                // Valid bbox: use 0.01% of diagonal, minimum 0.001m (1mm)
+                result.dynamicMinLength = Math.max(0.001, result.boundingBox.diagonal * 0.0001);
+            } else {
+                // Invalid bbox: use minimal threshold to not kill geometry
+                result.dynamicMinLength = 0.001; // 1mm
+                console.warn(`[Preflight] ⚠️ Invalid bbox diagonal (${result.boundingBox.diagonal}), using minimal threshold: 0.001m`);
+            }
+        } else {
+            // No points collected: use minimal fallback
+            result.dynamicMinLength = 0.001;
+            console.warn(`[Preflight] ⚠️ No coordinate points found for bbox, using minimal threshold: 0.001m`);
         }
 
         // Generate warnings and recommendations
