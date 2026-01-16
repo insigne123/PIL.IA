@@ -15,9 +15,9 @@ interface ReviewStatsProps {
 }
 
 export function ReviewStats({ items }: ReviewStatsProps) {
-    const approved = items.filter(i => i.status === 'approved').length;
-    const pending = items.filter(i => i.status === 'pending').length;
-    const ignored = items.filter(i => i.status === 'ignored').length;
+    const approved = items.filter(i => (i.status as string) === 'approved').length;
+    const pending = items.filter(i => (i.status as string).startsWith('pending')).length;
+    const ignored = items.filter(i => (i.status as string) === 'ignored' || (i.status as string) === 'rejected').length;
     const lowConfidence = items.filter(i => i.match_confidence && i.match_confidence < 0.5).length;
 
     const stats = [

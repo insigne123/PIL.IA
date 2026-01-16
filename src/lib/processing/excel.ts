@@ -8,7 +8,10 @@ export interface ExtractedExcelItem {
     unit: string;
     qty: number | null;
     price: number | null;
-    type: RowType; // New field
+    type: RowType;
+    // Phase 6 A): Expected quantity from Excel for regression
+    expectedQty: number | null;
+    expectedExcluded: boolean; // True if "No se considera" or similar
 }
 
 export interface ExcelStructure {
@@ -19,6 +22,7 @@ export interface ExcelStructure {
         qty: number;
         price: number;
         total: number;
+        expected?: number;
     };
     sheetName: string;
     columns_detected_by: string; // Diagnostic field
@@ -161,7 +165,7 @@ export async function parseExcel(buffer: ArrayBuffer, targetSheetName?: string):
 
     // --- HOTFIX 0: Robust Header Detection ---
     let bestHeaderRow = -1;
-    let bestCols = { description: -1, unit: -1, qty: -1, price: -1, total: -1 };
+    let bestCols = { description: -1, unit: -1, qty: -1, price: -1, total: -1, expected: -1 }; // Phase 6 A) Added expected
     let bestScore = -1;
     let detectionMethod = 'heuristic';
 
@@ -177,14 +181,16 @@ export async function parseExcel(buffer: ArrayBuffer, targetSheetName?: string):
         ],
         qty: ['cantidad', 'cant', 'qty', 'quantity'],
         price: ['valor unitario', 'precio unitario', 'p.u', 'unit price', 'precio', 'valor u.'],
-        total: ['total', 'valor total', 'precio total']
+        total: ['total', 'valor total', 'precio total'],
+        // Phase 6 A): Expected (column D usually, or explicit logic)
+        // We will assume Col D is expected if we find Description in B and Unit in C
     };
 
     // Scan first 50 rows for the Best Header Candidate
     worksheet.eachRow((row, rowNumber) => {
         if (rowNumber > 50) return;
 
-        const currentCols = { description: -1, unit: -1, qty: -1, price: -1, total: -1 };
+        const currentCols = { description: -1, unit: -1, qty: -1, price: -1, total: -1, expected: -1 };
         let matches = 0;
 
         row.eachCell((cell, colNumber) => {
@@ -219,6 +225,13 @@ export async function parseExcel(buffer: ArrayBuffer, targetSheetName?: string):
                 matches++;
             }
         });
+
+        // Phase 6 A): Heuristic for Expected Qty (Column D)
+        // If Description is Col B (2) and Unit is Col C (3), assume Expected is Col D (4)
+        if (currentCols.description === 2 && currentCols.unit === 3) {
+            currentCols.expected = 4;
+            // No match increment, this is structural inference
+        }
 
         // Must have at least Description AND (Unit OR Qty OR Price)
         if (currentCols.description !== -1 && (currentCols.unit !== -1 || currentCols.qty !== -1 || currentCols.price !== -1)) {
@@ -283,6 +296,22 @@ export async function parseExcel(buffer: ArrayBuffer, targetSheetName?: string):
         const qty = structure.columns.qty !== -1 ? parseNum(row.getCell(structure.columns.qty)) : null;
         const price = structure.columns.price !== -1 ? parseNum(row.getCell(structure.columns.price)) : null;
 
+        // Phase 6 A): Extract Expected Qty and exclusion status
+        let expectedQty: number | null = null;
+        let expectedExcluded = false;
+
+        if (structure.columns.expected !== undefined && structure.columns.expected !== -1) {
+            const expectedCell = row.getCell(structure.columns.expected);
+            const expectedText = (expectedCell.text || '').toLowerCase().trim();
+
+            if (expectedText.includes('no se considera') || expectedText.includes('no cotizar') || expectedText.includes('excluido')) {
+                expectedQty = 0;
+                expectedExcluded = true;
+            } else {
+                expectedQty = parseNum(expectedCell);
+            }
+        }
+
         // --- HOTFIX 1: Row Classification ---
         // Check formatting (bold/merged) if possible. ExcelJS cell.style.font.bold
         let isBold = false;
@@ -297,7 +326,9 @@ export async function parseExcel(buffer: ArrayBuffer, targetSheetName?: string):
             unit: unit,
             qty: qty,
             price: price,
-            type: rowType
+            type: rowType,
+            expectedQty,      // Phase 6 A)
+            expectedExcluded  // Phase 6 A)
         });
     });
 

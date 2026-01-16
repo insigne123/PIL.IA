@@ -10,7 +10,9 @@ export async function writeExcel(originalBuffer: ArrayBuffer, rows: StagingRow[]
     if (!worksheet) throw new Error(`Worksheet ${structure.sheetName} not found`);
 
     for (const row of rows) {
-        if (row.status === 'ignored') continue;
+        // Updated check for ignored status or new pending states if needed
+        const status = row.status as string;
+        if (status === 'ignored' || status === 'rejected') continue;
 
         const excelRow = worksheet.getRow(row.excel_row_index);
 

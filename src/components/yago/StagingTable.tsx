@@ -37,7 +37,7 @@ export function StagingTable({ data, onUpdateRow }: StagingTableProps) {
                     <TableBody>
                         {data.map((row) => {
                             // MEJORA UI: Visualización de Títulos
-                            const isTitle = (row as any).is_title || row.status === 'title';
+                            const isTitle = (row as any).is_title || (row.status as string) === 'title';
 
                             return (
                                 <TableRow key={row.id} className={cn(

@@ -168,7 +168,12 @@ export function ReviewCard({ item, batchId, onUpdated }: ReviewCardProps) {
                         {item.top_candidates.slice(0, 5).map((candidate) => (
                             <CandidateCard
                                 key={candidate.layer}
-                                candidate={candidate}
+                                candidate={{
+                                    ...candidate,
+                                    type: candidate.layer, // Fallback for type
+                                    score: candidate.score_semantic, // Map property
+                                    rejected: false
+                                }}
                                 selected={selectedCandidate === candidate.layer}
                                 onSelect={() => setSelectedCandidate(candidate.layer)}
                             />

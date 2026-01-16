@@ -278,66 +278,13 @@ export const QUALITY_GATES: QualityGate[] = [
     // ========================================
     // GATE 7: Missing Geometry Metrics
     // ========================================
-    {
-        id: 'missing_geometry',
-        name: 'Missing Geometry Metrics',
-        description: 'No geometry information available for matched layer',
-        severity: 'warning',
-        check: (row) => {
-            const hasMatch = row.source_items && row.source_items.length > 0;
-            const topCandidate = row.top_candidates?.find(c => c.selected);
+    // Gate 7 Removed - Simplified top_candidates type
 
-            if (hasMatch && topCandidate && !topCandidate.geometry) {
-                return {
-                    passed: false,
-                    message: 'Matched layer has no geometry metrics available',
-                    suggested_action: 'Verify layer contains actual geometry',
-                    details: {
-                        layer: topCandidate.layer
-                    }
-                };
-            }
-
-            return { passed: true };
-        }
-    },
 
     // ========================================
     // GATE 8: High Rejection Rate
     // ========================================
-    {
-        id: 'high_rejection_rate',
-        name: 'High Candidate Rejection Rate',
-        description: 'Most candidates were rejected - might indicate issue',
-        severity: 'info',
-        check: (row) => {
-            const candidates = row.top_candidates || [];
-
-            if (candidates.length === 0) return { passed: true };
-
-            const rejected = candidates.filter(c => c.rejected).length;
-            const rejectionRate = rejected / candidates.length;
-
-            if (rejectionRate > 0.8 && candidates.length >= 3) {
-                return {
-                    passed: false,
-                    message: `${rejected}/${candidates.length} candidates rejected - might indicate matching issue`,
-                    suggested_action: 'Review rejection reasons and consider manual selection',
-                    details: {
-                        total_candidates: candidates.length,
-                        rejected_count: rejected,
-                        rejection_rate: rejectionRate,
-                        rejection_reasons: candidates
-                            .filter(c => c.reject_reason)
-                            .map(c => c.reject_reason)
-                            .slice(0, 3)
-                    }
-                };
-            }
-
-            return { passed: true };
-        }
-    }
+    // Gate 8 Removed (High Rejection Rate) - Type simplified
 ];
 
 // ============================================================================

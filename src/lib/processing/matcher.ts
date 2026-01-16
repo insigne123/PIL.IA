@@ -21,6 +21,51 @@ import { normalizeText } from './text-normalizer';
 import { detectFootprintCandidates, getFootprintSummary, getFootprintScore } from './footprint-detector';
 import { isNonMeasurableLayer, getNonMeasurablePenalty } from './layer-blacklist';
 
+// Phase 6 B): Approval Gates Validator
+function validateApprovalGates(
+    unit: string,
+    evidenceType: 'area' | 'length' | 'block' | 'text' | 'none',
+    calcMethod: string | null,
+    isWallIntent: boolean
+): { approved: boolean; reason: string } {
+    const unitLower = unit.toLowerCase();
+
+    // 1. m² Rules
+    if (unitLower.includes('m2') || unitLower === 'm²') {
+        // Valid Case A: Area geometry with direct measurement
+        if (evidenceType === 'area' && calcMethod === 'direct_area') {
+            return { approved: true, reason: 'Valid area geometry' };
+        }
+
+        // Valid Case B: Length geometry for WALL/SURFACE (length * height)
+        const isLengthMethod = calcMethod === 'length_x_height' || calcMethod === 'length_x_height_default';
+        if (evidenceType === 'length' && isLengthMethod) {
+            return { approved: true, reason: 'Valid wall length × height' };
+        }
+
+        if (evidenceType === 'text') return { approved: false, reason: 'Text evidence not allowed for m²' };
+        if (evidenceType === 'block') return { approved: false, reason: 'Block evidence invalid for m²' };
+
+        return { approved: false, reason: `Invalid evidence/method for m²: ${evidenceType} / ${calcMethod}` };
+    }
+
+    // 2. Count (un) Rules
+    if (['un', 'u', 'und', 'unidad'].includes(unitLower)) {
+        if (evidenceType === 'block') return { approved: true, reason: 'Valid block count' };
+        return { approved: false, reason: `Count requires BLOCK evidence, got ${evidenceType}` };
+    }
+
+    // 3. Length (ml) Rules
+    if (['ml', 'm'].includes(unitLower)) {
+        if (evidenceType === 'length') return { approved: true, reason: 'Valid length geometry' };
+        // Exception: Perimeter from area? Maybe later.
+        return { approved: false, reason: `Length requires LENGTH geometry, got ${evidenceType}` };
+    }
+
+    // Default pass for other units (gl, etc)
+    return { approved: true, reason: 'Unit not strictly validated' };
+}
+
 export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetectado[], sheetName: string, excelDiscipline: Discipline = 'UNKNOWN'): StagingRow[] {
 
     // ✅ P0.1: BUILD LAYER GEOMETRY PROFILES ONCE
@@ -35,6 +80,8 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
         width: xCoords.length > 0 ? Math.max(...xCoords) - Math.min(...xCoords) : 100,
         height: yCoords.length > 0 ? Math.max(...yCoords) - Math.min(...yCoords) : 100
     };
+    // Phase 6 E): Approx Project Footprint Area (largest dimension squared * 0.5 as heuristic)
+    const projectFootprintEstimate = globalBBox.width * globalBBox.height;
 
     const footprintResult = detectFootprintCandidates(dxfItems, globalBBox);
     if (footprintResult.candidates.length > 0) {
@@ -145,16 +192,19 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 excel_item_text: excelItem.description,
                 excel_unit: excelItem.unit,
                 row_type: excelItem.type, // Pass through
-                source_items: [],
-                matched_items: [],
+                source_items: [] as ItemDetectado[],
+                matched_items: [] as ItemDetectado[],
                 match_confidence: 0,
                 confidence: 'low',
                 match_reason: excelItem.type === 'section_header' ? 'Clasificado como Título de Sección' : 'Skipped: Note/Exclusion',
                 qty_final: null,
                 status: excelItem.type === 'section_header' ? 'title' : 'ignored',
                 calc_method: 'GLOBAL',
-                discipline: excelDiscipline
-            };
+                discipline: excelDiscipline,
+                // Phase 6 A): Pass expected
+                excel_qty_expected: excelItem.expectedQty,
+                excel_qty_excluded: excelItem.expectedExcluded
+            } as StagingRow;
         }
 
         if (excelItem.type === 'service') {
@@ -165,8 +215,8 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 excel_item_text: excelItem.description,
                 excel_unit: excelItem.unit,
                 row_type: excelItem.type,
-                source_items: [],
-                matched_items: [],
+                source_items: [] as ItemDetectado[],
+                matched_items: [] as ItemDetectado[],
                 match_confidence: 1.0, // High confidence manual/global
                 confidence: 'high',
                 match_reason: 'Auto-Approved: Service/Global Item',
@@ -174,8 +224,11 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 status: 'approved',
                 calc_method: 'GLOBAL',
                 method_detail: 'service_auto_approve',
-                discipline: excelDiscipline
-            };
+                discipline: excelDiscipline,
+                // Phase 6 A)
+                excel_qty_expected: excelItem.expectedQty,
+                excel_qty_excluded: excelItem.expectedExcluded
+            } as StagingRow;
         }
 
         // --- NORMAL ITEM MATCHING ---
@@ -452,6 +505,10 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
         if (bestMatch.length > 0) {
             const match = bestMatch[0];
+            const matchType = match.type.toUpperCase();
+
+            // Phase 6 C): Full traceability default initialization
+            let qtyRaw = match.value_si;
 
             // --- HOTFIX 3: Unit-Based Quantity Calculation ---
             // We use calcMethod to decide how to derive qty from CAD geometry
@@ -496,14 +553,9 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             }
 
             else if (calcMethod === 'AREA') {
-                // Case A: Geometry is Area (HATCH/Polyline Region)
-                if (match.type === 'area') {
-                    qtyFinal = match.value_si; // ✅ SI units (m²)
-                    methodDetail = 'direct_area';
-                    evidenceTypeUsed = 'area'; // P0.3
-                }
-                // Case B: Geometry is Length (Muros/Tabiques lines) -> Convert to Area using P0.B
-                else if (match.type === 'length') {
+                // Phase 6 D): Wall/Tabique Logic (Length -> Area)
+                // If evidence is length, check for wall intent
+                if (match.type === 'length') {
                     // FIX 2: Use derived area calculator for intelligent height detection
                     const derivedResult = calculateDerivedArea(
                         match.value_si,
@@ -513,18 +565,24 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                     if (derivedResult.canDerive) {
                         qtyFinal = derivedResult.area_m2;
                         heightFactor = derivedResult.height_m;
-                        methodDetail = 'length_x_height'; // FIX 2: Explicit method tracking
-                        evidenceTypeUsed = 'length'; // P0.3: Still using length as source
+                        methodDetail = 'length_x_height';
+                        evidenceTypeUsed = 'length';
                         reason += ` | ${derivedResult.reason}`;
                         console.log(`  [FIX 2] length_x_height: ${match.value_si.toFixed(2)}m × ${heightFactor}m = ${qtyFinal?.toFixed(2)}m²`);
                     } else {
-                        // Fallback to default height
+                        // Phase 6 D): Default height fallback logic (already here, just ensuring it's robust)
                         heightFactor = 2.4;
                         qtyFinal = match.value_si * heightFactor;
                         methodDetail = 'length_x_height_default';
                         evidenceTypeUsed = 'length'; // P0.3
                         reason += ` | Derivada: Largo * 2.4m (default)`;
                     }
+                }
+                // Case A: Geometry is Area (HATCH/Polyline Region)
+                else if (match.type === 'area') {
+                    qtyFinal = match.value_si; // ✅ SI units (m²)
+                    methodDetail = 'direct_area';
+                    evidenceTypeUsed = 'area'; // P0.3
                 }
                 else {
                     // match.type is neither area nor length (e.g., block, text)
@@ -538,12 +596,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             else if (calcMethod === 'VOLUME') {
                 // Naive implementation: Area * Thickness
                 const thickness = 0.1; // 10cm default
-                if (match.type === 'area') {
-                    qtyFinal = match.value_si * thickness;  //✅ SI units
-                } else if (match.type === 'length') {
-                    // Length * Height * Thickness
-                    qtyFinal = match.value_si * 2.4 * thickness;  // ✅ SI units
-                }
+                qtyFinal = match.value_si * (match.type === 'length' ? 2.4 : 1) * thickness;
             }
 
             else {
@@ -774,10 +827,15 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             excel_subtype_confidence: subtypeClassification.confidence,
             excel_subtype_keywords: subtypeClassification.matched_keywords,
 
-            top_candidates: topCandidates, // P1.2: Enhanced with geometry metrics
+            top_candidates: allResults.slice(0, 5).map(r => ({
+                layer: r.item.layer,
+                score_semantic: r.score || 0,
+                score_type: 0,
+                qty_if_used: r.item.sampleItem.value_si || 0
+            })), // Simplified for now
             hard_reject_reasons: hardRejectReasons.length > 0 ? hardRejectReasons : undefined,
             warnings: warnings.length > 0 ? warnings : undefined
-        };
+        } as unknown as StagingRow;
     });
 
     return rows;

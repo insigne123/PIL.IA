@@ -98,6 +98,26 @@ export interface StagingRow {
   // Pricing Fields (New)
   unit_price_ref?: number;
   total_price_ref?: number;
+
+  evidenceTypeUsed?: 'area' | 'length' | 'block' | 'text' | 'none'; // P0.3
+
+  // Phase 6 A): Expected calculation
+  excel_qty_expected?: number | null;
+  excel_qty_excluded?: boolean;
+
+  // Phase 6 C): Full traceability
+  qty_raw?: number;           // Before scaling
+  unit_scale_used?: number;   // 1, 0.01, 0.001
+  height_used?: number;       // For walls
+  sides_multiplier?: number;  // 2 for both sides
+
+  // Top candidates for debugging
+  top_candidates?: {
+    layer: string;
+    score_semantic: number;
+    score_type: number;
+    qty_if_used: number;
+  }[];
   price_sources?: PriceSource[];
   price_candidates?: PriceSource[]; // Added for compatibility
 
@@ -108,7 +128,24 @@ export interface StagingRow {
 
   match_reason?: string; // AI reasoning
   confidence_reason?: string;
-  status: 'pending' | 'approved' | 'ignored' | 'pending_semantics' | 'pending_no_geometry' | 'pending_no_match' | 'pending_needs_layer_pick' | 'pending_needs_height' | 'pending_type_mismatch' | 'pending_no_length_for_wall' | 'pending_sanity_check' | 'title';
+  status:
+  | 'pending' // Default: found something but confidence < threshold
+  | 'approved' // High confidence match
+  | 'rejected' // User manually cleared it
+  // Error states
+  | 'pending_no_geometry' // No numeric entities found in layer
+  | 'pending_no_match' // No layer passed text scoring
+  | 'pending_semantics' // Best layer has wrong type (e.g. area for m item)
+  // Fix E.1/E.2
+  | 'pending_needs_layer_pick'
+  | 'pending_needs_height'
+  // Phase 5/6 P0 Fixes
+  | 'pending_type_mismatch'
+  | 'pending_no_length_for_wall'
+  | 'pending_sanity_check'
+  | 'pending_units_or_outlier' // Phase 6 E)
+  | 'ignored' // System skipped (e.g. notes)
+  | 'title'; // Section header
   status_reason?: string; // Reason for refined status
   suggestions?: Suggestion[]; // Actionable suggestions for pending items
 
@@ -124,22 +161,21 @@ export interface StagingRow {
   excel_subtype_confidence?: number;
   excel_subtype_keywords?: string[];
 
-  top_candidates?: Array<{
-    layer: string;
-    type: string;
-    score: number;
-    rejected: boolean;
-    reject_reason?: string;
-    // P1.2: Enhanced with geometry metrics
-    geometry?: {
-      area?: number;
-      length?: number;
-      blocks?: number;
-      hatches?: number;
-      closed_polys?: number;
-    };
-    selected?: boolean;
-  }>;
+  // top_candidates definition merged above
+  layer: string;
+  type: string;
+  score: number;
+  rejected: boolean;
+  reject_reason?: string;
+  // P1.2: Enhanced with geometry metrics
+  geometry?: {
+    area?: number;
+    length?: number;
+    blocks?: number;
+    hatches?: number;
+    closed_polys?: number;
+  };
+  selected?: boolean;
   hard_reject_reasons?: string[];
   warnings?: string[];
 
