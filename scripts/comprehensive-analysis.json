@@ -1,0 +1,1467 @@
+{
+  "blocks": [
+    {
+      "name": "LDS-COUNTER STANDARD",
+      "layer": "0",
+      "entityCount": 18,
+      "areaM2": 6.895405887450304,
+      "lengthM": 20.499411254969537,
+      "wallAreaM2": 49.19858701192689,
+      "closedPolygons": 4,
+      "openPolylines": 0,
+      "lines": 12,
+      "texts": []
+    },
+    {
+      "name": "A$C17fc6b00",
+      "layer": "0",
+      "entityCount": 5,
+      "areaM2": 2.6805798865269255,
+      "lengthM": 14.664111673053965,
+      "wallAreaM2": 35.193868015329514,
+      "closedPolygons": 2,
+      "openPolylines": 1,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "A$C65e9c69f",
+      "layer": "0",
+      "entityCount": 3,
+      "areaM2": 2.4050003180186335,
+      "lengthM": 11.300000978518872,
+      "wallAreaM2": 27.120002348445293,
+      "closedPolygons": 3,
+      "openPolylines": 0,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "COLUMN PLAN",
+      "layer": "0",
+      "entityCount": 7,
+      "areaM2": 0.9612499999999925,
+      "lengthM": 13.460538238691608,
+      "wallAreaM2": 32.30529177285986,
+      "closedPolygons": 5,
+      "openPolylines": 2,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "*U43",
+      "layer": "0",
+      "entityCount": 2,
+      "areaM2": 0.7882529838510608,
+      "lengthM": 5.044906888027459,
+      "wallAreaM2": 12.1077765312659,
+      "closedPolygons": 2,
+      "openPolylines": 0,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "A$C7398546e",
+      "layer": "0",
+      "entityCount": 15,
+      "areaM2": 0.6520591972828683,
+      "lengthM": 9.420161236902937,
+      "wallAreaM2": 22.608386968567046,
+      "closedPolygons": 3,
+      "openPolylines": 3,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "A$C3b0f97d9",
+      "layer": "0",
+      "entityCount": 15,
+      "areaM2": 0.6519635143757867,
+      "lengthM": 9.357409950815551,
+      "wallAreaM2": 22.457783881957322,
+      "closedPolygons": 3,
+      "openPolylines": 3,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "A$Cca2dd83e",
+      "layer": "0",
+      "entityCount": 1,
+      "areaM2": 0.6439999999983028,
+      "lengthM": 3.210781059353997,
+      "wallAreaM2": 7.7058745424495925,
+      "closedPolygons": 1,
+      "openPolylines": 0,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "BW TRASERA GENERAL",
+      "layer": "0",
+      "entityCount": 1,
+      "areaM2": 0.6317999999999997,
+      "lengthM": 14.219999999999999,
+      "wallAreaM2": 34.12799999999999,
+      "closedPolygons": 1,
+      "openPolylines": 0,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "A$C7f2261f3",
+      "layer": "0",
+      "entityCount": 4,
+      "areaM2": 0.3455999999999999,
+      "lengthM": 5.44,
+      "wallAreaM2": 13.056000000000001,
+      "closedPolygons": 4,
+      "openPolylines": 0,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "A$C218e25fe",
+      "layer": "0",
+      "entityCount": 14,
+      "areaM2": 0.3425259209102875,
+      "lengthM": 16.40739138600209,
+      "wallAreaM2": 39.37773932640501,
+      "closedPolygons": 4,
+      "openPolylines": 2,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "A$Cd0c8cfc3",
+      "layer": "0",
+      "entityCount": 5,
+      "areaM2": 0.28575213313519926,
+      "lengthM": 7.179633332571234,
+      "wallAreaM2": 17.23111999817096,
+      "closedPolygons": 4,
+      "openPolylines": 1,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "BW TAPA",
+      "layer": "0",
+      "entityCount": 1,
+      "areaM2": 0.2741999999992824,
+      "lengthM": 11.067999999664092,
+      "wallAreaM2": 26.56319999919382,
+      "closedPolygons": 1,
+      "openPolylines": 0,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "A$Ce5ed83cd",
+      "layer": "0",
+      "entityCount": 5,
+      "areaM2": 0.25689876682118484,
+      "lengthM": 4.40632099080904,
+      "wallAreaM2": 10.575170377941696,
+      "closedPolygons": 4,
+      "openPolylines": 1,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "A$C4e9e42e1",
+      "layer": "0",
+      "entityCount": 3,
+      "areaM2": 0.2545499998018658,
+      "lengthM": 3.977499999237945,
+      "wallAreaM2": 9.545999998171068,
+      "closedPolygons": 2,
+      "openPolylines": 1,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "LDS-BACK WALL COUNTER",
+      "layer": "0",
+      "entityCount": 1,
+      "areaM2": 0.20500000000579477,
+      "lengthM": 8.300000000002827,
+      "wallAreaM2": 19.920000000006784,
+      "closedPolygons": 1,
+      "openPolylines": 0,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "*U76",
+      "layer": "0",
+      "entityCount": 5,
+      "areaM2": 0.19555393406835703,
+      "lengthM": 6.076275724684165,
+      "wallAreaM2": 14.583061739241995,
+      "closedPolygons": 4,
+      "openPolylines": 1,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "A$C4852d958",
+      "layer": "0",
+      "entityCount": 16937,
+      "areaM2": 0.194666493360545,
+      "lengthM": 3.561948516028052,
+      "wallAreaM2": 8.548676438467325,
+      "closedPolygons": 2,
+      "openPolylines": 0,
+      "lines": 16935,
+      "texts": []
+    },
+    {
+      "name": "A$C141fe27c",
+      "layer": "0",
+      "entityCount": 2,
+      "areaM2": 0.19374868421805264,
+      "lengthM": 3.3504015480773925,
+      "wallAreaM2": 8.040963715385741,
+      "closedPolygons": 1,
+      "openPolylines": 0,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "A$C0bfe71d0",
+      "layer": "0",
+      "entityCount": 12,
+      "areaM2": 0.1924,
+      "lengthM": 6.92,
+      "wallAreaM2": 16.608,
+      "closedPolygons": 8,
+      "openPolylines": 0,
+      "lines": 4,
+      "texts": []
+    },
+    {
+      "name": "*U77",
+      "layer": "0",
+      "entityCount": 5,
+      "areaM2": 0.18971298476657153,
+      "lengthM": 5.916275723968851,
+      "wallAreaM2": 14.199061737525241,
+      "closedPolygons": 4,
+      "openPolylines": 1,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "A$C432ae245",
+      "layer": "0",
+      "entityCount": 2,
+      "areaM2": 0.18375000021482232,
+      "lengthM": 5.050000000175366,
+      "wallAreaM2": 12.120000000420879,
+      "closedPolygons": 1,
+      "openPolylines": 0,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "PEN-A3-COVER",
+      "layer": "0",
+      "entityCount": 81,
+      "areaM2": 0.1249016254838009,
+      "lengthM": 2.9050202919585955,
+      "wallAreaM2": 6.972048700700629,
+      "closedPolygons": 4,
+      "openPolylines": 12,
+      "lines": 44,
+      "texts": [
+        "DRAWING PACK",
+        "Project ref",
+        "\\pxqc;{\\fGulim|b0|i0|c129|p34;ANTONIO MARIA LABAIEN, 14}, {\\fGulim|b0|i0|c129|p34;OFICINA 6-I, DONOSTIA-SAN SEBASTIAN. CP: 20009. GIPÚZKOA, SPAIN\\PM+34 618 93 79 54   T+34 943 90 00 88      \\Pwww.iru-d-studio.com}",
+        "\\pxql;{\\fAharoni|b0|i0|c0|p2;Iru-d studio}"
+      ]
+    },
+    {
+      "name": "*Paper_Space37",
+      "layer": "0",
+      "entityCount": 11,
+      "areaM2": 0.12488849999999997,
+      "lengthM": 1.435,
+      "wallAreaM2": 3.444,
+      "closedPolygons": 1,
+      "openPolylines": 0,
+      "lines": 0,
+      "texts": [
+        "{\\W0.7;LDS-PAK-00}",
+        "LAMINA 00 DE 14",
+        "{\\H0.4x;\\W1;PORTADA}",
+        "\\pxqc;{\\LNuevo Local LOTO DEL SUR\\PPARQUE ARAUCO}",
+        "LISTADO DE PLANOS\\P\\P00^IPORTADA\\P01 ^IPLANTA DE ARQUITECTURA \\P02^IPLANTA DE CONSTRUCCION\\P03^IPLANTA DE MUEBLES\\P04^IPLANTA  DE CIELOS\\P05^IPLANTA DE PAVIMENTOS\\P06^IPLANTA DE TERMINACIONES\\P07^IPLANTA  DE ILUMINACIÓN\\P08^IPLANTA DE ENCHUFES\\P09^IPLANTA REQUERIMIENTOS SANITARIOS\\P10^IPLANTA COORDINACION DE ESPECIALIDADES\\P11^IFACHADA Y DETALLES\\P12^ICORTES OBRAS CIVILES\\P13^ICORTES MUEBLES\\P14^IDETALLES"
+      ]
+    },
+    {
+      "name": "A$C3b68f4d7",
+      "layer": "0",
+      "entityCount": 2379,
+      "areaM2": 0.10889631988163753,
+      "lengthM": 2.3769089459928874,
+      "wallAreaM2": 5.704581470382929,
+      "closedPolygons": 1,
+      "openPolylines": 2,
+      "lines": 2376,
+      "texts": []
+    },
+    {
+      "name": "A$C1edbc833",
+      "layer": "0",
+      "entityCount": 5,
+      "areaM2": 0.10603446876803732,
+      "lengthM": 4.193699979714962,
+      "wallAreaM2": 10.064879951315909,
+      "closedPolygons": 4,
+      "openPolylines": 1,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "*U62",
+      "layer": "0",
+      "entityCount": 5,
+      "areaM2": 0.10209874561691187,
+      "lengthM": 3.5162757235696045,
+      "wallAreaM2": 8.43906173656705,
+      "closedPolygons": 4,
+      "openPolylines": 1,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "A$Ce25ee168",
+      "layer": "0",
+      "entityCount": 2,
+      "areaM2": 0.09999999999983415,
+      "lengthM": 1.850781059355424,
+      "wallAreaM2": 4.441874542453017,
+      "closedPolygons": 1,
+      "openPolylines": 0,
+      "lines": 0,
+      "texts": []
+    },
+    {
+      "name": "A$Cd1f2c22b",
+      "layer": "0",
+      "entityCount": 810,
+      "areaM2": 0.08668378482495821,
+      "lengthM": 1.9116738614039752,
+      "wallAreaM2": 4.5880172673695405,
+      "closedPolygons": 1,
+      "openPolylines": 1,
+      "lines": 807,
+      "texts": []
+    },
+    {
+      "name": "A$C2b71b147",
+      "layer": "0",
+      "entityCount": 2266,
+      "areaM2": 0.05963946971047051,
+      "lengthM": 1.3861543435783532,
+      "wallAreaM2": 3.3267704245880476,
+      "closedPolygons": 2,
+      "openPolylines": 0,
+      "lines": 2264,
+      "texts": []
+    }
+  ],
+  "relevantTexts": [
+    {
+      "content": "\\pxqc;CIELOS",
+      "layer": "TEXTO_M",
+      "position": {
+        "x": 41906.06744518257,
+        "y": -76117.79112694135,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxqc;PAVIMENTOS",
+      "layer": "TEXTO_M",
+      "position": {
+        "x": 56906.06744518257,
+        "y": -76116.64121146663,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxqr;PUNTA DE TUBO \\PA RAS DE PISO",
+      "layer": "EJ - X1 - Layout",
+      "position": {
+        "x": 112938.8095064072,
+        "y": -75003.94404135781,
+        "z": -1.921044e-9
+      }
+    },
+    {
+      "content": "\\pxqr;PUNTA DE TUBO \\PA RAS DE PISO",
+      "layer": "EJ - X1 - Layout",
+      "position": {
+        "x": 114047.1345899917,
+        "y": -75003.94404135781,
+        "z": -1.921044e-9
+      }
+    },
+    {
+      "content": "\\pxqc;PROYECCION CIELO H=2.50m",
+      "layer": "FA_MUEBLES PROYECCION",
+      "position": {
+        "x": 112410.2103596432,
+        "y": -68825.36516520652,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxqc;ENCHUFE 220V SOBRE CIELO PARA SIRENA {\\Froma",
+      "layer": "FA_SISTEMAS ELECTRICOS",
+      "position": {
+        "x": 112659.8554193492,
+        "y": -63445.33527253701,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;TABIQUE PLACA MDF 15mm \\P",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 1503.55816185115,
+        "y": -123874.5972743037,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;TABIQUE PLACA MDF 15mm \\P",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 5774.197534456398,
+        "y": -123874.5972743037,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;TABIQUE PLACA MDF 15mm \\P",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 6710.516585344041,
+        "y": -123874.5972743037,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;TABIQUE PLACA MDF 15mm \\P",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": -453.6062646798818,
+        "y": -123874.5972743037,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;TABIQUE PLACA MDF 15mm \\P",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 15194.09202287557,
+        "y": -123874.5972743037,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;TABIQUE PLACA MDF 15mm \\P",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 18067.0169996318,
+        "y": -123874.5972743037,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;TABIQUE PLACA MDF 15mm \\P",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 19976.95017265177,
+        "y": -123874.5972743037,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;CIELOS VOLCANITA 15mm \\PP",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 3120.448921482355,
+        "y": -120808.2309225589,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;TABIQUE PLACA MDF 15mm \\P",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 26609.50606693555,
+        "y": -123874.8379608964,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;TABIQUE PLACA MDF 15mm \\P",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 25673.1870160479,
+        "y": -123874.8379608964,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;SOBRETABIQUE CON REFUERZO",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": -1781.136452908162,
+        "y": -123589.5390070275,
+        "z": 0
+      }
+    },
+    {
+      "content": "{\\Fromans|c0;\\W0.7;CIELOS VOLCANITA 15mm \\P\\pxql;P",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 17625.98672290063,
+        "y": -120808.2309225589,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;TABIQUE PLACA MDF 15mm \\P",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 28083.32721155466,
+        "y": -123874.8379608964,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;TABIQUE PLACA MDF 15mm \\P",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 40235.81646488707,
+        "y": -123874.7176176001,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;CIELOS VOLCANITA 15mm \\PP",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 27694.67166225182,
+        "y": -120808.3512658553,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;CIELOS VOLCANITA 15mm \\PP",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 41239.26578574609,
+        "y": -120808.2309225589,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;PISO MARMOL 3 COLORES \\PS",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 2198.103175599783,
+        "y": -122589.0694701245,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;PORCELANATO PISO + GUARDA",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": -1923.730135032303,
+        "y": -124029.1609077631,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;CIELOS PLACA MDF 15mm \\PP",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": -575.6419651487086,
+        "y": -120943.1525170965,
+        "z": 4287.37505216389
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;CIELOS PLACA MDF 15mm \\PP",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 6504.887155715725,
+        "y": -121250.8663756175,
+        "z": 4287.37505216389
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;CIELO VOLCANITA PINTADO L",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": -1723.170074231166,
+        "y": -120005.8727667487,
+        "z": 4287.37505216389
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;CIELOS PLACA MDF 15mm \\PP",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 1181.178536800536,
+        "y": -120943.1525170965,
+        "z": 4287.37505216389
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;CIELOS PLACA MDF 15mm \\PP",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 14892.37830112362,
+        "y": -120943.1525170965,
+        "z": 4287.37505216389
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;CIELOS PLACA MDF 15mm \\PP",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 20091.58617947564,
+        "y": -120943.1525170965,
+        "z": 4287.37505216389
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;CIELOS PLACA MDF 15mm \\PP",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 25798.0703749439,
+        "y": -120943.2728603928,
+        "z": 4287.37505216389
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;CIELOS PLACA MDF 15mm \\PP",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 40184.39872587808,
+        "y": -120943.1525170965,
+        "z": 4287.37505216389
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;PISO MARMOL 3 COLORES \\PS",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 17264.37432685586,
+        "y": -122589.0694701245,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;PISO MARMOL 3 COLORES \\PS",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 27183.68855569529,
+        "y": -122589.1898134209,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;PISO MARMOL 3 COLORES \\PS",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 40541.72891245249,
+        "y": -122589.0694701245,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;PORCELANATO PISO + GUARDA",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 65638.33467667119,
+        "y": -122552.0418726566,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;CIELO VOLCANITA PINTADO L",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 65521.81628239241,
+        "y": -120005.8727667487,
+        "z": 4287.37505216389
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;SOBRETABIQUE CON REFUERZO",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 65475.66816848647,
+        "y": -123631.3310709374,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;CIELO VOLCANITA PINTADO L",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 75368.32081861235,
+        "y": -120005.8727667487,
+        "z": 4287.37505216389
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;SOBRETABIQUE CON REFUERZO",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 74772.24658012844,
+        "y": -123631.3310709374,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;SOBRETABIQUE CON REFUERZO",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 77034.25994157372,
+        "y": -121296.5919337928,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;CIELO VOLCANITA PINTADO L",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 87790.05761568039,
+        "y": -120005.8727667487,
+        "z": 4287.37505216389
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;SOBRETABIQUE CON REFUERZO",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 85898.28349428403,
+        "y": -123631.3310709374,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;PORCELANATO PISO + GUARDA",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 77060.67285229059,
+        "y": -123599.2080823604,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.7;PORCELANATO PISO + GUARDA",
+      "layer": "FA_COLOR 12",
+      "position": {
+        "x": 89395.2036886343,
+        "y": -122552.0418726566,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.8;PARTIDA \\PPAVIMENTO}",
+      "layer": "G-DIM",
+      "position": {
+        "x": 61253.94889854639,
+        "y": -62377.92456612917,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.8;PARTIDA \\PPAVIMENTO}",
+      "layer": "G-DIM",
+      "position": {
+        "x": 62349.42131853317,
+        "y": -67341.54258408732,
+        "z": 0
+      }
+    },
+    {
+      "content": "\\pxql;{\\Fromans|c0;\\W0.8;PARTIDA \\PPAVIMENTO}",
+      "layer": "G-DIM",
+      "position": {
+        "x": 68008.79382436466,
+        "y": -69180.01578665782,
+        "z": 0
+      }
+    },
+    {
+      "content": "FIJAR A MURO",
+      "layer": "PDF_Text",
+      "position": {
+        "x": 16334.17185364826,
+        "y": -82342.50848293141,
+        "z": 0
+      }
+    },
+    {
+      "content": "FIJAR A MURO",
+      "layer": "PDF_Text",
+      "position": {
+        "x": 17985.0193112751,
+        "y": -82545.8983134313,
+        "z": 0
+      }
+    }
+  ],
+  "layerSummary": {
+    "0": {
+      "area": 7237.869547137434,
+      "length": 1535.911469312456,
+      "wallArea": 3686.187526349894,
+      "blocks": {
+        "_Dot": 6,
+        "MONITOR FRONTAL": 1,
+        "A$Cfc99dc75": 1,
+        "A$Ce12ba9a5": 1,
+        "NKD": 4,
+        "Galería 3er Piso_dwg_3026-RPD-113_40-PAISAJISMO - CORRECCION PAULMANN$0$jardinera corta-8262451-PLANTA LOCAL Nº 3199": 3,
+        "75x48": 2,
+        "det": 2,
+        "panel piedra": 1,
+        "*U170": 3,
+        "Tomada 2P+T BAIXA": 3,
+        "*U256": 20,
+        "*U253": 4,
+        "*U255": 2,
+        "*U254": 3,
+        "ELEC C": 4,
+        "ELEC G": 9,
+        "*U281": 1,
+        "*U287": 1,
+        "*U295": 1,
+        "*U297": 1,
+        "*U298": 1,
+        "*U299": 1,
+        "*U302": 1,
+        "*U305": 1,
+        "*U304": 1,
+        "*U307": 1,
+        "*U308": 1,
+        "*U309": 1,
+        "*U306": 1,
+        "*U310": 1,
+        "A$Cd2195cbc": 14,
+        "A$Cd96732fa": 1,
+        "TÍTULO E SUBTÍTULO": 3,
+        "TABIQUE}": 14,
+        "tanique 3": 2,
+        "TABIQUE 2": 5,
+        "*U620": 2
+      }
+    },
+    "LO Metal": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {
+        "$AUDIT_BAD_BLOCK_RECORD4": 20
+      }
+    },
+    "LO Construction Line": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {
+        "$AUDIT_BAD_BLOCK_RECORD4": 20
+      }
+    },
+    "TEXTO_M": {
+      "area": 0.23522501571607587,
+      "length": 2.3725480574369433,
+      "wallArea": 5.694115337848664,
+      "blocks": {}
+    },
+    "DIMEN": {
+      "area": 0.5289000000004768,
+      "length": 2.889705627484771,
+      "wallArea": 6.93529350596345,
+      "blocks": {}
+    },
+    "MB-ELEV 2": {
+      "area": 110.50889346123698,
+      "length": 480.48970220752847,
+      "wallArea": 1153.1752852980683,
+      "blocks": {
+        "A$Ce5ed83cd": 7,
+        "*U75": 9,
+        "*U61": 1,
+        "*U76": 10,
+        "A$Cff055fe6": 2,
+        "*U173": 1,
+        "*U171": 1,
+        "*U77": 2,
+        "*U62": 1,
+        "A$C2a2b06d9": 4,
+        "A$C1edbc833": 2,
+        "A$Cd1f2c22b": 1,
+        "AC": 1,
+        "cortina me1": 1,
+        "CIELOS": 1,
+        "L}": 1,
+        "A$C4852d958": 1,
+        "A$C3b68f4d7": 2,
+        "A$C0eadf0be": 1,
+        "TRAS MU CEN": 1,
+        "DIF LINEAL": 1
+      }
+    },
+    "EJ - X1 - Layout": {
+      "area": 0,
+      "length": 1.840179218068785,
+      "wallArea": 4.416430123365084,
+      "blocks": {
+        "TÍTULO E SUBTÍTULO": 2
+      }
+    },
+    "A-ARQ-ARTEFACTOS": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {
+        "A$C853619cd": 1
+      }
+    },
+    "ARQ_MOB": {
+      "area": 0.44130163982868187,
+      "length": 99.85472935586839,
+      "wallArea": 239.6513504540841,
+      "blocks": {}
+    },
+    "FA_TITULO": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {
+        "TÍTULO E SUBTÍTULO": 45
+      }
+    },
+    "MB-COTAS": {
+      "area": 0,
+      "length": 0.5612644835097017,
+      "wallArea": 1.347034760423284,
+      "blocks": {
+        "J": 2,
+        "125x48": 2,
+        "tab medio": 5,
+        "perfil": 1,
+        "panel": 1,
+        "PERFILH": 3,
+        "PERFIL43": 2,
+        "*U172": 1,
+        "A$C218e25fe": 1,
+        "ELEC E": 26
+      }
+    },
+    "FA_0.25": {
+      "area": 0.10345529425448179,
+      "length": 2.4790065389893337,
+      "wallArea": 5.9496156935744,
+      "blocks": {}
+    },
+    "FA_0.05": {
+      "area": 5.30266466906533,
+      "length": 144.13694186963343,
+      "wallArea": 345.9286604871202,
+      "blocks": {}
+    },
+    "FA_ARQ-MUROS": {
+      "area": 22.2192955610331,
+      "length": 347.3166409927953,
+      "wallArea": 833.5599383827088,
+      "blocks": {
+        "ARQ Muros": 12
+      }
+    },
+    "MB-SECTION HATCH": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {
+        "*U74": 10
+      }
+    },
+    "MB-ELEV 0": {
+      "area": null,
+      "length": 1301.8020400382804,
+      "wallArea": 3124.324896091873,
+      "blocks": {
+        "LdS_logotipo brass": 1,
+        "A$C65e9c69f": 1
+      }
+    },
+    "MB-ELEV 4": {
+      "area": 55.79171211572439,
+      "length": 129.20731791132178,
+      "wallArea": 310.09756298717224,
+      "blocks": {}
+    },
+    "MB-ELEV 3": {
+      "area": 4.349120911937202,
+      "length": 38.319116790796514,
+      "wallArea": 91.96588029791162,
+      "blocks": {
+        "LDS-LOGO SIN HATCH": 1
+      }
+    },
+    "LDS-ELECTRICIDAD": {
+      "area": 37.07709616155529,
+      "length": 57.5671927903443,
+      "wallArea": 138.16126269682633,
+      "blocks": {
+        "*U257": 2,
+        "*U258": 1,
+        "*U259": 1,
+        "*U260": 1,
+        "*U261": 1,
+        "*U262": 1,
+        "*U263": 1,
+        "*U264": 1,
+        "*U265": 2
+      }
+    },
+    "MB-LDS-BRONCE": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {
+        "LDS-COUNTER STANDARD": 1,
+        "LDS-FLOOR TILE COLOUR": 1
+      }
+    },
+    "EJ - Equipamento Solo": {
+      "area": 0.5407499999951869,
+      "length": 6.589999999972298,
+      "wallArea": 15.815999999933513,
+      "blocks": {}
+    },
+    "FA_SISTEMAS ELECTRICOS": {
+      "area": 1.8776277320966719,
+      "length": 26.960728831833315,
+      "wallArea": 64.70574919639995,
+      "blocks": {
+        "*U174": 1,
+        "*U223": 2,
+        "Tomada 2P+T BAIXA": 10,
+        "A$C6CC5479C": 3,
+        "Tomada 2P+T MEDIA": 2,
+        "Ponto de Rede": 4,
+        "SOM": 1,
+        "Tomada 2P+T Acima Do Forro": 4,
+        "cmr": 4
+      }
+    },
+    "MV_MUEBLES": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {
+        "TDM_Center3_escada": 1
+      }
+    },
+    "FA_COLOR 12": {
+      "area": 1.064286625137806,
+      "length": 50.11485095377442,
+      "wallArea": 120.27564228905861,
+      "blocks": {
+        "extor co2": 1
+      }
+    },
+    "FA_TABIQUES": {
+      "area": 0,
+      "length": 2.343167625300879,
+      "wallArea": 5.623602300722109,
+      "blocks": {
+        "ARQ RAB PAK": 12
+      }
+    },
+    "FA_MUEBLES PROYECCION": {
+      "area": 56.06896171107065,
+      "length": 284.220595225852,
+      "wallArea": 682.1294285420447,
+      "blocks": {
+        "mu pak": 4
+      }
+    },
+    "FA_PROYECCIÓN GATERAS": {
+      "area": 1.325,
+      "length": 11.659674775251132,
+      "wallArea": 27.983219460602715,
+      "blocks": {
+        "GATERA 60X60": 2
+      }
+    },
+    "FA_TEXTO": {
+      "area": 0.7255288551046627,
+      "length": 3.900980748696884,
+      "wallArea": 9.362353796872522,
+      "blocks": {}
+    },
+    "FA-SISTEMAS": {
+      "area": 0.03194523955631256,
+      "length": 5.211098550435717,
+      "wallArea": 12.50663652104572,
+      "blocks": {
+        "Tomada Telefone": 2
+      }
+    },
+    "FA_0.15": {
+      "area": 0.3084964450187087,
+      "length": 89.17883503398038,
+      "wallArea": 214.0292040815529,
+      "blocks": {}
+    },
+    "FA_ILUMINARIAS": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {
+        "LINEAL": 1,
+        "emergencia": 2,
+        "IND-ACAB-TETO": 2
+      }
+    },
+    "EJ - Luminárias": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {
+        "ITAIM 3007": 2
+      }
+    },
+    "FA_0.20": {
+      "area": 0.9645623107437491,
+      "length": 75.60235681811976,
+      "wallArea": 181.44565636348742,
+      "blocks": {}
+    },
+    "0.1": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {}
+    },
+    "FA_0.10": {
+      "area": 0.012596810849070548,
+      "length": 1.7396811743957667,
+      "wallArea": 4.17523481854984,
+      "blocks": {
+        "*U280": 1,
+        "*U282": 1,
+        "*U284": 1,
+        "*U285": 1,
+        "*U288": 1,
+        "*U289": 1,
+        "*U290": 1,
+        "*U291": 1,
+        "*U293": 1,
+        "*U292": 1,
+        "*U294": 1,
+        "*U300": 1,
+        "*U301": 1
+      }
+    },
+    "A-ARQ-CIELO FALSO": {
+      "area": 0.35386311088246125,
+      "length": 238.00361467092827,
+      "wallArea": 571.2086752102279,
+      "blocks": {
+        "A$C35E860D8": 39
+      }
+    },
+    "A-ARQ-VENTANAS": {
+      "area": 0.005291931251645087,
+      "length": 11.567115612789602,
+      "wallArea": 27.761077470695042,
+      "blocks": {}
+    },
+    "A-ARQ-MUEBLES": {
+      "area": 0.04002114105522633,
+      "length": 6.848431016513029,
+      "wallArea": 16.436234439631267,
+      "blocks": {}
+    },
+    "MV_TEXTO": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {}
+    },
+    "ARQ_NIVEL": {
+      "area": 0.6268851670513154,
+      "length": 5.379234447010036,
+      "wallArea": 12.910162672824088,
+      "blocks": {
+        "A$C03653E7B": 22
+      }
+    },
+    "MV_TEXTOS OOCC": {
+      "area": 0.4050944453706741,
+      "length": 5.184780598259211,
+      "wallArea": 12.443473435822106,
+      "blocks": {}
+    },
+    "Proyección": {
+      "area": 7.837470022126478,
+      "length": 169.54368285956352,
+      "wallArea": 406.90483886295243,
+      "blocks": {
+        "ALZADO FRONTAL": 1,
+        "A$C2e9eb41b": 3,
+        "BRAZI": 2
+      }
+    },
+    "_0Arquitectura": {
+      "area": 0.007999999998569488,
+      "length": 15.267913593224456,
+      "wallArea": 36.64299262373869,
+      "blocks": {}
+    },
+    "_0Textos": {
+      "area": 0,
+      "length": 0.6323913317657989,
+      "wallArea": 1.5177391962379172,
+      "blocks": {
+        "SIMB_NIVEL": 3,
+        "_DotBlank": 1
+      }
+    },
+    "A-350-0-3-00-1": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {}
+    },
+    "HATCH_F": {
+      "area": 7.139737097042113,
+      "length": 20.152630518386744,
+      "wallArea": 48.366313244128186,
+      "blocks": {}
+    },
+    "FA_CORTES": {
+      "area": 0.11010312826061248,
+      "length": 9.521815983573259,
+      "wallArea": 22.85235836057582,
+      "blocks": {
+        "CIELOS PAK": 1
+      }
+    },
+    "7887_EXTINCION": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {
+        "EXTINTOR PQS": 1
+      }
+    },
+    "MB-AUXILIAR": {
+      "area": 0,
+      "length": 2.099853425675287,
+      "wallArea": 5.039648221620689,
+      "blocks": {}
+    },
+    "LDS-FURNITURE OUTLINE": {
+      "area": 0.4095,
+      "length": 25.936105615724326,
+      "wallArea": 62.24665347773838,
+      "blocks": {}
+    },
+    "001 SGV TYP.$3 LIGHT": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {}
+    },
+    "SIMBOLO_OBRA": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {
+        "INDICAÇÃO TETO": 11,
+        "INDICAÇÃO PISO": 13,
+        "INDICAÇÃO PAREDE": 23
+      }
+    },
+    "G-DIM": {
+      "area": 79.12418967490268,
+      "length": 148.3738646824239,
+      "wallArea": 356.09727523781737,
+      "blocks": {}
+    },
+    "A-auxiliar": {
+      "area": 0.07636643587207793,
+      "length": 1.1083868762372149,
+      "wallArea": 2.660128502969316,
+      "blocks": {}
+    },
+    "PDF_Solid Fills": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {}
+    },
+    "PDF_Geometry": {
+      "area": 3.4108592373536806,
+      "length": 81.51065465837777,
+      "wallArea": 195.62557118010665,
+      "blocks": {}
+    },
+    "PDF_Text": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {}
+    },
+    "A-TEXTO": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {}
+    },
+    "A-ARQ-BARANDAS Y EM": {
+      "area": 0.00008700000001490117,
+      "length": 0.6309999999998969,
+      "wallArea": 1.5143999999997524,
+      "blocks": {}
+    },
+    "A-ARQ-ACCESORIOS": {
+      "area": 0.00005599999998509884,
+      "length": 0.08000000000229647,
+      "wallArea": 0.1920000000055115,
+      "blocks": {}
+    },
+    "I-ELE-ALUMBRADO": {
+      "area": 0.0008602133328914643,
+      "length": 0.16933333333282394,
+      "wallArea": 0.40639999999877746,
+      "blocks": {}
+    },
+    "A-COT-EXTERIORES": {
+      "area": 0,
+      "length": 0.6567112121259561,
+      "wallArea": 1.5761069091022946,
+      "blocks": {}
+    },
+    "A-TXT-ESPECIFICACION": {
+      "area": 0,
+      "length": 0.4453688403955479,
+      "wallArea": 1.068885216949315,
+      "blocks": {}
+    },
+    "A-COT-INTERIORES": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {}
+    },
+    "OMEGA": {
+      "area": 0,
+      "length": 0.3168071483021016,
+      "wallArea": 0.7603371559250438,
+      "blocks": {}
+    },
+    "PEN A-RCP DEVICES": {
+      "area": 0,
+      "length": 0.2942003139933513,
+      "wallArea": 0.7060807535840431,
+      "blocks": {}
+    },
+    "A-ARQ-T90-F120": {
+      "area": 0,
+      "length": 1.2008504500879653,
+      "wallArea": 2.8820410802111165,
+      "blocks": {}
+    },
+    "3 LIGHT": {
+      "area": 0.000483869999974966,
+      "length": 0.1269999999984566,
+      "wallArea": 0.3047999999962958,
+      "blocks": {}
+    },
+    "Defpoints": {
+      "area": 0.40546952142286763,
+      "length": 5.231262947584737,
+      "wallArea": 12.555031074203368,
+      "blocks": {}
+    },
+    "FA_LAMINA": {
+      "area": 0,
+      "length": 0,
+      "wallArea": 0,
+      "blocks": {
+        "viñeta": 1,
+        "lamina": 1
+      }
+    }
+  },
+  "excelComparison": [
+    {
+      "id": "TAB_01",
+      "desc": "TAB 01: sobretabique simple sala de ventas",
+      "unit": "m2",
+      "expected": 62.38
+    },
+    {
+      "id": "TAB_02",
+      "desc": "TAB 02: sobretabique simple bodega",
+      "unit": "m2",
+      "expected": 30.58
+    },
+    {
+      "id": "TAB_03",
+      "desc": "TAB 03: tabique simple divisorio y bodega",
+      "unit": "m2",
+      "expected": 29.76
+    },
+    {
+      "id": "CIELO_SALA",
+      "desc": "Cielo volcanita sala de ventas",
+      "unit": "m2",
+      "expected": 37.62
+    },
+    {
+      "id": "CIELO_BODEGA",
+      "desc": "Cielo volcanita bodega",
+      "unit": "m2",
+      "expected": 9.889
+    },
+    {
+      "id": "MORTERO",
+      "desc": "Mortero nivelador",
+      "unit": "m2",
+      "expected": 46.87
+    },
+    {
+      "id": "EMPASTE",
+      "desc": "Empaste y huincha de todos los tabiques",
+      "unit": "m2",
+      "expected": 135.58
+    }
+  ],
+  "totals": {
+    "tabiqueWallArea": 445.0122037710411,
+    "cieloArea": 128.20427844241215,
+    "expectedTabiques": 122.72000000000001,
+    "expectedCielos": 47.509
+  }
+}

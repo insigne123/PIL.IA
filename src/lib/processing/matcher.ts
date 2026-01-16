@@ -584,9 +584,37 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                     methodDetail = 'direct_area';
                     evidenceTypeUsed = 'area'; // P0.3
                 }
+                // FIX: match.type is block or text - use layer profile's total_area instead
+                else if (match.type === 'block' || match.type === 'text') {
+                    // P0.3 FIX: When m² items match to block/text layers, check if layer has area geometry
+                    const layerProfile = result.length > 0 ? result[0].item.profile : null;
+
+                    if (layerProfile && layerProfile.total_area > 0) {
+                        // Layer has area geometry - use it instead of block count
+                        qtyFinal = layerProfile.total_area;
+                        methodDetail = 'profile_area_from_block_layer';
+                        evidenceTypeUsed = 'area';
+                        reason += ` | ⚠️ WARN: Layer matched via block but using layer's total_area (${layerProfile.total_area.toFixed(2)} m²)`;
+                        console.log(`  [FIX] Block layer but has area geometry: using profile.total_area = ${layerProfile.total_area.toFixed(2)} m²`);
+                    } else if (layerProfile && layerProfile.total_length > 0 && isWallIntent) {
+                        // Layer has length but no area, and it's a WALL item - use length × height
+                        heightFactor = 2.4;
+                        qtyFinal = layerProfile.total_length * heightFactor;
+                        methodDetail = 'profile_length_x_height_from_block_layer';
+                        evidenceTypeUsed = 'length';
+                        reason += ` | ⚠️ WALL: Layer matched via block but using length × 2.4m = ${qtyFinal?.toFixed(2)} m²`;
+                        console.log(`  [FIX] Block layer with WALL intent: using profile.total_length × 2.4 = ${qtyFinal?.toFixed(2)} m²`);
+                    } else {
+                        // P0.3: No area/length geometry available - this is INVALID for m² items
+                        qtyFinal = null; // Mark as null to trigger pending status
+                        methodDetail = 'invalid_type_for_area';
+                        evidenceTypeUsed = match.type as 'block' | 'text' | 'area' | 'length';
+                        reason += ` | ❌ ERROR: m² item matched to ${match.type} layer with no area/length geometry`;
+                        console.log(`  [ERROR] m² item matched to ${match.type} type with no area geometry - setting qtyFinal = null`);
+                    }
+                }
                 else {
-                    // match.type is neither area nor length (e.g., block, text)
-                    // P0.3: This is INVALID for m² items
+                    // Unknown type
                     qtyFinal = 0;
                     methodDetail = 'invalid_type_for_area';
                     evidenceTypeUsed = match.type as 'block' | 'text' | 'area' | 'length'; // P0.3: Track invalid type

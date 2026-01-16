@@ -1,0 +1,322 @@
+{
+  "header": {
+    "insunits": 4,
+    "measurement": 1,
+    "interpretedUnit": "mm",
+    "scaleFactor": 0.001
+  },
+  "totalEntities": 4272,
+  "targetLayers": [
+    {
+      "name": "FA_ARQ-MUROS",
+      "found": true,
+      "entities": 50,
+      "types": {
+        "INSERT": 12,
+        "LWPOLYLINE": 38
+      },
+      "rawArea": 22219295.5610331,
+      "areaM2": 22.22,
+      "rawLength": 347316.64099279547,
+      "lengthM": 347.32,
+      "wallAreaFromLength": 833.56,
+      "blocks": 12
+    },
+    {
+      "name": "FA_TABIQUES",
+      "found": true,
+      "entities": 16,
+      "types": {
+        "INSERT": 12,
+        "LWPOLYLINE": 4
+      },
+      "rawArea": 0,
+      "areaM2": 0,
+      "rawLength": 2343.167625300879,
+      "lengthM": 2.34,
+      "wallAreaFromLength": 5.62,
+      "blocks": 12
+    },
+    {
+      "name": "FA_0.15",
+      "found": true,
+      "entities": 34,
+      "types": {
+        "LWPOLYLINE": 18,
+        "LINE": 8,
+        "TEXT": 8
+      },
+      "rawArea": 308496.4450187087,
+      "areaM2": 0.31,
+      "rawLength": 89178.83503398036,
+      "lengthM": 89.18,
+      "wallAreaFromLength": 214.03,
+      "blocks": 0
+    },
+    {
+      "name": "A-ARQ-CIELO FALSO",
+      "found": true,
+      "entities": 531,
+      "types": {
+        "LWPOLYLINE": 212,
+        "LINE": 81,
+        "INSERT": 39,
+        "CIRCLE": 199
+      },
+      "rawArea": 353863.1108824611,
+      "areaM2": 0.35,
+      "rawLength": 238003.61467092688,
+      "lengthM": 238,
+      "wallAreaFromLength": 571.21,
+      "blocks": 39
+    },
+    {
+      "name": "ARQ_NIVEL",
+      "found": true,
+      "entities": 25,
+      "types": {
+        "INSERT": 22,
+        "LINE": 1,
+        "LWPOLYLINE": 2
+      },
+      "rawArea": 626885.1670513153,
+      "areaM2": 0.63,
+      "rawLength": 5379.234447010036,
+      "lengthM": 5.38,
+      "wallAreaFromLength": 12.91,
+      "blocks": 22
+    }
+  ],
+  "topLayersByArea": [
+    {
+      "name": "0",
+      "areaM2": 7237.87,
+      "entities": 411
+    },
+    {
+      "name": "MB-ELEV 2",
+      "areaM2": 110.51,
+      "entities": 232
+    },
+    {
+      "name": "G-DIM",
+      "areaM2": 79.12,
+      "entities": 43
+    },
+    {
+      "name": "FA_MUEBLES PROYECCION",
+      "areaM2": 56.07,
+      "entities": 549
+    },
+    {
+      "name": "MB-ELEV 4",
+      "areaM2": 55.79,
+      "entities": 44
+    },
+    {
+      "name": "LDS-ELECTRICIDAD",
+      "areaM2": 37.08,
+      "entities": 147
+    },
+    {
+      "name": "FA_ARQ-MUROS",
+      "areaM2": 22.22,
+      "entities": 50
+    },
+    {
+      "name": "Proyección",
+      "areaM2": 7.84,
+      "entities": 163
+    },
+    {
+      "name": "HATCH_F",
+      "areaM2": 7.14,
+      "entities": 2
+    },
+    {
+      "name": "FA_0.05",
+      "areaM2": 5.3,
+      "entities": 40
+    },
+    {
+      "name": "MB-ELEV 3",
+      "areaM2": 4.35,
+      "entities": 18
+    },
+    {
+      "name": "MB-ELEV 0",
+      "areaM2": 3.76,
+      "entities": 30
+    },
+    {
+      "name": "PDF_Geometry",
+      "areaM2": 3.41,
+      "entities": 457
+    },
+    {
+      "name": "FA_SISTEMAS ELECTRICOS",
+      "areaM2": 1.88,
+      "entities": 73
+    },
+    {
+      "name": "FA_PROYECCIÓN GATERAS",
+      "areaM2": 1.33,
+      "entities": 8
+    },
+    {
+      "name": "FA_COLOR 12",
+      "areaM2": 1.06,
+      "entities": 97
+    },
+    {
+      "name": "FA_0.20",
+      "areaM2": 0.96,
+      "entities": 12
+    },
+    {
+      "name": "FA_TEXTO",
+      "areaM2": 0.73,
+      "entities": 12
+    },
+    {
+      "name": "ARQ_NIVEL",
+      "areaM2": 0.63,
+      "entities": 25
+    },
+    {
+      "name": "EJ - Equipamento Solo",
+      "areaM2": 0.54,
+      "entities": 11
+    }
+  ],
+  "topLayersByLength": [
+    {
+      "name": "0",
+      "lengthM": 1535.91,
+      "wallAreaM2": 3686.19,
+      "entities": 411
+    },
+    {
+      "name": "MB-ELEV 0",
+      "lengthM": 1301.8,
+      "wallAreaM2": 3124.32,
+      "entities": 30
+    },
+    {
+      "name": "MB-ELEV 2",
+      "lengthM": 480.49,
+      "wallAreaM2": 1153.18,
+      "entities": 232
+    },
+    {
+      "name": "FA_ARQ-MUROS",
+      "lengthM": 347.32,
+      "wallAreaM2": 833.56,
+      "entities": 50
+    },
+    {
+      "name": "FA_MUEBLES PROYECCION",
+      "lengthM": 284.22,
+      "wallAreaM2": 682.13,
+      "entities": 549
+    },
+    {
+      "name": "A-ARQ-CIELO FALSO",
+      "lengthM": 238,
+      "wallAreaM2": 571.21,
+      "entities": 531
+    },
+    {
+      "name": "Proyección",
+      "lengthM": 169.54,
+      "wallAreaM2": 406.9,
+      "entities": 163
+    },
+    {
+      "name": "G-DIM",
+      "lengthM": 148.37,
+      "wallAreaM2": 356.1,
+      "entities": 43
+    },
+    {
+      "name": "FA_0.05",
+      "lengthM": 144.14,
+      "wallAreaM2": 345.93,
+      "entities": 40
+    },
+    {
+      "name": "MB-ELEV 4",
+      "lengthM": 129.21,
+      "wallAreaM2": 310.1,
+      "entities": 44
+    },
+    {
+      "name": "ARQ_MOB",
+      "lengthM": 99.85,
+      "wallAreaM2": 239.65,
+      "entities": 93
+    },
+    {
+      "name": "FA_0.15",
+      "lengthM": 89.18,
+      "wallAreaM2": 214.03,
+      "entities": 34
+    },
+    {
+      "name": "PDF_Geometry",
+      "lengthM": 81.51,
+      "wallAreaM2": 195.63,
+      "entities": 457
+    },
+    {
+      "name": "FA_0.20",
+      "lengthM": 75.6,
+      "wallAreaM2": 181.45,
+      "entities": 12
+    },
+    {
+      "name": "LDS-ELECTRICIDAD",
+      "lengthM": 57.57,
+      "wallAreaM2": 138.16,
+      "entities": 147
+    },
+    {
+      "name": "FA_COLOR 12",
+      "lengthM": 50.11,
+      "wallAreaM2": 120.28,
+      "entities": 97
+    },
+    {
+      "name": "MB-ELEV 3",
+      "lengthM": 38.32,
+      "wallAreaM2": 91.97,
+      "entities": 18
+    },
+    {
+      "name": "FA_SISTEMAS ELECTRICOS",
+      "lengthM": 26.96,
+      "wallAreaM2": 64.71,
+      "entities": 73
+    },
+    {
+      "name": "LDS-FURNITURE OUTLINE",
+      "lengthM": 25.94,
+      "wallAreaM2": 62.25,
+      "entities": 5
+    },
+    {
+      "name": "HATCH_F",
+      "lengthM": 20.15,
+      "wallAreaM2": 48.37,
+      "entities": 2
+    }
+  ],
+  "expectedFromExcel": {
+    "TAB 01": 62.38,
+    "TAB 02": 30.58,
+    "TAB 03": 29.76,
+    "Cielo sala ventas": 37.62,
+    "Cielo bodega": 9.89,
+    "Mortero nivelador": 46.87
+  }
+}

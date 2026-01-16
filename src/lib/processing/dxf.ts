@@ -42,6 +42,13 @@ import {
 } from './block-exploder';
 // Phase 7: Sanity
 import { checkGeometryHealth, type GeometryHealth } from './sanity';
+// View Filter: Exclude cortes/elevaciones (duplicate views)
+import {
+    filterToMainPlanView,
+    autoDetectMainPlanBounds,
+    getViewFilterSummary,
+    type ViewFilterConfig
+} from './view-filter';
 
 
 const parser = new DxfParser();
@@ -174,6 +181,17 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
         console.warn("DXF parser found 0 entities in Model Space.");
     }
 
+    // === VIEW FILTER: EXCLUDE CORTES/ELEVACIONES ===
+    // Auto-detect main plan bounds based on entity clustering
+    const viewFilterConfig = autoDetectMainPlanBounds(modelSpaceEntities);
+    const viewFilterResult = filterToMainPlanView(modelSpaceEntities, viewFilterConfig);
+    const mainPlanEntities = viewFilterResult.filtered;
+
+    console.log(`[DXF Parser] ${getViewFilterSummary(viewFilterResult.stats)}`);
+
+    // Use filtered entities for subsequent processing
+    const processableEntities = mainPlanEntities;
+
     // Extract text context from PaperSpace (for future semantic matching)
     const paperSpaceTexts: string[] = [];
     for (const entity of paperSpaceEntities) {
@@ -195,7 +213,7 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
     // Explode all INSERTs to extract geometry - CRITICAL for files where all geometry is inside blocks
     console.log(`[DXF Parser] P0.1: Exploding blocks to extract geometry...`);
     const explodedGeometry = explodeBlocksForMetrics(
-        modelSpaceEntities,
+        processableEntities,
         dxf,
         toMeters,
         toMetersSquared,
@@ -252,8 +270,8 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
     const blockDefinitions = buildBlockDefinitionsMap(dxf);
     const nestedBlockItems: ItemDetectado[] = [];
 
-    // 4. Process ONLY ModelSpace entities for cubication
-    for (const entity of modelSpaceEntities) {
+    // 4. Process ONLY filtered main plan entities for cubication
+    for (const entity of processableEntities) {
         try {
             // Classification of Entity Type
             const type = entity.type;
@@ -695,7 +713,7 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
 
     // ✅ P0.2: RECALCULATE BBOX AFTER UNIT CONVERSION
     // This fixes the bbox=0 bug by calculating  from entities AFTER toMeters applied
-    let accurateBBox = calculateBoundingBoxFromEntities(modelSpaceEntities, unitMetadata.toMeters);
+    let accurateBBox = calculateBoundingBoxFromEntities(processableEntities, unitMetadata.toMeters);
     let accurateDiagonal = calculateDiagonal(accurateBBox);
 
     // Fallback 1: Try DXF header extents if bbox is still invalid

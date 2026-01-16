@@ -1,0 +1,12 @@
+{
+  "mainPlanBounds": {
+    "yMin": -90000,
+    "yMax": -60000,
+    "yMinM": -90,
+    "yMaxM": -60
+  },
+  "entityCounts": {
+    "mainPlan": 1698,
+    "cortes": 956
+  }
+}

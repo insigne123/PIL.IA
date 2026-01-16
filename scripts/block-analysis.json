@@ -1,0 +1,760 @@
+{
+  "blockDefinitions": [
+    {
+      "name": "mu pak",
+      "layer": "0",
+      "entityCount": 532,
+      "types": {
+        "LINE": 281,
+        "LWPOLYLINE": 234,
+        "CIRCLE": 9,
+        "ARC": 8
+      },
+      "rawLength": 239482.9056546258,
+      "lengthM": 239.4829056546258,
+      "rawArea": 18880745.240571022,
+      "areaM2": 18.88074524057102,
+      "wallAreaM2": 574.7589735711019
+    },
+    {
+      "name": "A$C943c1b1b",
+      "layer": "0",
+      "entityCount": 285,
+      "types": {
+        "LWPOLYLINE": 164,
+        "CIRCLE": 12,
+        "INSERT": 70,
+        "DIMENSION": 10,
+        "LINE": 29
+      },
+      "rawLength": 196543.57363276122,
+      "lengthM": 196.54357363276122,
+      "rawArea": 12620686.44609736,
+      "areaM2": 12.620686446097361,
+      "wallAreaM2": 471.7045767186269
+    },
+    {
+      "name": "CIELOS PAK",
+      "layer": "0",
+      "entityCount": 10,
+      "types": {
+        "LWPOLYLINE": 10
+      },
+      "rawLength": 89751.620239897,
+      "lengthM": 89.75162023989701,
+      "rawArea": 88530350.82001257,
+      "areaM2": 88.53035082001257,
+      "wallAreaM2": 215.4038885757528
+    },
+    {
+      "name": "ARQ RAB PAK",
+      "layer": "0",
+      "entityCount": 45,
+      "types": {
+        "LWPOLYLINE": 40,
+        "LINE": 5
+      },
+      "rawLength": 113896.61852763663,
+      "lengthM": 113.89661852763663,
+      "rawArea": 3376093.569261074,
+      "areaM2": 3.3760935692610743,
+      "wallAreaM2": 273.35188446632793
+    },
+    {
+      "name": "A$Cd96732fa",
+      "layer": "0",
+      "entityCount": 5,
+      "types": {
+        "INSERT": 2,
+        "LWPOLYLINE": 3
+      },
+      "rawLength": 71662.30602547312,
+      "lengthM": 71.66230602547313,
+      "rawArea": 104568265.56259455,
+      "areaM2": 104.56826556259455,
+      "wallAreaM2": 171.9895344611355
+    },
+    {
+      "name": "A$C5b7e334c",
+      "layer": "0",
+      "entityCount": 137,
+      "types": {
+        "LINE": 125,
+        "TEXT": 2,
+        "ARC": 4,
+        "LWPOLYLINE": 6
+      },
+      "rawLength": 84589.61171194655,
+      "lengthM": 84.58961171194655,
+      "rawArea": 25289987.643869165,
+      "areaM2": 25.289987643869164,
+      "wallAreaM2": 203.0150681086717
+    },
+    {
+      "name": "COLUMN SIDE A",
+      "layer": "0",
+      "entityCount": 15,
+      "types": {
+        "LWPOLYLINE": 15
+      },
+      "rawLength": 82418.90821256173,
+      "lengthM": 82.41890821256173,
+      "rawArea": 981800.0000000075,
+      "areaM2": 0.9818000000000074,
+      "wallAreaM2": 197.80537971014815
+    },
+    {
+      "name": "COULUMN SIDE B",
+      "layer": "0",
+      "entityCount": 7,
+      "types": {
+        "LWPOLYLINE": 7
+      },
+      "rawLength": 80276.4802392085,
+      "lengthM": 80.2764802392085,
+      "rawArea": 2128400.0000000037,
+      "areaM2": 2.1284000000000036,
+      "wallAreaM2": 192.66355257410038
+    },
+    {
+      "name": "ARQ Muros",
+      "layer": "0",
+      "entityCount": 15,
+      "types": {
+        "LWPOLYLINE": 14,
+        "MTEXT": 1
+      },
+      "rawLength": 71525.13304363047,
+      "lengthM": 71.52513304363048,
+      "rawArea": 6738687.508816481,
+      "areaM2": 6.738687508816481,
+      "wallAreaM2": 171.66031930471314
+    },
+    {
+      "name": "COLUMNA SIDE D",
+      "layer": "0",
+      "entityCount": 7,
+      "types": {
+        "LWPOLYLINE": 7
+      },
+      "rawLength": 70202.40868130553,
+      "lengthM": 70.20240868130553,
+      "rawArea": 1328000.0000000075,
+      "areaM2": 1.3280000000000076,
+      "wallAreaM2": 168.48578083513326
+    },
+    {
+      "name": "CIELOS",
+      "layer": "0",
+      "entityCount": 3,
+      "types": {
+        "LWPOLYLINE": 3
+      },
+      "rawLength": 43300.38134949371,
+      "lengthM": 43.30038134949371,
+      "rawArea": 39673927.62239957,
+      "areaM2": 39.67392762239957,
+      "wallAreaM2": 103.9209152387849
+    },
+    {
+      "name": "LDS-COUNTER STANDARD",
+      "layer": "0",
+      "entityCount": 18,
+      "types": {
+        "INSERT": 1,
+        "LWPOLYLINE": 4,
+        "CIRCLE": 1,
+        "LINE": 12
+      },
+      "rawLength": 20499.41125496954,
+      "lengthM": 20.499411254969537,
+      "rawArea": 6895405.887450304,
+      "areaM2": 6.895405887450305,
+      "wallAreaM2": 49.19858701192689
+    },
+    {
+      "name": "L}",
+      "layer": "0",
+      "entityCount": 26,
+      "types": {
+        "LWPOLYLINE": 20,
+        "CIRCLE": 6
+      },
+      "rawLength": 18451.726674376107,
+      "lengthM": 18.451726674376108,
+      "rawArea": 1275200,
+      "areaM2": 1.2752000000000001,
+      "wallAreaM2": 44.28414401850266
+    },
+    {
+      "name": "A$Cc1d31165",
+      "layer": "0",
+      "entityCount": 11,
+      "types": {
+        "INSERT": 1,
+        "LWPOLYLINE": 8,
+        "LINE": 2
+      },
+      "rawLength": 17295.01933598375,
+      "lengthM": 17.29501933598375,
+      "rawArea": 1005255.954939306,
+      "areaM2": 1.005255954939306,
+      "wallAreaM2": 41.508046406361
+    },
+    {
+      "name": "A$C218e25fe",
+      "layer": "0",
+      "entityCount": 14,
+      "types": {
+        "LWPOLYLINE": 6,
+        "INSERT": 8
+      },
+      "rawLength": 16407.39138600209,
+      "lengthM": 16.407391386002093,
+      "rawArea": 342525.92091028753,
+      "areaM2": 0.34252592091028755,
+      "wallAreaM2": 39.37773932640502
+    },
+    {
+      "name": "*U247",
+      "layer": "0",
+      "entityCount": 5,
+      "types": {
+        "LWPOLYLINE": 3,
+        "CIRCLE": 1,
+        "INSERT": 1
+      },
+      "rawLength": 14673.691099589436,
+      "lengthM": 14.673691099589437,
+      "rawArea": 2690313.512848549,
+      "areaM2": 2.690313512848549,
+      "wallAreaM2": 35.216858639014646
+    },
+    {
+      "name": "A$C17fc6b00",
+      "layer": "0",
+      "entityCount": 5,
+      "types": {
+        "LWPOLYLINE": 3,
+        "CIRCLE": 1,
+        "INSERT": 1
+      },
+      "rawLength": 14664.111673053965,
+      "lengthM": 14.664111673053965,
+      "rawArea": 2680579.8865269255,
+      "areaM2": 2.680579886526926,
+      "wallAreaM2": 35.193868015329514
+    },
+    {
+      "name": "BW TRASERA GENERAL",
+      "layer": "0",
+      "entityCount": 1,
+      "types": {
+        "LWPOLYLINE": 1
+      },
+      "rawLength": 14219.999999999998,
+      "lengthM": 14.219999999999999,
+      "rawArea": 631799.9999999998,
+      "areaM2": 0.6317999999999997,
+      "wallAreaM2": 34.12799999999999
+    },
+    {
+      "name": "*U264",
+      "layer": "0",
+      "entityCount": 1,
+      "types": {
+        "LWPOLYLINE": 1
+      },
+      "rawLength": 13850.159600003466,
+      "lengthM": 13.850159600003467,
+      "rawArea": 206852.39400005224,
+      "areaM2": 0.20685239400005226,
+      "wallAreaM2": 33.24038304000832
+    },
+    {
+      "name": "COLUMN PLAN",
+      "layer": "0",
+      "entityCount": 7,
+      "types": {
+        "LWPOLYLINE": 7
+      },
+      "rawLength": 13460.538238691614,
+      "lengthM": 13.460538238691614,
+      "rawArea": 961249.9999999925,
+      "areaM2": 0.9612499999999926,
+      "wallAreaM2": 32.305291772859874
+    },
+    {
+      "name": "A$Ca9e59ef5",
+      "layer": "0",
+      "entityCount": 8526,
+      "types": {
+        "LINE": 8525,
+        "LWPOLYLINE": 1
+      },
+      "rawLength": 10780.0699991493,
+      "lengthM": 10.780069999149301,
+      "rawArea": 6034125.072363019,
+      "areaM2": 6.034125072363019,
+      "wallAreaM2": 25.87216799795832
+    },
+    {
+      "name": "A$C65e9c69f",
+      "layer": "0",
+      "entityCount": 3,
+      "types": {
+        "LWPOLYLINE": 3
+      },
+      "rawLength": 11300.000978518872,
+      "lengthM": 11.300000978518872,
+      "rawArea": 2405000.3180186334,
+      "areaM2": 2.4050003180186335,
+      "wallAreaM2": 27.120002348445293
+    },
+    {
+      "name": "*U173",
+      "layer": "0",
+      "entityCount": 3,
+      "types": {
+        "LWPOLYLINE": 3
+      },
+      "rawLength": 11646.427266498216,
+      "lengthM": 11.646427266498216,
+      "rawArea": 870704.7614857613,
+      "areaM2": 0.8707047614857614,
+      "wallAreaM2": 27.95142543959572
+    },
+    {
+      "name": "BW TAPA",
+      "layer": "0",
+      "entityCount": 1,
+      "types": {
+        "LWPOLYLINE": 1
+      },
+      "rawLength": 11067.999999664093,
+      "lengthM": 11.067999999664092,
+      "rawArea": 274199.9999992824,
+      "areaM2": 0.2741999999992824,
+      "wallAreaM2": 26.56319999919382
+    },
+    {
+      "name": "*U257",
+      "layer": "0",
+      "entityCount": 1,
+      "types": {
+        "LWPOLYLINE": 1
+      },
+      "rawLength": 10612.987059568624,
+      "lengthM": 10.612987059568624,
+      "rawArea": 158294.8058935295,
+      "areaM2": 0.1582948058935295,
+      "wallAreaM2": 25.4711689429647
+    },
+    {
+      "name": "cortina me1",
+      "layer": "0",
+      "entityCount": 11,
+      "types": {
+        "LINE": 3,
+        "LWPOLYLINE": 8
+      },
+      "rawLength": 10588.326723492164,
+      "lengthM": 10.588326723492164,
+      "rawArea": 4616.019524097443,
+      "areaM2": 0.004616019524097442,
+      "wallAreaM2": 25.411984136381193
+    },
+    {
+      "name": "A$C8886fe85",
+      "layer": "0",
+      "entityCount": 3,
+      "types": {
+        "LWPOLYLINE": 3
+      },
+      "rawLength": 9791.440896217027,
+      "lengthM": 9.791440896217027,
+      "rawArea": 48657.20448108513,
+      "areaM2": 0.04865720448108513,
+      "wallAreaM2": 23.499458150920866
+    },
+    {
+      "name": "A$C7398546e",
+      "layer": "0",
+      "entityCount": 15,
+      "types": {
+        "LWPOLYLINE": 6,
+        "CIRCLE": 6,
+        "INSERT": 3
+      },
+      "rawLength": 9420.161236902937,
+      "lengthM": 9.420161236902937,
+      "rawArea": 652059.1972828683,
+      "areaM2": 0.6520591972828683,
+      "wallAreaM2": 22.608386968567046
+    },
+    {
+      "name": "A$C3b0f97d9",
+      "layer": "0",
+      "entityCount": 15,
+      "types": {
+        "LWPOLYLINE": 6,
+        "CIRCLE": 6,
+        "INSERT": 3
+      },
+      "rawLength": 9357.409950815552,
+      "lengthM": 9.357409950815553,
+      "rawArea": 651963.5143757868,
+      "areaM2": 0.6519635143757868,
+      "wallAreaM2": 22.457783881957326
+    },
+    {
+      "name": "*U128",
+      "layer": "0",
+      "entityCount": 3,
+      "types": {
+        "LWPOLYLINE": 3
+      },
+      "rawLength": 9486.00005571006,
+      "lengthM": 9.48600005571006,
+      "rawArea": 47130.000278550295,
+      "areaM2": 0.0471300002785503,
+      "wallAreaM2": 22.766400133704142
+    }
+  ],
+  "insertCounts": {
+    "$AUDIT_BAD_BLOCK_RECORD4": 40,
+    "_Dot": 6,
+    "A$C853619cd": 1,
+    "MONITOR FRONTAL": 1,
+    "A$Cfc99dc75": 1,
+    "A$Ce12ba9a5": 1,
+    "NKD": 4,
+    "TÍTULO E SUBTÍTULO": 50,
+    "Galería 3er Piso_dwg_3026-RPD-113_40-PAISAJISMO - CORRECCION PAULMANN$0$jardinera corta-8262451-PLANTA LOCAL Nº 3199": 3,
+    "J": 2,
+    "ARQ Muros": 12,
+    "A$Ce5ed83cd": 7,
+    "*U74": 10,
+    "*U75": 9,
+    "*U61": 1,
+    "*U76": 10,
+    "A$Cff055fe6": 2,
+    "125x48": 2,
+    "75x48": 2,
+    "det": 2,
+    "tab medio": 5,
+    "perfil": 1,
+    "panel piedra": 1,
+    "panel": 1,
+    "PERFILH": 3,
+    "PERFIL43": 2,
+    "*U172": 1,
+    "*U173": 1,
+    "*U171": 1,
+    "*U77": 2,
+    "*U62": 1,
+    "A$C2a2b06d9": 4,
+    "A$C1edbc833": 2,
+    "A$Cd1f2c22b": 1,
+    "LDS-COUNTER STANDARD": 1,
+    "A$C218e25fe": 1,
+    "*U174": 1,
+    "*U170": 3,
+    "TDM_Center3_escada": 1,
+    "extor co2": 1,
+    "ARQ RAB PAK": 12,
+    "AC": 1,
+    "*U223": 2,
+    "mu pak": 4,
+    "GATERA 60X60": 2,
+    "Tomada Telefone": 2,
+    "Tomada 2P+T BAIXA": 13,
+    "A$C6CC5479C": 3,
+    "Tomada 2P+T MEDIA": 2,
+    "Ponto de Rede": 4,
+    "cortina me1": 1,
+    "SOM": 1,
+    "Tomada 2P+T Acima Do Forro": 4,
+    "cmr": 4,
+    "LINEAL": 1,
+    "CIELOS": 1,
+    "ELEC E": 26,
+    "*U256": 20,
+    "*U253": 4,
+    "*U255": 2,
+    "*U257": 2,
+    "emergencia": 2,
+    "*U254": 3,
+    "*U258": 1,
+    "*U259": 1,
+    "*U260": 1,
+    "*U261": 1,
+    "*U262": 1,
+    "*U263": 1,
+    "ELEC C": 4,
+    "ELEC G": 9,
+    "*U264": 1,
+    "*U265": 2,
+    "ITAIM 3007": 2,
+    "IND-ACAB-TETO": 2,
+    "A$C35E860D8": 39,
+    "*U280": 1,
+    "*U281": 1,
+    "*U282": 1,
+    "*U284": 1,
+    "*U285": 1,
+    "A$C03653E7B": 22,
+    "*U288": 1,
+    "*U287": 1,
+    "*U289": 1,
+    "ALZADO FRONTAL": 1,
+    "*U290": 1,
+    "A$C2e9eb41b": 3,
+    "*U291": 1,
+    "*U293": 1,
+    "*U292": 1,
+    "*U294": 1,
+    "*U295": 1,
+    "L}": 1,
+    "*U297": 1,
+    "*U298": 1,
+    "*U300": 1,
+    "*U299": 1,
+    "*U301": 1,
+    "*U302": 1,
+    "*U305": 1,
+    "*U304": 1,
+    "*U307": 1,
+    "*U308": 1,
+    "*U309": 1,
+    "*U306": 1,
+    "*U310": 1,
+    "BRAZI": 2,
+    "LdS_logotipo brass": 1,
+    "A$Cd2195cbc": 14,
+    "A$C65e9c69f": 1,
+    "A$C4852d958": 1,
+    "A$C3b68f4d7": 2,
+    "CIELOS PAK": 1,
+    "EXTINTOR PQS": 1,
+    "A$Cd96732fa": 1,
+    "A$C0eadf0be": 1,
+    "LDS-FLOOR TILE COLOUR": 1,
+    "INDICAÇÃO TETO": 11,
+    "INDICAÇÃO PISO": 13,
+    "SIMB_NIVEL": 3,
+    "_DotBlank": 1,
+    "TRAS MU CEN": 1,
+    "DIF LINEAL": 1,
+    "INDICAÇÃO PAREDE": 23,
+    "TABIQUE}": 14,
+    "tanique 3": 2,
+    "TABIQUE 2": 5,
+    "*U620": 2,
+    "LDS-LOGO SIN HATCH": 1,
+    "viñeta": 1,
+    "lamina": 1
+  },
+  "insertsByLayer": {
+    "0": {
+      "_Dot": 6,
+      "MONITOR FRONTAL": 1,
+      "A$Cfc99dc75": 1,
+      "A$Ce12ba9a5": 1,
+      "NKD": 4,
+      "Galería 3er Piso_dwg_3026-RPD-113_40-PAISAJISMO - CORRECCION PAULMANN$0$jardinera corta-8262451-PLANTA LOCAL Nº 3199": 3,
+      "75x48": 2,
+      "det": 2,
+      "panel piedra": 1,
+      "*U170": 3,
+      "Tomada 2P+T BAIXA": 3,
+      "*U256": 20,
+      "*U253": 4,
+      "*U255": 2,
+      "*U254": 3,
+      "ELEC C": 4,
+      "ELEC G": 9,
+      "*U281": 1,
+      "*U287": 1,
+      "*U295": 1,
+      "*U297": 1,
+      "*U298": 1,
+      "*U299": 1,
+      "*U302": 1,
+      "*U305": 1,
+      "*U304": 1,
+      "*U307": 1,
+      "*U308": 1,
+      "*U309": 1,
+      "*U306": 1,
+      "*U310": 1,
+      "A$Cd2195cbc": 14,
+      "A$Cd96732fa": 1,
+      "TÍTULO E SUBTÍTULO": 3,
+      "TABIQUE}": 14,
+      "tanique 3": 2,
+      "TABIQUE 2": 5,
+      "*U620": 2
+    },
+    "LO Metal": {
+      "$AUDIT_BAD_BLOCK_RECORD4": 20
+    },
+    "LO Construction Line": {
+      "$AUDIT_BAD_BLOCK_RECORD4": 20
+    },
+    "A-ARQ-ARTEFACTOS": {
+      "A$C853619cd": 1
+    },
+    "FA_TITULO": {
+      "TÍTULO E SUBTÍTULO": 45
+    },
+    "MB-COTAS": {
+      "J": 2,
+      "125x48": 2,
+      "tab medio": 5,
+      "perfil": 1,
+      "panel": 1,
+      "PERFILH": 3,
+      "PERFIL43": 2,
+      "*U172": 1,
+      "A$C218e25fe": 1,
+      "ELEC E": 26
+    },
+    "FA_ARQ-MUROS": {
+      "ARQ Muros": 12
+    },
+    "MB-ELEV 2": {
+      "A$Ce5ed83cd": 7,
+      "*U75": 9,
+      "*U61": 1,
+      "*U76": 10,
+      "A$Cff055fe6": 2,
+      "*U173": 1,
+      "*U171": 1,
+      "*U77": 2,
+      "*U62": 1,
+      "A$C2a2b06d9": 4,
+      "A$C1edbc833": 2,
+      "A$Cd1f2c22b": 1,
+      "AC": 1,
+      "cortina me1": 1,
+      "CIELOS": 1,
+      "L}": 1,
+      "A$C4852d958": 1,
+      "A$C3b68f4d7": 2,
+      "A$C0eadf0be": 1,
+      "TRAS MU CEN": 1,
+      "DIF LINEAL": 1
+    },
+    "MB-SECTION HATCH": {
+      "*U74": 10
+    },
+    "MB-LDS-BRONCE": {
+      "LDS-COUNTER STANDARD": 1,
+      "LDS-FLOOR TILE COLOUR": 1
+    },
+    "FA_SISTEMAS ELECTRICOS": {
+      "*U174": 1,
+      "*U223": 2,
+      "Tomada 2P+T BAIXA": 10,
+      "A$C6CC5479C": 3,
+      "Tomada 2P+T MEDIA": 2,
+      "Ponto de Rede": 4,
+      "SOM": 1,
+      "Tomada 2P+T Acima Do Forro": 4,
+      "cmr": 4
+    },
+    "MV_MUEBLES": {
+      "TDM_Center3_escada": 1
+    },
+    "FA_COLOR 12": {
+      "extor co2": 1
+    },
+    "FA_TABIQUES": {
+      "ARQ RAB PAK": 12
+    },
+    "FA_MUEBLES PROYECCION": {
+      "mu pak": 4
+    },
+    "FA_PROYECCIÓN GATERAS": {
+      "GATERA 60X60": 2
+    },
+    "FA-SISTEMAS": {
+      "Tomada Telefone": 2
+    },
+    "FA_ILUMINARIAS": {
+      "LINEAL": 1,
+      "emergencia": 2,
+      "IND-ACAB-TETO": 2
+    },
+    "LDS-ELECTRICIDAD": {
+      "*U257": 2,
+      "*U258": 1,
+      "*U259": 1,
+      "*U260": 1,
+      "*U261": 1,
+      "*U262": 1,
+      "*U263": 1,
+      "*U264": 1,
+      "*U265": 2
+    },
+    "EJ - Luminárias": {
+      "ITAIM 3007": 2
+    },
+    "A-ARQ-CIELO FALSO": {
+      "A$C35E860D8": 39
+    },
+    "FA_0.10": {
+      "*U280": 1,
+      "*U282": 1,
+      "*U284": 1,
+      "*U285": 1,
+      "*U288": 1,
+      "*U289": 1,
+      "*U290": 1,
+      "*U291": 1,
+      "*U293": 1,
+      "*U292": 1,
+      "*U294": 1,
+      "*U300": 1,
+      "*U301": 1
+    },
+    "ARQ_NIVEL": {
+      "A$C03653E7B": 22
+    },
+    "Proyección": {
+      "ALZADO FRONTAL": 1,
+      "A$C2e9eb41b": 3,
+      "BRAZI": 2
+    },
+    "MB-ELEV 0": {
+      "LdS_logotipo brass": 1,
+      "A$C65e9c69f": 1
+    },
+    "FA_CORTES": {
+      "CIELOS PAK": 1
+    },
+    "7887_EXTINCION": {
+      "EXTINTOR PQS": 1
+    },
+    "SIMBOLO_OBRA": {
+      "INDICAÇÃO TETO": 11,
+      "INDICAÇÃO PISO": 13,
+      "INDICAÇÃO PAREDE": 23
+    },
+    "_0Textos": {
+      "SIMB_NIVEL": 3,
+      "_DotBlank": 1
+    },
+    "EJ - X1 - Layout": {
+      "TÍTULO E SUBTÍTULO": 2
+    },
+    "MB-ELEV 3": {
+      "LDS-LOGO SIN HATCH": 1
+    },
+    "FA_LAMINA": {
+      "viñeta": 1,
+      "lamina": 1
+    }
+  }
+}

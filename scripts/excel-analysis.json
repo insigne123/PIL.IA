@@ -1,0 +1,5458 @@
+{
+  "worksheets": [
+    {
+      "name": "Presupuesto (OOCC)",
+      "rowCount": 1012,
+      "columnCount": 22,
+      "items": [
+        {
+          "row": 12,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "1",
+            "_col1": "1",
+            "Partida": "OBRAS PRELIMINARES",
+            "_col2": "OBRAS PRELIMINARES"
+          },
+          "description": "OBRAS PRELIMINARES"
+        },
+        {
+          "row": 13,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "1.1",
+            "_col1": "1.1",
+            "Partida": "Instalación de faenas",
+            "_col2": "Instalación de faenas",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "D13*E13",
+              "ref": "F13:F18",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "D13*E13",
+              "ref": "F13:F18",
+              "shareType": "shared"
+            }
+          },
+          "description": "Instalación de faenas",
+          "unit": "gl"
+        },
+        {
+          "row": 14,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "1.2",
+            "_col1": "1.2",
+            "Partida": "Tablero de Obra (considera tramitacion y obtencion TE1)",
+            "_col2": "Tablero de Obra (considera tramitacion y obtencion TE1)",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F13"
+            },
+            "_col6": {
+              "sharedFormula": "F13"
+            }
+          },
+          "description": "Tablero de Obra (considera tramitacion y obtencion TE1)",
+          "unit": "gl"
+        },
+        {
+          "row": 15,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "1.3",
+            "_col1": "1.3",
+            "Partida": "Impermeabilización membrana asfáltica según plano",
+            "_col2": "Impermeabilización membrana asfáltica según plano",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "sharedFormula": "F13"
+            },
+            "_col6": {
+              "sharedFormula": "F13"
+            }
+          },
+          "description": "Impermeabilización membrana asfáltica según plano",
+          "unit": "m2"
+        },
+        {
+          "row": 16,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "1.5",
+            "_col1": "1.5",
+            "Partida": "Sobrelosa de 8cm",
+            "_col2": "Sobrelosa de 8cm",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "formula": "D16*E16",
+              "ref": "F16",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "D16*E16",
+              "ref": "F16",
+              "shareType": "shared"
+            }
+          },
+          "description": "Sobrelosa de 8cm",
+          "unit": "m2"
+        },
+        {
+          "row": 17,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "1.6",
+            "_col1": "1.6",
+            "Partida": "Trazados y niveles",
+            "_col2": "Trazados y niveles",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F13"
+            },
+            "_col6": {
+              "sharedFormula": "F13"
+            }
+          },
+          "description": "Trazados y niveles",
+          "unit": "gl"
+        },
+        {
+          "row": 18,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "1.7",
+            "_col1": "1.7",
+            "Partida": "Retiro de escombros",
+            "_col2": "Retiro de escombros",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F13"
+            },
+            "_col6": {
+              "sharedFormula": "F13"
+            }
+          },
+          "description": "Retiro de escombros",
+          "unit": "gl"
+        },
+        {
+          "row": 19,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "1.9",
+            "_col1": "1.9",
+            "Partida": "Otros no considerados en OBRAS PRELIMINARES",
+            "_col2": "Otros no considerados en OBRAS PRELIMINARES",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "D19*E19",
+              "ref": "F19",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "D19*E19",
+              "ref": "F19",
+              "shareType": "shared"
+            }
+          },
+          "description": "Otros no considerados en OBRAS PRELIMINARES",
+          "unit": "gl"
+        },
+        {
+          "row": 21,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "2",
+            "_col1": "2",
+            "Partida": "TABIQUES ",
+            "_col2": "TABIQUES "
+          },
+          "description": "TABIQUES "
+        },
+        {
+          "row": 22,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "2.1",
+            "_col1": "2.1",
+            "Partida": "TAB 01: sobretabique simple sala de ventas, montante estructural 60 + plancha MDF 15 mm",
+            "_col2": "TAB 01: sobretabique simple sala de ventas, montante estructural 60 + plancha MDF 15 mm",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "formula": "D22*E22",
+              "ref": "F22:F27",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "D22*E22",
+              "ref": "F22:F27",
+              "shareType": "shared"
+            }
+          },
+          "description": "TAB 01: sobretabique simple sala de ventas, montante estructural 60 + plancha MDF 15 mm",
+          "unit": "m2"
+        },
+        {
+          "row": 23,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "2.2",
+            "_col1": "2.2",
+            "Partida": "TAB 02: sobretabique simple bodega, montante estructural 60 + plancha yeso carton 15 mm",
+            "_col2": "TAB 02: sobretabique simple bodega, montante estructural 60 + plancha yeso carton 15 mm",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "sharedFormula": "F22"
+            },
+            "_col6": {
+              "sharedFormula": "F22"
+            }
+          },
+          "description": "TAB 02: sobretabique simple bodega, montante estructural 60 + plancha yeso carton 15 mm",
+          "unit": "m2"
+        },
+        {
+          "row": 24,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "2.3",
+            "_col1": "2.3",
+            "Partida": "TAB 03: tabique simple divisorio, montante estructural 90 + plancha yeso carton 15 mm una cara + plancha MDF 15mm una cara",
+            "_col2": "TAB 03: tabique simple divisorio, montante estructural 90 + plancha yeso carton 15 mm una cara + plancha MDF 15mm una cara",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "formula": "D24*E24",
+              "ref": "F24",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "D24*E24",
+              "ref": "F24",
+              "shareType": "shared"
+            }
+          },
+          "description": "TAB 03: tabique simple divisorio, montante estructural 90 + plancha yeso carton 15 mm una cara + pla",
+          "unit": "m2"
+        },
+        {
+          "row": 25,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "2.4",
+            "_col1": "2.4",
+            "Partida": "Sobretabique pilar montante estructural 60 + plancha yeso carton 15 mm, considera esquinas redondeadas según detalle",
+            "_col2": "Sobretabique pilar montante estructural 60 + plancha yeso carton 15 mm, considera esquinas redondeadas según detalle",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "sharedFormula": "F22"
+            },
+            "_col6": {
+              "sharedFormula": "F22"
+            }
+          },
+          "description": "Sobretabique pilar montante estructural 60 + plancha yeso carton 15 mm, considera esquinas redondead",
+          "unit": "m2"
+        },
+        {
+          "row": 26,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "2.5",
+            "_col1": "2.5",
+            "Partida": "Tabique fachada montante estructural 60 + plancha MDF 15 mm",
+            "_col2": "Tabique fachada montante estructural 60 + plancha MDF 15 mm",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "sharedFormula": "F22"
+            },
+            "_col6": {
+              "sharedFormula": "F22"
+            }
+          },
+          "description": "Tabique fachada montante estructural 60 + plancha MDF 15 mm",
+          "unit": "m2"
+        },
+        {
+          "row": 27,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "2.6",
+            "_col1": "2.6",
+            "Partida": "Refuerzo oculto en tabique TERCIADO 15mm en tabique para fijacion TDA, RACK DE DATOS, estanterias de bodega, escalera gatera",
+            "_col2": "Refuerzo oculto en tabique TERCIADO 15mm en tabique para fijacion TDA, RACK DE DATOS, estanterias de bodega, escalera gatera",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "sharedFormula": "F22"
+            },
+            "_col6": {
+              "sharedFormula": "F22"
+            }
+          },
+          "description": "Refuerzo oculto en tabique TERCIADO 15mm en tabique para fijacion TDA, RACK DE DATOS, estanterias de",
+          "unit": "m2"
+        },
+        {
+          "row": 28,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "2.7",
+            "_col1": "2.7",
+            "Partida": "Escalera gatera metalica según detalle",
+            "_col2": "Escalera gatera metalica según detalle",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "E28*D28",
+              "ref": "F28",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E28*D28",
+              "ref": "F28",
+              "shareType": "shared"
+            }
+          },
+          "description": "Escalera gatera metalica según detalle",
+          "unit": "gl"
+        },
+        {
+          "row": 29,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "2.8",
+            "_col1": "2.8",
+            "Partida": "Otros no considerados en TABIQUES",
+            "_col2": "Otros no considerados en TABIQUES",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "E29*D29"
+            },
+            "_col6": {
+              "formula": "E29*D29"
+            }
+          },
+          "description": "Otros no considerados en TABIQUES",
+          "unit": "gl"
+        },
+        {
+          "row": 31,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "3",
+            "_col1": "3",
+            "Partida": "CIELOS",
+            "_col2": "CIELOS"
+          },
+          "description": "CIELOS"
+        },
+        {
+          "row": 32,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "3.1",
+            "_col1": "3.1",
+            "Partida": "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm",
+            "_col2": "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "formula": "D32*E32"
+            },
+            "_col6": {
+              "formula": "D32*E32"
+            }
+          },
+          "description": "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm",
+          "unit": "m2"
+        },
+        {
+          "row": 33,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "3.2",
+            "_col1": "3.2",
+            "Partida": "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm",
+            "_col2": "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "formula": "E33*D33",
+              "ref": "F33:F38",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E33*D33",
+              "ref": "F33:F38",
+              "shareType": "shared"
+            }
+          },
+          "description": "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm",
+          "unit": "m2"
+        },
+        {
+          "row": 34,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "3.3",
+            "_col1": "3.3",
+            "Partida": "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm",
+            "_col2": "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm",
+            "Unidad": "ml",
+            "_col3": "ml",
+            "Total": {
+              "sharedFormula": "F33"
+            },
+            "_col6": {
+              "sharedFormula": "F33"
+            }
+          },
+          "description": "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm",
+          "unit": "ml"
+        },
+        {
+          "row": 35,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "3.4",
+            "_col1": "3.4",
+            "Partida": "Pasarela de mantención montante estructural según detalle desde gatera hasta cortina de rollo según requerimientos a revisar en terreno, considera 60 cms de ancho libre. Considera pasamanos para restringir el paso al resto del cielo.",
+            "_col2": "Pasarela de mantención montante estructural según detalle desde gatera hasta cortina de rollo según requerimientos a revisar en terreno, considera 60 cms de ancho libre. Considera pasamanos para restringir el paso al resto del cielo.",
+            "Unidad": "ml",
+            "_col3": "ml",
+            "Total": {
+              "sharedFormula": "F33"
+            },
+            "_col6": {
+              "sharedFormula": "F33"
+            }
+          },
+          "description": "Pasarela de mantención montante estructural según detalle desde gatera hasta cortina de rollo según ",
+          "unit": "ml"
+        },
+        {
+          "row": 36,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "3.5",
+            "_col1": "3.5",
+            "Partida": "Refuerzos metalicos para instalacion rollo y guias cortina metalica",
+            "_col2": "Refuerzos metalicos para instalacion rollo y guias cortina metalica",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F33"
+            },
+            "_col6": {
+              "sharedFormula": "F33"
+            }
+          },
+          "description": "Refuerzos metalicos para instalacion rollo y guias cortina metalica",
+          "unit": "gl"
+        },
+        {
+          "row": 37,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "3.6",
+            "_col1": "3.6",
+            "Partida": "Tapa de inspeccion clasica para cielos de yeso carton 60x60cms color blanco espesor 15mm marca SKYHOUSE (con pasador para candado)",
+            "_col2": "Tapa de inspeccion clasica para cielos de yeso carton 60x60cms color blanco espesor 15mm marca SKYHOUSE (con pasador para candado)",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F33"
+            },
+            "_col6": {
+              "sharedFormula": "F33"
+            }
+          },
+          "description": "Tapa de inspeccion clasica para cielos de yeso carton 60x60cms color blanco espesor 15mm marca SKYHO",
+          "unit": "gl"
+        },
+        {
+          "row": 38,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "3.7",
+            "_col1": "3.7",
+            "Partida": "Otros no considerados en CIELOS",
+            "_col2": "Otros no considerados en CIELOS",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F33"
+            },
+            "_col6": {
+              "sharedFormula": "F33"
+            }
+          },
+          "description": "Otros no considerados en CIELOS",
+          "unit": "gl"
+        },
+        {
+          "row": 40,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "4",
+            "_col1": "4",
+            "Partida": "PINTURAS Y REVESTIMIENTOS DE MURO",
+            "_col2": "PINTURAS Y REVESTIMIENTOS DE MURO"
+          },
+          "description": "PINTURAS Y REVESTIMIENTOS DE MURO"
+        },
+        {
+          "row": 41,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "4.1",
+            "_col1": "4.1",
+            "Partida": "Empaste y huincha de todos los tabiques de yeso carton",
+            "_col2": "Empaste y huincha de todos los tabiques de yeso carton",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "formula": "D41*E41",
+              "ref": "F41:F45",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "D41*E41",
+              "ref": "F41:F45",
+              "shareType": "shared"
+            }
+          },
+          "description": "Empaste y huincha de todos los tabiques de yeso carton",
+          "unit": "m2"
+        },
+        {
+          "row": 42,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "4.2",
+            "_col1": "4.2",
+            "Partida": "Empaste y huincha de todos los cielos ",
+            "_col2": "Empaste y huincha de todos los cielos ",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "sharedFormula": "F41"
+            },
+            "_col6": {
+              "sharedFormula": "F41"
+            }
+          },
+          "description": "Empaste y huincha de todos los cielos ",
+          "unit": "m2"
+        },
+        {
+          "row": 43,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "4.3",
+            "_col1": "4.3",
+            "Partida": "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK",
+            "_col2": "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "sharedFormula": "F41"
+            },
+            "_col6": {
+              "sharedFormula": "F41"
+            }
+          },
+          "description": "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK",
+          "unit": "m2"
+        },
+        {
+          "row": 44,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "4.4",
+            "_col1": "4.4",
+            "Partida": "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural",
+            "_col2": "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "sharedFormula": "F41"
+            },
+            "_col6": {
+              "sharedFormula": "F41"
+            }
+          },
+          "description": "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural",
+          "unit": "m2"
+        },
+        {
+          "row": 45,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "4.5",
+            "_col1": "4.5",
+            "Partida": "Pintura latex extracubriente blanco en cielo bodega",
+            "_col2": "Pintura latex extracubriente blanco en cielo bodega",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "sharedFormula": "F41"
+            },
+            "_col6": {
+              "sharedFormula": "F41"
+            }
+          },
+          "description": "Pintura latex extracubriente blanco en cielo bodega",
+          "unit": "m2"
+        },
+        {
+          "row": 46,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "4.5",
+            "_col1": "4.5",
+            "Partida": "Pintura QUARZO con sellador acrilico + estuco SIP + revestimiento gres segun indicacion fabricante. PROVEEDOR: Lumine",
+            "_col2": "Pintura QUARZO con sellador acrilico + estuco SIP + revestimiento gres segun indicacion fabricante. PROVEEDOR: Lumine",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "formula": "D46*E46",
+              "ref": "F46",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "D46*E46",
+              "ref": "F46",
+              "shareType": "shared"
+            }
+          },
+          "description": "Pintura QUARZO con sellador acrilico + estuco SIP + revestimiento gres segun indicacion fabricante. ",
+          "unit": "m2"
+        },
+        {
+          "row": 47,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "4.6",
+            "_col1": "4.6",
+            "Partida": "Otros no considerados en PINTURAS Y REVESTIMIENTOS DE MURO",
+            "_col2": "Otros no considerados en PINTURAS Y REVESTIMIENTOS DE MURO",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "E47*D47"
+            },
+            "_col6": {
+              "formula": "E47*D47"
+            }
+          },
+          "description": "Otros no considerados en PINTURAS Y REVESTIMIENTOS DE MURO",
+          "unit": "gl"
+        },
+        {
+          "row": 49,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "5",
+            "_col1": "5",
+            "Partida": "PAVIMENTOS ",
+            "_col2": "PAVIMENTOS "
+          },
+          "description": "PAVIMENTOS "
+        },
+        {
+          "row": 50,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "5.1",
+            "_col1": "5.1",
+            "Partida": "Mortero nivelador",
+            "_col2": "Mortero nivelador",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "formula": "E50*D50",
+              "ref": "F50:F59",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E50*D50",
+              "ref": "F50:F59",
+              "shareType": "shared"
+            }
+          },
+          "description": "Mortero nivelador",
+          "unit": "m2"
+        },
+        {
+          "row": 51,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "5.2",
+            "_col1": "5.2",
+            "Partida": "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm",
+            "_col2": "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "formula": "E51*D51",
+              "ref": "F51:F55",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E51*D51",
+              "ref": "F51:F55",
+              "shareType": "shared"
+            }
+          },
+          "description": "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra ma",
+          "unit": "m2"
+        },
+        {
+          "row": 52,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "5.3",
+            "_col1": "5.3",
+            "Partida": "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm.",
+            "_col2": "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm.",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "sharedFormula": "F51"
+            },
+            "_col6": {
+              "sharedFormula": "F51"
+            }
+          },
+          "description": "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra ",
+          "unit": "m2"
+        },
+        {
+          "row": 53,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "5.4",
+            "_col1": "5.4",
+            "Partida": "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm.",
+            "_col2": "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm.",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "sharedFormula": "F51"
+            },
+            "_col6": {
+              "sharedFormula": "F51"
+            }
+          },
+          "description": "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante pr",
+          "unit": "m2"
+        },
+        {
+          "row": 54,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "5.5",
+            "_col1": "5.5",
+            "Partida": "Pieza de marmol en acceso color Rosso Asiago acabado opaco con logo plancha de bronce e=2mm acabado opaco segun muestra, embutido en marmol *archivo grafico a proveer por mandante",
+            "_col2": "Pieza de marmol en acceso color Rosso Asiago acabado opaco con logo plancha de bronce e=2mm acabado opaco segun muestra, embutido en marmol *archivo grafico a proveer por mandante",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "sharedFormula": "F51"
+            },
+            "_col6": {
+              "sharedFormula": "F51"
+            }
+          },
+          "description": "Pieza de marmol en acceso color Rosso Asiago acabado opaco con logo plancha de bronce e=2mm acabado ",
+          "unit": "m2"
+        },
+        {
+          "row": 55,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "5.6",
+            "_col1": "5.6",
+            "Partida": "Tarima de marmol en vitrinas color Rosso Asiago acabado opaco, considera estructura interior",
+            "_col2": "Tarima de marmol en vitrinas color Rosso Asiago acabado opaco, considera estructura interior",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "sharedFormula": "F51"
+            },
+            "_col6": {
+              "sharedFormula": "F51"
+            }
+          },
+          "description": "Tarima de marmol en vitrinas color Rosso Asiago acabado opaco, considera estructura interior",
+          "unit": "m2"
+        },
+        {
+          "row": 56,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "5.7",
+            "_col1": "5.7",
+            "Partida": "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm.",
+            "_col2": "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm.",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "sharedFormula": "F50"
+            },
+            "_col6": {
+              "sharedFormula": "F50"
+            }
+          },
+          "description": "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm.",
+          "unit": "m2"
+        },
+        {
+          "row": 57,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "5.8",
+            "_col1": "5.8",
+            "Partida": "Provision e instalacion pavimento IDEM MALL",
+            "_col2": "Provision e instalacion pavimento IDEM MALL",
+            "Unidad": "m2",
+            "_col3": "m2",
+            "Total": {
+              "formula": "E57*D57",
+              "ref": "F57",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E57*D57",
+              "ref": "F57",
+              "shareType": "shared"
+            }
+          },
+          "description": "Provision e instalacion pavimento IDEM MALL",
+          "unit": "m2"
+        },
+        {
+          "row": 58,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "5.9",
+            "_col1": "5.9",
+            "Partida": "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce",
+            "_col2": "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce",
+            "Unidad": "ml",
+            "_col3": "ml",
+            "Total": {
+              "sharedFormula": "F50"
+            },
+            "_col6": {
+              "sharedFormula": "F50"
+            }
+          },
+          "description": "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce",
+          "unit": "ml"
+        },
+        {
+          "row": 59,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "5.10",
+            "_col1": "5.10",
+            "Partida": "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)",
+            "_col2": "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)",
+            "Unidad": "ml",
+            "_col3": "ml",
+            "Total": {
+              "sharedFormula": "F50"
+            },
+            "_col6": {
+              "sharedFormula": "F50"
+            }
+          },
+          "description": "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10",
+          "unit": "ml"
+        },
+        {
+          "row": 60,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "5.11",
+            "_col1": "5.11",
+            "Partida": "Otros no considerados en PAVIMENTOS",
+            "_col2": "Otros no considerados en PAVIMENTOS",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "E60*D60",
+              "ref": "F60",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E60*D60",
+              "ref": "F60",
+              "shareType": "shared"
+            }
+          },
+          "description": "Otros no considerados en PAVIMENTOS",
+          "unit": "gl"
+        },
+        {
+          "row": 62,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "6",
+            "_col1": "6",
+            "Partida": "PUERTAS Y QUINCALLERIA",
+            "_col2": "PUERTAS Y QUINCALLERIA"
+          },
+          "description": "PUERTAS Y QUINCALLERIA"
+        },
+        {
+          "row": 63,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "6.1",
+            "_col1": "6.1",
+            "Partida": "Brazo Hidráulico puerta bodega",
+            "_col2": "Brazo Hidráulico puerta bodega",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": "0",
+            "_col6": "0"
+          },
+          "description": "Brazo Hidráulico puerta bodega",
+          "unit": "un"
+        },
+        {
+          "row": 64,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "6.2",
+            "_col1": "6.2",
+            "Partida": "Otros no considerados en PUERTAS Y QUINCALLERIA",
+            "_col2": "Otros no considerados en PUERTAS Y QUINCALLERIA",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "E64*D64"
+            },
+            "_col6": {
+              "formula": "E64*D64"
+            }
+          },
+          "description": "Otros no considerados en PUERTAS Y QUINCALLERIA",
+          "unit": "gl"
+        },
+        {
+          "row": 66,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7",
+            "_col1": "7",
+            "Partida": "LUMINARIAS",
+            "_col2": "LUMINARIAS"
+          },
+          "description": "LUMINARIAS"
+        },
+        {
+          "row": 67,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.1",
+            "_col1": "7.1",
+            "Partida": "(D) Perfil de aluminio sobrepuesto rectangular. Material: Aluminio. Protección IP: IP20. Dimensiones: 16 x 6 x 3000 mm. Incluye: Difusor Opal + cinta LED SMD 2835 19,2W interior. Voltage: 12V. Luminous flux: 1.600 LM x mt. Protection IP: IP20. Dimentions: 5000 × 10 mm. PROVEEDOR: DLUZ",
+            "_col2": "(D) Perfil de aluminio sobrepuesto rectangular. Material: Aluminio. Protección IP: IP20. Dimensiones: 16 x 6 x 3000 mm. Incluye: Difusor Opal + cinta LED SMD 2835 19,2W interior. Voltage: 12V. Luminous flux: 1.600 LM x mt. Protection IP: IP20. Dimentions: 5000 × 10 mm. PROVEEDOR: DLUZ",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "formula": "E67*D67",
+              "ref": "F67:F80",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E67*D67",
+              "ref": "F67:F80",
+              "shareType": "shared"
+            }
+          },
+          "description": "(D) Perfil de aluminio sobrepuesto rectangular. Material: Aluminio. Protección IP: IP20. Dimensiones",
+          "unit": "un"
+        },
+        {
+          "row": 68,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.2",
+            "_col1": "7.2",
+            "Partida": "(D) Fuente de poder 12V 120W exterior. IP67 Voltaje de entrada: 220V, Voltaje de salida: 12V. Factor de potencia: >0.90. Protección IP: IP67. Cantidad de salidas: 2. PROVEEDOR: DLUZ",
+            "_col2": "(D) Fuente de poder 12V 120W exterior. IP67 Voltaje de entrada: 220V, Voltaje de salida: 12V. Factor de potencia: >0.90. Protección IP: IP67. Cantidad de salidas: 2. PROVEEDOR: DLUZ",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F67"
+            },
+            "_col6": {
+              "sharedFormula": "F67"
+            }
+          },
+          "description": "(D) Fuente de poder 12V 120W exterior. IP67 Voltaje de entrada: 220V, Voltaje de salida: 12V. Factor",
+          "unit": "un"
+        },
+        {
+          "row": 69,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.3",
+            "_col1": "7.3",
+            "Partida": "(C) Foco riel magnético 6W 3.000°K NG Protección: IP20 Flujo: 600LM. Voltaje 48V. Apertura: 24°. Dimensiones: Ø35 x140 mm. Color negro. PROVEEDOR: DLUZ",
+            "_col2": "(C) Foco riel magnético 6W 3.000°K NG Protección: IP20 Flujo: 600LM. Voltaje 48V. Apertura: 24°. Dimensiones: Ø35 x140 mm. Color negro. PROVEEDOR: DLUZ",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F67"
+            },
+            "_col6": {
+              "sharedFormula": "F67"
+            }
+          },
+          "description": "(C) Foco riel magnético 6W 3.000°K NG Protección: IP20 Flujo: 600LM. Voltaje 48V. Apertura: 24°. Dim",
+          "unit": "un"
+        },
+        {
+          "row": 70,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.4",
+            "_col1": "7.4",
+            "Partida": "(G) Foco porta dicroico gu10 retraído fijo Base: 1xGU10 Voltaje: 220V Protección IP: IP20. Color de Equipo: Negro. Dimensiones: 101×101 mm. Perforación: 80x30x77 mm. No Incluye Ampolleta. PROVEEDOR: DLUZ",
+            "_col2": "(G) Foco porta dicroico gu10 retraído fijo Base: 1xGU10 Voltaje: 220V Protección IP: IP20. Color de Equipo: Negro. Dimensiones: 101×101 mm. Perforación: 80x30x77 mm. No Incluye Ampolleta. PROVEEDOR: DLUZ",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F67"
+            },
+            "_col6": {
+              "sharedFormula": "F67"
+            }
+          },
+          "description": "(G) Foco porta dicroico gu10 retraído fijo Base: 1xGU10 Voltaje: 220V Protección IP: IP20. Color de ",
+          "unit": "un"
+        },
+        {
+          "row": 71,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.5",
+            "_col1": "7.5",
+            "Partida": "(G) Dicroico PHILIPS LED 7W DIMEABLE. Base: GU10. Color de Luz: 2.700°K. Consumo: 7W Voltaje: 220V. Tipo de LED: SMD Flujo: 650 Lm. Ángulo de Apertura: 36° IP: IP20. Dimeable: Sí Dimensiones: Ø50×54mm. PROVEEDOR: DLUZ",
+            "_col2": "(G) Dicroico PHILIPS LED 7W DIMEABLE. Base: GU10. Color de Luz: 2.700°K. Consumo: 7W Voltaje: 220V. Tipo de LED: SMD Flujo: 650 Lm. Ángulo de Apertura: 36° IP: IP20. Dimeable: Sí Dimensiones: Ø50×54mm. PROVEEDOR: DLUZ",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "formula": "E71*D71",
+              "ref": "F71",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E71*D71",
+              "ref": "F71",
+              "shareType": "shared"
+            }
+          },
+          "description": "(G) Dicroico PHILIPS LED 7W DIMEABLE. Base: GU10. Color de Luz: 2.700°K. Consumo: 7W Voltaje: 220V. ",
+          "unit": "un"
+        },
+        {
+          "row": 72,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.6",
+            "_col1": "7.6",
+            "Partida": "(E) Downlight LED redondo 3w luz cálida, Color negro. Diámetro equipo 5cms, diámetro perforación 4cms. Altura 3 cms. PROVEEDOR: LEDSTUDIO",
+            "_col2": "(E) Downlight LED redondo 3w luz cálida, Color negro. Diámetro equipo 5cms, diámetro perforación 4cms. Altura 3 cms. PROVEEDOR: LEDSTUDIO",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "formula": "E72*D72",
+              "ref": "F72",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E72*D72",
+              "ref": "F72",
+              "shareType": "shared"
+            }
+          },
+          "description": "(E) Downlight LED redondo 3w luz cálida, Color negro. Diámetro equipo 5cms, diámetro perforación 4cm",
+          "unit": "un"
+        },
+        {
+          "row": 73,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.7",
+            "_col1": "7.7",
+            "Partida": "(H) Foco EROS15 LED SPOT dirigible EMB BLACK 15W Color de Luz: 3.000K / 4000K Voltaje: 220V Tipo de LED: COB Flujo Lumínico: 1.350 Lm. Ángulo de Apertura: 24° IP: IP20 Dimensiones: Ø112×100 mm. Perforación: Ø95 mm PROVEEDOR: DLUZ",
+            "_col2": "(H) Foco EROS15 LED SPOT dirigible EMB BLACK 15W Color de Luz: 3.000K / 4000K Voltaje: 220V Tipo de LED: COB Flujo Lumínico: 1.350 Lm. Ángulo de Apertura: 24° IP: IP20 Dimensiones: Ø112×100 mm. Perforación: Ø95 mm PROVEEDOR: DLUZ",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "formula": "E73*D73",
+              "ref": "F73",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E73*D73",
+              "ref": "F73",
+              "shareType": "shared"
+            }
+          },
+          "description": "(H) Foco EROS15 LED SPOT dirigible EMB BLACK 15W Color de Luz: 3.000K / 4000K Voltaje: 220V Tipo de ",
+          "unit": "un"
+        },
+        {
+          "row": 74,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.8",
+            "_col1": "7.8",
+            "Partida": "Kit emergencia para foco embutido sala de ventas (90-120 min autonomía)",
+            "_col2": "Kit emergencia para foco embutido sala de ventas (90-120 min autonomía)",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F67"
+            },
+            "_col6": {
+              "sharedFormula": "F67"
+            }
+          },
+          "description": "Kit emergencia para foco embutido sala de ventas (90-120 min autonomía)",
+          "unit": "un"
+        },
+        {
+          "row": 75,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.9",
+            "_col1": "7.9",
+            "Partida": "Kit emergencia para riel sala de ventas (90-120 min autonomía)",
+            "_col2": "Kit emergencia para riel sala de ventas (90-120 min autonomía)",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F67"
+            },
+            "_col6": {
+              "sharedFormula": "F67"
+            }
+          },
+          "description": "Kit emergencia para riel sala de ventas (90-120 min autonomía)",
+          "unit": "un"
+        },
+        {
+          "row": 76,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.10",
+            "_col1": "7.10",
+            "Partida": "Lamparas bodega estanca LED 36W 4300 LM IP65",
+            "_col2": "Lamparas bodega estanca LED 36W 4300 LM IP65",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F67"
+            },
+            "_col6": {
+              "sharedFormula": "F67"
+            }
+          },
+          "description": "Lamparas bodega estanca LED 36W 4300 LM IP65",
+          "unit": "un"
+        },
+        {
+          "row": 77,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.11",
+            "_col1": "7.11",
+            "Partida": "Lamparas bodega con kit emergencia (90-120 min autonomía)",
+            "_col2": "Lamparas bodega con kit emergencia (90-120 min autonomía)",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F67"
+            },
+            "_col6": {
+              "sharedFormula": "F67"
+            }
+          },
+          "description": "Lamparas bodega con kit emergencia (90-120 min autonomía)",
+          "unit": "un"
+        },
+        {
+          "row": 78,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.12",
+            "_col1": "7.12",
+            "Partida": "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65",
+            "_col2": "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F67"
+            },
+            "_col6": {
+              "sharedFormula": "F67"
+            }
+          },
+          "description": "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65",
+          "unit": "un"
+        },
+        {
+          "row": 79,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.13",
+            "_col1": "7.13",
+            "Partida": "Letrero salida (señalética emergencia)",
+            "_col2": "Letrero salida (señalética emergencia)",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F67"
+            },
+            "_col6": {
+              "sharedFormula": "F67"
+            }
+          },
+          "description": "Letrero salida (señalética emergencia)",
+          "unit": "un"
+        },
+        {
+          "row": 80,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.14",
+            "_col1": "7.14",
+            "Partida": "Instalación de luminarias",
+            "_col2": "Instalación de luminarias",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F67"
+            },
+            "_col6": {
+              "sharedFormula": "F67"
+            }
+          },
+          "description": "Instalación de luminarias",
+          "unit": "un"
+        },
+        {
+          "row": 81,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "7.15",
+            "_col1": "7.15",
+            "Partida": "Otros no considerados en LUMINARIAS",
+            "_col2": "Otros no considerados en LUMINARIAS",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "E81*D81"
+            },
+            "_col6": {
+              "formula": "E81*D81"
+            }
+          },
+          "description": "Otros no considerados en LUMINARIAS",
+          "unit": "gl"
+        },
+        {
+          "row": 83,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "8",
+            "_col1": "8",
+            "Partida": "FACHADA",
+            "_col2": "FACHADA"
+          },
+          "description": "FACHADA"
+        },
+        {
+          "row": 84,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "8.1",
+            "_col1": "8.1",
+            "Partida": "Vitrina vidrio laminado 5+5mm + marco aluminio oculto según detalle. Considerar film antivandalico 10 micras",
+            "_col2": "Vitrina vidrio laminado 5+5mm + marco aluminio oculto según detalle. Considerar film antivandalico 10 micras",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "D84*E84"
+            },
+            "_col6": {
+              "formula": "D84*E84"
+            }
+          },
+          "description": "Vitrina vidrio laminado 5+5mm + marco aluminio oculto según detalle. Considerar film antivandalico 1",
+          "unit": "gl"
+        },
+        {
+          "row": 85,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "8.2",
+            "_col1": "8.2",
+            "Partida": "Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bronce",
+            "_col2": "Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bronce",
+            "Unidad": "ml",
+            "_col3": "ml",
+            "Total": {
+              "formula": "D85*E85"
+            },
+            "_col6": {
+              "formula": "D85*E85"
+            }
+          },
+          "description": "Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bro",
+          "unit": "ml"
+        },
+        {
+          "row": 86,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "8.3",
+            "_col1": "8.3",
+            "Partida": "Cortina emballetada, microperforada, ups, motor central y destrabe manual. Acabado electropintado color negro. Considera 3 control remoto",
+            "_col2": "Cortina emballetada, microperforada, ups, motor central y destrabe manual. Acabado electropintado color negro. Considera 3 control remoto",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "E86*D86",
+              "ref": "F86:F87",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E86*D86",
+              "ref": "F86:F87",
+              "shareType": "shared"
+            }
+          },
+          "description": "Cortina emballetada, microperforada, ups, motor central y destrabe manual. Acabado electropintado co",
+          "unit": "gl"
+        },
+        {
+          "row": 87,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "8.4",
+            "_col1": "8.4",
+            "Partida": "Otros no considerados en FACHADA",
+            "_col2": "Otros no considerados en FACHADA",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F86"
+            },
+            "_col6": {
+              "sharedFormula": "F86"
+            }
+          },
+          "description": "Otros no considerados en FACHADA",
+          "unit": "gl"
+        },
+        {
+          "row": 89,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10",
+            "_col1": "10",
+            "Partida": "INSTALACIONES ",
+            "_col2": "INSTALACIONES "
+          },
+          "description": "INSTALACIONES "
+        },
+        {
+          "row": 90,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.1",
+            "_col1": "10.1",
+            "Partida": "Climatización",
+            "_col2": "Climatización"
+          },
+          "description": "Climatización"
+        },
+        {
+          "row": 91,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.1.1",
+            "_col1": "10.1.1",
+            "Partida": "Climatización ductos y difusores lineales según proyecto",
+            "_col2": "Climatización ductos y difusores lineales según proyecto",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "E91*D91",
+              "ref": "F91:F92",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E91*D91",
+              "ref": "F91:F92",
+              "shareType": "shared"
+            }
+          },
+          "description": "Climatización ductos y difusores lineales según proyecto",
+          "unit": "gl"
+        },
+        {
+          "row": 92,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.1.2",
+            "_col1": "10.1.2",
+            "Partida": "Planos As Built y certificado de instalación *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+            "_col2": "Planos As Built y certificado de instalación *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F91"
+            },
+            "_col6": {
+              "sharedFormula": "F91"
+            }
+          },
+          "description": "Planos As Built y certificado de instalación *se deben entregar al final de la obra impresos y firma",
+          "unit": "gl"
+        },
+        {
+          "row": 94,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "Wed Feb 09 2022 21:00:00 GMT-0300 (hora de verano de Chile)",
+            "_col1": "Wed Feb 09 2022 21:00:00 GMT-0300 (hora de verano de Chile)",
+            "Partida": "Instalación Eléctrica",
+            "_col2": "Instalación Eléctrica"
+          },
+          "description": "Instalación Eléctrica"
+        },
+        {
+          "row": 95,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.1",
+            "_col1": "10.2.1",
+            "Partida": "Tablero eléctrico rotulado",
+            "_col2": "Tablero eléctrico rotulado",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "formula": "D95*E95",
+              "ref": "F95:F110",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "D95*E95",
+              "ref": "F95:F110",
+              "shareType": "shared"
+            }
+          },
+          "description": "Tablero eléctrico rotulado",
+          "unit": "un"
+        },
+        {
+          "row": 96,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.2",
+            "_col1": "10.2.2",
+            "Partida": "Tablero clima (si lo exige mall)",
+            "_col2": "Tablero clima (si lo exige mall)",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F95"
+            },
+            "_col6": {
+              "sharedFormula": "F95"
+            }
+          },
+          "description": "Tablero clima (si lo exige mall)",
+          "unit": "un"
+        },
+        {
+          "row": 97,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.3",
+            "_col1": "10.2.3",
+            "Partida": "Alimentador desde la caja de empalme (en linea de concesion) hasta la ubicación del tablero",
+            "_col2": "Alimentador desde la caja de empalme (en linea de concesion) hasta la ubicación del tablero",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "formula": "D97*E97",
+              "ref": "F97",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "D97*E97",
+              "ref": "F97",
+              "shareType": "shared"
+            }
+          },
+          "description": "Alimentador desde la caja de empalme (en linea de concesion) hasta la ubicación del tablero",
+          "unit": "un"
+        },
+        {
+          "row": 98,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.4",
+            "_col1": "10.2.4",
+            "Partida": "Puntos de iluminación",
+            "_col2": "Puntos de iluminación",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F95"
+            },
+            "_col6": {
+              "sharedFormula": "F95"
+            }
+          },
+          "description": "Puntos de iluminación",
+          "unit": "un"
+        },
+        {
+          "row": 99,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.5",
+            "_col1": "10.2.5",
+            "Partida": "Puntos de iluminacion muebles",
+            "_col2": "Puntos de iluminacion muebles",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F95"
+            },
+            "_col6": {
+              "sharedFormula": "F95"
+            }
+          },
+          "description": "Puntos de iluminacion muebles",
+          "unit": "un"
+        },
+        {
+          "row": 100,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.6",
+            "_col1": "10.2.6",
+            "Partida": "Puntos de enchufe",
+            "_col2": "Puntos de enchufe",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F95"
+            },
+            "_col6": {
+              "sharedFormula": "F95"
+            }
+          },
+          "description": "Puntos de enchufe",
+          "unit": "un"
+        },
+        {
+          "row": 101,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.7",
+            "_col1": "10.2.7",
+            "Partida": "Puntos de enchufe muebles isla (a piso)",
+            "_col2": "Puntos de enchufe muebles isla (a piso)",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F95"
+            },
+            "_col6": {
+              "sharedFormula": "F95"
+            }
+          },
+          "description": "Puntos de enchufe muebles isla (a piso)",
+          "unit": "un"
+        },
+        {
+          "row": 102,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.8",
+            "_col1": "10.2.8",
+            "Partida": "Puntos de datos",
+            "_col2": "Puntos de datos",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F95"
+            },
+            "_col6": {
+              "sharedFormula": "F95"
+            }
+          },
+          "description": "Puntos de datos",
+          "unit": "un"
+        },
+        {
+          "row": 103,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.9",
+            "_col1": "10.2.9",
+            "Partida": "Canalizado cámaras de seguridad UTP cat 6e",
+            "_col2": "Canalizado cámaras de seguridad UTP cat 6e",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F95"
+            },
+            "_col6": {
+              "sharedFormula": "F95"
+            }
+          },
+          "description": "Canalizado cámaras de seguridad UTP cat 6e",
+          "unit": "un"
+        },
+        {
+          "row": 104,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.10",
+            "_col1": "10.2.10",
+            "Partida": "Canalizado parlantes",
+            "_col2": "Canalizado parlantes",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F95"
+            },
+            "_col6": {
+              "sharedFormula": "F95"
+            }
+          },
+          "description": "Canalizado parlantes",
+          "unit": "un"
+        },
+        {
+          "row": 105,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.11",
+            "_col1": "10.2.11",
+            "Partida": "Punto clima",
+            "_col2": "Punto clima",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F95"
+            },
+            "_col6": {
+              "sharedFormula": "F95"
+            }
+          },
+          "description": "Punto clima",
+          "unit": "un"
+        },
+        {
+          "row": 106,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.12",
+            "_col1": "10.2.12",
+            "Partida": "Punto letrero ",
+            "_col2": "Punto letrero ",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F95"
+            },
+            "_col6": {
+              "sharedFormula": "F95"
+            }
+          },
+          "description": "Punto letrero ",
+          "unit": "un"
+        },
+        {
+          "row": 107,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.13",
+            "_col1": "10.2.13",
+            "Partida": "Canalización para alarma de intrusion",
+            "_col2": "Canalización para alarma de intrusion",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F95"
+            },
+            "_col6": {
+              "sharedFormula": "F95"
+            }
+          },
+          "description": "Canalización para alarma de intrusion",
+          "unit": "un"
+        },
+        {
+          "row": 108,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.14",
+            "_col1": "10.2.14",
+            "Partida": "Puntos pantallas",
+            "_col2": "Puntos pantallas",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F95"
+            },
+            "_col6": {
+              "sharedFormula": "F95"
+            }
+          },
+          "description": "Puntos pantallas",
+          "unit": "un"
+        },
+        {
+          "row": 109,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.15",
+            "_col1": "10.2.15",
+            "Partida": "Puntos cajas de luz (a muro)",
+            "_col2": "Puntos cajas de luz (a muro)",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F95"
+            },
+            "_col6": {
+              "sharedFormula": "F95"
+            }
+          },
+          "description": "Puntos cajas de luz (a muro)",
+          "unit": "un"
+        },
+        {
+          "row": 110,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.16",
+            "_col1": "10.2.16",
+            "Partida": "Certificados TE1, Planos As Built *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+            "_col2": "Certificados TE1, Planos As Built *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F95"
+            },
+            "_col6": {
+              "sharedFormula": "F95"
+            }
+          },
+          "description": "Certificados TE1, Planos As Built *se deben entregar al final de la obra impresos y firmados en fres",
+          "unit": "un"
+        },
+        {
+          "row": 111,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.17",
+            "_col1": "10.2.17",
+            "Partida": "Remarcador",
+            "_col2": "Remarcador",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "formula": "E111*D111"
+            },
+            "_col6": {
+              "formula": "E111*D111"
+            }
+          },
+          "description": "Remarcador",
+          "unit": "un"
+        },
+        {
+          "row": 112,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.18",
+            "_col1": "10.2.18",
+            "Partida": "Enlauchado para fibra optica hasta rack de datos",
+            "_col2": "Enlauchado para fibra optica hasta rack de datos",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "E112*D112"
+            },
+            "_col6": {
+              "formula": "E112*D112"
+            }
+          },
+          "description": "Enlauchado para fibra optica hasta rack de datos",
+          "unit": "gl"
+        },
+        {
+          "row": 113,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.19",
+            "_col1": "10.2.19",
+            "Partida": "Rotulación de todos los enchufes, debe indicar voltaje 220V y demarcar los enchufes conectados al sistema de emergencia",
+            "_col2": "Rotulación de todos los enchufes, debe indicar voltaje 220V y demarcar los enchufes conectados al sistema de emergencia",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "E113*D113"
+            },
+            "_col6": {
+              "formula": "E113*D113"
+            }
+          },
+          "description": "Rotulación de todos los enchufes, debe indicar voltaje 220V y demarcar los enchufes conectados al si",
+          "unit": "gl"
+        },
+        {
+          "row": 114,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.20",
+            "_col1": "10.2.20",
+            "Partida": "Alarma en vitrina, provision e instalacion",
+            "_col2": "Alarma en vitrina, provision e instalacion",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "formula": "E114*D114",
+              "ref": "F114:F117",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E114*D114",
+              "ref": "F114:F117",
+              "shareType": "shared"
+            }
+          },
+          "description": "Alarma en vitrina, provision e instalacion",
+          "unit": "un"
+        },
+        {
+          "row": 115,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.21",
+            "_col1": "10.2.21",
+            "Partida": "Sensor de movimiento (zona acceso a gatera), provision e instalacion",
+            "_col2": "Sensor de movimiento (zona acceso a gatera), provision e instalacion",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F114"
+            },
+            "_col6": {
+              "sharedFormula": "F114"
+            }
+          },
+          "description": "Sensor de movimiento (zona acceso a gatera), provision e instalacion",
+          "unit": "un"
+        },
+        {
+          "row": 116,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.22",
+            "_col1": "10.2.22",
+            "Partida": "Gabinete de datos para 14 un + ordenacables + rotulación",
+            "_col2": "Gabinete de datos para 14 un + ordenacables + rotulación",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F114"
+            },
+            "_col6": {
+              "sharedFormula": "F114"
+            }
+          },
+          "description": "Gabinete de datos para 14 un + ordenacables + rotulación",
+          "unit": "un"
+        },
+        {
+          "row": 117,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.2.23",
+            "_col1": "10.2.23",
+            "Partida": "UPS 3KVA con enchuve 16A",
+            "_col2": "UPS 3KVA con enchuve 16A",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F114"
+            },
+            "_col6": {
+              "sharedFormula": "F114"
+            }
+          },
+          "description": "UPS 3KVA con enchuve 16A",
+          "unit": "un"
+        },
+        {
+          "row": 119,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "Wed Mar 09 2022 21:00:00 GMT-0300 (hora de verano de Chile)",
+            "_col1": "Wed Mar 09 2022 21:00:00 GMT-0300 (hora de verano de Chile)",
+            "Partida": "Instalación Incendio",
+            "_col2": "Instalación Incendio"
+          },
+          "description": "Instalación Incendio"
+        },
+        {
+          "row": 120,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.3.1",
+            "_col1": "10.3.1",
+            "Partida": "Detección según proyecto",
+            "_col2": "Detección según proyecto",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "D120*E120",
+              "ref": "F120:F123",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "D120*E120",
+              "ref": "F120:F123",
+              "shareType": "shared"
+            }
+          },
+          "description": "Detección según proyecto",
+          "unit": "gl"
+        },
+        {
+          "row": 121,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.3.2",
+            "_col1": "10.3.2",
+            "Partida": "Extinción según proyecto",
+            "_col2": "Extinción según proyecto",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F120"
+            },
+            "_col6": {
+              "sharedFormula": "F120"
+            }
+          },
+          "description": "Extinción según proyecto",
+          "unit": "gl"
+        },
+        {
+          "row": 122,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.3.3",
+            "_col1": "10.3.3",
+            "Partida": "Set extintores según proyecto, incluida señaletica de extintor a muro",
+            "_col2": "Set extintores según proyecto, incluida señaletica de extintor a muro",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F120"
+            },
+            "_col6": {
+              "sharedFormula": "F120"
+            }
+          },
+          "description": "Set extintores según proyecto, incluida señaletica de extintor a muro",
+          "unit": "gl"
+        },
+        {
+          "row": 123,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.3.4",
+            "_col1": "10.3.4",
+            "Partida": "Planos As Built y certificado de instalación *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+            "_col2": "Planos As Built y certificado de instalación *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F120"
+            },
+            "_col6": {
+              "sharedFormula": "F120"
+            }
+          },
+          "description": "Planos As Built y certificado de instalación *se deben entregar al final de la obra impresos y firma",
+          "unit": "gl"
+        },
+        {
+          "row": 125,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "Sat Apr 09 2022 20:00:00 GMT-0400 (hora estándar de Chile)",
+            "_col1": "Sat Apr 09 2022 20:00:00 GMT-0400 (hora estándar de Chile)",
+            "Partida": "Instalacion Sanitaria",
+            "_col2": "Instalacion Sanitaria"
+          },
+          "description": "Instalacion Sanitaria"
+        },
+        {
+          "row": 126,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.4.1",
+            "_col1": "10.4.1",
+            "Partida": "Instalación AP y Alcantarillado",
+            "_col2": "Instalación AP y Alcantarillado",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "E126*D126",
+              "ref": "F126:F131",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E126*D126",
+              "ref": "F126:F131",
+              "shareType": "shared"
+            }
+          },
+          "description": "Instalación AP y Alcantarillado",
+          "unit": "gl"
+        },
+        {
+          "row": 127,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.4.2",
+            "_col1": "10.4.2",
+            "Partida": "Bomba impulsora (si aplica)",
+            "_col2": "Bomba impulsora (si aplica)",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F126"
+            },
+            "_col6": {
+              "sharedFormula": "F126"
+            }
+          },
+          "description": "Bomba impulsora (si aplica)",
+          "unit": "un"
+        },
+        {
+          "row": 128,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.4.3",
+            "_col1": "10.4.3",
+            "Partida": "Grifería (solo instalacion, provista por mandante)",
+            "_col2": "Grifería (solo instalacion, provista por mandante)",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F126"
+            },
+            "_col6": {
+              "sharedFormula": "F126"
+            }
+          },
+          "description": "Grifería (solo instalacion, provista por mandante)",
+          "unit": "un"
+        },
+        {
+          "row": 129,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.4.4",
+            "_col1": "10.4.4",
+            "Partida": "Remarcador agua potable",
+            "_col2": "Remarcador agua potable",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F126"
+            },
+            "_col6": {
+              "sharedFormula": "F126"
+            }
+          },
+          "description": "Remarcador agua potable",
+          "unit": "un"
+        },
+        {
+          "row": 130,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.4.5",
+            "_col1": "10.4.5",
+            "Partida": "Certificados de factibilidad y dotacion",
+            "_col2": "Certificados de factibilidad y dotacion",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "E130*D130"
+            },
+            "_col6": {
+              "formula": "E130*D130"
+            }
+          },
+          "description": "Certificados de factibilidad y dotacion",
+          "unit": "gl"
+        },
+        {
+          "row": 131,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "10.4.6",
+            "_col1": "10.4.6",
+            "Partida": "Planos As Built *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+            "_col2": "Planos As Built *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F126"
+            },
+            "_col6": {
+              "sharedFormula": "F126"
+            }
+          },
+          "description": "Planos As Built *se deben entregar al final de la obra impresos y firmados en fresco por el instalad",
+          "unit": "gl"
+        },
+        {
+          "row": 134,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "11.1",
+            "_col1": "11.1",
+            "Partida": "Aseo y entrega final",
+            "_col2": "Aseo y entrega final",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "formula": "D134*E134",
+              "ref": "F134:F139",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "D134*E134",
+              "ref": "F134:F139",
+              "shareType": "shared"
+            }
+          },
+          "description": "Aseo y entrega final",
+          "unit": "gl"
+        },
+        {
+          "row": 135,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "11.2",
+            "_col1": "11.2",
+            "Partida": "Desplazamiento de cierre provisorio para montaje fachada",
+            "_col2": "Desplazamiento de cierre provisorio para montaje fachada",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F134"
+            },
+            "_col6": {
+              "sharedFormula": "F134"
+            }
+          },
+          "description": "Desplazamiento de cierre provisorio para montaje fachada",
+          "unit": "gl"
+        },
+        {
+          "row": 136,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "11.3",
+            "_col1": "11.3",
+            "Partida": "Retiro de cierre provisorio",
+            "_col2": "Retiro de cierre provisorio",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F134"
+            },
+            "_col6": {
+              "sharedFormula": "F134"
+            }
+          },
+          "description": "Retiro de cierre provisorio",
+          "unit": "gl"
+        },
+        {
+          "row": 137,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "11.4",
+            "_col1": "11.4",
+            "Partida": "Tapas registro para RAP ",
+            "_col2": "Tapas registro para RAP ",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F134"
+            },
+            "_col6": {
+              "sharedFormula": "F134"
+            }
+          },
+          "description": "Tapas registro para RAP ",
+          "unit": "un"
+        },
+        {
+          "row": 138,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "11.5",
+            "_col1": "11.5",
+            "Partida": "Seguro todo riesgo de construcción solicitado por Mall",
+            "_col2": "Seguro todo riesgo de construcción solicitado por Mall",
+            "Unidad": "mes",
+            "_col3": "mes",
+            "Total": {
+              "sharedFormula": "F134"
+            },
+            "_col6": {
+              "sharedFormula": "F134"
+            }
+          },
+          "description": "Seguro todo riesgo de construcción solicitado por Mall"
+        },
+        {
+          "row": 139,
+          "sheet": "Presupuesto (OOCC)",
+          "raw": {
+            "Nº": "11.6",
+            "_col1": "11.6",
+            "Partida": "Otros no considerados",
+            "_col2": "Otros no considerados",
+            "Total": {
+              "sharedFormula": "F134"
+            },
+            "_col6": {
+              "sharedFormula": "F134"
+            }
+          },
+          "description": "Otros no considerados"
+        }
+      ],
+      "headerRow": 10,
+      "headers": [
+        "Nº",
+        "Partida",
+        "Unidad",
+        "Cantidad",
+        "Valor U.",
+        "Total",
+        "Comentarios"
+      ]
+    },
+    {
+      "name": "Presupuesto (OTROS)",
+      "rowCount": 891,
+      "columnCount": 13,
+      "items": [
+        {
+          "row": 11,
+          "sheet": "Presupuesto (OTROS)",
+          "raw": {
+            "Nº": "1",
+            "_col1": "1",
+            "Partida": "OTROS INSUMOS",
+            "_col2": "OTROS INSUMOS"
+          },
+          "description": "OTROS INSUMOS"
+        },
+        {
+          "row": 12,
+          "sheet": "Presupuesto (OTROS)",
+          "raw": {
+            "Nº": "1.1",
+            "_col1": "1.1",
+            "Partida": "Estructura soporte UPS",
+            "_col2": "Estructura soporte UPS",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "formula": "D12*E12",
+              "ref": "F12:F14",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "D12*E12",
+              "ref": "F12:F14",
+              "shareType": "shared"
+            }
+          },
+          "description": "Estructura soporte UPS",
+          "unit": "un"
+        },
+        {
+          "row": 13,
+          "sheet": "Presupuesto (OTROS)",
+          "raw": {
+            "Nº": "1.2",
+            "_col1": "1.2",
+            "Partida": "Lockers 6 puertas (2 torres de 3 unidades c/u)",
+            "_col2": "Lockers 6 puertas (2 torres de 3 unidades c/u)",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F12"
+            },
+            "_col6": {
+              "sharedFormula": "F12"
+            }
+          },
+          "description": "Lockers 6 puertas (2 torres de 3 unidades c/u)",
+          "unit": "un"
+        },
+        {
+          "row": 14,
+          "sheet": "Presupuesto (OTROS)",
+          "raw": {
+            "Nº": "1.3",
+            "_col1": "1.3",
+            "Partida": "Mueble de bodega metálicos 2.00 mt altura 92x30cm con 10 repisas, incorporar fleje frontal en cada repisa según detalle",
+            "_col2": "Mueble de bodega metálicos 2.00 mt altura 92x30cm con 10 repisas, incorporar fleje frontal en cada repisa según detalle",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F12"
+            },
+            "_col6": {
+              "sharedFormula": "F12"
+            }
+          },
+          "description": "Mueble de bodega metálicos 2.00 mt altura 92x30cm con 10 repisas, incorporar fleje frontal en cada r",
+          "unit": "un"
+        },
+        {
+          "row": 15,
+          "sheet": "Presupuesto (OTROS)",
+          "raw": {
+            "Nº": "1.4",
+            "_col1": "1.4",
+            "Partida": "Caja fuerte + instalación fija a piso",
+            "_col2": "Caja fuerte + instalación fija a piso",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "formula": "E15*D15",
+              "ref": "F15:F19",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E15*D15",
+              "ref": "F15:F19",
+              "shareType": "shared"
+            }
+          },
+          "description": "Caja fuerte + instalación fija a piso",
+          "unit": "un"
+        },
+        {
+          "row": 16,
+          "sheet": "Presupuesto (OTROS)",
+          "raw": {
+            "Nº": "1.5",
+            "_col1": "1.5",
+            "Partida": "Closet aseo con espacio para escoba",
+            "_col2": "Closet aseo con espacio para escoba",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "formula": "E16*D16",
+              "ref": "F16",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E16*D16",
+              "ref": "F16",
+              "shareType": "shared"
+            }
+          },
+          "description": "Closet aseo con espacio para escoba",
+          "unit": "un"
+        },
+        {
+          "row": 17,
+          "sheet": "Presupuesto (OTROS)",
+          "raw": {
+            "Nº": "1.6",
+            "_col1": "1.6",
+            "Partida": "Perchero a muro instalado en bodega, con 5 colgadores metálico",
+            "_col2": "Perchero a muro instalado en bodega, con 5 colgadores metálico",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F15"
+            },
+            "_col6": {
+              "sharedFormula": "F15"
+            }
+          },
+          "description": "Perchero a muro instalado en bodega, con 5 colgadores metálico",
+          "unit": "gl"
+        },
+        {
+          "row": 18,
+          "sheet": "Presupuesto (OTROS)",
+          "raw": {
+            "Nº": "1.7",
+            "_col1": "1.7",
+            "Partida": "Escalera tijera de aluminio, 4 peldaños",
+            "_col2": "Escalera tijera de aluminio, 4 peldaños",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "formula": "E18*D18",
+              "ref": "F18",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "E18*D18",
+              "ref": "F18",
+              "shareType": "shared"
+            }
+          },
+          "description": "Escalera tijera de aluminio, 4 peldaños",
+          "unit": "un"
+        },
+        {
+          "row": 19,
+          "sheet": "Presupuesto (OTROS)",
+          "raw": {
+            "Nº": "1.8",
+            "_col1": "1.8",
+            "Partida": "Otros no considerados",
+            "_col2": "Otros no considerados",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F15"
+            },
+            "_col6": {
+              "sharedFormula": "F15"
+            }
+          },
+          "description": "Otros no considerados",
+          "unit": "un"
+        }
+      ],
+      "headerRow": 10,
+      "headers": [
+        "Nº",
+        "Partida",
+        "Unidad",
+        "Cantidad",
+        "Valor U.",
+        "Total",
+        "Comentarios"
+      ]
+    },
+    {
+      "name": "Gastos Generales",
+      "rowCount": 1001,
+      "columnCount": 26,
+      "items": [
+        {
+          "row": 11,
+          "sheet": "Gastos Generales",
+          "raw": {
+            "Nº": "1",
+            "_col1": "1",
+            "Partida": "Jefatura y dirección de obra",
+            "_col2": "Jefatura y dirección de obra",
+            "Unidad": "mes",
+            "_col3": "mes",
+            "Total": {
+              "formula": "D11*E11",
+              "ref": "F11:F22",
+              "shareType": "shared"
+            },
+            "_col6": {
+              "formula": "D11*E11",
+              "ref": "F11:F22",
+              "shareType": "shared"
+            }
+          },
+          "description": "Jefatura y dirección de obra"
+        },
+        {
+          "row": 12,
+          "sheet": "Gastos Generales",
+          "raw": {
+            "Nº": "2",
+            "_col1": "2",
+            "Partida": "Extintores",
+            "_col2": "Extintores",
+            "Unidad": "un ",
+            "_col3": "un ",
+            "Total": {
+              "sharedFormula": "F11"
+            },
+            "_col6": {
+              "sharedFormula": "F11"
+            }
+          },
+          "description": "Extintores",
+          "unit": "un"
+        },
+        {
+          "row": 13,
+          "sheet": "Gastos Generales",
+          "raw": {
+            "Nº": "3",
+            "_col1": "3",
+            "Partida": "Fletes materiales",
+            "_col2": "Fletes materiales",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F11"
+            },
+            "_col6": {
+              "sharedFormula": "F11"
+            }
+          },
+          "description": "Fletes materiales",
+          "unit": "un"
+        },
+        {
+          "row": 14,
+          "sheet": "Gastos Generales",
+          "raw": {
+            "Nº": "4",
+            "_col1": "4",
+            "Partida": "Retiro de escombros",
+            "_col2": "Retiro de escombros",
+            "Unidad": "un",
+            "_col3": "un",
+            "Total": {
+              "sharedFormula": "F11"
+            },
+            "_col6": {
+              "sharedFormula": "F11"
+            }
+          },
+          "description": "Retiro de escombros",
+          "unit": "un"
+        },
+        {
+          "row": 15,
+          "sheet": "Gastos Generales",
+          "raw": {
+            "Nº": "5",
+            "_col1": "5",
+            "Partida": "Elemento seguridad personal",
+            "_col2": "Elemento seguridad personal",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F11"
+            },
+            "_col6": {
+              "sharedFormula": "F11"
+            }
+          },
+          "description": "Elemento seguridad personal",
+          "unit": "gl"
+        },
+        {
+          "row": 16,
+          "sheet": "Gastos Generales",
+          "raw": {
+            "Nº": "6",
+            "_col1": "6",
+            "Partida": "Gastos de oficina central",
+            "_col2": "Gastos de oficina central",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F11"
+            },
+            "_col6": {
+              "sharedFormula": "F11"
+            }
+          },
+          "description": "Gastos de oficina central",
+          "unit": "gl"
+        },
+        {
+          "row": 17,
+          "sheet": "Gastos Generales",
+          "raw": {
+            "Nº": "7",
+            "_col1": "7",
+            "Partida": "Arriendo andamios",
+            "_col2": "Arriendo andamios",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F11"
+            },
+            "_col6": {
+              "sharedFormula": "F11"
+            }
+          },
+          "description": "Arriendo andamios",
+          "unit": "gl"
+        },
+        {
+          "row": 18,
+          "sheet": "Gastos Generales",
+          "raw": {
+            "Nº": "8",
+            "_col1": "8",
+            "Partida": "Arriendo de herramientas",
+            "_col2": "Arriendo de herramientas",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F11"
+            },
+            "_col6": {
+              "sharedFormula": "F11"
+            }
+          },
+          "description": "Arriendo de herramientas",
+          "unit": "gl"
+        },
+        {
+          "row": 19,
+          "sheet": "Gastos Generales",
+          "raw": {
+            "Nº": "9",
+            "_col1": "9",
+            "Partida": "Traslados y viaticos ",
+            "_col2": "Traslados y viaticos ",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F11"
+            },
+            "_col6": {
+              "sharedFormula": "F11"
+            }
+          },
+          "description": "Traslados y viaticos ",
+          "unit": "gl"
+        },
+        {
+          "row": 20,
+          "sheet": "Gastos Generales",
+          "raw": {
+            "Nº": "10",
+            "_col1": "10",
+            "Partida": "Aseo y cuidado de obra",
+            "_col2": "Aseo y cuidado de obra",
+            "Unidad": "gl",
+            "_col3": "gl",
+            "Total": {
+              "sharedFormula": "F11"
+            },
+            "_col6": {
+              "sharedFormula": "F11"
+            }
+          },
+          "description": "Aseo y cuidado de obra",
+          "unit": "gl"
+        },
+        {
+          "row": 21,
+          "sheet": "Gastos Generales",
+          "raw": {
+            "Nº": "11",
+            "_col1": "11",
+            "Partida": "Imposiciones personal",
+            "_col2": "Imposiciones personal",
+            "Unidad": "mes",
+            "_col3": "mes",
+            "Total": {
+              "sharedFormula": "F11"
+            },
+            "_col6": {
+              "sharedFormula": "F11"
+            }
+          },
+          "description": "Imposiciones personal"
+        },
+        {
+          "row": 22,
+          "sheet": "Gastos Generales",
+          "raw": {
+            "Nº": "12",
+            "_col1": "12",
+            "Partida": "Otros no considerados",
+            "_col2": "Otros no considerados",
+            "Total": {
+              "sharedFormula": "F11"
+            },
+            "_col6": {
+              "sharedFormula": "F11"
+            }
+          },
+          "description": "Otros no considerados"
+        }
+      ],
+      "headerRow": 10,
+      "headers": [
+        "Nº",
+        "Partida",
+        "Unidad",
+        "Cantidad",
+        "Valor U.",
+        "Total"
+      ]
+    }
+  ],
+  "allItems": [
+    {
+      "row": 12,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "1",
+        "_col1": "1",
+        "Partida": "OBRAS PRELIMINARES",
+        "_col2": "OBRAS PRELIMINARES"
+      },
+      "description": "OBRAS PRELIMINARES"
+    },
+    {
+      "row": 13,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "1.1",
+        "_col1": "1.1",
+        "Partida": "Instalación de faenas",
+        "_col2": "Instalación de faenas",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "D13*E13",
+          "ref": "F13:F18",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "D13*E13",
+          "ref": "F13:F18",
+          "shareType": "shared"
+        }
+      },
+      "description": "Instalación de faenas",
+      "unit": "gl"
+    },
+    {
+      "row": 14,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "1.2",
+        "_col1": "1.2",
+        "Partida": "Tablero de Obra (considera tramitacion y obtencion TE1)",
+        "_col2": "Tablero de Obra (considera tramitacion y obtencion TE1)",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F13"
+        },
+        "_col6": {
+          "sharedFormula": "F13"
+        }
+      },
+      "description": "Tablero de Obra (considera tramitacion y obtencion TE1)",
+      "unit": "gl"
+    },
+    {
+      "row": 15,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "1.3",
+        "_col1": "1.3",
+        "Partida": "Impermeabilización membrana asfáltica según plano",
+        "_col2": "Impermeabilización membrana asfáltica según plano",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "sharedFormula": "F13"
+        },
+        "_col6": {
+          "sharedFormula": "F13"
+        }
+      },
+      "description": "Impermeabilización membrana asfáltica según plano",
+      "unit": "m2"
+    },
+    {
+      "row": 16,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "1.5",
+        "_col1": "1.5",
+        "Partida": "Sobrelosa de 8cm",
+        "_col2": "Sobrelosa de 8cm",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "formula": "D16*E16",
+          "ref": "F16",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "D16*E16",
+          "ref": "F16",
+          "shareType": "shared"
+        }
+      },
+      "description": "Sobrelosa de 8cm",
+      "unit": "m2"
+    },
+    {
+      "row": 17,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "1.6",
+        "_col1": "1.6",
+        "Partida": "Trazados y niveles",
+        "_col2": "Trazados y niveles",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F13"
+        },
+        "_col6": {
+          "sharedFormula": "F13"
+        }
+      },
+      "description": "Trazados y niveles",
+      "unit": "gl"
+    },
+    {
+      "row": 18,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "1.7",
+        "_col1": "1.7",
+        "Partida": "Retiro de escombros",
+        "_col2": "Retiro de escombros",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F13"
+        },
+        "_col6": {
+          "sharedFormula": "F13"
+        }
+      },
+      "description": "Retiro de escombros",
+      "unit": "gl"
+    },
+    {
+      "row": 19,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "1.9",
+        "_col1": "1.9",
+        "Partida": "Otros no considerados en OBRAS PRELIMINARES",
+        "_col2": "Otros no considerados en OBRAS PRELIMINARES",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "D19*E19",
+          "ref": "F19",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "D19*E19",
+          "ref": "F19",
+          "shareType": "shared"
+        }
+      },
+      "description": "Otros no considerados en OBRAS PRELIMINARES",
+      "unit": "gl"
+    },
+    {
+      "row": 21,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "2",
+        "_col1": "2",
+        "Partida": "TABIQUES ",
+        "_col2": "TABIQUES "
+      },
+      "description": "TABIQUES "
+    },
+    {
+      "row": 22,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "2.1",
+        "_col1": "2.1",
+        "Partida": "TAB 01: sobretabique simple sala de ventas, montante estructural 60 + plancha MDF 15 mm",
+        "_col2": "TAB 01: sobretabique simple sala de ventas, montante estructural 60 + plancha MDF 15 mm",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "formula": "D22*E22",
+          "ref": "F22:F27",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "D22*E22",
+          "ref": "F22:F27",
+          "shareType": "shared"
+        }
+      },
+      "description": "TAB 01: sobretabique simple sala de ventas, montante estructural 60 + plancha MDF 15 mm",
+      "unit": "m2"
+    },
+    {
+      "row": 23,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "2.2",
+        "_col1": "2.2",
+        "Partida": "TAB 02: sobretabique simple bodega, montante estructural 60 + plancha yeso carton 15 mm",
+        "_col2": "TAB 02: sobretabique simple bodega, montante estructural 60 + plancha yeso carton 15 mm",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "sharedFormula": "F22"
+        },
+        "_col6": {
+          "sharedFormula": "F22"
+        }
+      },
+      "description": "TAB 02: sobretabique simple bodega, montante estructural 60 + plancha yeso carton 15 mm",
+      "unit": "m2"
+    },
+    {
+      "row": 24,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "2.3",
+        "_col1": "2.3",
+        "Partida": "TAB 03: tabique simple divisorio, montante estructural 90 + plancha yeso carton 15 mm una cara + plancha MDF 15mm una cara",
+        "_col2": "TAB 03: tabique simple divisorio, montante estructural 90 + plancha yeso carton 15 mm una cara + plancha MDF 15mm una cara",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "formula": "D24*E24",
+          "ref": "F24",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "D24*E24",
+          "ref": "F24",
+          "shareType": "shared"
+        }
+      },
+      "description": "TAB 03: tabique simple divisorio, montante estructural 90 + plancha yeso carton 15 mm una cara + pla",
+      "unit": "m2"
+    },
+    {
+      "row": 25,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "2.4",
+        "_col1": "2.4",
+        "Partida": "Sobretabique pilar montante estructural 60 + plancha yeso carton 15 mm, considera esquinas redondeadas según detalle",
+        "_col2": "Sobretabique pilar montante estructural 60 + plancha yeso carton 15 mm, considera esquinas redondeadas según detalle",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "sharedFormula": "F22"
+        },
+        "_col6": {
+          "sharedFormula": "F22"
+        }
+      },
+      "description": "Sobretabique pilar montante estructural 60 + plancha yeso carton 15 mm, considera esquinas redondead",
+      "unit": "m2"
+    },
+    {
+      "row": 26,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "2.5",
+        "_col1": "2.5",
+        "Partida": "Tabique fachada montante estructural 60 + plancha MDF 15 mm",
+        "_col2": "Tabique fachada montante estructural 60 + plancha MDF 15 mm",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "sharedFormula": "F22"
+        },
+        "_col6": {
+          "sharedFormula": "F22"
+        }
+      },
+      "description": "Tabique fachada montante estructural 60 + plancha MDF 15 mm",
+      "unit": "m2"
+    },
+    {
+      "row": 27,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "2.6",
+        "_col1": "2.6",
+        "Partida": "Refuerzo oculto en tabique TERCIADO 15mm en tabique para fijacion TDA, RACK DE DATOS, estanterias de bodega, escalera gatera",
+        "_col2": "Refuerzo oculto en tabique TERCIADO 15mm en tabique para fijacion TDA, RACK DE DATOS, estanterias de bodega, escalera gatera",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "sharedFormula": "F22"
+        },
+        "_col6": {
+          "sharedFormula": "F22"
+        }
+      },
+      "description": "Refuerzo oculto en tabique TERCIADO 15mm en tabique para fijacion TDA, RACK DE DATOS, estanterias de",
+      "unit": "m2"
+    },
+    {
+      "row": 28,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "2.7",
+        "_col1": "2.7",
+        "Partida": "Escalera gatera metalica según detalle",
+        "_col2": "Escalera gatera metalica según detalle",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "E28*D28",
+          "ref": "F28",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E28*D28",
+          "ref": "F28",
+          "shareType": "shared"
+        }
+      },
+      "description": "Escalera gatera metalica según detalle",
+      "unit": "gl"
+    },
+    {
+      "row": 29,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "2.8",
+        "_col1": "2.8",
+        "Partida": "Otros no considerados en TABIQUES",
+        "_col2": "Otros no considerados en TABIQUES",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "E29*D29"
+        },
+        "_col6": {
+          "formula": "E29*D29"
+        }
+      },
+      "description": "Otros no considerados en TABIQUES",
+      "unit": "gl"
+    },
+    {
+      "row": 31,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "3",
+        "_col1": "3",
+        "Partida": "CIELOS",
+        "_col2": "CIELOS"
+      },
+      "description": "CIELOS"
+    },
+    {
+      "row": 32,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "3.1",
+        "_col1": "3.1",
+        "Partida": "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm",
+        "_col2": "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "formula": "D32*E32"
+        },
+        "_col6": {
+          "formula": "D32*E32"
+        }
+      },
+      "description": "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm",
+      "unit": "m2"
+    },
+    {
+      "row": 33,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "3.2",
+        "_col1": "3.2",
+        "Partida": "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm",
+        "_col2": "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "formula": "E33*D33",
+          "ref": "F33:F38",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E33*D33",
+          "ref": "F33:F38",
+          "shareType": "shared"
+        }
+      },
+      "description": "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm",
+      "unit": "m2"
+    },
+    {
+      "row": 34,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "3.3",
+        "_col1": "3.3",
+        "Partida": "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm",
+        "_col2": "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm",
+        "Unidad": "ml",
+        "_col3": "ml",
+        "Total": {
+          "sharedFormula": "F33"
+        },
+        "_col6": {
+          "sharedFormula": "F33"
+        }
+      },
+      "description": "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm",
+      "unit": "ml"
+    },
+    {
+      "row": 35,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "3.4",
+        "_col1": "3.4",
+        "Partida": "Pasarela de mantención montante estructural según detalle desde gatera hasta cortina de rollo según requerimientos a revisar en terreno, considera 60 cms de ancho libre. Considera pasamanos para restringir el paso al resto del cielo.",
+        "_col2": "Pasarela de mantención montante estructural según detalle desde gatera hasta cortina de rollo según requerimientos a revisar en terreno, considera 60 cms de ancho libre. Considera pasamanos para restringir el paso al resto del cielo.",
+        "Unidad": "ml",
+        "_col3": "ml",
+        "Total": {
+          "sharedFormula": "F33"
+        },
+        "_col6": {
+          "sharedFormula": "F33"
+        }
+      },
+      "description": "Pasarela de mantención montante estructural según detalle desde gatera hasta cortina de rollo según ",
+      "unit": "ml"
+    },
+    {
+      "row": 36,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "3.5",
+        "_col1": "3.5",
+        "Partida": "Refuerzos metalicos para instalacion rollo y guias cortina metalica",
+        "_col2": "Refuerzos metalicos para instalacion rollo y guias cortina metalica",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F33"
+        },
+        "_col6": {
+          "sharedFormula": "F33"
+        }
+      },
+      "description": "Refuerzos metalicos para instalacion rollo y guias cortina metalica",
+      "unit": "gl"
+    },
+    {
+      "row": 37,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "3.6",
+        "_col1": "3.6",
+        "Partida": "Tapa de inspeccion clasica para cielos de yeso carton 60x60cms color blanco espesor 15mm marca SKYHOUSE (con pasador para candado)",
+        "_col2": "Tapa de inspeccion clasica para cielos de yeso carton 60x60cms color blanco espesor 15mm marca SKYHOUSE (con pasador para candado)",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F33"
+        },
+        "_col6": {
+          "sharedFormula": "F33"
+        }
+      },
+      "description": "Tapa de inspeccion clasica para cielos de yeso carton 60x60cms color blanco espesor 15mm marca SKYHO",
+      "unit": "gl"
+    },
+    {
+      "row": 38,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "3.7",
+        "_col1": "3.7",
+        "Partida": "Otros no considerados en CIELOS",
+        "_col2": "Otros no considerados en CIELOS",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F33"
+        },
+        "_col6": {
+          "sharedFormula": "F33"
+        }
+      },
+      "description": "Otros no considerados en CIELOS",
+      "unit": "gl"
+    },
+    {
+      "row": 40,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "4",
+        "_col1": "4",
+        "Partida": "PINTURAS Y REVESTIMIENTOS DE MURO",
+        "_col2": "PINTURAS Y REVESTIMIENTOS DE MURO"
+      },
+      "description": "PINTURAS Y REVESTIMIENTOS DE MURO"
+    },
+    {
+      "row": 41,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "4.1",
+        "_col1": "4.1",
+        "Partida": "Empaste y huincha de todos los tabiques de yeso carton",
+        "_col2": "Empaste y huincha de todos los tabiques de yeso carton",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "formula": "D41*E41",
+          "ref": "F41:F45",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "D41*E41",
+          "ref": "F41:F45",
+          "shareType": "shared"
+        }
+      },
+      "description": "Empaste y huincha de todos los tabiques de yeso carton",
+      "unit": "m2"
+    },
+    {
+      "row": 42,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "4.2",
+        "_col1": "4.2",
+        "Partida": "Empaste y huincha de todos los cielos ",
+        "_col2": "Empaste y huincha de todos los cielos ",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "sharedFormula": "F41"
+        },
+        "_col6": {
+          "sharedFormula": "F41"
+        }
+      },
+      "description": "Empaste y huincha de todos los cielos ",
+      "unit": "m2"
+    },
+    {
+      "row": 43,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "4.3",
+        "_col1": "4.3",
+        "Partida": "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK",
+        "_col2": "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "sharedFormula": "F41"
+        },
+        "_col6": {
+          "sharedFormula": "F41"
+        }
+      },
+      "description": "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK",
+      "unit": "m2"
+    },
+    {
+      "row": 44,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "4.4",
+        "_col1": "4.4",
+        "Partida": "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural",
+        "_col2": "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "sharedFormula": "F41"
+        },
+        "_col6": {
+          "sharedFormula": "F41"
+        }
+      },
+      "description": "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural",
+      "unit": "m2"
+    },
+    {
+      "row": 45,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "4.5",
+        "_col1": "4.5",
+        "Partida": "Pintura latex extracubriente blanco en cielo bodega",
+        "_col2": "Pintura latex extracubriente blanco en cielo bodega",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "sharedFormula": "F41"
+        },
+        "_col6": {
+          "sharedFormula": "F41"
+        }
+      },
+      "description": "Pintura latex extracubriente blanco en cielo bodega",
+      "unit": "m2"
+    },
+    {
+      "row": 46,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "4.5",
+        "_col1": "4.5",
+        "Partida": "Pintura QUARZO con sellador acrilico + estuco SIP + revestimiento gres segun indicacion fabricante. PROVEEDOR: Lumine",
+        "_col2": "Pintura QUARZO con sellador acrilico + estuco SIP + revestimiento gres segun indicacion fabricante. PROVEEDOR: Lumine",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "formula": "D46*E46",
+          "ref": "F46",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "D46*E46",
+          "ref": "F46",
+          "shareType": "shared"
+        }
+      },
+      "description": "Pintura QUARZO con sellador acrilico + estuco SIP + revestimiento gres segun indicacion fabricante. ",
+      "unit": "m2"
+    },
+    {
+      "row": 47,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "4.6",
+        "_col1": "4.6",
+        "Partida": "Otros no considerados en PINTURAS Y REVESTIMIENTOS DE MURO",
+        "_col2": "Otros no considerados en PINTURAS Y REVESTIMIENTOS DE MURO",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "E47*D47"
+        },
+        "_col6": {
+          "formula": "E47*D47"
+        }
+      },
+      "description": "Otros no considerados en PINTURAS Y REVESTIMIENTOS DE MURO",
+      "unit": "gl"
+    },
+    {
+      "row": 49,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "5",
+        "_col1": "5",
+        "Partida": "PAVIMENTOS ",
+        "_col2": "PAVIMENTOS "
+      },
+      "description": "PAVIMENTOS "
+    },
+    {
+      "row": 50,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "5.1",
+        "_col1": "5.1",
+        "Partida": "Mortero nivelador",
+        "_col2": "Mortero nivelador",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "formula": "E50*D50",
+          "ref": "F50:F59",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E50*D50",
+          "ref": "F50:F59",
+          "shareType": "shared"
+        }
+      },
+      "description": "Mortero nivelador",
+      "unit": "m2"
+    },
+    {
+      "row": 51,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "5.2",
+        "_col1": "5.2",
+        "Partida": "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm",
+        "_col2": "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "formula": "E51*D51",
+          "ref": "F51:F55",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E51*D51",
+          "ref": "F51:F55",
+          "shareType": "shared"
+        }
+      },
+      "description": "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra ma",
+      "unit": "m2"
+    },
+    {
+      "row": 52,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "5.3",
+        "_col1": "5.3",
+        "Partida": "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm.",
+        "_col2": "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm.",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "sharedFormula": "F51"
+        },
+        "_col6": {
+          "sharedFormula": "F51"
+        }
+      },
+      "description": "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra ",
+      "unit": "m2"
+    },
+    {
+      "row": 53,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "5.4",
+        "_col1": "5.4",
+        "Partida": "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm.",
+        "_col2": "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm.",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "sharedFormula": "F51"
+        },
+        "_col6": {
+          "sharedFormula": "F51"
+        }
+      },
+      "description": "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante pr",
+      "unit": "m2"
+    },
+    {
+      "row": 54,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "5.5",
+        "_col1": "5.5",
+        "Partida": "Pieza de marmol en acceso color Rosso Asiago acabado opaco con logo plancha de bronce e=2mm acabado opaco segun muestra, embutido en marmol *archivo grafico a proveer por mandante",
+        "_col2": "Pieza de marmol en acceso color Rosso Asiago acabado opaco con logo plancha de bronce e=2mm acabado opaco segun muestra, embutido en marmol *archivo grafico a proveer por mandante",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "sharedFormula": "F51"
+        },
+        "_col6": {
+          "sharedFormula": "F51"
+        }
+      },
+      "description": "Pieza de marmol en acceso color Rosso Asiago acabado opaco con logo plancha de bronce e=2mm acabado ",
+      "unit": "m2"
+    },
+    {
+      "row": 55,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "5.6",
+        "_col1": "5.6",
+        "Partida": "Tarima de marmol en vitrinas color Rosso Asiago acabado opaco, considera estructura interior",
+        "_col2": "Tarima de marmol en vitrinas color Rosso Asiago acabado opaco, considera estructura interior",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "sharedFormula": "F51"
+        },
+        "_col6": {
+          "sharedFormula": "F51"
+        }
+      },
+      "description": "Tarima de marmol en vitrinas color Rosso Asiago acabado opaco, considera estructura interior",
+      "unit": "m2"
+    },
+    {
+      "row": 56,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "5.7",
+        "_col1": "5.7",
+        "Partida": "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm.",
+        "_col2": "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm.",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "sharedFormula": "F50"
+        },
+        "_col6": {
+          "sharedFormula": "F50"
+        }
+      },
+      "description": "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm.",
+      "unit": "m2"
+    },
+    {
+      "row": 57,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "5.8",
+        "_col1": "5.8",
+        "Partida": "Provision e instalacion pavimento IDEM MALL",
+        "_col2": "Provision e instalacion pavimento IDEM MALL",
+        "Unidad": "m2",
+        "_col3": "m2",
+        "Total": {
+          "formula": "E57*D57",
+          "ref": "F57",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E57*D57",
+          "ref": "F57",
+          "shareType": "shared"
+        }
+      },
+      "description": "Provision e instalacion pavimento IDEM MALL",
+      "unit": "m2"
+    },
+    {
+      "row": 58,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "5.9",
+        "_col1": "5.9",
+        "Partida": "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce",
+        "_col2": "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce",
+        "Unidad": "ml",
+        "_col3": "ml",
+        "Total": {
+          "sharedFormula": "F50"
+        },
+        "_col6": {
+          "sharedFormula": "F50"
+        }
+      },
+      "description": "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce",
+      "unit": "ml"
+    },
+    {
+      "row": 59,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "5.10",
+        "_col1": "5.10",
+        "Partida": "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)",
+        "_col2": "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)",
+        "Unidad": "ml",
+        "_col3": "ml",
+        "Total": {
+          "sharedFormula": "F50"
+        },
+        "_col6": {
+          "sharedFormula": "F50"
+        }
+      },
+      "description": "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10",
+      "unit": "ml"
+    },
+    {
+      "row": 60,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "5.11",
+        "_col1": "5.11",
+        "Partida": "Otros no considerados en PAVIMENTOS",
+        "_col2": "Otros no considerados en PAVIMENTOS",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "E60*D60",
+          "ref": "F60",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E60*D60",
+          "ref": "F60",
+          "shareType": "shared"
+        }
+      },
+      "description": "Otros no considerados en PAVIMENTOS",
+      "unit": "gl"
+    },
+    {
+      "row": 62,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "6",
+        "_col1": "6",
+        "Partida": "PUERTAS Y QUINCALLERIA",
+        "_col2": "PUERTAS Y QUINCALLERIA"
+      },
+      "description": "PUERTAS Y QUINCALLERIA"
+    },
+    {
+      "row": 63,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "6.1",
+        "_col1": "6.1",
+        "Partida": "Brazo Hidráulico puerta bodega",
+        "_col2": "Brazo Hidráulico puerta bodega",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": "0",
+        "_col6": "0"
+      },
+      "description": "Brazo Hidráulico puerta bodega",
+      "unit": "un"
+    },
+    {
+      "row": 64,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "6.2",
+        "_col1": "6.2",
+        "Partida": "Otros no considerados en PUERTAS Y QUINCALLERIA",
+        "_col2": "Otros no considerados en PUERTAS Y QUINCALLERIA",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "E64*D64"
+        },
+        "_col6": {
+          "formula": "E64*D64"
+        }
+      },
+      "description": "Otros no considerados en PUERTAS Y QUINCALLERIA",
+      "unit": "gl"
+    },
+    {
+      "row": 66,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7",
+        "_col1": "7",
+        "Partida": "LUMINARIAS",
+        "_col2": "LUMINARIAS"
+      },
+      "description": "LUMINARIAS"
+    },
+    {
+      "row": 67,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.1",
+        "_col1": "7.1",
+        "Partida": "(D) Perfil de aluminio sobrepuesto rectangular. Material: Aluminio. Protección IP: IP20. Dimensiones: 16 x 6 x 3000 mm. Incluye: Difusor Opal + cinta LED SMD 2835 19,2W interior. Voltage: 12V. Luminous flux: 1.600 LM x mt. Protection IP: IP20. Dimentions: 5000 × 10 mm. PROVEEDOR: DLUZ",
+        "_col2": "(D) Perfil de aluminio sobrepuesto rectangular. Material: Aluminio. Protección IP: IP20. Dimensiones: 16 x 6 x 3000 mm. Incluye: Difusor Opal + cinta LED SMD 2835 19,2W interior. Voltage: 12V. Luminous flux: 1.600 LM x mt. Protection IP: IP20. Dimentions: 5000 × 10 mm. PROVEEDOR: DLUZ",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "formula": "E67*D67",
+          "ref": "F67:F80",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E67*D67",
+          "ref": "F67:F80",
+          "shareType": "shared"
+        }
+      },
+      "description": "(D) Perfil de aluminio sobrepuesto rectangular. Material: Aluminio. Protección IP: IP20. Dimensiones",
+      "unit": "un"
+    },
+    {
+      "row": 68,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.2",
+        "_col1": "7.2",
+        "Partida": "(D) Fuente de poder 12V 120W exterior. IP67 Voltaje de entrada: 220V, Voltaje de salida: 12V. Factor de potencia: >0.90. Protección IP: IP67. Cantidad de salidas: 2. PROVEEDOR: DLUZ",
+        "_col2": "(D) Fuente de poder 12V 120W exterior. IP67 Voltaje de entrada: 220V, Voltaje de salida: 12V. Factor de potencia: >0.90. Protección IP: IP67. Cantidad de salidas: 2. PROVEEDOR: DLUZ",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F67"
+        },
+        "_col6": {
+          "sharedFormula": "F67"
+        }
+      },
+      "description": "(D) Fuente de poder 12V 120W exterior. IP67 Voltaje de entrada: 220V, Voltaje de salida: 12V. Factor",
+      "unit": "un"
+    },
+    {
+      "row": 69,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.3",
+        "_col1": "7.3",
+        "Partida": "(C) Foco riel magnético 6W 3.000°K NG Protección: IP20 Flujo: 600LM. Voltaje 48V. Apertura: 24°. Dimensiones: Ø35 x140 mm. Color negro. PROVEEDOR: DLUZ",
+        "_col2": "(C) Foco riel magnético 6W 3.000°K NG Protección: IP20 Flujo: 600LM. Voltaje 48V. Apertura: 24°. Dimensiones: Ø35 x140 mm. Color negro. PROVEEDOR: DLUZ",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F67"
+        },
+        "_col6": {
+          "sharedFormula": "F67"
+        }
+      },
+      "description": "(C) Foco riel magnético 6W 3.000°K NG Protección: IP20 Flujo: 600LM. Voltaje 48V. Apertura: 24°. Dim",
+      "unit": "un"
+    },
+    {
+      "row": 70,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.4",
+        "_col1": "7.4",
+        "Partida": "(G) Foco porta dicroico gu10 retraído fijo Base: 1xGU10 Voltaje: 220V Protección IP: IP20. Color de Equipo: Negro. Dimensiones: 101×101 mm. Perforación: 80x30x77 mm. No Incluye Ampolleta. PROVEEDOR: DLUZ",
+        "_col2": "(G) Foco porta dicroico gu10 retraído fijo Base: 1xGU10 Voltaje: 220V Protección IP: IP20. Color de Equipo: Negro. Dimensiones: 101×101 mm. Perforación: 80x30x77 mm. No Incluye Ampolleta. PROVEEDOR: DLUZ",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F67"
+        },
+        "_col6": {
+          "sharedFormula": "F67"
+        }
+      },
+      "description": "(G) Foco porta dicroico gu10 retraído fijo Base: 1xGU10 Voltaje: 220V Protección IP: IP20. Color de ",
+      "unit": "un"
+    },
+    {
+      "row": 71,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.5",
+        "_col1": "7.5",
+        "Partida": "(G) Dicroico PHILIPS LED 7W DIMEABLE. Base: GU10. Color de Luz: 2.700°K. Consumo: 7W Voltaje: 220V. Tipo de LED: SMD Flujo: 650 Lm. Ángulo de Apertura: 36° IP: IP20. Dimeable: Sí Dimensiones: Ø50×54mm. PROVEEDOR: DLUZ",
+        "_col2": "(G) Dicroico PHILIPS LED 7W DIMEABLE. Base: GU10. Color de Luz: 2.700°K. Consumo: 7W Voltaje: 220V. Tipo de LED: SMD Flujo: 650 Lm. Ángulo de Apertura: 36° IP: IP20. Dimeable: Sí Dimensiones: Ø50×54mm. PROVEEDOR: DLUZ",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "formula": "E71*D71",
+          "ref": "F71",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E71*D71",
+          "ref": "F71",
+          "shareType": "shared"
+        }
+      },
+      "description": "(G) Dicroico PHILIPS LED 7W DIMEABLE. Base: GU10. Color de Luz: 2.700°K. Consumo: 7W Voltaje: 220V. ",
+      "unit": "un"
+    },
+    {
+      "row": 72,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.6",
+        "_col1": "7.6",
+        "Partida": "(E) Downlight LED redondo 3w luz cálida, Color negro. Diámetro equipo 5cms, diámetro perforación 4cms. Altura 3 cms. PROVEEDOR: LEDSTUDIO",
+        "_col2": "(E) Downlight LED redondo 3w luz cálida, Color negro. Diámetro equipo 5cms, diámetro perforación 4cms. Altura 3 cms. PROVEEDOR: LEDSTUDIO",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "formula": "E72*D72",
+          "ref": "F72",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E72*D72",
+          "ref": "F72",
+          "shareType": "shared"
+        }
+      },
+      "description": "(E) Downlight LED redondo 3w luz cálida, Color negro. Diámetro equipo 5cms, diámetro perforación 4cm",
+      "unit": "un"
+    },
+    {
+      "row": 73,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.7",
+        "_col1": "7.7",
+        "Partida": "(H) Foco EROS15 LED SPOT dirigible EMB BLACK 15W Color de Luz: 3.000K / 4000K Voltaje: 220V Tipo de LED: COB Flujo Lumínico: 1.350 Lm. Ángulo de Apertura: 24° IP: IP20 Dimensiones: Ø112×100 mm. Perforación: Ø95 mm PROVEEDOR: DLUZ",
+        "_col2": "(H) Foco EROS15 LED SPOT dirigible EMB BLACK 15W Color de Luz: 3.000K / 4000K Voltaje: 220V Tipo de LED: COB Flujo Lumínico: 1.350 Lm. Ángulo de Apertura: 24° IP: IP20 Dimensiones: Ø112×100 mm. Perforación: Ø95 mm PROVEEDOR: DLUZ",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "formula": "E73*D73",
+          "ref": "F73",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E73*D73",
+          "ref": "F73",
+          "shareType": "shared"
+        }
+      },
+      "description": "(H) Foco EROS15 LED SPOT dirigible EMB BLACK 15W Color de Luz: 3.000K / 4000K Voltaje: 220V Tipo de ",
+      "unit": "un"
+    },
+    {
+      "row": 74,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.8",
+        "_col1": "7.8",
+        "Partida": "Kit emergencia para foco embutido sala de ventas (90-120 min autonomía)",
+        "_col2": "Kit emergencia para foco embutido sala de ventas (90-120 min autonomía)",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F67"
+        },
+        "_col6": {
+          "sharedFormula": "F67"
+        }
+      },
+      "description": "Kit emergencia para foco embutido sala de ventas (90-120 min autonomía)",
+      "unit": "un"
+    },
+    {
+      "row": 75,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.9",
+        "_col1": "7.9",
+        "Partida": "Kit emergencia para riel sala de ventas (90-120 min autonomía)",
+        "_col2": "Kit emergencia para riel sala de ventas (90-120 min autonomía)",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F67"
+        },
+        "_col6": {
+          "sharedFormula": "F67"
+        }
+      },
+      "description": "Kit emergencia para riel sala de ventas (90-120 min autonomía)",
+      "unit": "un"
+    },
+    {
+      "row": 76,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.10",
+        "_col1": "7.10",
+        "Partida": "Lamparas bodega estanca LED 36W 4300 LM IP65",
+        "_col2": "Lamparas bodega estanca LED 36W 4300 LM IP65",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F67"
+        },
+        "_col6": {
+          "sharedFormula": "F67"
+        }
+      },
+      "description": "Lamparas bodega estanca LED 36W 4300 LM IP65",
+      "unit": "un"
+    },
+    {
+      "row": 77,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.11",
+        "_col1": "7.11",
+        "Partida": "Lamparas bodega con kit emergencia (90-120 min autonomía)",
+        "_col2": "Lamparas bodega con kit emergencia (90-120 min autonomía)",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F67"
+        },
+        "_col6": {
+          "sharedFormula": "F67"
+        }
+      },
+      "description": "Lamparas bodega con kit emergencia (90-120 min autonomía)",
+      "unit": "un"
+    },
+    {
+      "row": 78,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.12",
+        "_col1": "7.12",
+        "Partida": "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65",
+        "_col2": "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F67"
+        },
+        "_col6": {
+          "sharedFormula": "F67"
+        }
+      },
+      "description": "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65",
+      "unit": "un"
+    },
+    {
+      "row": 79,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.13",
+        "_col1": "7.13",
+        "Partida": "Letrero salida (señalética emergencia)",
+        "_col2": "Letrero salida (señalética emergencia)",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F67"
+        },
+        "_col6": {
+          "sharedFormula": "F67"
+        }
+      },
+      "description": "Letrero salida (señalética emergencia)",
+      "unit": "un"
+    },
+    {
+      "row": 80,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.14",
+        "_col1": "7.14",
+        "Partida": "Instalación de luminarias",
+        "_col2": "Instalación de luminarias",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F67"
+        },
+        "_col6": {
+          "sharedFormula": "F67"
+        }
+      },
+      "description": "Instalación de luminarias",
+      "unit": "un"
+    },
+    {
+      "row": 81,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "7.15",
+        "_col1": "7.15",
+        "Partida": "Otros no considerados en LUMINARIAS",
+        "_col2": "Otros no considerados en LUMINARIAS",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "E81*D81"
+        },
+        "_col6": {
+          "formula": "E81*D81"
+        }
+      },
+      "description": "Otros no considerados en LUMINARIAS",
+      "unit": "gl"
+    },
+    {
+      "row": 83,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "8",
+        "_col1": "8",
+        "Partida": "FACHADA",
+        "_col2": "FACHADA"
+      },
+      "description": "FACHADA"
+    },
+    {
+      "row": 84,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "8.1",
+        "_col1": "8.1",
+        "Partida": "Vitrina vidrio laminado 5+5mm + marco aluminio oculto según detalle. Considerar film antivandalico 10 micras",
+        "_col2": "Vitrina vidrio laminado 5+5mm + marco aluminio oculto según detalle. Considerar film antivandalico 10 micras",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "D84*E84"
+        },
+        "_col6": {
+          "formula": "D84*E84"
+        }
+      },
+      "description": "Vitrina vidrio laminado 5+5mm + marco aluminio oculto según detalle. Considerar film antivandalico 1",
+      "unit": "gl"
+    },
+    {
+      "row": 85,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "8.2",
+        "_col1": "8.2",
+        "Partida": "Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bronce",
+        "_col2": "Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bronce",
+        "Unidad": "ml",
+        "_col3": "ml",
+        "Total": {
+          "formula": "D85*E85"
+        },
+        "_col6": {
+          "formula": "D85*E85"
+        }
+      },
+      "description": "Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bro",
+      "unit": "ml"
+    },
+    {
+      "row": 86,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "8.3",
+        "_col1": "8.3",
+        "Partida": "Cortina emballetada, microperforada, ups, motor central y destrabe manual. Acabado electropintado color negro. Considera 3 control remoto",
+        "_col2": "Cortina emballetada, microperforada, ups, motor central y destrabe manual. Acabado electropintado color negro. Considera 3 control remoto",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "E86*D86",
+          "ref": "F86:F87",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E86*D86",
+          "ref": "F86:F87",
+          "shareType": "shared"
+        }
+      },
+      "description": "Cortina emballetada, microperforada, ups, motor central y destrabe manual. Acabado electropintado co",
+      "unit": "gl"
+    },
+    {
+      "row": 87,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "8.4",
+        "_col1": "8.4",
+        "Partida": "Otros no considerados en FACHADA",
+        "_col2": "Otros no considerados en FACHADA",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F86"
+        },
+        "_col6": {
+          "sharedFormula": "F86"
+        }
+      },
+      "description": "Otros no considerados en FACHADA",
+      "unit": "gl"
+    },
+    {
+      "row": 89,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10",
+        "_col1": "10",
+        "Partida": "INSTALACIONES ",
+        "_col2": "INSTALACIONES "
+      },
+      "description": "INSTALACIONES "
+    },
+    {
+      "row": 90,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.1",
+        "_col1": "10.1",
+        "Partida": "Climatización",
+        "_col2": "Climatización"
+      },
+      "description": "Climatización"
+    },
+    {
+      "row": 91,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.1.1",
+        "_col1": "10.1.1",
+        "Partida": "Climatización ductos y difusores lineales según proyecto",
+        "_col2": "Climatización ductos y difusores lineales según proyecto",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "E91*D91",
+          "ref": "F91:F92",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E91*D91",
+          "ref": "F91:F92",
+          "shareType": "shared"
+        }
+      },
+      "description": "Climatización ductos y difusores lineales según proyecto",
+      "unit": "gl"
+    },
+    {
+      "row": 92,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.1.2",
+        "_col1": "10.1.2",
+        "Partida": "Planos As Built y certificado de instalación *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+        "_col2": "Planos As Built y certificado de instalación *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F91"
+        },
+        "_col6": {
+          "sharedFormula": "F91"
+        }
+      },
+      "description": "Planos As Built y certificado de instalación *se deben entregar al final de la obra impresos y firma",
+      "unit": "gl"
+    },
+    {
+      "row": 94,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "Wed Feb 09 2022 21:00:00 GMT-0300 (hora de verano de Chile)",
+        "_col1": "Wed Feb 09 2022 21:00:00 GMT-0300 (hora de verano de Chile)",
+        "Partida": "Instalación Eléctrica",
+        "_col2": "Instalación Eléctrica"
+      },
+      "description": "Instalación Eléctrica"
+    },
+    {
+      "row": 95,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.1",
+        "_col1": "10.2.1",
+        "Partida": "Tablero eléctrico rotulado",
+        "_col2": "Tablero eléctrico rotulado",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "formula": "D95*E95",
+          "ref": "F95:F110",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "D95*E95",
+          "ref": "F95:F110",
+          "shareType": "shared"
+        }
+      },
+      "description": "Tablero eléctrico rotulado",
+      "unit": "un"
+    },
+    {
+      "row": 96,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.2",
+        "_col1": "10.2.2",
+        "Partida": "Tablero clima (si lo exige mall)",
+        "_col2": "Tablero clima (si lo exige mall)",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F95"
+        },
+        "_col6": {
+          "sharedFormula": "F95"
+        }
+      },
+      "description": "Tablero clima (si lo exige mall)",
+      "unit": "un"
+    },
+    {
+      "row": 97,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.3",
+        "_col1": "10.2.3",
+        "Partida": "Alimentador desde la caja de empalme (en linea de concesion) hasta la ubicación del tablero",
+        "_col2": "Alimentador desde la caja de empalme (en linea de concesion) hasta la ubicación del tablero",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "formula": "D97*E97",
+          "ref": "F97",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "D97*E97",
+          "ref": "F97",
+          "shareType": "shared"
+        }
+      },
+      "description": "Alimentador desde la caja de empalme (en linea de concesion) hasta la ubicación del tablero",
+      "unit": "un"
+    },
+    {
+      "row": 98,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.4",
+        "_col1": "10.2.4",
+        "Partida": "Puntos de iluminación",
+        "_col2": "Puntos de iluminación",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F95"
+        },
+        "_col6": {
+          "sharedFormula": "F95"
+        }
+      },
+      "description": "Puntos de iluminación",
+      "unit": "un"
+    },
+    {
+      "row": 99,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.5",
+        "_col1": "10.2.5",
+        "Partida": "Puntos de iluminacion muebles",
+        "_col2": "Puntos de iluminacion muebles",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F95"
+        },
+        "_col6": {
+          "sharedFormula": "F95"
+        }
+      },
+      "description": "Puntos de iluminacion muebles",
+      "unit": "un"
+    },
+    {
+      "row": 100,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.6",
+        "_col1": "10.2.6",
+        "Partida": "Puntos de enchufe",
+        "_col2": "Puntos de enchufe",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F95"
+        },
+        "_col6": {
+          "sharedFormula": "F95"
+        }
+      },
+      "description": "Puntos de enchufe",
+      "unit": "un"
+    },
+    {
+      "row": 101,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.7",
+        "_col1": "10.2.7",
+        "Partida": "Puntos de enchufe muebles isla (a piso)",
+        "_col2": "Puntos de enchufe muebles isla (a piso)",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F95"
+        },
+        "_col6": {
+          "sharedFormula": "F95"
+        }
+      },
+      "description": "Puntos de enchufe muebles isla (a piso)",
+      "unit": "un"
+    },
+    {
+      "row": 102,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.8",
+        "_col1": "10.2.8",
+        "Partida": "Puntos de datos",
+        "_col2": "Puntos de datos",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F95"
+        },
+        "_col6": {
+          "sharedFormula": "F95"
+        }
+      },
+      "description": "Puntos de datos",
+      "unit": "un"
+    },
+    {
+      "row": 103,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.9",
+        "_col1": "10.2.9",
+        "Partida": "Canalizado cámaras de seguridad UTP cat 6e",
+        "_col2": "Canalizado cámaras de seguridad UTP cat 6e",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F95"
+        },
+        "_col6": {
+          "sharedFormula": "F95"
+        }
+      },
+      "description": "Canalizado cámaras de seguridad UTP cat 6e",
+      "unit": "un"
+    },
+    {
+      "row": 104,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.10",
+        "_col1": "10.2.10",
+        "Partida": "Canalizado parlantes",
+        "_col2": "Canalizado parlantes",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F95"
+        },
+        "_col6": {
+          "sharedFormula": "F95"
+        }
+      },
+      "description": "Canalizado parlantes",
+      "unit": "un"
+    },
+    {
+      "row": 105,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.11",
+        "_col1": "10.2.11",
+        "Partida": "Punto clima",
+        "_col2": "Punto clima",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F95"
+        },
+        "_col6": {
+          "sharedFormula": "F95"
+        }
+      },
+      "description": "Punto clima",
+      "unit": "un"
+    },
+    {
+      "row": 106,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.12",
+        "_col1": "10.2.12",
+        "Partida": "Punto letrero ",
+        "_col2": "Punto letrero ",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F95"
+        },
+        "_col6": {
+          "sharedFormula": "F95"
+        }
+      },
+      "description": "Punto letrero ",
+      "unit": "un"
+    },
+    {
+      "row": 107,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.13",
+        "_col1": "10.2.13",
+        "Partida": "Canalización para alarma de intrusion",
+        "_col2": "Canalización para alarma de intrusion",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F95"
+        },
+        "_col6": {
+          "sharedFormula": "F95"
+        }
+      },
+      "description": "Canalización para alarma de intrusion",
+      "unit": "un"
+    },
+    {
+      "row": 108,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.14",
+        "_col1": "10.2.14",
+        "Partida": "Puntos pantallas",
+        "_col2": "Puntos pantallas",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F95"
+        },
+        "_col6": {
+          "sharedFormula": "F95"
+        }
+      },
+      "description": "Puntos pantallas",
+      "unit": "un"
+    },
+    {
+      "row": 109,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.15",
+        "_col1": "10.2.15",
+        "Partida": "Puntos cajas de luz (a muro)",
+        "_col2": "Puntos cajas de luz (a muro)",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F95"
+        },
+        "_col6": {
+          "sharedFormula": "F95"
+        }
+      },
+      "description": "Puntos cajas de luz (a muro)",
+      "unit": "un"
+    },
+    {
+      "row": 110,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.16",
+        "_col1": "10.2.16",
+        "Partida": "Certificados TE1, Planos As Built *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+        "_col2": "Certificados TE1, Planos As Built *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F95"
+        },
+        "_col6": {
+          "sharedFormula": "F95"
+        }
+      },
+      "description": "Certificados TE1, Planos As Built *se deben entregar al final de la obra impresos y firmados en fres",
+      "unit": "un"
+    },
+    {
+      "row": 111,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.17",
+        "_col1": "10.2.17",
+        "Partida": "Remarcador",
+        "_col2": "Remarcador",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "formula": "E111*D111"
+        },
+        "_col6": {
+          "formula": "E111*D111"
+        }
+      },
+      "description": "Remarcador",
+      "unit": "un"
+    },
+    {
+      "row": 112,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.18",
+        "_col1": "10.2.18",
+        "Partida": "Enlauchado para fibra optica hasta rack de datos",
+        "_col2": "Enlauchado para fibra optica hasta rack de datos",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "E112*D112"
+        },
+        "_col6": {
+          "formula": "E112*D112"
+        }
+      },
+      "description": "Enlauchado para fibra optica hasta rack de datos",
+      "unit": "gl"
+    },
+    {
+      "row": 113,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.19",
+        "_col1": "10.2.19",
+        "Partida": "Rotulación de todos los enchufes, debe indicar voltaje 220V y demarcar los enchufes conectados al sistema de emergencia",
+        "_col2": "Rotulación de todos los enchufes, debe indicar voltaje 220V y demarcar los enchufes conectados al sistema de emergencia",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "E113*D113"
+        },
+        "_col6": {
+          "formula": "E113*D113"
+        }
+      },
+      "description": "Rotulación de todos los enchufes, debe indicar voltaje 220V y demarcar los enchufes conectados al si",
+      "unit": "gl"
+    },
+    {
+      "row": 114,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.20",
+        "_col1": "10.2.20",
+        "Partida": "Alarma en vitrina, provision e instalacion",
+        "_col2": "Alarma en vitrina, provision e instalacion",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "formula": "E114*D114",
+          "ref": "F114:F117",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E114*D114",
+          "ref": "F114:F117",
+          "shareType": "shared"
+        }
+      },
+      "description": "Alarma en vitrina, provision e instalacion",
+      "unit": "un"
+    },
+    {
+      "row": 115,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.21",
+        "_col1": "10.2.21",
+        "Partida": "Sensor de movimiento (zona acceso a gatera), provision e instalacion",
+        "_col2": "Sensor de movimiento (zona acceso a gatera), provision e instalacion",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F114"
+        },
+        "_col6": {
+          "sharedFormula": "F114"
+        }
+      },
+      "description": "Sensor de movimiento (zona acceso a gatera), provision e instalacion",
+      "unit": "un"
+    },
+    {
+      "row": 116,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.22",
+        "_col1": "10.2.22",
+        "Partida": "Gabinete de datos para 14 un + ordenacables + rotulación",
+        "_col2": "Gabinete de datos para 14 un + ordenacables + rotulación",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F114"
+        },
+        "_col6": {
+          "sharedFormula": "F114"
+        }
+      },
+      "description": "Gabinete de datos para 14 un + ordenacables + rotulación",
+      "unit": "un"
+    },
+    {
+      "row": 117,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.2.23",
+        "_col1": "10.2.23",
+        "Partida": "UPS 3KVA con enchuve 16A",
+        "_col2": "UPS 3KVA con enchuve 16A",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F114"
+        },
+        "_col6": {
+          "sharedFormula": "F114"
+        }
+      },
+      "description": "UPS 3KVA con enchuve 16A",
+      "unit": "un"
+    },
+    {
+      "row": 119,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "Wed Mar 09 2022 21:00:00 GMT-0300 (hora de verano de Chile)",
+        "_col1": "Wed Mar 09 2022 21:00:00 GMT-0300 (hora de verano de Chile)",
+        "Partida": "Instalación Incendio",
+        "_col2": "Instalación Incendio"
+      },
+      "description": "Instalación Incendio"
+    },
+    {
+      "row": 120,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.3.1",
+        "_col1": "10.3.1",
+        "Partida": "Detección según proyecto",
+        "_col2": "Detección según proyecto",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "D120*E120",
+          "ref": "F120:F123",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "D120*E120",
+          "ref": "F120:F123",
+          "shareType": "shared"
+        }
+      },
+      "description": "Detección según proyecto",
+      "unit": "gl"
+    },
+    {
+      "row": 121,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.3.2",
+        "_col1": "10.3.2",
+        "Partida": "Extinción según proyecto",
+        "_col2": "Extinción según proyecto",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F120"
+        },
+        "_col6": {
+          "sharedFormula": "F120"
+        }
+      },
+      "description": "Extinción según proyecto",
+      "unit": "gl"
+    },
+    {
+      "row": 122,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.3.3",
+        "_col1": "10.3.3",
+        "Partida": "Set extintores según proyecto, incluida señaletica de extintor a muro",
+        "_col2": "Set extintores según proyecto, incluida señaletica de extintor a muro",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F120"
+        },
+        "_col6": {
+          "sharedFormula": "F120"
+        }
+      },
+      "description": "Set extintores según proyecto, incluida señaletica de extintor a muro",
+      "unit": "gl"
+    },
+    {
+      "row": 123,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.3.4",
+        "_col1": "10.3.4",
+        "Partida": "Planos As Built y certificado de instalación *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+        "_col2": "Planos As Built y certificado de instalación *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F120"
+        },
+        "_col6": {
+          "sharedFormula": "F120"
+        }
+      },
+      "description": "Planos As Built y certificado de instalación *se deben entregar al final de la obra impresos y firma",
+      "unit": "gl"
+    },
+    {
+      "row": 125,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "Sat Apr 09 2022 20:00:00 GMT-0400 (hora estándar de Chile)",
+        "_col1": "Sat Apr 09 2022 20:00:00 GMT-0400 (hora estándar de Chile)",
+        "Partida": "Instalacion Sanitaria",
+        "_col2": "Instalacion Sanitaria"
+      },
+      "description": "Instalacion Sanitaria"
+    },
+    {
+      "row": 126,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.4.1",
+        "_col1": "10.4.1",
+        "Partida": "Instalación AP y Alcantarillado",
+        "_col2": "Instalación AP y Alcantarillado",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "E126*D126",
+          "ref": "F126:F131",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E126*D126",
+          "ref": "F126:F131",
+          "shareType": "shared"
+        }
+      },
+      "description": "Instalación AP y Alcantarillado",
+      "unit": "gl"
+    },
+    {
+      "row": 127,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.4.2",
+        "_col1": "10.4.2",
+        "Partida": "Bomba impulsora (si aplica)",
+        "_col2": "Bomba impulsora (si aplica)",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F126"
+        },
+        "_col6": {
+          "sharedFormula": "F126"
+        }
+      },
+      "description": "Bomba impulsora (si aplica)",
+      "unit": "un"
+    },
+    {
+      "row": 128,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.4.3",
+        "_col1": "10.4.3",
+        "Partida": "Grifería (solo instalacion, provista por mandante)",
+        "_col2": "Grifería (solo instalacion, provista por mandante)",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F126"
+        },
+        "_col6": {
+          "sharedFormula": "F126"
+        }
+      },
+      "description": "Grifería (solo instalacion, provista por mandante)",
+      "unit": "un"
+    },
+    {
+      "row": 129,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.4.4",
+        "_col1": "10.4.4",
+        "Partida": "Remarcador agua potable",
+        "_col2": "Remarcador agua potable",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F126"
+        },
+        "_col6": {
+          "sharedFormula": "F126"
+        }
+      },
+      "description": "Remarcador agua potable",
+      "unit": "un"
+    },
+    {
+      "row": 130,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.4.5",
+        "_col1": "10.4.5",
+        "Partida": "Certificados de factibilidad y dotacion",
+        "_col2": "Certificados de factibilidad y dotacion",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "E130*D130"
+        },
+        "_col6": {
+          "formula": "E130*D130"
+        }
+      },
+      "description": "Certificados de factibilidad y dotacion",
+      "unit": "gl"
+    },
+    {
+      "row": 131,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "10.4.6",
+        "_col1": "10.4.6",
+        "Partida": "Planos As Built *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+        "_col2": "Planos As Built *se deben entregar al final de la obra impresos y firmados en fresco por el instalador",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F126"
+        },
+        "_col6": {
+          "sharedFormula": "F126"
+        }
+      },
+      "description": "Planos As Built *se deben entregar al final de la obra impresos y firmados en fresco por el instalad",
+      "unit": "gl"
+    },
+    {
+      "row": 134,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "11.1",
+        "_col1": "11.1",
+        "Partida": "Aseo y entrega final",
+        "_col2": "Aseo y entrega final",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "formula": "D134*E134",
+          "ref": "F134:F139",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "D134*E134",
+          "ref": "F134:F139",
+          "shareType": "shared"
+        }
+      },
+      "description": "Aseo y entrega final",
+      "unit": "gl"
+    },
+    {
+      "row": 135,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "11.2",
+        "_col1": "11.2",
+        "Partida": "Desplazamiento de cierre provisorio para montaje fachada",
+        "_col2": "Desplazamiento de cierre provisorio para montaje fachada",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F134"
+        },
+        "_col6": {
+          "sharedFormula": "F134"
+        }
+      },
+      "description": "Desplazamiento de cierre provisorio para montaje fachada",
+      "unit": "gl"
+    },
+    {
+      "row": 136,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "11.3",
+        "_col1": "11.3",
+        "Partida": "Retiro de cierre provisorio",
+        "_col2": "Retiro de cierre provisorio",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F134"
+        },
+        "_col6": {
+          "sharedFormula": "F134"
+        }
+      },
+      "description": "Retiro de cierre provisorio",
+      "unit": "gl"
+    },
+    {
+      "row": 137,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "11.4",
+        "_col1": "11.4",
+        "Partida": "Tapas registro para RAP ",
+        "_col2": "Tapas registro para RAP ",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F134"
+        },
+        "_col6": {
+          "sharedFormula": "F134"
+        }
+      },
+      "description": "Tapas registro para RAP ",
+      "unit": "un"
+    },
+    {
+      "row": 138,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "11.5",
+        "_col1": "11.5",
+        "Partida": "Seguro todo riesgo de construcción solicitado por Mall",
+        "_col2": "Seguro todo riesgo de construcción solicitado por Mall",
+        "Unidad": "mes",
+        "_col3": "mes",
+        "Total": {
+          "sharedFormula": "F134"
+        },
+        "_col6": {
+          "sharedFormula": "F134"
+        }
+      },
+      "description": "Seguro todo riesgo de construcción solicitado por Mall"
+    },
+    {
+      "row": 139,
+      "sheet": "Presupuesto (OOCC)",
+      "raw": {
+        "Nº": "11.6",
+        "_col1": "11.6",
+        "Partida": "Otros no considerados",
+        "_col2": "Otros no considerados",
+        "Total": {
+          "sharedFormula": "F134"
+        },
+        "_col6": {
+          "sharedFormula": "F134"
+        }
+      },
+      "description": "Otros no considerados"
+    },
+    {
+      "row": 11,
+      "sheet": "Presupuesto (OTROS)",
+      "raw": {
+        "Nº": "1",
+        "_col1": "1",
+        "Partida": "OTROS INSUMOS",
+        "_col2": "OTROS INSUMOS"
+      },
+      "description": "OTROS INSUMOS"
+    },
+    {
+      "row": 12,
+      "sheet": "Presupuesto (OTROS)",
+      "raw": {
+        "Nº": "1.1",
+        "_col1": "1.1",
+        "Partida": "Estructura soporte UPS",
+        "_col2": "Estructura soporte UPS",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "formula": "D12*E12",
+          "ref": "F12:F14",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "D12*E12",
+          "ref": "F12:F14",
+          "shareType": "shared"
+        }
+      },
+      "description": "Estructura soporte UPS",
+      "unit": "un"
+    },
+    {
+      "row": 13,
+      "sheet": "Presupuesto (OTROS)",
+      "raw": {
+        "Nº": "1.2",
+        "_col1": "1.2",
+        "Partida": "Lockers 6 puertas (2 torres de 3 unidades c/u)",
+        "_col2": "Lockers 6 puertas (2 torres de 3 unidades c/u)",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F12"
+        },
+        "_col6": {
+          "sharedFormula": "F12"
+        }
+      },
+      "description": "Lockers 6 puertas (2 torres de 3 unidades c/u)",
+      "unit": "un"
+    },
+    {
+      "row": 14,
+      "sheet": "Presupuesto (OTROS)",
+      "raw": {
+        "Nº": "1.3",
+        "_col1": "1.3",
+        "Partida": "Mueble de bodega metálicos 2.00 mt altura 92x30cm con 10 repisas, incorporar fleje frontal en cada repisa según detalle",
+        "_col2": "Mueble de bodega metálicos 2.00 mt altura 92x30cm con 10 repisas, incorporar fleje frontal en cada repisa según detalle",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F12"
+        },
+        "_col6": {
+          "sharedFormula": "F12"
+        }
+      },
+      "description": "Mueble de bodega metálicos 2.00 mt altura 92x30cm con 10 repisas, incorporar fleje frontal en cada r",
+      "unit": "un"
+    },
+    {
+      "row": 15,
+      "sheet": "Presupuesto (OTROS)",
+      "raw": {
+        "Nº": "1.4",
+        "_col1": "1.4",
+        "Partida": "Caja fuerte + instalación fija a piso",
+        "_col2": "Caja fuerte + instalación fija a piso",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "formula": "E15*D15",
+          "ref": "F15:F19",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E15*D15",
+          "ref": "F15:F19",
+          "shareType": "shared"
+        }
+      },
+      "description": "Caja fuerte + instalación fija a piso",
+      "unit": "un"
+    },
+    {
+      "row": 16,
+      "sheet": "Presupuesto (OTROS)",
+      "raw": {
+        "Nº": "1.5",
+        "_col1": "1.5",
+        "Partida": "Closet aseo con espacio para escoba",
+        "_col2": "Closet aseo con espacio para escoba",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "formula": "E16*D16",
+          "ref": "F16",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E16*D16",
+          "ref": "F16",
+          "shareType": "shared"
+        }
+      },
+      "description": "Closet aseo con espacio para escoba",
+      "unit": "un"
+    },
+    {
+      "row": 17,
+      "sheet": "Presupuesto (OTROS)",
+      "raw": {
+        "Nº": "1.6",
+        "_col1": "1.6",
+        "Partida": "Perchero a muro instalado en bodega, con 5 colgadores metálico",
+        "_col2": "Perchero a muro instalado en bodega, con 5 colgadores metálico",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F15"
+        },
+        "_col6": {
+          "sharedFormula": "F15"
+        }
+      },
+      "description": "Perchero a muro instalado en bodega, con 5 colgadores metálico",
+      "unit": "gl"
+    },
+    {
+      "row": 18,
+      "sheet": "Presupuesto (OTROS)",
+      "raw": {
+        "Nº": "1.7",
+        "_col1": "1.7",
+        "Partida": "Escalera tijera de aluminio, 4 peldaños",
+        "_col2": "Escalera tijera de aluminio, 4 peldaños",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "formula": "E18*D18",
+          "ref": "F18",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "E18*D18",
+          "ref": "F18",
+          "shareType": "shared"
+        }
+      },
+      "description": "Escalera tijera de aluminio, 4 peldaños",
+      "unit": "un"
+    },
+    {
+      "row": 19,
+      "sheet": "Presupuesto (OTROS)",
+      "raw": {
+        "Nº": "1.8",
+        "_col1": "1.8",
+        "Partida": "Otros no considerados",
+        "_col2": "Otros no considerados",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F15"
+        },
+        "_col6": {
+          "sharedFormula": "F15"
+        }
+      },
+      "description": "Otros no considerados",
+      "unit": "un"
+    },
+    {
+      "row": 11,
+      "sheet": "Gastos Generales",
+      "raw": {
+        "Nº": "1",
+        "_col1": "1",
+        "Partida": "Jefatura y dirección de obra",
+        "_col2": "Jefatura y dirección de obra",
+        "Unidad": "mes",
+        "_col3": "mes",
+        "Total": {
+          "formula": "D11*E11",
+          "ref": "F11:F22",
+          "shareType": "shared"
+        },
+        "_col6": {
+          "formula": "D11*E11",
+          "ref": "F11:F22",
+          "shareType": "shared"
+        }
+      },
+      "description": "Jefatura y dirección de obra"
+    },
+    {
+      "row": 12,
+      "sheet": "Gastos Generales",
+      "raw": {
+        "Nº": "2",
+        "_col1": "2",
+        "Partida": "Extintores",
+        "_col2": "Extintores",
+        "Unidad": "un ",
+        "_col3": "un ",
+        "Total": {
+          "sharedFormula": "F11"
+        },
+        "_col6": {
+          "sharedFormula": "F11"
+        }
+      },
+      "description": "Extintores",
+      "unit": "un"
+    },
+    {
+      "row": 13,
+      "sheet": "Gastos Generales",
+      "raw": {
+        "Nº": "3",
+        "_col1": "3",
+        "Partida": "Fletes materiales",
+        "_col2": "Fletes materiales",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F11"
+        },
+        "_col6": {
+          "sharedFormula": "F11"
+        }
+      },
+      "description": "Fletes materiales",
+      "unit": "un"
+    },
+    {
+      "row": 14,
+      "sheet": "Gastos Generales",
+      "raw": {
+        "Nº": "4",
+        "_col1": "4",
+        "Partida": "Retiro de escombros",
+        "_col2": "Retiro de escombros",
+        "Unidad": "un",
+        "_col3": "un",
+        "Total": {
+          "sharedFormula": "F11"
+        },
+        "_col6": {
+          "sharedFormula": "F11"
+        }
+      },
+      "description": "Retiro de escombros",
+      "unit": "un"
+    },
+    {
+      "row": 15,
+      "sheet": "Gastos Generales",
+      "raw": {
+        "Nº": "5",
+        "_col1": "5",
+        "Partida": "Elemento seguridad personal",
+        "_col2": "Elemento seguridad personal",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F11"
+        },
+        "_col6": {
+          "sharedFormula": "F11"
+        }
+      },
+      "description": "Elemento seguridad personal",
+      "unit": "gl"
+    },
+    {
+      "row": 16,
+      "sheet": "Gastos Generales",
+      "raw": {
+        "Nº": "6",
+        "_col1": "6",
+        "Partida": "Gastos de oficina central",
+        "_col2": "Gastos de oficina central",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F11"
+        },
+        "_col6": {
+          "sharedFormula": "F11"
+        }
+      },
+      "description": "Gastos de oficina central",
+      "unit": "gl"
+    },
+    {
+      "row": 17,
+      "sheet": "Gastos Generales",
+      "raw": {
+        "Nº": "7",
+        "_col1": "7",
+        "Partida": "Arriendo andamios",
+        "_col2": "Arriendo andamios",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F11"
+        },
+        "_col6": {
+          "sharedFormula": "F11"
+        }
+      },
+      "description": "Arriendo andamios",
+      "unit": "gl"
+    },
+    {
+      "row": 18,
+      "sheet": "Gastos Generales",
+      "raw": {
+        "Nº": "8",
+        "_col1": "8",
+        "Partida": "Arriendo de herramientas",
+        "_col2": "Arriendo de herramientas",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F11"
+        },
+        "_col6": {
+          "sharedFormula": "F11"
+        }
+      },
+      "description": "Arriendo de herramientas",
+      "unit": "gl"
+    },
+    {
+      "row": 19,
+      "sheet": "Gastos Generales",
+      "raw": {
+        "Nº": "9",
+        "_col1": "9",
+        "Partida": "Traslados y viaticos ",
+        "_col2": "Traslados y viaticos ",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F11"
+        },
+        "_col6": {
+          "sharedFormula": "F11"
+        }
+      },
+      "description": "Traslados y viaticos ",
+      "unit": "gl"
+    },
+    {
+      "row": 20,
+      "sheet": "Gastos Generales",
+      "raw": {
+        "Nº": "10",
+        "_col1": "10",
+        "Partida": "Aseo y cuidado de obra",
+        "_col2": "Aseo y cuidado de obra",
+        "Unidad": "gl",
+        "_col3": "gl",
+        "Total": {
+          "sharedFormula": "F11"
+        },
+        "_col6": {
+          "sharedFormula": "F11"
+        }
+      },
+      "description": "Aseo y cuidado de obra",
+      "unit": "gl"
+    },
+    {
+      "row": 21,
+      "sheet": "Gastos Generales",
+      "raw": {
+        "Nº": "11",
+        "_col1": "11",
+        "Partida": "Imposiciones personal",
+        "_col2": "Imposiciones personal",
+        "Unidad": "mes",
+        "_col3": "mes",
+        "Total": {
+          "sharedFormula": "F11"
+        },
+        "_col6": {
+          "sharedFormula": "F11"
+        }
+      },
+      "description": "Imposiciones personal"
+    },
+    {
+      "row": 22,
+      "sheet": "Gastos Generales",
+      "raw": {
+        "Nº": "12",
+        "_col1": "12",
+        "Partida": "Otros no considerados",
+        "_col2": "Otros no considerados",
+        "Total": {
+          "sharedFormula": "F11"
+        },
+        "_col6": {
+          "sharedFormula": "F11"
+        }
+      },
+      "description": "Otros no considerados"
+    }
+  ]
+}

@@ -741,7 +741,13 @@ async function executeMapping(supabase: SupabaseClient, batchId: string) {
                                 // P0: Strict Typed Calculation (Final Phase)
                                 // Only pass intent if m2, otherwise null
                                 const qty = computeQtyFinal(row.excel_unit, betterMatches, intent);
-                                row.qty_final = qty;
+
+                                // FIX: If we forced pending due to mismatch (e.g. m2 vs block), do NOT return garbage quantity
+                                if ((row as any)._force_pending) {
+                                    row.qty_final = null;
+                                } else {
+                                    row.qty_final = qty;
+                                }
 
                                 if (intent === 'WALL_SURFACE' && qty > 0) {
                                     (row as any).match_reason += " | Intent: WALL (H=2.4m)";
