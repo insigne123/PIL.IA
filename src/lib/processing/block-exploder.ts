@@ -34,6 +34,7 @@ export interface ExplodedGeometry {
         area_m2: number;
         vertices: Point[];
         source: 'HATCH' | 'CLOSED_POLYLINE';
+        rootInsertLayer?: string; // Layer of the top-level INSERT this geometry came from
     }>;
 
     // Length geometry (lines, polylines)
@@ -42,6 +43,7 @@ export interface ExplodedGeometry {
         layer_normalized: string;
         length_m: number;
         source: 'LINE' | 'POLYLINE' | 'LWPOLYLINE' | 'ARC' | 'CIRCLE';
+        rootInsertLayer?: string; // Layer of the top-level INSERT this geometry came from
     }>;
 
     // Block instances (for counting)
@@ -192,8 +194,8 @@ export function explodeBlocksForMetrics(
         scale: { x: 1, y: 1, z: 1 }
     };
 
-    // Process all entities
-    processEntities(entities, blockDefs, identityTransform, '0', 0, maxDepth, result, toMeters, toMetersSquared);
+    // Process all entities (rootInsertLayer = null for top-level)
+    processEntities(entities, blockDefs, identityTransform, '0', null, 0, maxDepth, result, toMeters, toMetersSquared);
 
     console.log(`[Block Exploder] Processed ${result.stats.insertsProcessed} INSERTs, exploded ${result.stats.entitiesExploded} entities`);
     console.log(`[Block Exploder] Found ${result.areas.length} areas, ${result.lengths.length} lengths, ${result.points.length} bbox points`);
@@ -210,6 +212,7 @@ function processEntities(
     blockDefs: Map<string, BlockDefinition>,
     parentTransform: Transform,
     parentLayer: string,
+    rootInsertLayer: string | null, // Track the top-level INSERT's layer
     depth: number,
     maxDepth: number,
     result: ExplodedGeometry,
@@ -257,11 +260,15 @@ function processEntities(
             });
 
             // Recursively process block's entities
+            // If this is a top-level INSERT (rootInsertLayer is null), use its layer as root
+            // Otherwise, keep the existing root
+            const newRootInsertLayer = rootInsertLayer ?? effectiveLayer;
             processEntities(
                 blockDef.entities,
                 blockDefs,
                 composedTransform,
                 effectiveLayer, // Pass INSERT's layer for "0" inheritance
+                newRootInsertLayer, // Track root INSERT layer for geometry aggregation
                 depth + 1,
                 maxDepth,
                 result,
@@ -313,7 +320,8 @@ function processEntities(
                     layer_normalized: effectiveLayer.toLowerCase(),
                     area_m2: areaSI,
                     vertices: allVertices,
-                    source: 'HATCH'
+                    source: 'HATCH',
+                    rootInsertLayer: rootInsertLayer ?? undefined
                 });
             }
         }
@@ -336,7 +344,8 @@ function processEntities(
                         layer_normalized: effectiveLayer.toLowerCase(),
                         area_m2: areaSI,
                         vertices: transformedVerts,
-                        source: 'CLOSED_POLYLINE'
+                        source: 'CLOSED_POLYLINE',
+                        rootInsertLayer: rootInsertLayer ?? undefined
                     });
                 }
             }
@@ -360,7 +369,8 @@ function processEntities(
                         layer: effectiveLayer,
                         layer_normalized: effectiveLayer.toLowerCase(),
                         length_m: toMeters(totalLength),
-                        source: type as 'POLYLINE' | 'LWPOLYLINE'
+                        source: type as 'POLYLINE' | 'LWPOLYLINE',
+                        rootInsertLayer: rootInsertLayer ?? undefined
                     });
                 }
             }
@@ -378,7 +388,8 @@ function processEntities(
                         layer: effectiveLayer,
                         layer_normalized: effectiveLayer.toLowerCase(),
                         length_m: toMeters(lengthRaw),
-                        source: 'LINE'
+                        source: 'LINE',
+                        rootInsertLayer: rootInsertLayer ?? undefined
                     });
                 }
             }
@@ -393,7 +404,8 @@ function processEntities(
                     layer: effectiveLayer,
                     layer_normalized: effectiveLayer.toLowerCase(),
                     length_m: toMeters(circumference),
-                    source: 'CIRCLE'
+                    source: 'CIRCLE',
+                    rootInsertLayer: rootInsertLayer ?? undefined
                 });
             }
         }
@@ -410,7 +422,8 @@ function processEntities(
                     layer: effectiveLayer,
                     layer_normalized: effectiveLayer.toLowerCase(),
                     length_m: toMeters(arcLength),
-                    source: 'ARC'
+                    source: 'ARC',
+                    rootInsertLayer: rootInsertLayer ?? undefined
                 });
             }
         }
@@ -456,7 +469,7 @@ export function calculateBBoxFromExploded(exploded: ExplodedGeometry): {
 export function aggregateExplodedToItems(exploded: ExplodedGeometry): ItemDetectado[] {
     const items: ItemDetectado[] = [];
 
-    // Aggregate areas by layer
+    // Aggregate areas by layer (original behavior)
     const areasByLayer = new Map<string, number>();
     for (const area of exploded.areas) {
         const key = area.layer_normalized;
@@ -478,7 +491,34 @@ export function aggregateExplodedToItems(exploded: ExplodedGeometry): ItemDetect
         });
     }
 
-    // Aggregate lengths by layer
+    // NEW: Also aggregate areas by rootInsertLayer (block geometry grouped by INSERT layer)
+    const areasByRootInsert = new Map<string, number>();
+    for (const area of exploded.areas) {
+        if (area.rootInsertLayer) {
+            const key = area.rootInsertLayer.toLowerCase();
+            areasByRootInsert.set(key, (areasByRootInsert.get(key) || 0) + area.area_m2);
+        }
+    }
+
+    for (const [rootLayer, totalArea] of areasByRootInsert.entries()) {
+        // Only add if it's different from the regular layer aggregation
+        if (!areasByLayer.has(rootLayer)) {
+            items.push({
+                id: uuidv4(),
+                type: 'area',
+                name_raw: `Block Geometry Area on ${rootLayer}`,
+                layer_raw: rootLayer,
+                layer_normalized: rootLayer.toLowerCase(),
+                value_raw: totalArea,
+                unit_raw: 'm²',
+                value_si: totalArea,
+                value_m: totalArea,
+                evidence: 'Block INSERT Layer (aggregated from block interior)'
+            });
+        }
+    }
+
+    // Aggregate lengths by layer (original behavior)
     const lengthsByLayer = new Map<string, number>();
     for (const length of exploded.lengths) {
         const key = length.layer_normalized;
@@ -498,6 +538,33 @@ export function aggregateExplodedToItems(exploded: ExplodedGeometry): ItemDetect
             value_m: totalLength,
             evidence: 'Block Explosion (LINE/POLYLINE/ARC)'
         });
+    }
+
+    // NEW: Also aggregate lengths by rootInsertLayer
+    const lengthsByRootInsert = new Map<string, number>();
+    for (const length of exploded.lengths) {
+        if (length.rootInsertLayer) {
+            const key = length.rootInsertLayer.toLowerCase();
+            lengthsByRootInsert.set(key, (lengthsByRootInsert.get(key) || 0) + length.length_m);
+        }
+    }
+
+    for (const [rootLayer, totalLength] of lengthsByRootInsert.entries()) {
+        // Only add if it's different from the regular layer aggregation
+        if (!lengthsByLayer.has(rootLayer)) {
+            items.push({
+                id: uuidv4(),
+                type: 'length',
+                name_raw: `Block Geometry Length on ${rootLayer}`,
+                layer_raw: rootLayer,
+                layer_normalized: rootLayer.toLowerCase(),
+                value_raw: totalLength,
+                unit_raw: 'm',
+                value_si: totalLength,
+                value_m: totalLength,
+                evidence: 'Block INSERT Layer (aggregated from block interior)'
+            });
+        }
     }
 
     // Block counts by name+layer
