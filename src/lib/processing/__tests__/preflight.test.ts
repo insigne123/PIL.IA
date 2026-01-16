@@ -270,7 +270,11 @@ EOF
                 },
                 warnings: [],
                 recommendations: [],
-                dynamicMinLength: 0.5
+                dynamicMinLength: 0.5,
+                stats: { hatchCount: 0, polylineCount: 0, lineCount: 5, insertCount: 0, textCount: 0 },
+                hasAreaCandidates: false,
+                hasLengthCandidates: true,
+                hasInserts: false
             };
 
             expect(hasBlockingIssues(preflight)).toBe(true);
@@ -290,7 +294,11 @@ EOF
                 },
                 warnings: [],
                 recommendations: [],
-                dynamicMinLength: 0.5
+                dynamicMinLength: 0.5,
+                stats: { hatchCount: 0, polylineCount: 0, lineCount: 0, insertCount: 0, textCount: 10 },
+                hasAreaCandidates: false,
+                hasLengthCandidates: false,
+                hasInserts: false
             };
 
             expect(hasBlockingIssues(preflight)).toBe(true);
@@ -310,7 +318,11 @@ EOF
                 },
                 warnings: [],
                 recommendations: [],
-                dynamicMinLength: 0.5
+                dynamicMinLength: 0.5,
+                stats: { hatchCount: 50, polylineCount: 50, lineCount: 0, insertCount: 0, textCount: 0 },
+                hasAreaCandidates: true,
+                hasLengthCandidates: true,
+                hasInserts: false
             };
 
             expect(hasBlockingIssues(preflight)).toBe(false);
@@ -332,7 +344,11 @@ EOF
                 },
                 warnings: [],
                 recommendations: [],
-                dynamicMinLength: 0.783
+                dynamicMinLength: 0.783,
+                stats: { hatchCount: 0, polylineCount: 0, lineCount: 50, insertCount: 0, textCount: 0 },
+                hasAreaCandidates: false,
+                hasLengthCandidates: true,
+                hasInserts: false
             };
 
             const summary = getPreflightSummary(preflight);

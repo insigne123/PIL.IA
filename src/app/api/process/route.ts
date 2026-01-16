@@ -38,13 +38,14 @@ export async function POST(req: NextRequest) {
 
         for (const file of dxfFiles) {
             const text = await file.text();
-            const { items, preflight } = await parseDxf(text, planUnit);
+            const { items, preflight, geometryHealth } = await parseDxf(text, planUnit);
             allDxfItems = [...allDxfItems, ...items];
             preflightResults.push({
                 fileName: file.name,
                 summary: preflight,
                 warnings: preflight.warnings,
-                recommendations: preflight.recommendations
+                recommendations: preflight.recommendations,
+                geometryHealth
             });
         }
 

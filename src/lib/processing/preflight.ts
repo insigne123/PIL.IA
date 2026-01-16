@@ -21,6 +21,17 @@ export interface PreflightResult {
     warnings: string[];
     recommendations: string[];
     dynamicMinLength: number; // Calculated threshold based on scale
+    // Phase 7: Geometry Health
+    stats: {
+        hatchCount: number;
+        polylineCount: number;
+        lineCount: number;
+        insertCount: number;
+        textCount: number;
+    };
+    hasAreaCandidates: boolean;
+    hasLengthCandidates: boolean;
+    hasInserts: boolean;
 }
 
 /**
@@ -47,6 +58,17 @@ export function runPreflight(dxfContent: string): PreflightResult {
         warnings: [],
         recommendations: [],
         dynamicMinLength: 0.5, // Default fallback
+        // Phase 7: Geometry Health
+        stats: {
+            hatchCount: 0,
+            polylineCount: 0, // LWPOLYLINE + POLYLINE + CIRCLE + ARC
+            lineCount: 0,     // LINE
+            insertCount: 0,
+            textCount: 0      // TEXT + MTEXT
+        },
+        hasAreaCandidates: false,
+        hasLengthCandidates: false,
+        hasInserts: false
     };
 
     try {
@@ -147,6 +169,12 @@ export function runPreflight(dxfContent: string): PreflightResult {
                         result.paperSpaceEntityCount++;
                     } else {
                         result.modelSpaceEntityCount++;
+                        // Phase 7: Count Types in ModelSpace entities (approximate stream parsing)
+                        if (entityType === 'HATCH') result.stats.hatchCount++;
+                        else if (['LWPOLYLINE', 'POLYLINE', 'CIRCLE', 'ARC'].includes(entityType)) result.stats.polylineCount++;
+                        else if (entityType === 'LINE') result.stats.lineCount++;
+                        else if (entityType === 'INSERT') result.stats.insertCount++;
+                        else if (['TEXT', 'MTEXT'].includes(entityType)) result.stats.textCount++;
                     }
 
                     // Collect coordinate points for bounding box (only ModelSpace)
@@ -256,6 +284,11 @@ export function runPreflight(dxfContent: string): PreflightResult {
     } catch (error) {
         result.warnings.push(`Error durante preflight: ${error instanceof Error ? error.message : String(error)}`);
     }
+
+    // Phase 7: Determine Candidates
+    result.hasAreaCandidates = (result.stats.hatchCount + result.stats.polylineCount) > 0;
+    result.hasLengthCandidates = (result.stats.lineCount + result.stats.polylineCount) > 0;
+    result.hasInserts = result.stats.insertCount > 0;
 
     return result;
 }

@@ -14,6 +14,7 @@ export interface LayerGeometryProfile {
     block_count: number;        // Count of INSERTs
     hatch_count: number;        // Count of HATCHes
     closed_poly_count: number;  // Count of closed polylines
+    text_count: number;         // Count of TEXT/MTEXT items
     entity_types: Set<string>;  // ['HATCH', 'INSERT', 'LINE', ...]
     has_area_support: boolean;  // Has HATCHes or closed polys
     has_length_support: boolean;// Has lines/polylines
@@ -52,6 +53,7 @@ export function buildLayerProfiles(items: ItemDetectado[]): Map<string, LayerGeo
                 block_count: 0,
                 hatch_count: 0,
                 closed_poly_count: 0,
+                text_count: 0,
                 entity_types: new Set<string>(),
                 has_area_support: false,
                 has_length_support: false,
@@ -90,6 +92,8 @@ export function buildLayerProfiles(items: ItemDetectado[]): Map<string, LayerGeo
             if (profile.block_samples!.length < 3) {
                 profile.block_samples!.push(item);
             }
+        } else if (item.type === 'text') {
+            profile.text_count++;
         }
     }
 

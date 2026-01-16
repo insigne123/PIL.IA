@@ -40,10 +40,13 @@ import {
     aggregateExplodedToItems,
     getExplodedSummary
 } from './block-exploder';
+// Phase 7: Sanity
+import { checkGeometryHealth, type GeometryHealth } from './sanity';
+
 
 const parser = new DxfParser();
 
-export async function parseDxf(fileContent: string, planUnitPreference?: Unit): Promise<{ items: ItemDetectado[], detectedUnit: Unit | null, preflight: PreflightResult }> {
+export async function parseDxf(fileContent: string, planUnitPreference?: Unit): Promise<{ items: ItemDetectado[], detectedUnit: Unit | null, preflight: PreflightResult, geometryHealth: GeometryHealth }> {
     // Run preflight checks FIRST
     let cleanContent = fileContent;
 
@@ -731,7 +734,20 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
 
     console.log(`[BBox] ✅ Updated dynamic min length: ${preflight.dynamicMinLength.toFixed(4)}m`);
 
-    return { items, detectedUnit, preflight };
+    // Phase 7: Global Sanity Check & Smoke Test
+    const geometryHealth = checkGeometryHealth({
+        items,
+        bboxDiagonalM: accurateDiagonal,
+        hasAreaCandidates: preflight.hasAreaCandidates,
+        hasLengthCandidates: preflight.hasLengthCandidates,
+        hasInserts: preflight.hasInserts
+    });
+
+    if (geometryHealth.status !== 'healthy') {
+        console.warn(`[Geometry Health] Status: ${geometryHealth.status}`, geometryHealth.issues);
+    }
+
+    return { items, detectedUnit, preflight, geometryHealth };
 }
 
 // ... existing aggregateDxfItems ...
