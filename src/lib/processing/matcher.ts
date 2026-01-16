@@ -608,6 +608,22 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             if (excelItem.qty !== null) qtyFinal = excelItem.qty;
         }
 
+        // FIX 9.2: Ensure methodDetail is NEVER null for normal items
+        // If we got here without a methodDetail, assign one based on expectedMeasureType
+        if (!methodDetail && bestMatch.length > 0) {
+            if (expectedMeasureType === 'AREA') {
+                methodDetail = 'direct_area';
+                evidenceTypeUsed = 'area';
+            } else if (expectedMeasureType === 'LENGTH') {
+                methodDetail = 'direct_length';
+                evidenceTypeUsed = 'length';
+            } else if (expectedMeasureType === 'BLOCK') {
+                methodDetail = 'count_blocks';
+                evidenceTypeUsed = 'block';
+            }
+            console.log(`[Fix 9.2] Assigned default methodDetail: ${methodDetail}`);
+        }
+
         // ✅ SANITY CHECK: Detect suspicious values
         const measureKind = getMeasureKind(excelItem.unit);
         const sanityCheck = checkQuantitySanity(qtyFinal, measureKind, {
@@ -637,7 +653,18 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
         if (bestMatch.length > 0) {
             const match = bestMatch[0];
-            const matchType = match.type.toUpperCase();
+            // FIX 9.1: Use PROFILE-BASED type instead of sampleItem.type
+            // The sampleItem can be TEXT even if the layer has real AREA geometry
+            const layerProfile = allResults.find(r => r.item.sampleItem === match)?.item.profile;
+            const profileBasedType = layerProfile
+                ? (layerProfile.has_area_support ? 'AREA'
+                    : layerProfile.has_length_support ? 'LENGTH'
+                        : layerProfile.has_block_support ? 'BLOCK'
+                            : match.type.toUpperCase())
+                : match.type.toUpperCase();
+
+            const matchType = profileBasedType;
+            console.log(`[Fix 9.1] Profile-based type: ${matchType} (sampleItem was: ${match.type})`);
 
             // Rule 1: m² requires AREA (or LENGTH for walls)
             if (expectedMeasureType === 'AREA') {
@@ -807,6 +834,28 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             console.warn(`[Phase 8] calcMethod missing for qty ${qtyFinal}, status: ${status}`);
             // Don't nullify, but flag
             warnings.push('CALC_METHOD_MISSING');
+        }
+
+        // FIX 9.3: FINAL PROFILE-BASED GATE
+        // Even if gates above passed (using sampleItem), verify with actual layer profile
+        if (bestMatch.length > 0 && qtyFinal !== null) {
+            const matchedLayerCandidate = allResults.find(r => r.item.sampleItem === bestMatch[0])?.item;
+            if (matchedLayerCandidate) {
+                const profile = matchedLayerCandidate.profile;
+                const unitLower = excelItem.unit?.toLowerCase() || '';
+                const isM2 = unitLower.includes('m2') || unitLower === 'm²';
+
+                // For m² items: layer MUST have area_support OR length_support (for walls)
+                if (isM2) {
+                    const hasValidSupport = profile.has_area_support || profile.has_length_support;
+                    if (!hasValidSupport) {
+                        console.warn(`[Fix 9.3] ❌ m² item but layer "${matchedLayerCandidate.layer}" has no AREA/LENGTH support`);
+                        status = 'pending_type_mismatch';
+                        qtyFinal = null;
+                        warnings.push('LAYER_NO_AREA_OR_LENGTH');
+                    }
+                }
+            }
         }
 
         return {
