@@ -91,11 +91,6 @@ export async function extractQuantities(request: ExtractRequest): Promise<Extrac
     return response.json();
 }
 
-/**
- * Parse a DXF file and return raw geometry
- */
-return response.json();
-}
 
 /**
  * Parse DXF using Python service and return full ItemDetectado array
@@ -105,7 +100,8 @@ export async function parseDxfFull(fileContent: Buffer | string, unit: string = 
     const formData = new FormData();
 
     // Create a Blob/File from content since API expects file upload
-    const blob = new Blob([fileContent]);
+    const blobContent = typeof fileContent === 'string' ? fileContent : new Uint8Array(fileContent);
+    const blob = new Blob([blobContent]);
     formData.append('file', blob, 'temp.dxf');
 
     // Note: The Python endpoint currently detects unit from file header automatically
