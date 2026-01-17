@@ -8,31 +8,39 @@
    - Environments: .env.local
 
  ✓ Starting...
- ✓ Ready in 3.7s
+ ✓ Ready in 3.9s
  ○ Compiling / ...
- ✓ Compiled / in 27.2s
- GET / 200 in 21033ms
- GET / 200 in 29916ms
+ ✓ Compiled / in 22.8s
+ GET / 200 in 24129ms
  ⚠ Cross origin request detected from 9003-firebase-studio-1767836392299.cluster-j6d3cbsvdbe5uxnhqrfzzeyj7i.cloudworkstations.dev to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
 Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
  ○ Compiling /project/[id] ...
- ✓ Compiled /project/[id] in 3s
- GET /project/22a09c7f-adeb-40e9-a01a-8d9e3d95e374 200 in 4256ms
+ ✓ Compiled /project/[id] in 7.4s
+ GET /project/22a09c7f-adeb-40e9-a01a-8d9e3d95e374 200 in 9490ms
+ GET /project/22a09c7f-adeb-40e9-a01a-8d9e3d95e374 200 in 900ms
+ GET / 200 in 950ms
+ GET /project/22a09c7f-adeb-40e9-a01a-8d9e3d95e374 200 in 1213ms
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 4.1s
+ GET /favicon.ico?favicon.7ed73651.ico 200 in 4676ms
+ GET /project/22a09c7f-adeb-40e9-a01a-8d9e3d95e374 200 in 335ms
+ GET /project/22a09c7f-adeb-40e9-a01a-8d9e3d95e374 200 in 524ms
+ GET /favicon.ico?favicon.7ed73651.ico 200 in 609ms
  ○ Compiling /project/[id]/batch/[batchId] ...
- ✓ Compiled /project/[id]/batch/[batchId] in 4.4s
- GET /project/22a09c7f-adeb-40e9-a01a-8d9e3d95e374/batch/18160f74-c89d-4914-a822-99fec4f5f3c6 200 in 6515ms
+ ✓ Compiled /project/[id]/batch/[batchId] in 2.5s
+ GET /project/22a09c7f-adeb-40e9-a01a-8d9e3d95e374/batch/18160f74-c89d-4914-a822-99fec4f5f3c6 200 in 3707ms
  ○ Compiling /api/batches/[batchId]/reset ...
- ✓ Compiled /api/batches/[batchId]/reset in 2.6s
+ ✓ Compiled /api/batches/[batchId]/reset in 1177ms
 [Reset] Resetting batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
 [Reset] Batch 18160f74-c89d-4914-a822-99fec4f5f3c6 reset successfully.
- POST /api/batches/18160f74-c89d-4914-a822-99fec4f5f3c6/reset 200 in 5651ms
+ POST /api/batches/18160f74-c89d-4914-a822-99fec4f5f3c6/reset 200 in 4445ms
  ○ Compiling /api/batches/[batchId]/start ...
- ✓ Compiled /api/batches/[batchId]/start in 515ms
- POST /api/batches/18160f74-c89d-4914-a822-99fec4f5f3c6/start 200 in 2751ms
+ ✓ Compiled /api/batches/[batchId]/start in 932ms
+ POST /api/batches/18160f74-c89d-4914-a822-99fec4f5f3c6/start 200 in 3319ms
  ○ Compiling /api/worker/run ...
- ✓ Compiled /api/worker/run in 25.1s
-Processing Job e654d704-3a43-4909-8da4-f69e5d558468 (EXTRACT)...
-Processing Job e654d704-3a43-4909-8da4-f69e5d558468 (EXTRACT)...
+ ✓ Compiled /api/worker/run in 27.2s
+Processing Job 2d4d82e2-1f51-4434-a930-1fc131a76c8f (EXTRACT)...
+Processing Job f6dc3253-62c7-4651-b07d-92718e2dc4c7 (EXTRACT)...
 [Excel Parser] Row 10 candidate - Unit validation: 100.0%, Total score: 210.7
 [Excel Classify] Detected POSSIBLE TITLE: "OBRAS PRELIMINARES" (Unit: "")
 [Excel Classify] Detected POSSIBLE TITLE: "TABIQUES" (Unit: "")
@@ -47,32 +55,28 @@ Processing Job e654d704-3a43-4909-8da4-f69e5d558468 (EXTRACT)...
 [Excel Classify] Detected POSSIBLE TITLE: "Instalación Eléctrica" (Unit: "")
 [Excel Classify] Detected POSSIBLE TITLE: "Instalación Incendio" (Unit: "")
 [Excel Classify] Detected POSSIBLE TITLE: "Instalacion Sanitaria" (Unit: "")
-[Excel Parser] Row 10 candidate - Unit validation: 100.0%, Total score: 210.7
-[Excel Classify] Detected POSSIBLE TITLE: "OBRAS PRELIMINARES" (Unit: "")
-[Excel Classify] Detected POSSIBLE TITLE: "TABIQUES" (Unit: "")
-[Excel Classify] Detected POSSIBLE TITLE: "CIELOS" (Unit: "")
-[Excel Classify] Detected POSSIBLE TITLE: "PINTURAS Y REVESTIMIENTOS DE MURO" (Unit: "")
-[Excel Classify] Detected POSSIBLE TITLE: "PAVIMENTOS" (Unit: "")
-[Excel Classify] Detected POSSIBLE TITLE: "PUERTAS Y QUINCALLERIA" (Unit: "")
-[Excel Classify] Detected POSSIBLE TITLE: "LUMINARIAS" (Unit: "")
-[Excel Classify] Detected POSSIBLE TITLE: "FACHADA" (Unit: "")
-[Excel Classify] Detected POSSIBLE TITLE: "INSTALACIONES" (Unit: "")
-[Excel Classify] Detected POSSIBLE TITLE: "Climatización" (Unit: "")
-[Excel Classify] Detected POSSIBLE TITLE: "Instalación Eléctrica" (Unit: "")
-[Excel Classify] Detected POSSIBLE TITLE: "Instalación Incendio" (Unit: "")
-[Excel Classify] Detected POSSIBLE TITLE: "Instalacion Sanitaria" (Unit: "")
-[Pipeline] Successfully updated file 00. LdS PAK - Planilla cotizaciขn OOCC.xlsx to 'extracted'
-[Pipeline] Checking trigger for batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
-[Pipeline] Successfully updated file 00. LdS PAK - Planilla cotizaciขn OOCC.xlsx to 'extracted'
-[Pipeline] Checking trigger for batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
-[Pipeline] File statuses: [LDS_PAK - (LC) (1).dxf: queued, 00. LdS PAK - Planilla cotizaciขn OOCC.xlsx: extracted]
-[Pipeline] Not all files extracted yet. Waiting...
-[Pipeline] File statuses: [LDS_PAK - (LC) (1).dxf: queued, 00. LdS PAK - Planilla cotizaciขn OOCC.xlsx: extracted]
-[Pipeline] Not all files extracted yet. Waiting...
- POST /api/worker/run 200 in 31088ms
- POST /api/worker/run 200 in 31279ms
-Processing Job 4647af78-2c98-414e-b93c-ba43da6d219b (EXTRACT)...
- POST /api/worker/run 200 in 758ms
+[GeometryService] Checking health at http://localhost:8000/health...
+[GeometryService] Health check FAILED: TypeError: fetch failed
+    at async checkGeometryServiceHealth (src/lib/processing/geometry-service.ts:48:26)
+    at async executeJob (worker/pipeline.ts:64:42)
+    at async POST (src/app/api/worker/run/route.ts:56:9)
+  46 |     try {
+  47 |         console.log(`[GeometryService] Checking health at ${GEOMETRY_SERVICE_URL}/health...`);
+> 48 |         const response = await fetch(`${GEOMETRY_SERVICE_URL}/health`, {
+     |                          ^
+  49 |             method: 'GET',
+  50 |             signal: AbortSignal.timeout(5000),
+  51 |         }); {
+  [cause]: Error: connect ECONNREFUSED 127.0.0.1:8000
+      at <unknown> (Error: connect ECONNREFUSED 127.0.0.1:8000) {
+    errno: -111,
+    code: 'ECONNREFUSED',
+    syscall: 'connect',
+    address: '127.0.0.1',
+    port: 8000
+  }
+}
+[DXF] Service unavailable, using legacy parser
 [Preflight] ⚠️ Invalid bbox diagonal (0), using minimal threshold: 0.001m
 [DXF Preflight] ModelSpace: 1 entidades | PaperSpace: 0 entidades
 [DXF Unit Detection] Source: INSUNITS | Unit: mm | Factor: 0.001 ($INSUNITS=4) | Confidence: 100%
@@ -182,19 +186,24 @@ Processing Job 4647af78-2c98-414e-b93c-ba43da6d219b (EXTRACT)...
   Size: 357.86m × 84.20m
 [BBox] ✅ Updated dynamic min length: 0.0368m
 [DXF] Parsed 1106 items from LDS_PAK - (LC) (1).dxf (UTF-8)
+[Pipeline] Successfully updated file 00. LdS PAK - Planilla cotizaciขn OOCC.xlsx to 'extracted'
+[Pipeline] Checking trigger for batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
+[Pipeline] File statuses: [LDS_PAK - (LC) (1).dxf: queued, 00. LdS PAK - Planilla cotizaciขn OOCC.xlsx: extracted]
+[Pipeline] Not all files extracted yet. Waiting...
+ POST /api/worker/run 200 in 46571ms
 [Pipeline] Successfully updated file LDS_PAK - (LC) (1).dxf to 'extracted'
 [Pipeline] Checking trigger for batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
-[Pipeline] File statuses: [00. LdS PAK - Planilla cotizaciขn OOCC.xlsx: extracted, LDS_PAK - (LC) (1).dxf: extracted]
+[Pipeline] File statuses: [LDS_PAK - (LC) (1).dxf: extracted, 00. LdS PAK - Planilla cotizaciขn OOCC.xlsx: extracted]
 [Pipeline] Batch status: processing
 [Pipeline] Attempting to lock batch for mapping...
 All files for batch 18160f74-c89d-4914-a822-99fec4f5f3c6 extracted. Starting matching...
 [Mapping] Starting mapping for batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
 [Mapping] Batch loaded: 18160f74-c89d-4914-a822-99fec4f5f3c6
 [Mapping] Found 2 files
-[Mapping] Loading excel file: 18160f74-c89d-4914-a822-99fec4f5f3c6/47dc18cb-ac31-42b9-a616-b4a8f0e24921.json
-[Mapping] Parsed excel file: 116 items
 [Mapping] Loading dxf file: 18160f74-c89d-4914-a822-99fec4f5f3c6/c72b95b4-7b3b-4141-8ecc-2b26b12dbee5.json
 [Mapping] Parsed dxf file: 1106 items
+[Mapping] Loading excel file: 18160f74-c89d-4914-a822-99fec4f5f3c6/47dc18cb-ac31-42b9-a616-b4a8f0e24921.json
+[Mapping] Parsed excel file: 116 items
 [Mapping] Loaded 116 Excel items and 1106 DXF items
 [Mapping] Excel Discipline: UNKNOWN
 [Matcher] Layer profiles (72 layers):
@@ -982,6 +991,7 @@ All files for batch 18160f74-c89d-4914-a822-99fec4f5f3c6 extracted. Starting mat
 [Phase 8] ℹ️ Pending status with calculated qty: 0.00 (keeping value)
 [Phase 8] calcMethod missing for qty 0, status: pending_no_match
 [DEBUG] matchItems returning rows: 116
+ POST /api/worker/run 200 in 5485ms
 [Auto-approve Fuzzy] Valid length 1089.79m for 'Impermeabilización membrana asfáltica según plano'
 [Auto-approve Fuzzy] Valid length 181.45m for 'Sobrelosa de 8cm'
 [Auto-approve Fuzzy] Valid length 5.62m for 'TAB 01: sobretabique simple sala de ventas, montante estructural 60 + plancha MDF 15 mm'
@@ -2270,19 +2280,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -4003,19 +4013,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -5733,19 +5743,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -7465,19 +7475,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -9194,19 +9204,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -10922,19 +10932,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -12650,19 +12660,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -14124,19 +14134,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -15578,19 +15588,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -17026,19 +17036,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -18474,19 +18484,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -19924,19 +19934,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -21371,19 +21381,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -22818,19 +22828,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -24270,19 +24280,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -25717,19 +25727,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -27169,19 +27179,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -28621,19 +28631,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -30074,19 +30084,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -31528,19 +31538,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -32981,19 +32991,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -34434,19 +34444,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -35888,19 +35898,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -37342,19 +37352,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -38794,19 +38804,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -40248,19 +40258,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -41702,19 +41712,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -43156,19 +43166,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -43613,9 +43623,6 @@ Required JSON schema:
     '      "name": "Block LDS-COUNTER STANDARD on MB-LDS-BRONCE (Layer: mb-lds-bronce)",\n' +
     '      "type": "block'... 13600 more characters
 }
-[Auto-Approve Boost] +15% for 'Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bronce' (Explicit Unit + Type Match)
-[Match Debug] Item: "Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bronce" | Unit: "ml" | Expected: "length" | Found: "length" | Conf: 1.10
-[Auto-approve] Valid length 199.83m for 'Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bronce'
 Processing AI batch 4/5 (items 31-40/44)
 AI Match Error for Puntos de datos Error [GenkitError]: INVALID_ARGUMENT: Schema validation failed. Parse Errors:
 
@@ -44613,19 +44620,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -46067,19 +46074,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -47520,19 +47527,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -48974,19 +48981,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -50429,19 +50436,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -51883,19 +51890,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -53336,19 +53343,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -54790,19 +54797,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -56244,19 +56251,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -57697,19 +57704,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -59152,19 +59159,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -60606,19 +60613,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -62060,19 +62067,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -63768,19 +63775,19 @@ Required JSON schema:
   "additionalProperties": true,
   "$schema": "http://json-schema.org/draft-07/schema#"
 }
-    at <unknown> (worker/pipeline.ts:587:48)
+    at <unknown> (worker/pipeline.ts:622:48)
     at Array.map (<anonymous>)
-    at executeMapping (worker/pipeline.ts:545:41)
-    at async checkAndTriggerMatching (worker/pipeline.ts:278:9)
-    at async executeJob (worker/pipeline.ts:134:9)
+    at executeMapping (worker/pipeline.ts:580:41)
+    at async checkAndTriggerMatching (worker/pipeline.ts:313:9)
+    at async executeJob (worker/pipeline.ts:169:9)
     at async POST (src/app/api/worker/run/route.ts:56:9)
-  585 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
-  586 |
-> 587 |                         const aiResult = await matchItemFlow({
+  620 |                         const candidatesToUse = filteredCandidates.length > 0 ? filteredCandidates : candidatePayload;
+  621 |
+> 622 |                         const aiResult = await matchItemFlow({
       |                                                ^
-  588 |                             item_description: row.excel_item_text,
-  589 |                             item_unit: row.excel_unit,
-  590 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
+  623 |                             item_description: row.excel_item_text,
+  624 |                             item_unit: row.excel_unit,
+  625 |                             item_class_hint: enforcedType || undefined, // Pass hint to AI {
   source: undefined,
   status: 'INVALID_ARGUMENT',
   detail: [Object],
@@ -64252,7 +64259,8 @@ Required JSON schema:
 AI Refinement complete. Processed 44 items.
 [Mapping] Inserting 116 rows in chunks of 10...
 [Mapping] Chunk 1 insert failed (Attempt 1/3). Retrying in 2s... Error: TypeError: fetch failed
+[Mapping] Chunk 3 insert failed (Attempt 1/3). Retrying in 2s... Error: TypeError: fetch failed
 [Mapping] Successfully inserted all 116 rows.
 [Mapping] Batch 18160f74-c89d-4914-a822-99fec4f5f3c6 mapping complete. Status updated to 'ready'.
- POST /api/worker/run 200 in 65994ms
- POST /api/worker/run 200 in 779ms
+ POST /api/worker/run 200 in 110579ms
+ POST /api/worker/run 200 in 561ms
