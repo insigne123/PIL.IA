@@ -1,0 +1,48 @@
+Reading C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\LDS_PAK - (LC) (1).dxf
+Parsing DXF...
+Total items: 1106
+
+--- Layer: a-arq-cielo falso ---
+Count: 4
+Types: {"length":2,"area":1,"block":1}
+Total Length: 481.32m
+Total Area: 0.35m²
+Sample items: [
+  {
+    "id": "baecb249-27e6-4d9c-a982-89473c28c2f3",
+    "type": "length",
+    "name_raw": "Lines on A-ARQ-CIELO FALSO",
+    "layer_raw": "A-ARQ-CIELO FALSO",
+    "layer_normalized": "a-arq-cielo falso",
+    "value_raw": 238003.61467092688,
+    "unit_raw": "m",
+    "value_si": 238.00361467092688,
+    "value_m": 238.00361467092688,
+    "evidence": "Top-Level Lines",
+    "suspect_geometry": false
+  },
+  {
+    "id": "24ba4007-bb3d-4908-a8cd-c13f3bc1d671",
+    "type": "area",
+    "name_raw": "Area on A-ARQ-CIELO FALSO",
+    "layer_raw": "A-ARQ-CIELO FALSO",
+    "layer_normalized": "a-arq-cielo falso",
+    "value_raw": 0.35386311088246125,
+    "unit_raw": "m²",
+    "value_si": 0.35386311088246125,
+    "value_m": 0.35386311088246125,
+    "evidence": "Spatial Aggregation (Area)"
+  },
+  {
+    "id": "308c5994-cd0b-4e2b-b2aa-018121b94b90",
+    "type": "length",
+    "name_raw": "Length on A-ARQ-CIELO FALSO",
+    "layer_raw": "A-ARQ-CIELO FALSO",
+    "layer_normalized": "a-arq-cielo falso",
+    "value_raw": 243.31203535087133,
+    "unit_raw": "m",
+    "value_si": 243.31203535087133,
+    "value_m": 243.31203535087133,
+    "evidence": "Spatial Aggregation (Length)"
+  }
+]

@@ -1,7 +1,68 @@
 {
     "$schema": "./layer-mapping.schema.json",
-    "version": "1.0",
+    "version": "1.1",
     "mappings": {
+        "fa_tabiques": {
+            "keywords": [
+                "tabique",
+                "sobretabique",
+                "tab",
+                "partition",
+                "divisor"
+            ],
+            "description": "Tabiques y divisorios"
+        },
+        "fa_arq-muros": {
+            "keywords": [
+                "muro",
+                "muros",
+                "wall",
+                "walls",
+                "tabique",
+                "sobretabique"
+            ],
+            "description": "Muros estructurales y tabiques"
+        },
+        "a-arq-cielo falso": {
+            "keywords": [
+                "cielo",
+                "cielos",
+                "volcanita",
+                "ceiling",
+                "raso",
+                "plafon",
+                "cenefa"
+            ],
+            "description": "Cielos falsos y volcanitas"
+        },
+        "fa_0.20": {
+            "keywords": [
+                "sobrelosa",
+                "losa",
+                "pavimento",
+                "piso",
+                "mortero"
+            ],
+            "description": "Pavimentos y sobrelosas"
+        },
+        "lds-electricidad": {
+            "keywords": [
+                "electricidad",
+                "electrico",
+                "luminaria",
+                "luminarias",
+                "instalacion electrica"
+            ],
+            "description": "Instalaciones eléctricas"
+        },
+        "mb-elev 2": {
+            "keywords": [
+                "impermeabilizacion",
+                "membrana",
+                "asfaltica"
+            ],
+            "description": "Elevación 2 (proyecciones)"
+        },
         "FA-PAVIMENTO": {
             "keywords": [
                 "pavimento",
@@ -34,7 +95,8 @@
                 "revestimiento",
                 "enchape",
                 "ceramica",
-                "porcelanato"
+                "porcelanato",
+                "marmol"
             ],
             "description": "Revestimientos de muros y pisos"
         }
@@ -45,18 +107,31 @@
             "electrica",
             "tablero",
             "luz",
-            "enchufe"
+            "enchufe",
+            "luminaria"
         ],
         "SANI": [
             "sanitaria",
             "sanitario",
             "cañeria",
             "tuberia",
-            "agua"
+            "agua",
+            "griferia"
         ],
         "ARQ": [
             "arquitectura",
             "arquitectonico"
+        ],
+        "FA_": [
+            "fachada",
+            "arquitectura",
+            "corte",
+            "elevacion"
+        ],
+        "LDS": [
+            "loto del sur",
+            "electricidad",
+            "furniture"
         ]
     }
 }

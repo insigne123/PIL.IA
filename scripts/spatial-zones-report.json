@@ -1,0 +1,309 @@
+{
+  "totalTexts": 787,
+  "candidates": 269,
+  "layersWithText": [
+    null
+  ],
+  "samples": [
+    {
+      "text": "\\A1;{\\Fromans|c0;\\W0.8;DESAGÜE}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxql;TRAMPILLA DE ACCESO EN CAJA PARA CABLES",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqr;PUNTA DE TUBO \\PA RAS DE PISO",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqr;ENCHUFES FIJADOS EN EL INTERIOR DEL MUEBLE",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "CAJA REGISTRADORA",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqc;IMPRESORA",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqr;PUNTA DE TUBO \\PA RAS DE PISO",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxql;TRAMPILLA DE ACCESO EN CAJA PARA CABLES",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "CAJA REGISTRADORA",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqc;IMPRESORA",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxql;UPS",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxql;*UPS PARA RESPALDO \\PCAJA DE PAGO",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqc,t21;GRAFICA \\P{\\Fromans|c0;\\W0.7;H=0.00m}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqc,t21;GRAFICA \\P{\\Fromans|c0;\\W0.7;H=0.00m}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqc;PROYECCION CIELO H=2.50m",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqc;{\\Fromans|c0;\\W0.7;H=2.50m}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqc;{\\Fromans|c0;\\W0.7;H=2.50m}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqc;{\\Fromans|c0;\\W0.7;H=3.50m}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqc;{\\Fromans|c0;\\W0.7;H=2.50m}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxql;BANDEJA CABLES DE \\PCOMETIDA ELECTRICA",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqc;{\\Fromans|c0;\\W0.7;LIGHTBOX}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "LINEA DE CONCESION",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "LINEA DE CONCESION",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "Proyeccion TDA",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxql;{\\Fromans|c0;\\W0.8;PARTIDA \\PPAVIMENTO}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxql;{\\Fromans|c0;\\W0.8;PARTIDA \\PPAVIMENTO}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxql;{\\Fromans|c0;\\W0.8;PARTIDA \\PPAVIMENTO}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqc;{\\fArial|b0|i0|c0|p34;INTERIOR\\PTIENDA}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqc;{\\fArial|b0|i0|c0|p34;SOBRELOSA}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqc;{\\fArial|b0|i0|c0|p34;LOSA}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "\\pxqc;{\\Fromans|c0;\\W0.8;N.P.T. INTERIOR %%P0.00}",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "ESC 1:20",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "RETENEDOR",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "MAGNETICO 4KGS-",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "PLANO PARA MUEBLES",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "PLETINA PARA",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "FIJAR A MURO",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "METAL",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "DESPLEGADO",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "2x POMEL",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "3/8\" x 70mm",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "PLETINA PARA",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "FIJAR A MURO",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "METAL",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "METAL",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "DESPLEGADO",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "2x POMEL",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "3/8\" x 70mm",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "PERFIL RECT",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    },
+    {
+      "text": "20x20x2mm",
+      "x": 0,
+      "y": 0,
+      "height": 0
+    }
+  ]
+}

@@ -28,32 +28,52 @@ const config: LayerMappingConfig = layerMappingConfig as LayerMappingConfig;
 /**
  * Get keywords for a specific layer
  */
+/**
+ * Get keywords for a specific layer.
+ * 
+ * GENERALIZATION STRATEGY:
+ * 1. Check explicit configuration (overrides)
+ * 2. Check wildcards
+ * 3. [NEW] Auto-extract keywords from layer name tokens
+ */
 export function getLayerKeywords(layer: string): string[] {
     const layerUpper = layer.toUpperCase();
     const layerNormalized = layer.toLowerCase();
 
-    // Direct mapping
+    // Set to avoid duplicates
+    const keywords = new Set<string>();
+
+    // 1. Explicit Config - Check both raw and normalized
     if (config.mappings[layer]) {
-        return config.mappings[layer].keywords;
+        config.mappings[layer].keywords.forEach(k => keywords.add(k.toLowerCase()));
+    } else if (config.mappings[layerNormalized]) {
+        config.mappings[layerNormalized].keywords.forEach(k => keywords.add(k.toLowerCase()));
     }
 
-    // Case-insensitive search
-    for (const [mappedLayer, mapping] of Object.entries(config.mappings)) {
-        if (mappedLayer.toLowerCase() === layerNormalized) {
-            return mapping.keywords;
-        }
-    }
-
-    // Wildcard matching (prefix-based)
+    // 2. Wildcards (Prefixes)
     if (config.wildcards) {
-        for (const [prefix, keywords] of Object.entries(config.wildcards)) {
+        for (const [prefix, mappedKeywords] of Object.entries(config.wildcards)) {
             if (layerUpper.startsWith(prefix)) {
-                return keywords;
+                mappedKeywords.forEach(k => keywords.add(k.toLowerCase()));
             }
         }
     }
 
-    return [];
+    // 3. [NEW] Auto-Tokenization
+    // Split by common separators: _ - . space / \
+    const tokens = layerNormalized.split(/[\_\-\.\ \/\\\d]+/);
+
+    // Filter minimal tokens (single letters often noise unless specific like 'E' axis)
+    const validTokens = tokens.filter(t => t.length > 2); // 'muro', 'tabique' are > 2 chars
+
+    validTokens.forEach(t => keywords.add(t));
+
+    // Special case fallback for implicit mappings
+    // If we extracted 'ele' or 'elec', expand to 'electrico'
+    if (validTokens.some(t => t.startsWith('elec'))) keywords.add('electrico');
+    if (validTokens.some(t => t.startsWith('arq'))) keywords.add('arquitectura');
+
+    return Array.from(keywords);
 }
 
 /**

@@ -44,6 +44,7 @@ export interface ExplodedGeometry {
         length_m: number;
         source: 'LINE' | 'POLYLINE' | 'LWPOLYLINE' | 'ARC' | 'CIRCLE';
         rootInsertLayer?: string; // Layer of the top-level INSERT this geometry came from
+        center: Point; // Centroid for spatial assignment
     }>;
 
     // Block instances (for counting)
@@ -52,6 +53,17 @@ export interface ExplodedGeometry {
         layer: string;
         layer_normalized: string;
         position: Point;
+    }>;
+
+    // Text entities (for spatial analysis)
+    texts: Array<{
+        text: string;
+        layer: string;
+        layer_normalized: string;
+        position: Point;
+        height: number;
+        rotation: number;
+        rootInsertLayer?: string;
     }>;
 
     // Statistics
@@ -76,6 +88,20 @@ function calculatePolygonArea(vertices: Point[]): number {
         area -= vertices[j].x * vertices[i].y;
     }
     return Math.abs(area) / 2;
+}
+
+/**
+ * Calculate centroid of vertices
+ */
+function calculateCentroid(vertices: Point[]): Point {
+    if (vertices.length === 0) return { x: 0, y: 0, z: 0 };
+    let x = 0, y = 0, z = 0;
+    for (const v of vertices) {
+        x += v.x;
+        y += v.y;
+        z += (v.z || 0);
+    }
+    return { x: x / vertices.length, y: y / vertices.length, z: z / vertices.length };
 }
 
 /**
@@ -175,6 +201,7 @@ export function explodeBlocksForMetrics(
         areas: [],
         lengths: [],
         blocks: [],
+        texts: [], // Init texts
         stats: {
             insertsProcessed: 0,
             entitiesExploded: 0,
@@ -280,7 +307,7 @@ function processEntities(
         }
 
         // Skip annotation entities
-        if (['TEXT', 'MTEXT', 'DIMENSION', 'LEADER', 'ATTRIB', 'ATTDEF'].includes(type)) {
+        if (['DIMENSION', 'LEADER', 'ATTRIB', 'ATTDEF'].includes(type)) {
             continue;
         }
 
@@ -370,7 +397,8 @@ function processEntities(
                         layer_normalized: effectiveLayer.toLowerCase(),
                         length_m: toMeters(totalLength),
                         source: type as 'POLYLINE' | 'LWPOLYLINE',
-                        rootInsertLayer: rootInsertLayer ?? undefined
+                        rootInsertLayer: rootInsertLayer ?? undefined,
+                        center: calculateCentroid(rawVerts.map((v: any) => transformPoint(v, parentTransform)))
                     });
                 }
             }
@@ -389,7 +417,8 @@ function processEntities(
                         layer_normalized: effectiveLayer.toLowerCase(),
                         length_m: toMeters(lengthRaw),
                         source: 'LINE',
-                        rootInsertLayer: rootInsertLayer ?? undefined
+                        rootInsertLayer: rootInsertLayer ?? undefined,
+                        center: calculateCentroid([p1, p2])
                     });
                 }
             }
@@ -405,7 +434,8 @@ function processEntities(
                     layer_normalized: effectiveLayer.toLowerCase(),
                     length_m: toMeters(circumference),
                     source: 'CIRCLE',
-                    rootInsertLayer: rootInsertLayer ?? undefined
+                    rootInsertLayer: rootInsertLayer ?? undefined,
+                    center: transformPoint(entity.center || { x: 0, y: 0 }, parentTransform)
                 });
             }
         }
@@ -423,12 +453,44 @@ function processEntities(
                     layer_normalized: effectiveLayer.toLowerCase(),
                     length_m: toMeters(arcLength),
                     source: 'ARC',
+                    rootInsertLayer: rootInsertLayer ?? undefined,
+                    center: transformPoint(entity.center || { x: 0, y: 0 }, parentTransform)
+                });
+            }
+        }
+
+
+        // Process TEXT and MTEXT
+        else if (type === 'TEXT' || type === 'MTEXT') {
+            const rawPos = entity.position || entity.insertionPoint || entity.startPoint || { x: 0, y: 0, z: 0 };
+            const pos = transformPoint(rawPos, parentTransform);
+
+            // Scale height
+            // Simple scale assumption: take X scale (if uniform)
+            const scale = Math.sqrt(parentTransform.scaleX * parentTransform.scaleX + parentTransform.skewY * parentTransform.skewY);
+            const height = (entity.height || entity.textHeight || 0) * scale;
+
+            // Rotation? Simplified for now.
+            const rotation = (entity.rotation || 0) + (Math.atan2(parentTransform.skewY, parentTransform.scaleX) * 180 / Math.PI);
+
+            if (entity.text) {
+                result.texts.push({
+                    text: entity.text,
+                    layer: effectiveLayer,
+                    layer_normalized: effectiveLayer.toLowerCase(),
+                    position: pos,
+                    height: height,
+                    rotation: rotation,
                     rootInsertLayer: rootInsertLayer ?? undefined
                 });
+
+                // Add position to bbox points
+                result.points.push(pos);
             }
         }
     }
 }
+
 
 /**
  * Calculate bounding box from exploded geometry points
@@ -501,21 +563,21 @@ export function aggregateExplodedToItems(exploded: ExplodedGeometry): ItemDetect
     }
 
     for (const [rootLayer, totalArea] of areasByRootInsert.entries()) {
-        // Only add if it's different from the regular layer aggregation
-        if (!areasByLayer.has(rootLayer)) {
-            items.push({
-                id: uuidv4(),
-                type: 'area',
-                name_raw: `Block Geometry Area on ${rootLayer}`,
-                layer_raw: rootLayer,
-                layer_normalized: rootLayer.toLowerCase(),
-                value_raw: totalArea,
-                unit_raw: 'm²',
-                value_si: totalArea,
-                value_m: totalArea,
-                evidence: 'Block INSERT Layer (aggregated from block interior)'
-            });
-        }
+        // ALWAYS add the root-aggregated item, even if the layer exists in regular aggregation.
+        // This ensures we have a candidate representing the FULL block content.
+        // if (!areasByLayer.has(rootLayer)) {
+        items.push({
+            id: uuidv4(),
+            type: 'area',
+            name_raw: `Block Geometry Area on ${rootLayer}`,
+            layer_raw: rootLayer,
+            layer_normalized: rootLayer.toLowerCase(),
+            value_raw: totalArea,
+            unit_raw: 'm²',
+            value_si: totalArea,
+            value_m: totalArea,
+            evidence: 'Block INSERT Layer (aggregated from block interior)'
+        });
     }
 
     // Aggregate lengths by layer (original behavior)
@@ -550,21 +612,21 @@ export function aggregateExplodedToItems(exploded: ExplodedGeometry): ItemDetect
     }
 
     for (const [rootLayer, totalLength] of lengthsByRootInsert.entries()) {
-        // Only add if it's different from the regular layer aggregation
-        if (!lengthsByLayer.has(rootLayer)) {
-            items.push({
-                id: uuidv4(),
-                type: 'length',
-                name_raw: `Block Geometry Length on ${rootLayer}`,
-                layer_raw: rootLayer,
-                layer_normalized: rootLayer.toLowerCase(),
-                value_raw: totalLength,
-                unit_raw: 'm',
-                value_si: totalLength,
-                value_m: totalLength,
-                evidence: 'Block INSERT Layer (aggregated from block interior)'
-            });
-        }
+        // ALWAYS add the root-aggregated item
+        // if (!lengthsByLayer.has(rootLayer)) {
+        items.push({
+            id: uuidv4(),
+            type: 'length',
+            name_raw: `Block Geometry Length on ${rootLayer}`,
+            layer_raw: rootLayer,
+            layer_normalized: rootLayer.toLowerCase(),
+            value_raw: totalLength,
+            unit_raw: 'm',
+            value_si: totalLength,
+            value_m: totalLength,
+            evidence: 'Block INSERT Layer (aggregated from block interior)'
+        });
+        // }
     }
 
     // Block counts by name+layer
@@ -593,6 +655,149 @@ export function aggregateExplodedToItems(exploded: ExplodedGeometry): ItemDetect
             evidence: 'Block Explosion (INSERT count)'
         });
     }
+
+
+
+    // Texts
+    exploded.texts.forEach(t => {
+        items.push({
+            id: uuidv4(),
+            type: 'text',
+            name_raw: t.text,
+            layer_raw: t.layer,
+            layer_normalized: t.layer_normalized, // Used for matching
+            value_raw: t.height,
+            unit_raw: 'm', // Height
+            value_si: t.height,
+            value_m: t.height,
+            position: t.position,
+            evidence: 'Block Explosion (TEXT)',
+            profile: {
+                has_area_support: false,
+                has_length_support: false,
+                has_block_support: false,
+                total_area: 0,
+                total_length: 0,
+                block_count: 0,
+                hatch_count: 0,
+                entity_types: new Set(['TEXT'])
+            }
+        });
+    });
+
+    return items;
+}
+
+
+/**
+ * Aggregate exploded geometry with Spatial Zone assignment
+ */
+export function aggregateExplodedWithZones(
+    exploded: ExplodedGeometry,
+    findZone: (p: Point) => { id: string; name: string } | null
+): ItemDetectado[] {
+    const items: ItemDetectado[] = [];
+
+    // Helper to add item
+    const addItem = (
+        type: 'area' | 'length' | 'block',
+        layer: string,
+        value: number,
+        zone: { id: string; name: string } | null,
+        source: string
+    ) => {
+        const zoneSuffix = zone ? ` [${zone.name}]` : '';
+        const zoneId = zone ? zone.id : undefined;
+        const zoneName = zone ? zone.name : undefined;
+
+        items.push({
+            id: uuidv4(),
+            type,
+            name_raw: `${source} on ${layer}${zoneSuffix}`,
+            layer_raw: layer,
+            layer_normalized: layer.toLowerCase(),
+            value_raw: value,
+            unit_raw: type === 'area' ? 'm²' : (type === 'length' ? 'm' : 'u'),
+            value_si: value,
+            value_m: value,
+            evidence: `Spatial Aggregation (${source})`,
+            zone_id: zoneId,
+            zone_name: zoneName
+        });
+    };
+
+    // 1. Areas Aggregation
+    const areasMap = new Map<string, { layer: string, value: number, zone: { id: string, name: string } | null }>();
+
+    for (const area of exploded.areas) {
+        const centroid = calculateCentroid(area.vertices);
+        const zone = findZone(centroid);
+
+        const zoneKey = zone ? zone.id : 'unassigned';
+        const key = `${area.layer_normalized}::${zoneKey}`;
+
+        const existing = areasMap.get(key) || { layer: area.layer, value: 0, zone };
+        existing.value += area.area_m2;
+        areasMap.set(key, existing);
+    }
+    for (const data of areasMap.values()) {
+        addItem('area', data.layer, data.value, data.zone, 'Area');
+    }
+
+    // 2. Lengths Aggregation
+    const lengthsMap = new Map<string, { layer: string, value: number, zone: { id: string, name: string } | null }>();
+
+    for (const len of exploded.lengths) {
+        // Use center which we populated
+        const zone = findZone(len.center || { x: 0, y: 0, z: 0 }); // Fallback
+
+        const zoneKey = zone ? zone.id : 'unassigned';
+        const key = `${len.layer_normalized}::${zoneKey}`;
+
+        const existing = lengthsMap.get(key) || { layer: len.layer, value: 0, zone };
+        existing.value += len.length_m;
+        lengthsMap.set(key, existing);
+    }
+    for (const data of lengthsMap.values()) {
+        addItem('length', data.layer, data.value, data.zone, 'Length');
+    }
+
+    // 3. Blocks Aggregation
+    const blocksMap = new Map<string, { name: string, layer: string, count: number, zone: { id: string, name: string } | null }>();
+
+    for (const blk of exploded.blocks) {
+        const zone = findZone(blk.position);
+
+        const zoneKey = zone ? zone.id : 'unassigned';
+        const key = `${blk.layer_normalized}::${blk.name}::${zoneKey}`;
+
+        const existing = blocksMap.get(key) || { name: blk.name, layer: blk.layer, count: 0, zone };
+        existing.count++;
+        blocksMap.set(key, existing);
+    }
+    for (const data of blocksMap.values()) {
+        addItem('block', data.layer, data.count, data.zone, `Block ${data.name}`);
+    }
+
+    // 4. Texts (Zones themselves)
+    exploded.texts.forEach(t => {
+        const zone = findZone(t.position);
+        items.push({
+            id: uuidv4(),
+            type: 'text',
+            name_raw: t.text,
+            layer_raw: t.layer,
+            layer_normalized: t.layer_normalized,
+            value_raw: t.height,
+            unit_raw: 'm',
+            value_si: t.height,
+            value_m: t.height,
+            position: t.position,
+            evidence: 'Block Explosion (TEXT)',
+            zone_id: zone?.id,
+            zone_name: zone?.name
+        });
+    });
 
     return items;
 }

@@ -1,0 +1,18 @@
+--- Debugging Block Explosion ---
+--- Exploded Areas ---
+Layer: PARENT_LAYER | Root: PARENT_LAYER | Area: 100
+Layer: FIXED_LAYER | Root: PARENT_LAYER | Area: 100
+
+--- Aggregated Items ---
+[area] Name: "Exploded Area on parent_layer" | Layer: parent_layer | Value: 100
+[area] Name: "Exploded Area on fixed_layer" | Layer: fixed_layer | Value: 100
+[area] Name: "Block Geometry Area on parent_layer" | Layer: parent_layer | Value: 200
+[length] Name: "Exploded Length on parent_layer" | Layer: parent_layer | Value: 40
+[length] Name: "Exploded Length on fixed_layer" | Layer: fixed_layer | Value: 40
+[length] Name: "Block Geometry Length on parent_layer" | Layer: parent_layer | Value: 80
+[block] Name: "TEST_BLOCK" | Layer: PARENT_LAYER | Value: 1
+
+--- Verification ---
+FAIL: Missing or incorrect area on PARENT_LAYER
+FAIL: Missing area on FIXED_LAYER
+FAIL: Block Geometry Aggregation item missing on PARENT_LAYER

@@ -1,0 +1,1309 @@
+
+> nextn@0.1.0 dev
+> next dev --turbopack -p 9002
+
+   ▲ Next.js 15.5.9 (Turbopack)
+   - Local:        http://localhost:9002
+   - Network:      http://10.88.0.3:9002
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 9.9s
+ ○ Compiling / ...
+ ✓ Compiled / in 25.5s
+ GET / 200 in 27458ms
+ ⚠ Cross origin request detected from 9002-firebase-studio-1767836392299.cluster-j6d3cbsvdbe5uxnhqrfzzeyj7i.cloudworkstations.dev to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
+Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
+ ○ Compiling /favicon.ico ...
+ ✓ Compiled /favicon.ico in 3.8s
+ GET /favicon.ico?favicon.7ed73651.ico 200 in 4534ms
+ GET / 200 in 303ms
+ ○ Compiling /project/[id] ...
+ ✓ Compiled /project/[id] in 3.4s
+ GET /project/22a09c7f-adeb-40e9-a01a-8d9e3d95e374 200 in 5665ms
+ ○ Compiling /project/[id]/batch/[batchId] ...
+ ✓ Compiled /project/[id]/batch/[batchId] in 2.9s
+ GET /project/22a09c7f-adeb-40e9-a01a-8d9e3d95e374/batch/18160f74-c89d-4914-a822-99fec4f5f3c6 200 in 4279ms
+ ○ Compiling /api/batches/[batchId]/reset ...
+ ✓ Compiled /api/batches/[batchId]/reset in 1123ms
+[Reset] Resetting batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
+[Reset] Batch 18160f74-c89d-4914-a822-99fec4f5f3c6 reset successfully.
+ POST /api/batches/18160f74-c89d-4914-a822-99fec4f5f3c6/reset 200 in 4135ms
+[Reset] Resetting batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
+[Reset] Batch 18160f74-c89d-4914-a822-99fec4f5f3c6 reset successfully.
+ POST /api/batches/18160f74-c89d-4914-a822-99fec4f5f3c6/reset 200 in 1744ms
+ ○ Compiling /api/batches/[batchId]/start ...
+ ✓ Compiled /api/batches/[batchId]/start in 832ms
+ POST /api/batches/18160f74-c89d-4914-a822-99fec4f5f3c6/start 200 in 4135ms
+ ○ Compiling /api/worker/run ...
+ ✓ Compiled /api/worker/run in 24.1s
+Processing Job 3c14e2e2-5e3c-4aa2-8a77-ffd73588fd53 (EXTRACT)...
+Processing Job 3c14e2e2-5e3c-4aa2-8a77-ffd73588fd53 (EXTRACT)...
+[Excel Parser] Row 10 candidate - Unit validation: 100.0%, Total score: 210.7
+[Excel Classify] Detected POSSIBLE TITLE: "OBRAS PRELIMINARES" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "TABIQUES" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "CIELOS" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "PINTURAS Y REVESTIMIENTOS DE MURO" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "PAVIMENTOS" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "PUERTAS Y QUINCALLERIA" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "LUMINARIAS" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "FACHADA" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "INSTALACIONES" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "Climatización" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "Instalación Eléctrica" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "Instalación Incendio" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "Instalacion Sanitaria" (Unit: "")
+[Excel Parser] Row 10 candidate - Unit validation: 100.0%, Total score: 210.7
+[Excel Classify] Detected POSSIBLE TITLE: "OBRAS PRELIMINARES" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "TABIQUES" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "CIELOS" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "PINTURAS Y REVESTIMIENTOS DE MURO" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "PAVIMENTOS" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "PUERTAS Y QUINCALLERIA" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "LUMINARIAS" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "FACHADA" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "INSTALACIONES" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "Climatización" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "Instalación Eléctrica" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "Instalación Incendio" (Unit: "")
+[Excel Classify] Detected POSSIBLE TITLE: "Instalacion Sanitaria" (Unit: "")
+[Pipeline] Successfully updated file 00. LdS PAK - Planilla cotizaciขn OOCC.xlsx to 'extracted'
+[Pipeline] Checking trigger for batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
+[Pipeline] Successfully updated file 00. LdS PAK - Planilla cotizaciขn OOCC.xlsx to 'extracted'
+[Pipeline] Checking trigger for batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
+[Pipeline] File statuses: [LDS_PAK - (LC) (1).dxf: queued, 00. LdS PAK - Planilla cotizaciขn OOCC.xlsx: extracted]
+[Pipeline] Not all files extracted yet. Waiting...
+ POST /api/worker/run 200 in 30451ms
+[Pipeline] File statuses: [LDS_PAK - (LC) (1).dxf: queued, 00. LdS PAK - Planilla cotizaciขn OOCC.xlsx: extracted]
+[Pipeline] Not all files extracted yet. Waiting...
+ POST /api/worker/run 200 in 30530ms
+Processing Job f99648cc-e790-45ad-99fc-6d87ee7f1307 (EXTRACT)...
+[Preflight] ⚠️ Invalid bbox diagonal (0), using minimal threshold: 0.001m
+[DXF Preflight] ModelSpace: 1 entidades | PaperSpace: 0 entidades
+[DXF Unit Detection] Source: INSUNITS | Unit: mm | Factor: 0.001 ($INSUNITS=4) | Confidence: 100%
+[DXF Parser] Using unit: mm (confidence: 100%)
+[DXF Scale] Raw diagonal: 0.00 mm → SI: 0.00 m
+[DXF Scale] BBox size: 0.00m × 0.00m
+[DXF Parser] Dynamic min length: 0.0010m (SI diagonal: 0.00m)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTO" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTO" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTO" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTO" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTO" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTO" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTO" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTOS OOCC" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTOS OOCC" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTOS OOCC" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTOS OOCC" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTOS OOCC" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTOS OOCC" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTOS OOCC" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTOS OOCC" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTO" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTO" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTO" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTO" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTO" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTO" (annotation layer)
+[Layer Blacklist] Excluding entity on "MV_TEXTO" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "TEXTO_M" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "DIMEN" (annotation layer)
+[Layer Blacklist] Excluding entity on "Defpoints" (annotation layer)
+[Layer Blacklist] Excluded 464 annotation entities from layers: TEXTO_M (17), DIMEN (25), MV_TEXTO (14), MV_TEXTOS OOCC (8), Defpoints (1)
+[DXF Parser] Entities - ModelSpace: 3808, PaperSpace: 0
+[View Filter] Auto-detected main plan Y bounds: -130000 to -60000 (-130.0m to -60.0m)
+[View Filter] Filtered 166 entities from cortes/elevaciones (kept 3642)
+[DXF Parser] View Filter: 3642 main plan, 166 excluded (4.4% duplicates)
+[DXF Parser] P0.1: Exploding blocks to extract geometry...
+[Block Resolver] Found 654 block definitions
+[Block Exploder] Found 654 block definitions
+[Block Exploder] Processed 1730 INSERTs, exploded 125655 entities
+[Block Exploder] Found 2927 areas, 5504 lengths, 30911 bbox points
+[Block Exploder] Max depth reached: 3
+[DXF Parser] Block Explosion Results:
+  INSERTs processed: 1730
+  Entities exploded: 125655
+  Max depth: 3
+  Layers found: 76
+  Total area: 6712.16 m²
+  Total length: 8785.76 m
+  Block instances: 1730
+[DXF Parser] P0.2: Exploded BBox: 232.47m × 124.62m (diagonal: 263.77m)
+[DXF Parser] P0.2: Updated dynamic min length: 0.0264m (from exploded bbox)
+[DXF Parser] P0.1: Created 237 items from block explosion
+[Block Resolver] Found 654 block definitions
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 254.09 m² (Raw: 254094458.97)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 259.68 m² (Raw: 259682916.99)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 259.68 m² (Raw: 259682916.99)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 259.68 m² (Raw: 259682916.99)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 259.68 m² (Raw: 259682916.99)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 259.68 m² (Raw: 259682916.99)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 259.68 m² (Raw: 259682916.99)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 259.68 m² (Raw: 259682916.99)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 3.00 m² (Raw: 3002689.90)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.82 m² (Raw: 825000.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.02 m² (Raw: 15705.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.01 m² (Raw: 14250.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.01 m² (Raw: 13650.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.03 m² (Raw: 32500.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.24 m² (Raw: 235704.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.03 m² (Raw: 32500.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.06 m² (Raw: 55000.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.06 m² (Raw: 55000.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.04 m² (Raw: 37134.74)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.04 m² (Raw: 37134.74)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 1991.83 m² (Raw: 1991827148.17)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 254.09 m² (Raw: 254094458.97)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.34 m² (Raw: 335400.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.25" → Area SI: 0.10 m² (Raw: 103455.29)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.07 m² (Raw: 68970.20)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 1.20 m² (Raw: 1201199.99)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.02 m² (Raw: 21153.43)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 1.19 m² (Raw: 1193495.26)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 1.61 m² (Raw: 1611960.55)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.01 m² (Raw: 11000.02)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.44 m² (Raw: 439449.98)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.41 m² (Raw: 411399.98)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.01 m² (Raw: 11820.22)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.03 m² (Raw: 34500.00)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 4" → Area SI: 2.46 m² (Raw: 2463000.00)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.44 m² (Raw: 439449.98)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.41 m² (Raw: 411399.98)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.01 m² (Raw: 11760.22)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.98 m² (Raw: 975044.63)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.41 m² (Raw: 409500.00)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 0" → Area SI: 0.64 m² (Raw: 640000.00)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.05 m² (Raw: 54151.69)
+[DXF Parser] Closed LWPOLYLINE on "EJ - Equipamento Solo" → Area SI: 0.14 m² (Raw: 140000.00)
+[DXF Parser] Closed LWPOLYLINE on "EJ - Equipamento Solo" → Area SI: 0.14 m² (Raw: 140000.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.36 m² (Raw: 360000.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.30 m² (Raw: 302500.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.11 m² (Raw: 108900.00)
+[DXF Parser] Closed LWPOLYLINE on "EJ - Equipamento Solo" → Area SI: 0.12 m² (Raw: 120750.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_SISTEMAS ELECTRICOS" → Area SI: 0.34 m² (Raw: 344085.20)
+[DXF Parser] Closed LWPOLYLINE on "FA-SISTEMAS" → Area SI: 0.03 m² (Raw: 31945.24)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.02 m² (Raw: 20000.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_SISTEMAS ELECTRICOS" → Area SI: 0.09 m² (Raw: 87377.64)
+[DXF Parser] Closed LWPOLYLINE on "FA_SISTEMAS ELECTRICOS" → Area SI: 0.61 m² (Raw: 605686.11)
+[DXF Parser] Closed LWPOLYLINE on "FA_TEXTO" → Area SI: 0.72 m² (Raw: 723395.50)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 35.19 m² (Raw: 35186279.99)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.02 m² (Raw: 18992.59)
+[DXF Parser] Closed LWPOLYLINE on "FA_PROYECCIÓN GATERAS" → Area SI: 0.36 m² (Raw: 360000.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_PROYECCIÓN GATERAS" → Area SI: 0.30 m² (Raw: 302500.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.02 m² (Raw: 18992.59)
+[DXF Parser] Closed LWPOLYLINE on "FA_PROYECCIÓN GATERAS" → Area SI: 0.36 m² (Raw: 360000.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_PROYECCIÓN GATERAS" → Area SI: 0.30 m² (Raw: 302500.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.02 m² (Raw: 20000.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 259.68 m² (Raw: 259682916.99)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 259.68 m² (Raw: 259682916.99)
+[DXF Parser] Closed LWPOLYLINE on "FA_SISTEMAS ELECTRICOS" → Area SI: 0.34 m² (Raw: 344085.20)
+[DXF Parser] Closed LWPOLYLINE on "LDS-ELECTRICIDAD" → Area SI: 36.75 m² (Raw: 36745574.06)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 1.36 m² (Raw: 1361080.02)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.20" → Area SI: 0.55 m² (Raw: 554670.97)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.15" → Area SI: 0.18 m² (Raw: 183036.29)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.21 m² (Raw: 213600.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.45 m² (Raw: 446110.92)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 0.76 m² (Raw: 759288.65)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 2.10 m² (Raw: 2100627.45)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.11 m² (Raw: 107266.94)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.21 m² (Raw: 211147.26)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.10 m² (Raw: 99900.74)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.18 m² (Raw: 183636.77)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.06 m² (Raw: 57970.77)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.02 m² (Raw: 15604.83)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 1.84 m² (Raw: 1836129.15)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 0.91 m² (Raw: 905227.63)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 1.05 m² (Raw: 1046849.32)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 1.51 m² (Raw: 1514137.94)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.20" → Area SI: 0.35 m² (Raw: 350466.47)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.15" → Area SI: 0.12 m² (Raw: 116822.16)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.15 m² (Raw: 154491.98)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.02 m² (Raw: 23836.86)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.18 m² (Raw: 180307.67)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.06 m² (Raw: 63750.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.06 m² (Raw: 57970.77)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.02 m² (Raw: 15604.83)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.11 m² (Raw: 107266.94)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.21 m² (Raw: 211147.26)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.10 m² (Raw: 99900.74)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 0.92 m² (Raw: 917874.13)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 0.86 m² (Raw: 860731.65)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.66 m² (Raw: 658908.08)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.66 m² (Raw: 658908.08)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 0.78 m² (Raw: 776740.54)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 0.92 m² (Raw: 917888.15)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.21 m² (Raw: 214500.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.79 m² (Raw: 792000.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.63 m² (Raw: 630000.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 1.02 m² (Raw: 1015511.13)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 1.60 m² (Raw: 1595000.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 0.75 m² (Raw: 747734.87)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.21 m² (Raw: 214500.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.18 m² (Raw: 177041.79)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.06 m² (Raw: 60000.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.06 m² (Raw: 60000.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.06 m² (Raw: 60000.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.06 m² (Raw: 60000.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.62 m² (Raw: 616499.91)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.03 m² (Raw: 34250.06)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.26 m² (Raw: 259312.02)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 1.86 m² (Raw: 1861809.28)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.21 m² (Raw: 214500.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 0.87 m² (Raw: 874403.89)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 1.20 m² (Raw: 1199755.49)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.62 m² (Raw: 616499.91)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.03 m² (Raw: 34250.06)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.06 m² (Raw: 60000.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.06 m² (Raw: 60000.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.06 m² (Raw: 60000.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.06 m² (Raw: 60000.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.06 m² (Raw: 60000.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.06 m² (Raw: 60000.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 1.48 m² (Raw: 1478895.98)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 1.48 m² (Raw: 1478889.10)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 254.09 m² (Raw: 254094458.97)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.51 m² (Raw: 511125.00)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.48 m² (Raw: 481771.13)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 1.07 m² (Raw: 1073124.53)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 1.07 m² (Raw: 1072641.27)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.51 m² (Raw: 511125.00)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.34 m² (Raw: 344754.12)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 4" → Area SI: 1.18 m² (Raw: 1183333.54)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 4" → Area SI: 1.18 m² (Raw: 1183333.54)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 4" → Area SI: 1.18 m² (Raw: 1183333.54)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 4" → Area SI: 1.18 m² (Raw: 1183333.54)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 4" → Area SI: 1.18 m² (Raw: 1183333.54)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 4" → Area SI: 1.18 m² (Raw: 1183333.54)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 4" → Area SI: 1.18 m² (Raw: 1183333.54)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 4" → Area SI: 1.18 m² (Raw: 1183333.54)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 4" → Area SI: 1.18 m² (Raw: 1183333.54)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 4" → Area SI: 1.18 m² (Raw: 1183333.54)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 0.90 m² (Raw: 904828.27)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 2.66 m² (Raw: 2662797.73)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.09 m² (Raw: 93599.87)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 2.26 m² (Raw: 2258491.76)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.09 m² (Raw: 93599.87)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 2.26 m² (Raw: 2258491.76)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.48 m² (Raw: 481771.13)
+[DXF Parser] Closed LWPOLYLINE on "HATCH_F" → Area SI: 3.54 m² (Raw: 3544279.19)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.11 m² (Raw: 113458.13)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.02 m² (Raw: 22905.50)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.02 m² (Raw: 23009.35)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.05 m² (Raw: 48879.56)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 0" → Area SI: 0.64 m² (Raw: 640000.00)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 4" → Area SI: 39.04 m² (Raw: 39043758.70)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 0" → Area SI: 0.64 m² (Raw: 640000.00)
+[DXF Parser] Closed LWPOLYLINE on "LDS-FURNITURE OUTLINE" → Area SI: 0.41 m² (Raw: 409500.00)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 4" → Area SI: 2.42 m² (Raw: 2421950.00)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.50 m² (Raw: 500174.14)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 13.05 m² (Raw: 13045984.17)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.14 m² (Raw: 138094.67)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.14 m² (Raw: 137998.66)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.14 m² (Raw: 137998.66)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.17 m² (Raw: 170876.72)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 1.40 m² (Raw: 1401386.59)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.52 m² (Raw: 520833.33)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.52 m² (Raw: 520833.33)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.64 m² (Raw: 639023.52)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 4" → Area SI: 0.02 m² (Raw: 17968.40)
+[DXF Parser] Closed LWPOLYLINE on "A-auxiliar" → Area SI: 0.08 m² (Raw: 76366.44)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_NIVEL" → Area SI: 0.62 m² (Raw: 616437.08)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_NIVEL" → Area SI: 0.01 m² (Raw: 10448.09)
+[DXF Parser] Closed LWPOLYLINE on "FA_CORTES" → Area SI: 0.11 m² (Raw: 110103.13)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.01 m² (Raw: 11247.07)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.44 m² (Raw: 439449.98)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.44 m² (Raw: 439449.98)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.06 m² (Raw: 60769.31)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.06 m² (Raw: 60769.31)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.06 m² (Raw: 60769.31)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 3" → Area SI: 0.06 m² (Raw: 60769.31)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 0.12 m² (Raw: 118849.74)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.20" → Area SI: 0.06 m² (Raw: 59424.87)
+[DXF Parser] Closed LWPOLYLINE on "FA_COLOR 12" → Area SI: 0.50 m² (Raw: 496247.25)
+[DXF Parser] Closed LWPOLYLINE on "FA_COLOR 12" → Area SI: 0.57 m² (Raw: 568039.37)
+[DXF Parser] Closed LWPOLYLINE on "G-DIM" → Area SI: 0.26 m² (Raw: 257199.46)
+[DXF Parser] Closed LWPOLYLINE on "G-DIM" → Area SI: 0.51 m² (Raw: 514398.92)
+[DXF Parser] Closed LWPOLYLINE on "G-DIM" → Area SI: 0.26 m² (Raw: 257199.46)
+[DXF Parser] Closed LWPOLYLINE on "G-DIM" → Area SI: 0.38 m² (Raw: 379472.75)
+[DXF Parser] Closed LWPOLYLINE on "G-DIM" → Area SI: 1.82 m² (Raw: 1820818.82)
+[DXF Parser] Closed LWPOLYLINE on "G-DIM" → Area SI: 0.06 m² (Raw: 55854.32)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.36 m² (Raw: 360000.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.30 m² (Raw: 302500.00)
+[DXF Parser] Closed LWPOLYLINE on "G-DIM" → Area SI: 8.66 m² (Raw: 8660039.45)
+[DXF Parser] Closed LWPOLYLINE on "G-DIM" → Area SI: 10.10 m² (Raw: 10103379.36)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.45 m² (Raw: 454122.38)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.35 m² (Raw: 348474.58)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.51 m² (Raw: 511560.77)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.45 m² (Raw: 454122.38)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.11 m² (Raw: 105532.89)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.08 m² (Raw: 76851.48)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.01 m² (Raw: 11307.10)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.11 m² (Raw: 105532.89)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.08 m² (Raw: 76851.48)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.01 m² (Raw: 11307.10)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.01 m² (Raw: 14915.25)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.51 m² (Raw: 511560.77)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.45 m² (Raw: 454056.29)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.11 m² (Raw: 105532.89)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.08 m² (Raw: 76851.48)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.01 m² (Raw: 11307.10)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.01 m² (Raw: 13444.41)
+[DXF Parser] Closed LWPOLYLINE on "PDF_Geometry" → Area SI: 0.01 m² (Raw: 13444.41)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.06 m² (Raw: 61936.23)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 254.09 m² (Raw: 254094458.97)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_MOB" → Area SI: 0.06 m² (Raw: 60000.00)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_MOB" → Area SI: 0.06 m² (Raw: 60000.00)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_MOB" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_MOB" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_MOB" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_MOB" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_MOB" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_MOB" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_MOB" → Area SI: 0.06 m² (Raw: 60000.00)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_MOB" → Area SI: 0.06 m² (Raw: 60000.00)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_MOB" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_MOB" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "ARQ_MOB" → Area SI: 0.02 m² (Raw: 17200.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.20 m² (Raw: 198333.33)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.20 m² (Raw: 198333.33)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.20 m² (Raw: 198333.33)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.20 m² (Raw: 198333.33)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.20 m² (Raw: 198333.33)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.20 m² (Raw: 198333.33)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.03 m² (Raw: 31492.57)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.68 m² (Raw: 680849.93)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.62 m² (Raw: 624292.43)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.04 m² (Raw: 40050.07)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.03 m² (Raw: 31492.57)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.62 m² (Raw: 624292.43)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.04 m² (Raw: 40050.07)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.68 m² (Raw: 680849.93)
+[DXF Parser] Closed LWPOLYLINE on "EJ - Equipamento Solo" → Area SI: 0.14 m² (Raw: 140000.00)
+[DXF Parser] Closed LWPOLYLINE on "Proyección" → Area SI: 0.12 m² (Raw: 118400.00)
+[DXF Parser] Closed LWPOLYLINE on "G-DIM" → Area SI: 0.74 m² (Raw: 744684.63)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 2.25 m² (Raw: 2246166.85)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.01 m² (Raw: 10910.23)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.01 m² (Raw: 10647.58)
+[DXF Parser] Closed LWPOLYLINE on "A-ARQ-CIELO FALSO" → Area SI: 0.02 m² (Raw: 24044.29)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 2.25 m² (Raw: 2246166.85)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.02 m² (Raw: 21202.23)
+[DXF Parser] Closed LWPOLYLINE on "FA_SISTEMAS ELECTRICOS" → Area SI: 0.24 m² (Raw: 243983.18)
+[DXF Parser] Closed LWPOLYLINE on "FA_SISTEMAS ELECTRICOS" → Area SI: 0.24 m² (Raw: 243983.18)
+[DXF Parser] Closed LWPOLYLINE on "G-DIM" → Area SI: 1.44 m² (Raw: 1440000.00)
+[DXF Parser] Closed LWPOLYLINE on "G-DIM" → Area SI: 6.62 m² (Raw: 6623877.69)
+[DXF Parser] Closed LWPOLYLINE on "G-DIM" → Area SI: 46.55 m² (Raw: 46552218.09)
+[DXF Parser] Closed LWPOLYLINE on "G-DIM" → Area SI: 1.72 m² (Raw: 1715046.72)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.14 m² (Raw: 138000.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.01 m² (Raw: 12000.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.14 m² (Raw: 138000.00)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.02 m² (Raw: 20776.35)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 1.01 m² (Raw: 1014584.95)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.64 m² (Raw: 640029.42)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 0" → Area SI: 0.68 m² (Raw: 678000.00)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 1.05 m² (Raw: 1050000.00)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 0" → Area SI: 0.68 m² (Raw: 678000.00)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 0" → Area SI: 0.10 m² (Raw: 104590.15)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 0" → Area SI: 0.11 m² (Raw: 114603.16)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 0" → Area SI: 0.10 m² (Raw: 104590.15)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 0" → Area SI: 0.11 m² (Raw: 114603.16)
+[DXF Parser] Closed LWPOLYLINE on "FA_0.05" → Area SI: 0.94 m² (Raw: 939977.23)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 168.78 m² (Raw: 168784061.46)
+[DXF Parser] Closed LWPOLYLINE on "LDS-ELECTRICIDAD" → Area SI: 0.08 m² (Raw: 78080.52)
+[DXF Parser] Closed LWPOLYLINE on "LDS-ELECTRICIDAD" → Area SI: 0.08 m² (Raw: 78080.52)
+[DXF Parser] Closed LWPOLYLINE on "LDS-ELECTRICIDAD" → Area SI: 0.08 m² (Raw: 78080.52)
+[DXF Parser] Closed LWPOLYLINE on "LDS-ELECTRICIDAD" → Area SI: 0.08 m² (Raw: 78080.52)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.09 m² (Raw: 94935.64)
+[DXF Parser] Closed LWPOLYLINE on "0" → Area SI: 0.09 m² (Raw: 93515.45)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.53 m² (Raw: 534178.19)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.48 m² (Raw: 481771.13)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 1.10 m² (Raw: 1099108.17)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 1.10 m² (Raw: 1098613.21)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.48 m² (Raw: 483624.25)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.34 m² (Raw: 344754.12)
+[DXF Parser] Closed LWPOLYLINE on "FA_ARQ-MUROS" → Area SI: 0.90 m² (Raw: 904828.27)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 3.83 m² (Raw: 3825885.46)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.10 m² (Raw: 95400.59)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 2.41 m² (Raw: 2408591.97)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 0.10 m² (Raw: 97410.74)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 2.41 m² (Raw: 2408737.41)
+[DXF Parser] Closed LWPOLYLINE on "HATCH_F" → Area SI: 3.60 m² (Raw: 3595457.91)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.50 m² (Raw: 502362.91)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.14 m² (Raw: 138000.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.11 m² (Raw: 106400.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.27 m² (Raw: 273000.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.25 m² (Raw: 253110.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 20750.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 20750.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 20750.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.25 m² (Raw: 253110.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.25 m² (Raw: 253110.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.17 m² (Raw: 167531.80)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.17 m² (Raw: 167531.80)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.17 m² (Raw: 167531.80)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.25 m² (Raw: 253110.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 20750.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.17 m² (Raw: 167531.80)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.01 m² (Raw: 11247.07)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.01 m² (Raw: 11247.07)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.01 m² (Raw: 11247.07)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.01 m² (Raw: 11247.07)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.25 m² (Raw: 253110.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 20750.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.17 m² (Raw: 167531.80)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.01 m² (Raw: 11247.07)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.25 m² (Raw: 253110.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 20750.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.17 m² (Raw: 167531.80)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.25 m² (Raw: 253110.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 20750.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.17 m² (Raw: 167531.80)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.01 m² (Raw: 11247.07)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 1.61 m² (Raw: 1611960.55)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 20750.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.17 m² (Raw: 167531.80)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.27 m² (Raw: 273000.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 20750.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.17 m² (Raw: 167531.80)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.01 m² (Raw: 11000.02)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.24 m² (Raw: 240155.21)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 20750.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.17 m² (Raw: 167531.80)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.87 m² (Raw: 865424.30)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.08 m² (Raw: 81131.31)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.16 m² (Raw: 162530.85)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.09 m² (Raw: 87516.61)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.16 m² (Raw: 162530.85)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.01 m² (Raw: 12000.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.44 m² (Raw: 439449.98)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.41 m² (Raw: 411399.98)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.01 m² (Raw: 11760.22)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.03 m² (Raw: 34500.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.14 m² (Raw: 138000.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.11 m² (Raw: 106400.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 17968.40)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.09 m² (Raw: 86683.78)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.04 m² (Raw: 45000.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.01 m² (Raw: 14639.47)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 3.01 m² (Raw: 3014200.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 2.87 m² (Raw: 2866005.89)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.53 m² (Raw: 528900.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.49 m² (Raw: 486300.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.08 m² (Raw: 78750.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.08 m² (Raw: 78750.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.64 m² (Raw: 640000.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 22305.68)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 21000.00)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.15 m² (Raw: 149610.12)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.15 m² (Raw: 149610.12)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 20776.35)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.02 m² (Raw: 19500.68)
+[DXF Parser] Closed LWPOLYLINE on "FA_MUEBLES PROYECCION" → Area SI: 0.98 m² (Raw: 975042.25)
+[DXF Parser] Closed LWPOLYLINE on "MB-ELEV 2" → Area SI: 11.93 m² (Raw: 11928690.35)
+[DXF Parser] ⚠️ Suspect geometry on "I-ELE-ALUMBRADO": Longitud 0.000m por debajo del umbral dinámico 0.001m (puede ser ruido)
+[DXF Parser] ⚠️ Suspect geometry on "3 LIGHT": Longitud 0.000m por debajo del umbral dinámico 0.001m (puede ser ruido)
+[DXF Parser] Extracted 958 items (502 blocks, 38 lengths, 56 areas, 362 texts)
+[DXF Parser] Found 2492 items from nested blocks
+[DXF Parser] P0.1: Merging 237 items from block explosion into main list
+[Dedup] Removed 39 duplicates from layers: 0 (1), mb-elev 2 (1), fa_0.25 (2), fa_0.05 (1), mb-elev 3 (1), mb-elev 4 (1), mb-elev 0 (1), ej - equipamento solo (2), fa_sistemas electricos (1), fa-sistemas (2), fa_texto (2), fa_muebles proyeccion (1), fa_proyección gateras (1), lds-electricidad (1), fa_arq-muros (2), fa_0.20 (2), fa_0.15 (1), proyección (1), hatch_f (2), lds-furniture outline (2), a-auxiliar (1), arq_nivel (2), fa_cortes (2), fa_color 12 (1), g-dim (2), pdf_geometry (1), arq_mob (1), a-arq-cielo falso (1)
+[BBox] ✅ Accurate Bounding Box (post-conversion):
+  Min: (-198.46, -131.68)
+  Max: (159.40, -47.47)
+  Diagonal: 367.66 m
+  Size: 357.86m × 84.20m
+[BBox] ✅ Updated dynamic min length: 0.0368m
+[DXF] Parsed 3648 items from LDS_PAK - (LC) (1).dxf (UTF-8)
+ POST /api/worker/run 200 in 10531ms
+[Pipeline] Successfully updated file LDS_PAK - (LC) (1).dxf to 'extracted'
+[Pipeline] Checking trigger for batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
+[Pipeline] File statuses: [00. LdS PAK - Planilla cotizaciขn OOCC.xlsx: extracted, LDS_PAK - (LC) (1).dxf: extracted]
+[Pipeline] Batch status: processing
+[Pipeline] Attempting to lock batch for mapping...
+All files for batch 18160f74-c89d-4914-a822-99fec4f5f3c6 extracted. Starting matching...
+[Mapping] Starting mapping for batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
+[Mapping] Batch loaded: 18160f74-c89d-4914-a822-99fec4f5f3c6
+[Mapping] Found 2 files
+[Mapping] Loading excel file: 18160f74-c89d-4914-a822-99fec4f5f3c6/47dc18cb-ac31-42b9-a616-b4a8f0e24921.json
+[Mapping] Parsed excel file: 116 items
+[Mapping] Loading dxf file: 18160f74-c89d-4914-a822-99fec4f5f3c6/c72b95b4-7b3b-4141-8ecc-2b26b12dbee5.json
+[Mapping] Parsed dxf file: 3648 items
+[Mapping] Loaded 116 Excel items and 3648 DXF items
+[Mapping] Excel Discipline: UNKNOWN
+[Matcher] Layer profiles (70 layers):
+  • mb-elev 2: 148.07 m², 853.03 m, 1271 blocks
+  • ej - x1 - layout: 4.33 m, 6 blocks
+  • 0: 11043.12 m², 1348.51 m, 282 blocks
+  • a-arq-artefactos: 2.70 m, 3 blocks
+  • fa_titulo: 15.55 m, 81 blocks
+  • mb-section hatch: 0.21 m², 17.10 m, 30 blocks
+  • mb-cotas: 0.65 m², 34.20 m, 87 blocks
+  • mb-lds-bronce: 7.42 m², 25.11 m, 187 blocks
+  • fa_sistemas electricos: 4.69 m², 90.67 m, 81 blocks
+  • mv_muebles: 0.00 m², 4.41 m, 3 blocks
+  • fa_color 12: 2.15 m², 95.18 m, 3 blocks
+  • fa_proyección gateras: 3.98 m², 37.44 m, 6 blocks
+  • fa_texto: 0.72 m², 3.69 m
+  • fa-sistemas: 0.03 m², 10.10 m, 6 blocks
+  • fa_muebles proyeccion: 130.24 m², 775.55 m, 3 blocks
+  • fa_iluminarias: 0.25 m², 8.12 m, 9 blocks
+  • lds-electricidad: 75.99 m², 370.88 m, 33 blocks
+  • ej - luminárias: 0.40 m², 5.46 m, 6 blocks
+  • a-arq-cielo falso: 0.38 m², 464.11 m, 117 blocks
+  • fa_0.10: 1.30 m², 86.93 m, 39 blocks
+  • arq_nivel: 0.63 m², 5.38 m, 66 blocks
+  • proyección: 16.01 m², 204.36 m, 24 blocks
+  • a-arq-muebles: 0.04 m², 16.54 m
+  • _0textos: 2.82 m, 12 blocks
+  • fa_tabiques: 0.00 m², 7.21 m, 3 blocks
+  • mb-elev 0: 7.49 m², 43.63 m, 8 blocks
+  • 7887_extincion: 0.02 m², 1.83 m, 3 blocks
+  • simbolo_obra: 0.11 m, 141 blocks
+  • g-dim: 79.12 m², 159.87 m
+  • i-ele-alumbrado: 0.00 m², 0.20 m
+  • a-txt-especificacion: 1.20 m
+  • pen a-rcp devices: 12.23 m
+  • fa_0.25: 0.10 m², 2.48 m
+  • fa_0.05: 13.76 m², 338.17 m
+  • mb-elev 3: 9.88 m², 100.63 m
+  • mb-elev 4: 177.21 m², 335.35 m, 2 blocks
+  • ej - equipamento solo: 0.54 m², 7.61 m
+  • fa_arq-muros: 22.22 m², 436.29 m
+  • fa_0.20: 0.96 m², 118.69 m
+  • fa_0.15: 0.82 m², 216.89 m
+  • hatch_f: 7.14 m², 20.15 m
+  • lds-furniture outline: 0.41 m², 49.31 m
+  • a-auxiliar: 0.84 m², 41.40 m
+  • fa_cortes: 0.11 m², 33.22 m
+  • pdf_geometry: 6.77 m², 119.88 m
+  • arq_mob: 0.84 m², 162.74 m
+  • _0arquitectura: 0.01 m², 30.41 m
+  • 3 light: 0.00 m², 0.15 m
+  • a-arq-ventanas: 0.01 m², 22.03 m
+  • mb-auxiliar: 721.83 m², 7702.92 m
+  • a-cot-exteriores: 1.31 m
+  • omega: 0.63 m
+  • a-arq-barandas y em: 0.00 m², 1.14 m
+  • a-arq-t90-f120: 2.40 m
+  • a-seccion: 0.00 m², 3.74 m
+  • fixture-fix-l: 0.00 m², 6.47 m
+  • pen a-flr tile patt: 0.01 m², 1.76 m
+  • mb-elev 3.1: 0.03 m², 13.80 m
+  • 04-fur_신규: 0.00 m², 2.86 m
+  • fa-iluminacion: 0.40 m², 10.92 m
+  • fa_0.09: 56.62 m
+  • arq_texto 50: 9.25 m
+  • fa_refuerzos: 30.24 m
+  • mb-logo: 0.13 m², 14.78 m
+  • a-arq-accesorios: 0.00 m², 0.08 m
+  • 0.1: 0.31 m
+  • e: 2.17 m
+  • elev-251: 8 blocks
+[Footprint] Found 52 layers with 12487 m² total area:
+  1. "0": 11043 m² (2 polys, score: 0.61) - Large area: 11043m², Few polygons: 2, Max single: 5522m²
+  2. "mb-auxiliar": 722 m² (1 polys, score: 0.57) - Large area: 722m², Few polygons: 1, Max single: 722m²
+  3. "G-DIM": 79 m² (1 polys, score: 0.31) - Few polygons: 1, Max single: 79m²
+  4. "MB-ELEV 4": 177 m² (2 polys, score: 0.30) - Large area: 177m², Few polygons: 2, Max single: 121m²
+  5. "FA_ARQ-MUROS": 22 m² (1 polys, score: 0.29) - Few polygons: 1
+[Discipline] Inferred: ARQUITECTURA (high) from sheet_name
+[Matcher] P0.C: Built 68 layer candidates for matching
+[Subtype] "Impermeabilización membrana asfáltica según plano" → Área de Techo (95%)
+  Keywords: [impermeabilizacion, membrana, asfaltica]
+[Matcher] Row 15: "Impermeabilización membrana asfáltica según plano"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "Sobrelosa de 8cm" → Área de Piso (95%)
+  Keywords: [sobrelosa, losa]
+[Matcher] Row 16: "Sobrelosa de 8cm"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "TAB 01: sobretabique simple sala de ventas, montante estructural 60 + plancha MDF 15 mm" → Área de Techo (95%)
+  Keywords: [plancha]
+[Matcher] Row 22: "TAB 01: sobretabique simple sala de ventas, montante estructural 60 + plancha MDF 15 mm"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.2] WALL intent: filtered to 67 layers with LENGTH support
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "TAB 02: sobretabique simple bodega, montante estructural 60 + plancha yeso carton 15 mm" → Área de Muro (95%)
+  Keywords: [tabique, tabiqu, yeso]
+[Matcher] Row 23: "TAB 02: sobretabique simple bodega, montante estructural 60 + plancha yeso carton 15 mm"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.2] WALL intent: filtered to 67 layers with LENGTH support
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "TAB 03: tabique simple divisorio, montante estructural 90 + plancha yeso carton 15 mm una cara + plancha MDF 15mm una cara" → Área de Muro (95%)
+  Keywords: [tabique, tabiqu, yeso]
+[Matcher] Row 24: "TAB 03: tabique simple divisorio, montante estructural 90 + plancha yeso carton 15 mm una cara + plancha MDF 15mm una cara"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.2] WALL intent: filtered to 67 layers with LENGTH support
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "Sobretabique pilar montante estructural 60 + plancha yeso carton 15 mm, considera esquinas redondeadas según detalle" → Área de Muro (95%)
+  Keywords: [tabique, tabiqu, yeso]
+[Matcher] Row 25: "Sobretabique pilar montante estructural 60 + plancha yeso carton 15 mm, considera esquinas redondeadas según detalle"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.2] WALL intent: filtered to 67 layers with LENGTH support
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "Tabique fachada montante estructural 60 + plancha MDF 15 mm" → Área de Muro (95%)
+  Keywords: [tabique, tabiqu]
+[Matcher] Row 26: "Tabique fachada montante estructural 60 + plancha MDF 15 mm"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.2] WALL intent: filtered to 67 layers with LENGTH support
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "Refuerzo oculto en tabique TERCIADO 15mm en tabique para fijacion TDA, RACK DE DATOS, estanterias de bodega, escalera gatera" → Área de Muro (95%)
+  Keywords: [tabique, tabiqu]
+[Matcher] Row 27: "Refuerzo oculto en tabique TERCIADO 15mm en tabique para fijacion TDA, RACK DE DATOS, estanterias de bodega, escalera gatera"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.2] WALL intent: filtered to 67 layers with LENGTH support
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" → Área de Cielo (95%)
+  Keywords: [cielo]
+[Matcher] Row 32: "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" → Área de Cielo (95%)
+  Keywords: [cielo]
+[Matcher] Row 33: "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Matcher] Row 34: "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm"
+  Excel Unit: "ml" → Expected Measure Type: LENGTH
+  Classification: LENGTH (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without LENGTH support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 35: "Pasarela de mantención montante estructural según detalle desde gatera hasta cortina de rollo según requerimientos a revisar en terreno, considera 60 cms de ancho libre. Considera pasamanos para restringir el paso al resto del cielo."
+  Excel Unit: "ml" → Expected Measure Type: LENGTH
+  Classification: LENGTH (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without LENGTH support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Empaste y huincha de todos los tabiques de yeso carton" → Área de Muro (95%)
+  Keywords: [tabique, tabiqu, yeso]
+[Matcher] Row 41: "Empaste y huincha de todos los tabiques de yeso carton"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.2] WALL intent: filtered to 67 layers with LENGTH support
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "Empaste y huincha de todos los cielos" → Área de Cielo (85%)
+  Keywords: [cielo]
+[Matcher] Row 42: "Empaste y huincha de todos los cielos"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.2] WALL intent: filtered to 67 layers with LENGTH support
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK" → Área de Muro (85%)
+  Keywords: [tabique, tabiqu]
+[Matcher] Row 43: "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.2] WALL intent: filtered to 67 layers with LENGTH support
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural" → Área de Cielo (95%)
+  Keywords: [cielo]
+[Matcher] Row 44: "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "Pintura latex extracubriente blanco en cielo bodega" → Área de Cielo (95%)
+  Keywords: [cielo]
+[Matcher] Row 45: "Pintura latex extracubriente blanco en cielo bodega"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "Pintura QUARZO con sellador acrilico + estuco SIP + revestimiento gres segun indicacion fabricante. PROVEEDOR: Lumine" → Área de Muro (95%)
+  Keywords: [revestimiento, estuco]
+[Matcher] Row 46: "Pintura QUARZO con sellador acrilico + estuco SIP + revestimiento gres segun indicacion fabricante. PROVEEDOR: Lumine"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.2] WALL intent: filtered to 67 layers with LENGTH support
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Matcher] Row 50: "Mortero nivelador"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Matcher] Row 51: "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Matcher] Row 52: "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm."
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Matcher] Row 53: "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm."
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "Pieza de marmol en acceso color Rosso Asiago acabado opaco con logo plancha de bronce e=2mm acabado opaco segun muestra, embutido en marmol *archivo grafico a proveer por mandante" → Área de Techo (95%)
+  Keywords: [plancha]
+[Matcher] Row 54: "Pieza de marmol en acceso color Rosso Asiago acabado opaco con logo plancha de bronce e=2mm acabado opaco segun muestra, embutido en marmol *archivo grafico a proveer por mandante"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Matcher] Row 55: "Tarima de marmol en vitrinas color Rosso Asiago acabado opaco, considera estructura interior"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm." → Área de Piso (95%)
+  Keywords: [pavimento, porcelanato]
+[Matcher] Row 56: "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm."
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Subtype] "Provision e instalacion pavimento IDEM MALL" → Área de Piso (95%)
+  Keywords: [pavimento]
+[Matcher] Row 57: "Provision e instalacion pavimento IDEM MALL"
+  Excel Unit: "m2" → Expected Measure Type: AREA
+  Classification: AREA (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without AREA support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_needs_layer_pick
+[Matcher] Row 58: "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce"
+  Excel Unit: "ml" → Expected Measure Type: LENGTH
+  Classification: LENGTH (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without LENGTH support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)" → Longitud de Borde (95%)
+  Keywords: [guardapolvo]
+[Matcher] Row 59: "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)"
+  Excel Unit: "ml" → Expected Measure Type: LENGTH
+  Classification: LENGTH (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without LENGTH support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 63: "Brazo Hidráulico puerta bodega"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "(D) Perfil de aluminio sobrepuesto rectangular. Material: Aluminio. Protección IP: IP20. Dimensiones: 16 x 6 x 3000 mm. Incluye: Difusor Opal + cinta LED SMD 2835 19,2W interior. Voltage: 12V. Luminous flux: 1.600 LM x mt. Protection IP: IP20. Dimentions: 5000 × 10 mm. PROVEEDOR: DLUZ" → HVAC (95%)
+  Keywords: [difusor]
+[Matcher] Row 67: "(D) Perfil de aluminio sobrepuesto rectangular. Material: Aluminio. Protección IP: IP20. Dimensiones: 16 x 6 x 3000 mm. Incluye: Difusor Opal + cinta LED SMD 2835 19,2W interior. Voltage: 12V. Luminous flux: 1.600 LM x mt. Protection IP: IP20. Dimentions: 5000 × 10 mm. PROVEEDOR: DLUZ"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 68: "(D) Fuente de poder 12V 120W exterior. IP67 Voltaje de entrada: 220V, Voltaje de salida: 12V. Factor de potencia: >0.90. Protección IP: IP67. Cantidad de salidas: 2. PROVEEDOR: DLUZ"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "(C) Foco riel magnético 6W 3.000°K NG Protección: IP20 Flujo: 600LM. Voltaje 48V. Apertura: 24°. Dimensiones: Ø35 x140 mm. Color negro. PROVEEDOR: DLUZ" → Luminaria (95%)
+  Keywords: [foco]
+[Matcher] Row 69: "(C) Foco riel magnético 6W 3.000°K NG Protección: IP20 Flujo: 600LM. Voltaje 48V. Apertura: 24°. Dimensiones: Ø35 x140 mm. Color negro. PROVEEDOR: DLUZ"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "(G) Foco porta dicroico gu10 retraído fijo Base: 1xGU10 Voltaje: 220V Protección IP: IP20. Color de Equipo: Negro. Dimensiones: 101×101 mm. Perforación: 80x30x77 mm. No Incluye Ampolleta. PROVEEDOR: DLUZ" → Luminaria (95%)
+  Keywords: [foco]
+[Matcher] Row 70: "(G) Foco porta dicroico gu10 retraído fijo Base: 1xGU10 Voltaje: 220V Protección IP: IP20. Color de Equipo: Negro. Dimensiones: 101×101 mm. Perforación: 80x30x77 mm. No Incluye Ampolleta. PROVEEDOR: DLUZ"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 71: "(G) Dicroico PHILIPS LED 7W DIMEABLE. Base: GU10. Color de Luz: 2.700°K. Consumo: 7W Voltaje: 220V. Tipo de LED: SMD Flujo: 650 Lm. Ángulo de Apertura: 36° IP: IP20. Dimeable: Sí Dimensiones: Ø50×54mm. PROVEEDOR: DLUZ"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "(E) Downlight LED redondo 3w luz cálida, Color negro. Diámetro equipo 5cms, diámetro perforación 4cms. Altura 3 cms. PROVEEDOR: LEDSTUDIO" → Luminaria (95%)
+  Keywords: [downlight]
+[Matcher] Row 72: "(E) Downlight LED redondo 3w luz cálida, Color negro. Diámetro equipo 5cms, diámetro perforación 4cms. Altura 3 cms. PROVEEDOR: LEDSTUDIO"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "(H) Foco EROS15 LED SPOT dirigible EMB BLACK 15W Color de Luz: 3.000K / 4000K Voltaje: 220V Tipo de LED: COB Flujo Lumínico: 1.350 Lm. Ángulo de Apertura: 24° IP: IP20 Dimensiones: Ø112×100 mm. Perforación: Ø95 mm PROVEEDOR: DLUZ" → Luminaria (95%)
+  Keywords: [foco, spot]
+[Matcher] Row 73: "(H) Foco EROS15 LED SPOT dirigible EMB BLACK 15W Color de Luz: 3.000K / 4000K Voltaje: 220V Tipo de LED: COB Flujo Lumínico: 1.350 Lm. Ángulo de Apertura: 24° IP: IP20 Dimensiones: Ø112×100 mm. Perforación: Ø95 mm PROVEEDOR: DLUZ"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Kit emergencia para foco embutido sala de ventas (90-120 min autonomía)" → Luminaria (95%)
+  Keywords: [foco]
+[Matcher] Row 74: "Kit emergencia para foco embutido sala de ventas (90-120 min autonomía)"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 75: "Kit emergencia para riel sala de ventas (90-120 min autonomía)"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Lamparas bodega estanca LED 36W 4300 LM IP65" → Luminaria (85%)
+  Keywords: [lampara]
+[Matcher] Row 76: "Lamparas bodega estanca LED 36W 4300 LM IP65"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Lamparas bodega con kit emergencia (90-120 min autonomía)" → Luminaria (85%)
+  Keywords: [lampara]
+[Matcher] Row 77: "Lamparas bodega con kit emergencia (90-120 min autonomía)"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" → Luminaria (95%)
+  Keywords: [lampara]
+[Matcher] Row 78: "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 79: "Letrero salida (señalética emergencia)"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Instalación de luminarias" → Luminaria (85%)
+  Keywords: [luminaria]
+[Matcher] Row 80: "Instalación de luminarias"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+  [Block Classifier] ✅ Trusted block: "LINEAL" (medium)
+[Fix 9.2] Assigned default methodDetail: count_blocks
+[Fix 9.1b] DEBUG: allResults has 2 items
+[Fix 9.1b] DEBUG: Looking for layer "fa_iluminarias" in allResults
+[Fix 9.1b] DEBUG: allResults layers: [fa_iluminarias, ej - luminárias]
+[Fix 9.1b] Layer "fa_iluminarias" - Profile found: true, sampleItem.type: block
+[Fix 9.1b] Profile: has_area=true, has_length=true, has_block=true
+[Fix 9.1] Profile-based type: AREA (sampleItem was: block)
+[Matcher] P0.3 Invariant Violation: un (count) requires BLOCK as evidence, got AREA
+[Quality] ⚠️ Quality gates: 1 error(s), 1 warning(s)
+  ❌ Low Match Confidence: Match confidence 0% is below 40% threshold
+  ❌ Zero Quantity Despite Match: Matched layer but quantity is 0 - geometry type incompatibility
+[Subtype] "Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bronce" → Longitud de Borde (95%)
+  Keywords: [zocalo]
+[Matcher] Row 85: "Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bronce"
+  Excel Unit: "ml" → Expected Measure Type: LENGTH
+  Classification: LENGTH (confidence: 1)
+  [P0.A] Pre-filtered 1 layers without LENGTH support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Tablero eléctrico rotulado" → Eléctrico (95%)
+  Keywords: [tablero]
+[Matcher] Row 95: "Tablero eléctrico rotulado"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Tablero clima (si lo exige mall)" → Eléctrico (95%)
+  Keywords: [tablero]
+[Matcher] Row 96: "Tablero clima (si lo exige mall)"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Alimentador desde la caja de empalme (en linea de concesion) hasta la ubicación del tablero" → Eléctrico (95%)
+  Keywords: [tablero, caja]
+[Matcher] Row 97: "Alimentador desde la caja de empalme (en linea de concesion) hasta la ubicación del tablero"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 98: "Puntos de iluminación"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Puntos de iluminacion muebles" → Mobiliario (85%)
+  Keywords: [mueble]
+[Matcher] Row 99: "Puntos de iluminacion muebles"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Puntos de enchufe" → Eléctrico (95%)
+  Keywords: [enchufe]
+[Matcher] Row 100: "Puntos de enchufe"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Puntos de enchufe muebles isla (a piso)" → Eléctrico (95%)
+  Keywords: [enchufe]
+[Matcher] Row 101: "Puntos de enchufe muebles isla (a piso)"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 102: "Puntos de datos"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 103: "Canalizado cámaras de seguridad UTP cat 6e"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 104: "Canalizado parlantes"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 105: "Punto clima"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 106: "Punto letrero"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 107: "Canalización para alarma de intrusion"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 108: "Puntos pantallas"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Puntos cajas de luz (a muro)" → Eléctrico (85%)
+  Keywords: [caja]
+[Matcher] Row 109: "Puntos cajas de luz (a muro)"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 110: "Certificados TE1, Planos As Built *se deben entregar al final de la obra impresos y firmados en fresco por el instalador"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 111: "Remarcador"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+  [Block Classifier] ✅ Trusted block: "A$C853619cd" (medium)
+[Fix 9.2] Assigned default methodDetail: count_blocks
+[Fix 9.1b] DEBUG: allResults has 2 items
+[Fix 9.1b] DEBUG: Looking for layer "a-arq-artefactos" in allResults
+[Fix 9.1b] DEBUG: allResults layers: [a-arq-artefactos, fa_color 12]
+[Fix 9.1b] Layer "a-arq-artefactos" - Profile found: true, sampleItem.type: block
+[Fix 9.1b] Profile: has_area=false, has_length=true, has_block=true
+[Fix 9.1] Profile-based type: LENGTH (sampleItem was: block)
+[Matcher] P0.3 Invariant Violation: un (count) requires BLOCK as evidence, got LENGTH
+[Quality] ⚠️ Quality gates: 1 error(s), 1 warning(s)
+  ❌ Low Match Confidence: Match confidence 0% is below 40% threshold
+  ❌ Zero Quantity Despite Match: Matched layer but quantity is 0 - geometry type incompatibility
+[Matcher] Row 114: "Alarma en vitrina, provision e instalacion"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 115: "Sensor de movimiento (zona acceso a gatera), provision e instalacion"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 116: "Gabinete de datos para 14 un + ordenacables + rotulación"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "UPS 3KVA con enchuve 16A" → Equipo (95%)
+  Keywords: [ups]
+[Matcher] Row 117: "UPS 3KVA con enchuve 16A"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Subtype] "Bomba impulsora (si aplica)" → Equipo (95%)
+  Keywords: [bomba]
+[Matcher] Row 127: "Bomba impulsora (si aplica)"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 128: "Grifería (solo instalacion, provista por mandante)"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 129: "Remarcador agua potable"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 137: "Tapas registro para RAP"
+  Excel Unit: "un" → Expected Measure Type: BLOCK
+  Classification: BLOCK (confidence: 1)
+  [P0.A] Pre-filtered 40 layers without BLOCK support
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Matcher] Row 138: "Seguro todo riesgo de construcción solicitado por Mall"
+  Excel Unit: "mes" → Expected Measure Type: UNKNOWN
+  Classification: UNKNOWN (confidence: 0)
+[Phase 8] Nullifying qtyFinal (0) for pending status: pending_no_match
+[Punto Pre-classification] Forcing 'c:Users
+icogDownloadswetransfer_lds-pak-licitacion-oocc_2026-01-08_0027PIL.IA{row.excel_item_text}' to AI refinement
+[Punto Pre-classification] Forcing 'c:Users
+icogDownloadswetransfer_lds-pak-licitacion-oocc_2026-01-08_0027PIL.IA{row.excel_item_text}' to AI refinement
+[Punto Pre-classification] Forcing 'c:Users
+icogDownloadswetransfer_lds-pak-licitacion-oocc_2026-01-08_0027PIL.IA{row.excel_item_text}' to AI refinement
+[Punto Pre-classification] Forcing 'c:Users
+icogDownloadswetransfer_lds-pak-licitacion-oocc_2026-01-08_0027PIL.IA{row.excel_item_text}' to AI refinement
+[Punto Pre-classification] Forcing 'c:Users
+icogDownloadswetransfer_lds-pak-licitacion-oocc_2026-01-08_0027PIL.IA{row.excel_item_text}' to AI refinement
+[Punto Pre-classification] Forcing 'c:Users
+icogDownloadswetransfer_lds-pak-licitacion-oocc_2026-01-08_0027PIL.IA{row.excel_item_text}' to AI refinement
+[Punto Pre-classification] Forcing 'c:Users
+icogDownloadswetransfer_lds-pak-licitacion-oocc_2026-01-08_0027PIL.IA{row.excel_item_text}' to AI refinement
+[Punto Pre-classification] Forcing 'c:Users
+icogDownloadswetransfer_lds-pak-licitacion-oocc_2026-01-08_0027PIL.IA{row.excel_item_text}' to AI refinement
+[Punto Pre-classification] Forcing 'c:Users
+icogDownloadswetransfer_lds-pak-licitacion-oocc_2026-01-08_0027PIL.IA{row.excel_item_text}' to AI refinement
+AI Refining 62 items with Dimensional Analysis...
+Processing AI batch 1/7 (items 1-10/62)
+[Label Filter] Detected codes in item: TAB01
+[Label Filter] Item expects labels TAB 01 but no geometry found nearby.
+[Match Debug] Item: "TAB 01: sobretabique simple sala de ventas, montante estructural 60 + plancha MDF 15 mm" | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'TAB 01: sobretabique simple sala de ventas, montante estructural 60 + plancha MDF 15 mm' forced to PENDING due to type mismatch.
+[Match Debug] Item: "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm' forced to PENDING due to type mismatch.
+[Match Debug] Item: "Sobretabique pilar montante estructural 60 + plancha yeso carton 15 mm, considera esquinas redondeadas según detalle" | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'Sobretabique pilar montante estructural 60 + plancha yeso carton 15 mm, considera esquinas redondeadas según detalle' forced to PENDING due to type mismatch.
+[Match Debug] Item: "Impermeabilización membrana asfáltica según plano" | Unit: "m2" | Expected: "area" | Found: "text" | Conf: 0.95
+[Label Filter] Detected codes in item: TAB03
+[Label Filter] Item expects labels TAB 03 but no geometry found nearby.
+[Match Debug] Item: "TAB 03: tabique simple divisorio, montante estructural 90 + plancha yeso carton 15 mm una cara + plancha MDF 15mm una cara" | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'TAB 03: tabique simple divisorio, montante estructural 90 + plancha yeso carton 15 mm una cara + plancha MDF 15mm una cara' forced to PENDING due to type mismatch.
+[Match Debug] Item: "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm' forced to PENDING due to type mismatch.
+[Match Debug] Item: "Sobrelosa de 8cm" | Unit: "m2" | Expected: "area" | Found: "area" | Conf: 0.95
+[Match Debug] Item: "Refuerzo oculto en tabique TERCIADO 15mm en tabique para fijacion TDA, RACK DE DATOS, estanterias de bodega, escalera gatera" | Unit: "m2" | Expected: "area" | Found: "length" | Conf: 0.85
+[Match Debug] Item: "Tabique fachada montante estructural 60 + plancha MDF 15 mm" | Unit: "m2" | Expected: "area" | Found: "area" | Conf: 0.95
+[Label Filter] Detected codes in item: TAB02
+[Label Filter] Item expects labels TAB 02 but no geometry found nearby.
+[Match Debug] Item: "TAB 02: sobretabique simple bodega, montante estructural 60 + plancha yeso carton 15 mm" | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'TAB 02: sobretabique simple bodega, montante estructural 60 + plancha yeso carton 15 mm' forced to PENDING due to type mismatch.
+Processing AI batch 2/7 (items 11-20/62)
+[Auto-Approve Boost] +15% for 'Pasarela de mantención montante estructural según detalle desde gatera hasta cortina de rollo según requerimientos a revisar en terreno, considera 60 cms de ancho libre. Considera pasamanos para restringir el paso al resto del cielo.' (Explicit Unit + Type Match)
+[Match Debug] Item: "Pasarela de mantención montante estructural según detalle desde gatera hasta cortina de rollo según requerimientos a revisar en terreno, considera 60 cms de ancho libre. Considera pasamanos para restringir el paso al resto del cielo." | Unit: "ml" | Expected: "length" | Found: "length" | Conf: 1.10
+[Auto-approve] Valid length 30.41m for 'Pasarela de mantención montante estructural según detalle desde gatera hasta cortina de rollo según requerimientos a revisar en terreno, considera 60 cms de ancho libre. Considera pasamanos para restringir el paso al resto del cielo.'
+[Match Debug] Item: "Empaste y huincha de todos los cielos" | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'Empaste y huincha de todos los cielos' forced to PENDING due to type mismatch.
+[Match Debug] Item: "Mortero nivelador" | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'Mortero nivelador' forced to PENDING due to type mismatch.
+[Match Debug] Item: "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK" | Unit: "m2" | Expected: "area" | Found: "area" | Conf: 0.95
+[Match Debug] Item: "Pintura latex extracubriente blanco en cielo bodega" | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'Pintura latex extracubriente blanco en cielo bodega' forced to PENDING due to type mismatch.
+[Match Debug] Item: "Empaste y huincha de todos los tabiques de yeso carton" | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'Empaste y huincha de todos los tabiques de yeso carton' forced to PENDING due to type mismatch.
+[Auto-Approve Boost] +15% for 'Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm' (Explicit Unit + Type Match)
+[Match Debug] Item: "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" | Unit: "ml" | Expected: "length" | Found: "length" | Conf: 1.10
+[Auto-approve] Valid length 7.21m for 'Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm'
+[Match Debug] Item: "Pintura QUARZO con sellador acrilico + estuco SIP + revestimiento gres segun indicacion fabricante. PROVEEDOR: Lumine" | Unit: "m2" | Expected: "area" | Found: "area" | Conf: 0.95
+[Match Debug] Item: "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm" | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm' forced to PENDING due to type mismatch.
+[Match Debug] Item: "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural" | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural' forced to PENDING due to type mismatch.
+Processing AI batch 3/7 (items 21-30/62)
+[Auto-Approve Boost] +15% for 'Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)' (Explicit Unit + Type Match)
+[Match Debug] Item: "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)" | Unit: "ml" | Expected: "length" | Found: "length" | Conf: 1.10
+[Auto-approve] Valid length 30.41m for 'Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)'
+[Auto-Approve Boost] +15% for '(G) Foco porta dicroico gu10 retraído fijo Base: 1xGU10 Voltaje: 220V Protección IP: IP20. Color de Equipo: Negro. Dimensiones: 101×101 mm. Perforación: 80x30x77 mm. No Incluye Ampolleta. PROVEEDOR: DLUZ' (Explicit Unit + Type Match)
+[Match Debug] Item: "(G) Foco porta dicroico gu10 retraído fijo Base: 1xGU10 Voltaje: 220V Protección IP: IP20. Color de Equipo: Negro. Dimensiones: 101×101 mm. Perforación: 80x30x77 mm. No Incluye Ampolleta. PROVEEDOR: DLUZ" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Match Debug] Item: "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm." | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm.' forced to PENDING due to type mismatch.
+[Auto-Approve Boost] +15% for '(C) Foco riel magnético 6W 3.000°K NG Protección: IP20 Flujo: 600LM. Voltaje 48V. Apertura: 24°. Dimensiones: Ø35 x140 mm. Color negro. PROVEEDOR: DLUZ' (Explicit Unit + Type Match)
+[Match Debug] Item: "(C) Foco riel magnético 6W 3.000°K NG Protección: IP20 Flujo: 600LM. Voltaje 48V. Apertura: 24°. Dimensiones: Ø35 x140 mm. Color negro. PROVEEDOR: DLUZ" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Match Debug] Item: "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm." | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm.' forced to PENDING due to type mismatch.
+[Match Debug] Item: "Pieza de marmol en acceso color Rosso Asiago acabado opaco con logo plancha de bronce e=2mm acabado opaco segun muestra, embutido en marmol *archivo grafico a proveer por mandante" | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'Pieza de marmol en acceso color Rosso Asiago acabado opaco con logo plancha de bronce e=2mm acabado opaco segun muestra, embutido en marmol *archivo grafico a proveer por mandante' forced to PENDING due to type mismatch.
+[Auto-Approve Boost] +15% for '(D) Perfil de aluminio sobrepuesto rectangular. Material: Aluminio. Protección IP: IP20. Dimensiones: 16 x 6 x 3000 mm. Incluye: Difusor Opal + cinta LED SMD 2835 19,2W interior. Voltage: 12V. Luminous flux: 1.600 LM x mt. Protection IP: IP20. Dimentions: 5000 × 10 mm. PROVEEDOR: DLUZ' (Explicit Unit + Type Match)
+[Match Debug] Item: "(D) Perfil de aluminio sobrepuesto rectangular. Material: Aluminio. Protección IP: IP20. Dimensiones: 16 x 6 x 3000 mm. Incluye: Difusor Opal + cinta LED SMD 2835 19,2W interior. Voltage: 12V. Luminous flux: 1.600 LM x mt. Protection IP: IP20. Dimentions: 5000 × 10 mm. PROVEEDOR: DLUZ" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for '(D) Fuente de poder 12V 120W exterior. IP67 Voltaje de entrada: 220V, Voltaje de salida: 12V. Factor de potencia: >0.90. Protección IP: IP67. Cantidad de salidas: 2. PROVEEDOR: DLUZ' (Explicit Unit + Type Match)
+[Match Debug] Item: "(D) Fuente de poder 12V 120W exterior. IP67 Voltaje de entrada: 220V, Voltaje de salida: 12V. Factor de potencia: >0.90. Protección IP: IP67. Cantidad de salidas: 2. PROVEEDOR: DLUZ" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Match Debug] Item: "Tarima de marmol en vitrinas color Rosso Asiago acabado opaco, considera estructura interior" | Unit: "m2" | Expected: "area" | Found: "block" | Conf: 0.10
+[Status Enforcement] 'Tarima de marmol en vitrinas color Rosso Asiago acabado opaco, considera estructura interior' forced to PENDING due to type mismatch.
+Processing AI batch 4/7 (items 31-40/62)
+[Auto-Approve Boost] +15% for 'Kit emergencia para riel sala de ventas (90-120 min autonomía)' (Explicit Unit + Type Match)
+[Match Debug] Item: "Kit emergencia para riel sala de ventas (90-120 min autonomía)" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bronce' (Explicit Unit + Type Match)
+[Match Debug] Item: "Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bronce" | Unit: "ml" | Expected: "length" | Found: "length" | Conf: 1.10
+[Auto-approve] Valid length 30.41m for 'Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bronce'
+[Auto-Approve Boost] +15% for 'Lamparas bodega estanca LED 36W 4300 LM IP65' (Explicit Unit + Type Match)
+[Match Debug] Item: "Lamparas bodega estanca LED 36W 4300 LM IP65" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for '(H) Foco EROS15 LED SPOT dirigible EMB BLACK 15W Color de Luz: 3.000K / 4000K Voltaje: 220V Tipo de LED: COB Flujo Lumínico: 1.350 Lm. Ángulo de Apertura: 24° IP: IP20 Dimensiones: Ø112×100 mm. Perforación: Ø95 mm PROVEEDOR: DLUZ' (Explicit Unit + Type Match)
+[Match Debug] Item: "(H) Foco EROS15 LED SPOT dirigible EMB BLACK 15W Color de Luz: 3.000K / 4000K Voltaje: 220V Tipo de LED: COB Flujo Lumínico: 1.350 Lm. Ángulo de Apertura: 24° IP: IP20 Dimensiones: Ø112×100 mm. Perforación: Ø95 mm PROVEEDOR: DLUZ" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for '(E) Downlight LED redondo 3w luz cálida, Color negro. Diámetro equipo 5cms, diámetro perforación 4cms. Altura 3 cms. PROVEEDOR: LEDSTUDIO' (Explicit Unit + Type Match)
+[Match Debug] Item: "(E) Downlight LED redondo 3w luz cálida, Color negro. Diámetro equipo 5cms, diámetro perforación 4cms. Altura 3 cms. PROVEEDOR: LEDSTUDIO" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Lampara entretecho con kit emergencia LED 36W 4300 LM IP65' (Explicit Unit + Type Match)
+[Match Debug] Item: "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for '(G) Dicroico PHILIPS LED 7W DIMEABLE. Base: GU10. Color de Luz: 2.700°K. Consumo: 7W Voltaje: 220V. Tipo de LED: SMD Flujo: 650 Lm. Ángulo de Apertura: 36° IP: IP20. Dimeable: Sí Dimensiones: Ø50×54mm. PROVEEDOR: DLUZ' (Explicit Unit + Type Match)
+[Match Debug] Item: "(G) Dicroico PHILIPS LED 7W DIMEABLE. Base: GU10. Color de Luz: 2.700°K. Consumo: 7W Voltaje: 220V. Tipo de LED: SMD Flujo: 650 Lm. Ángulo de Apertura: 36° IP: IP20. Dimeable: Sí Dimensiones: Ø50×54mm. PROVEEDOR: DLUZ" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Lamparas bodega con kit emergencia (90-120 min autonomía)' (Explicit Unit + Type Match)
+[Match Debug] Item: "Lamparas bodega con kit emergencia (90-120 min autonomía)" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Letrero salida (señalética emergencia)' (Explicit Unit + Type Match)
+[Match Debug] Item: "Letrero salida (señalética emergencia)" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 0.90
+[Auto-Approve Boost] +15% for 'Kit emergencia para foco embutido sala de ventas (90-120 min autonomía)' (Explicit Unit + Type Match)
+[Match Debug] Item: "Kit emergencia para foco embutido sala de ventas (90-120 min autonomía)" | Unit: "un" | Expected: "block" | Found: "text" | Conf: 1.10
+Processing AI batch 5/7 (items 41-50/62)
+[Auto-Approve Boost] +15% for 'Canalizado parlantes' (Explicit Unit + Type Match)
+[Match Debug] Item: "Canalizado parlantes" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Puntos de datos' (Explicit Unit + Type Match)
+[Match Debug] Item: "Puntos de datos" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Tablero clima (si lo exige mall)' (Explicit Unit + Type Match)
+[Match Debug] Item: "Tablero clima (si lo exige mall)" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Puntos de enchufe' (Explicit Unit + Type Match)
+[Match Debug] Item: "Puntos de enchufe" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Puntos de enchufe muebles isla (a piso)' (Explicit Unit + Type Match)
+[Match Debug] Item: "Puntos de enchufe muebles isla (a piso)" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Puntos de iluminación' (Explicit Unit + Type Match)
+[Match Debug] Item: "Puntos de iluminación" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Tablero eléctrico rotulado' (Explicit Unit + Type Match)
+[Match Debug] Item: "Tablero eléctrico rotulado" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Canalizado cámaras de seguridad UTP cat 6e' (Explicit Unit + Type Match)
+[Match Debug] Item: "Canalizado cámaras de seguridad UTP cat 6e" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Alimentador desde la caja de empalme (en linea de concesion) hasta la ubicación del tablero' (Explicit Unit + Type Match)
+[Match Debug] Item: "Alimentador desde la caja de empalme (en linea de concesion) hasta la ubicación del tablero" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+Processing AI batch 6/7 (items 51-60/62)
+[Auto-Approve Boost] +15% for 'Puntos cajas de luz (a muro)' (Explicit Unit + Type Match)
+[Match Debug] Item: "Puntos cajas de luz (a muro)" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Punto letrero' (Explicit Unit + Type Match)
+[Match Debug] Item: "Punto letrero" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Remarcador agua potable' (Explicit Unit + Type Match)
+[Match Debug] Item: "Remarcador agua potable" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Gabinete de datos para 14 un + ordenacables + rotulación' (Explicit Unit + Type Match)
+[Match Debug] Item: "Gabinete de datos para 14 un + ordenacables + rotulación" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Puntos pantallas' (Explicit Unit + Type Match)
+[Match Debug] Item: "Puntos pantallas" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Remarcador' (Explicit Unit + Type Match)
+[Match Debug] Item: "Remarcador" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Bomba impulsora (si aplica)' (Explicit Unit + Type Match)
+[Match Debug] Item: "Bomba impulsora (si aplica)" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'Canalización para alarma de intrusion' (Explicit Unit + Type Match)
+[Match Debug] Item: "Canalización para alarma de intrusion" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 0.90
+[Auto-Approve Boost] +15% for 'Punto clima' (Explicit Unit + Type Match)
+[Match Debug] Item: "Punto clima" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+[Auto-Approve Boost] +15% for 'UPS 3KVA con enchuve 16A' (Explicit Unit + Type Match)
+[Match Debug] Item: "UPS 3KVA con enchuve 16A" | Unit: "un" | Expected: "block" | Found: "text" | Conf: 1.10
+Processing AI batch 7/7 (items 61-62/62)
+[Match Debug] Item: "Seguro todo riesgo de construcción solicitado por Mall" | Unit: "mes" | Expected: "null" | Found: "block" | Conf: 0.95
+[Auto-Approve Boost] +15% for 'Tapas registro para RAP' (Explicit Unit + Type Match)
+[Match Debug] Item: "Tapas registro para RAP" | Unit: "un" | Expected: "block" | Found: "block" | Conf: 1.10
+AI Refinement complete. Processed 62 items.
+[Mapping] Inserting 116 rows in chunks of 10...
+[Mapping] Successfully inserted all 116 rows.
+[Mapping] Batch 18160f74-c89d-4914-a822-99fec4f5f3c6 mapping complete. Status updated to 'ready'.
+ POST /api/worker/run 200 in 32242ms
+ POST /api/worker/run 200 in 669ms

@@ -1,0 +1,12 @@
+Layer: fa_arq-muros
+Keywords: ["muro","muros","wall","walls","tabique","sobretabique","fachada","arquitectura","corte","elevacion","arq"]
+Match Result: {
+  "score": 0.7545454545454546,
+  "matchedKeywords": [
+    "tabique",
+    "sobretabique"
+  ],
+  "method": "direct"
+}
+Checking match with 'FA_ARQ-MUROS' (upper case)...
+Keywords (Upper): ["muro","muros","wall","walls","tabique","sobretabique","fachada","arquitectura","corte","elevacion","arq"]

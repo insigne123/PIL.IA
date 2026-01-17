@@ -20,6 +20,7 @@ import { normalizeText } from './text-normalizer';
 // Phase 4 imports (AI-recommended fixes)
 import { detectFootprintCandidates, getFootprintSummary, getFootprintScore } from './footprint-detector';
 import { isNonMeasurableLayer, getNonMeasurablePenalty } from './layer-blacklist';
+import { extractZoneIntent } from './spatial-intent'; // Phase 5: Spatial
 
 // Phase 6 B): Approval Gates Validator
 function validateApprovalGates(
@@ -30,8 +31,8 @@ function validateApprovalGates(
 ): { approved: boolean; reason: string } {
     const unitLower = unit.toLowerCase();
 
-    // 1. m² Rules
-    if (unitLower.includes('m2') || unitLower === 'm²') {
+    // 1. mÂ² Rules
+    if (unitLower.includes('m2') || unitLower === 'mÂ²') {
         // Valid Case A: Area geometry with direct measurement
         if (evidenceType === 'area' && calcMethod === 'direct_area') {
             return { approved: true, reason: 'Valid area geometry' };
@@ -40,13 +41,13 @@ function validateApprovalGates(
         // Valid Case B: Length geometry for WALL/SURFACE (length * height)
         const isLengthMethod = calcMethod === 'length_x_height' || calcMethod === 'length_x_height_default';
         if (evidenceType === 'length' && isLengthMethod) {
-            return { approved: true, reason: 'Valid wall length × height' };
+            return { approved: true, reason: 'Valid wall length Ã— height' };
         }
 
-        if (evidenceType === 'text') return { approved: false, reason: 'Text evidence not allowed for m²' };
-        if (evidenceType === 'block') return { approved: false, reason: 'Block evidence invalid for m²' };
+        if (evidenceType === 'text') return { approved: false, reason: 'Text evidence not allowed for mÂ²' };
+        if (evidenceType === 'block') return { approved: false, reason: 'Block evidence invalid for mÂ²' };
 
-        return { approved: false, reason: `Invalid evidence/method for m²: ${evidenceType} / ${calcMethod}` };
+        return { approved: false, reason: `Invalid evidence/method for mÂ²: ${evidenceType} / ${calcMethod}` };
     }
 
     // 2. Count (un) Rules
@@ -68,7 +69,7 @@ function validateApprovalGates(
 
 export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetectado[], sheetName: string, excelDiscipline: Discipline = 'UNKNOWN'): StagingRow[] {
 
-    // ✅ P0.1: BUILD LAYER GEOMETRY PROFILES ONCE
+    // âœ… P0.1: BUILD LAYER GEOMETRY PROFILES ONCE
     const layerProfiles = buildLayerProfiles(dxfItems);
     console.log(`[Matcher] ${getLayerProfilesSummary(layerProfiles)}`);
 
@@ -143,18 +144,22 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
     interface LayerCandidate {
         layer: string;
         layer_normalized: string;
+        keywords_str: string; // [NEW] Keywords joined for fuzzy search
         profile: LayerGeometryProfile;
         sampleItem: ItemDetectado; // Representative item for this layer
     }
 
     const layerCandidates: LayerCandidate[] = [];
     for (const [layerName, profile] of layerProfiles.entries()) {
-        // Find a sample item from this layer
         const sampleItem = candidateItems.find(i => i.layer_normalized === layerName);
         if (sampleItem) {
+            // Get keywords for this layer
+            const keywords = getLayerKeywords(layerName);
+
             layerCandidates.push({
                 layer: sampleItem.layer_raw,
                 layer_normalized: layerName,
+                keywords_str: keywords.join(' '), // Join for fuzzy search
                 profile,
                 sampleItem
             });
@@ -166,7 +171,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
     // 1. Build layer names index (for fuzzy) - P0.C: Layer-first matching
     // Fuse.js: lower threshold = more strict
     const fuse = new Fuse(layerCandidates, {
-        keys: ['layer', 'layer_normalized'],
+        keys: ['layer', 'layer_normalized', 'keywords_str'], // [NEW] Include keywords in search
         includeScore: true,
         threshold: 0.6,
         shouldSort: true,
@@ -309,7 +314,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
         // 4. Search for matches using TYPE-FILTERED layers (P0.C Layer-first)
         const typeFilteredFuse = new Fuse(typeFilteredLayers, {
-            keys: ['layer', 'layer_normalized'],
+            keys: ['layer', 'layer_normalized', 'keywords_str'], // [NEW] Include keywords
             includeScore: true,
             threshold: 0.6,
             shouldSort: true,
@@ -357,134 +362,155 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             );
         }
 
+        // Evaluate top candidates to find best match after boosting
+        // P0.C: We must evaluate multiple candidates because keyword boosting might promote a lower-ranked Fuse match
+        interface EvaluatedCandidate {
+            match: Fuse.FuseResult<LayerCandidate>;
+            confidence: number;
+            reason: string;
+            warnings: string[];
+        }
+
+        const evaluatedCandidates: EvaluatedCandidate[] = [];
+
         if (result.length > 0) {
-            const match = result[0];
-            const layerCandidate = match.item; // This is a LayerCandidate
-            const matchedItem = layerCandidate.sampleItem; // Get the actual ItemDetectado
-            const score = match.score || 1;
-            confidence = 1 - score;
+            // Check top 5 candidates
+            const candidatesToEvaluate = result.slice(0, 5);
 
-            // ✅ LAYER KEYWORD BOOST
-            // Check if match improves with layer keyword mapping
-            const keywordMatch = matchLayerKeywords(excelItem.description, layerCandidate.layer);
-            let keywordBoost = 0;
-            let usedKeywordMapping = false;
+            for (const match of candidatesToEvaluate) {
+                const layerCandidate = match.item;
+                const matchedItem = layerCandidate.sampleItem;
+                const score = match.score || 1;
+                let currentConfidence = 1 - score;
+                let currentReason = '';
+                const currentWarnings: string[] = [];
 
-            if (keywordMatch.score > 0) {
-                // Keyword match found - boost confidence
-                keywordBoost = keywordMatch.score * 0.4; // Up to 40% boost
-                confidence = Math.min(1.0, confidence + keywordBoost);
-                usedKeywordMapping = true;
+                // ✅ LAYER KEYWORD BOOST
+                const keywordMatch = matchLayerKeywords(excelItem.description, layerCandidate.layer);
+                let keywordBoost = 0;
+                let usedKeywordMapping = false;
 
-                console.log(`[Matcher] 🎯 Keyword boost for "${excelItem.description}" → layer "${layerCandidate.layer}"`);
-                console.log(`  • Matched keywords: [${keywordMatch.matchedKeywords.map(k => `"${k}"`).join(', ')}]`);
-                console.log(`  • Method: ${keywordMatch.method}`);
-                console.log(`  • Keyword score: ${(keywordMatch.score * 100).toFixed(0)}%`);
-                console.log(`  • Confidence boost: +${(keywordBoost * 100).toFixed(0)}% → Final: ${(confidence * 100).toFixed(0)}%`);
-            }
+                if (keywordMatch.score > 0) {
+                    usedKeywordMapping = true;
 
-            // ✅ P1.7: GEOMETRY PRIOR - Prefer layers with larger area for m² items
-            // Uses log-scale to avoid huge areas dominating
-            let geometryPrior = 0;
-            if (expectedMeasureType === 'AREA' && layerCandidate.profile.total_area > 0) {
-                // Log-scale: area of 100m² → ~2, area of 1000m² → ~3
-                geometryPrior = Math.min(0.2, Math.log10(layerCandidate.profile.total_area + 1) * 0.066);
-                confidence = Math.min(1.0, confidence + geometryPrior);
-                console.log(`  [P1.7] Geometry prior: +${(geometryPrior * 100).toFixed(1)}% (layer has ${layerCandidate.profile.total_area.toFixed(0)} m²)`);
-            }
-
-            // ✅ FIX 3 COMPLETE: Layer name bonus for WALL items
-            // Boost if layer name contains tabique/muro/wall keywords
-            if (isWallIntent) {
-                const layerLower = layerCandidate.layer_normalized;
-                const wallLayerKeywords = ['tabique', 'muro', 'wall', 'partition', 'muros'];
-                const hasWallInName = wallLayerKeywords.some(k => layerLower.includes(k));
-
-                if (hasWallInName) {
-                    const wallBonus = 0.25; // 25% bonus
-                    confidence = Math.min(1.0, confidence + wallBonus);
-                    console.log(`  [FIX 3] WALL layer name bonus: +25% for "${layerCandidate.layer}"`);
+                    if (keywordMatch.method === 'direct') {
+                        // P0 FIX: Explicit keyword match is a STRONG signal
+                        const newConfidence = Math.max(currentConfidence, 0.85);
+                        keywordBoost = newConfidence - currentConfidence;
+                        currentConfidence = newConfidence;
+                    } else {
+                        keywordBoost = keywordMatch.score * 0.4;
+                        currentConfidence = Math.min(1.0, currentConfidence + keywordBoost);
+                    }
                 }
 
-                // FIX 3: Penalty if layer has TEXT entities but no length (annotation layer)
-                const profile = layerCandidate.profile;
-                const hasTextEntities = profile.entity_types.has('TEXT') || profile.entity_types.has('MTEXT');
-                if (hasTextEntities && profile.total_length === 0) {
-                    const textPenalty = 0.4; // 40% penalty
-                    confidence = confidence * (1 - textPenalty);
-                    console.log(`  [FIX 3] Text-only layer penalty: -40% for "${layerCandidate.layer}" (has TEXT, 0m length)`);
+                // ✅ P1.7: GEOMETRY PRIOR
+                if (expectedMeasureType === 'AREA' && layerCandidate.profile.total_area > 0) {
+                    const geometryPrior = Math.min(0.2, Math.log10(layerCandidate.profile.total_area + 1) * 0.066);
+                    currentConfidence = Math.min(1.0, currentConfidence + geometryPrior);
                 }
-            }
 
-            // Type matching bonus - use profile to determine dominant type
-            const dominantType = layerCandidate.profile.has_area_support ? 'AREA'
-                : layerCandidate.profile.has_length_support ? 'LENGTH'
-                    : layerCandidate.profile.has_block_support ? 'BLOCK' : 'UNKNOWN';
+                // ✅ FIX 3: WALL LAYER NAME BONUS
+                if (isWallIntent) {
+                    const layerLower = layerCandidate.layer_normalized;
+                    const wallLayerKeywords = ['tabique', 'muro', 'wall', 'partition', 'muros'];
+                    const hasWallInName = wallLayerKeywords.some(k => layerLower.includes(k));
 
-            if (typeMatches(dominantType as any, expectedType)) {
-                confidence = Math.min(1.0, confidence * 1.1); // 10% bonus
-                reason = `Type-matched layer "${layerCandidate.layer}" (${(confidence * 100).toFixed(0)}%)`;
-            } else {
-                reason = `Matched layer "${layerCandidate.layer}" (${(confidence * 100).toFixed(0)}%)`;
-            }
+                    if (hasWallInName) {
+                        currentConfidence = Math.min(1.0, currentConfidence + 0.25);
+                    }
 
-            // Add keyword mapping info to reason
-            if (usedKeywordMapping) {
-                reason += ` | Keywords: [${keywordMatch.matchedKeywords.join(', ')}]`;
-            }
+                    const profile = layerCandidate.profile;
+                    const hasTextEntities = profile.entity_types.has('TEXT') || profile.entity_types.has('MTEXT');
+                    if (hasTextEntities && profile.total_length === 0) {
+                        currentConfidence = currentConfidence * 0.6; // -40% penalty
+                    }
+                }
 
-            // ✅ P1.8: Apply non-measurable layer penalty (including layer 0 for AREA)
-            const layerPenalty = getNonMeasurablePenalty(layerCandidate.layer_normalized, expectedMeasureType as 'AREA' | 'LENGTH' | 'BLOCK');
-            if (layerPenalty > 0) {
-                confidence = confidence * (1 - layerPenalty);
-                reason += ` | Penalty: -${(layerPenalty * 100).toFixed(0)}%`;
-                console.log(`  [P1.8] Layer penalty: -${(layerPenalty * 100).toFixed(0)}% for "${layerCandidate.layer}"`);
-            }
+                // Phase 5: Spatial Matcher
+                const zoneIntent = extractZoneIntent(excelItem.description);
+                if (zoneIntent) {
+                    const itemZone = matchedItem.zone_name;
+                    if (itemZone) {
+                        const intentNorm = zoneIntent.toUpperCase();
+                        const itemNorm = itemZone.toUpperCase();
+                        if (itemNorm.includes(intentNorm)) {
+                            currentConfidence *= 1.5;
+                            currentReason += ` | Zone Match (${zoneIntent})`;
+                        } else {
+                            currentConfidence *= 0.1;
+                            currentReason += ` | Zone Mismatch (${itemZone} != ${zoneIntent})`;
+                        }
+                    } else {
+                        currentConfidence *= 0.8;
+                    }
+                }
 
-            // ✅ P0.3: Defpoints gets severe penalty
-            if (layerCandidate.layer_normalized === 'defpoints') {
-                confidence = confidence * 0.1; // 90% Penalty for defpoints only
-                reason += " | DEFPOINTS PENALTY";
-            }
+                // Type matching bonus
+                const dominantType = layerCandidate.profile.has_area_support ? 'AREA'
+                    : layerCandidate.profile.has_length_support ? 'LENGTH'
+                        : layerCandidate.profile.has_block_support ? 'BLOCK' : 'UNKNOWN';
 
-            // Layer 0 gets logged but penalty already applied above
-            if (layerCandidate.layer_normalized === '0') {
-                console.log(`  ⚠️ Using Layer 0 - verify this is correct (DWG conversion artifact)`);
-                reason += " | From Layer 0";
-            }
+                if (typeMatches(dominantType as any, expectedType)) {
+                    currentConfidence = Math.min(1.0, currentConfidence * 1.1);
+                    currentReason += `Type-matched layer "${layerCandidate.layer}" (${(currentConfidence * 100).toFixed(0)}%)`;
+                } else {
+                    currentReason += `Matched layer "${layerCandidate.layer}" (${(currentConfidence * 100).toFixed(0)}%)`;
+                }
 
-            if (confidence > 0.4) {
-                bestMatch = [matchedItem];
-
-                // Enhanced logging for successful match
                 if (usedKeywordMapping) {
-                    console.log(`[Matcher] ✅ Matched "${excelItem.description}" → layer "${layerCandidate.layer}" usando keywords [${keywordMatch.matchedKeywords.join(', ')}] con score FINAL: ${(confidence * 100).toFixed(0)}%`);
+                    currentReason += ` | Keywords: [${keywordMatch.matchedKeywords.join(', ')}]`;
                 }
 
-                // P1.3: ENHANCE MATCH REASON with geometry metrics (use profile directly)
+                // Penalties
+                const layerPenalty = getNonMeasurablePenalty(layerCandidate.layer_normalized, expectedMeasureType as 'AREA' | 'LENGTH' | 'BLOCK');
+                if (layerPenalty > 0) {
+                    currentConfidence *= (1 - layerPenalty);
+                    currentReason += ` | Penalty: -${(layerPenalty * 100).toFixed(0)}%`;
+                }
+
+                if (layerCandidate.layer_normalized === 'defpoints') {
+                    currentConfidence *= 0.1;
+                    currentReason += " | DEFPOINTS PENALTY";
+                }
+
+                // Add geometry info to reason
                 const profile = layerCandidate.profile;
                 if (profile) {
                     const geometryParts: string[] = [];
-                    if (profile.total_area > 0) {
-                        geometryParts.push(`${profile.total_area.toFixed(2)} m²`);
-                        if (profile.hatch_count > 0) geometryParts.push(`(${profile.hatch_count} HATCHes)`);
-                    }
-                    if (profile.total_length > 0) {
-                        geometryParts.push(`${profile.total_length.toFixed(2)} m`);
-                    }
-                    if (profile.block_count > 0) {
-                        geometryParts.push(`${profile.block_count} blocks`);
-                    }
-
-                    if (geometryParts.length > 0) {
-                        reason += ` | Geometry: ${geometryParts.join(', ')}`;
-                    }
+                    if (profile.total_area > 0) geometryParts.push(`${profile.total_area.toFixed(2)} m²`);
+                    if (profile.total_length > 0) geometryParts.push(`${profile.total_length.toFixed(2)} m`);
+                    if (profile.block_count > 0) geometryParts.push(`${profile.block_count} blocks`);
+                    if (geometryParts.length > 0) currentReason += ` | Geometry: ${geometryParts.join(', ')}`;
                 }
+
+                evaluatedCandidates.push({
+                    match,
+                    confidence: currentConfidence,
+                    reason: currentReason,
+                    warnings: currentWarnings
+                });
+            }
+
+            // Sort by confidence descending
+            evaluatedCandidates.sort((a, b) => b.confidence - a.confidence);
+
+            // Select best
+            const best = evaluatedCandidates[0];
+
+            // Set variables for downstream logic
+            confidence = best.confidence;
+            reason = best.reason;
+            warnings.push(...best.warnings);
+
+            if (confidence > 0.4) {
+                bestMatch = [best.match.item.sampleItem];
+                console.log(`[Matcher] ✅ Selected Best Match: "${best.match.item.layer}" (${(confidence * 100).toFixed(0)}%)`);
             } else {
-                // Generate suggestions for low confidence - convert LayerCandidates to items
-                const itemsForSuggestions = result.slice(0, 3).map(r => ({
-                    item: r.item.sampleItem,
-                    score: r.score
+                // Generate suggestions
+                const itemsForSuggestions = evaluatedCandidates.slice(0, 3).map(r => ({
+                    item: r.match.item.sampleItem,
+                    score: 1 - r.confidence // Convert back to score for suggestion API
                 }));
                 suggestions = generateSuggestions(itemsForSuggestions, excelItem, expectedType);
             }
@@ -514,7 +540,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             // We use calcMethod to decide how to derive qty from CAD geometry
 
             if (calcMethod === 'COUNT') {
-                // ✅ Use value_si for count (blocks)
+                // âœ… Use value_si for count (blocks)
                 qtyFinal = match.type === 'block' ? (match.value_si || 1) : 0;
                 evidenceTypeUsed = match.type as 'area' | 'length' | 'block' | 'text'; // P0.3
 
@@ -526,7 +552,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                     );
 
                     if (blockClassification.isGeneric) {
-                        console.log(`  [Block Classifier] ⚠️ Generic block detected: "${match.name_raw}" - ${blockClassification.reason}`);
+                        console.log(`  [Block Classifier] âš ï¸ Generic block detected: "${match.name_raw}" - ${blockClassification.reason}`);
                         confidence *= (1 - blockClassification.penaltyScore);
                         warnings.push(`Generic block: ${blockClassification.reason}`);
 
@@ -535,7 +561,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                             reason += ` | GENERIC BLOCK (requires review)`;
                         }
                     } else {
-                        console.log(`  [Block Classifier] ✅ Trusted block: "${match.name_raw}" (${blockClassification.confidence})`);
+                        console.log(`  [Block Classifier] âœ… Trusted block: "${match.name_raw}" (${blockClassification.confidence})`);
                     }
                 }
 
@@ -548,7 +574,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             }
 
             else if (calcMethod === 'LENGTH') {
-                qtyFinal = match.value_si; // ✅ SI units (meters)
+                qtyFinal = match.value_si; // âœ… SI units (meters)
                 evidenceTypeUsed = 'length'; // P0.3
             }
 
@@ -568,7 +594,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                         methodDetail = 'length_x_height';
                         evidenceTypeUsed = 'length';
                         reason += ` | ${derivedResult.reason}`;
-                        console.log(`  [FIX 2] length_x_height: ${match.value_si.toFixed(2)}m × ${heightFactor}m = ${qtyFinal?.toFixed(2)}m²`);
+                        console.log(`  [FIX 2] length_x_height: ${match.value_si.toFixed(2)}m Ã— ${heightFactor}m = ${qtyFinal?.toFixed(2)}mÂ²`);
                     } else {
                         // Phase 6 D): Default height fallback logic (already here, just ensuring it's robust)
                         heightFactor = 2.4;
@@ -580,13 +606,13 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 }
                 // Case A: Geometry is Area (HATCH/Polyline Region)
                 else if (match.type === 'area') {
-                    qtyFinal = match.value_si; // ✅ SI units (m²)
+                    qtyFinal = match.value_si; // âœ… SI units (mÂ²)
                     methodDetail = 'direct_area';
                     evidenceTypeUsed = 'area'; // P0.3
                 }
                 // FIX: match.type is block or text - use layer profile's total_area instead
                 else if (match.type === 'block' || match.type === 'text') {
-                    // P0.3 FIX: When m² items match to block/text layers, check if layer has area geometry
+                    // P0.3 FIX: When mÂ² items match to block/text layers, check if layer has area geometry
                     const layerProfile = result.length > 0 ? result[0].item.profile : null;
 
                     if (layerProfile && layerProfile.total_area > 0) {
@@ -594,23 +620,31 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                         qtyFinal = layerProfile.total_area;
                         methodDetail = 'profile_area_from_block_layer';
                         evidenceTypeUsed = 'area';
-                        reason += ` | ⚠️ WARN: Layer matched via block but using layer's total_area (${layerProfile.total_area.toFixed(2)} m²)`;
-                        console.log(`  [FIX] Block layer but has area geometry: using profile.total_area = ${layerProfile.total_area.toFixed(2)} m²`);
+                        reason += ` | âš ï¸ WARN: Layer matched via block but using layer's total_area (${layerProfile.total_area.toFixed(2)} mÂ²)`;
+                        console.log(`  [FIX] Block layer but has area geometry: using profile.total_area = ${layerProfile.total_area.toFixed(2)} mÂ²`);
                     } else if (layerProfile && layerProfile.total_length > 0 && isWallIntent) {
-                        // Layer has length but no area, and it's a WALL item - use length × height
+                        // Layer has length but no area, and it's a WALL item - use length Ã— height
                         heightFactor = 2.4;
                         qtyFinal = layerProfile.total_length * heightFactor;
                         methodDetail = 'profile_length_x_height_from_block_layer';
                         evidenceTypeUsed = 'length';
-                        reason += ` | ⚠️ WALL: Layer matched via block but using length × 2.4m = ${qtyFinal?.toFixed(2)} m²`;
-                        console.log(`  [FIX] Block layer with WALL intent: using profile.total_length × 2.4 = ${qtyFinal?.toFixed(2)} m²`);
+                        reason += ` | âš ï¸ WALL: Layer matched via block but using length Ã— 2.4m = ${qtyFinal?.toFixed(2)} mÂ²`;
+                        console.log(`  [FIX] Block layer with WALL intent: using profile.total_length Ã— 2.4 = ${qtyFinal?.toFixed(2)} mÂ²`);
+                    } else if (match.type === 'length' && isWallIntent) {
+                        // FIX: Match is length item (e.g. from fuzzy search returning an item not a profile summary?)
+                        // Usually matches are items. If match.type says length, use it.
+                        heightFactor = 2.4;
+                        qtyFinal = match.value_si * heightFactor;
+                        methodDetail = 'length_x_height_default';
+                        evidenceTypeUsed = 'length';
+                        console.log(`  [FIX] Length match with WALL intent: using length Ã— 2.4 = ${qtyFinal?.toFixed(2)} mÂ²`);
                     } else {
-                        // P0.3: No area/length geometry available - this is INVALID for m² items
+                        // P0.3: No area/length geometry available - this is INVALID for mÂ² items
                         qtyFinal = null; // Mark as null to trigger pending status
                         methodDetail = 'invalid_type_for_area';
                         evidenceTypeUsed = match.type as 'block' | 'text' | 'area' | 'length';
-                        reason += ` | ❌ ERROR: m² item matched to ${match.type} layer with no area/length geometry`;
-                        console.log(`  [ERROR] m² item matched to ${match.type} type with no area geometry - setting qtyFinal = null`);
+                        reason += ` | âŒ ERROR: mÂ² item matched to ${match.type} layer with no area/length geometry`;
+                        console.log(`  [ERROR] mÂ² item matched to ${match.type} type with no area geometry - setting qtyFinal = null`);
                     }
                 }
                 else {
@@ -629,7 +663,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
             else {
                 // Global or Unknown
-                qtyFinal = match.value_si;  // ✅ SI units
+                qtyFinal = match.value_si;  // âœ… SI units
             }
         } else {
             // Keep existing Excel qty if present for "Manual" verification
@@ -652,7 +686,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             console.log(`[Fix 9.2] Assigned default methodDetail: ${methodDetail}`);
         }
 
-        // ✅ SANITY CHECK: Detect suspicious values
+        // âœ… SANITY CHECK: Detect suspicious values
         const measureKind = getMeasureKind(excelItem.unit);
         const sanityCheck = checkQuantitySanity(qtyFinal, measureKind, {
             description: excelItem.description,
@@ -671,9 +705,9 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             }
         }
 
-        // ✅ P0.3: INVARIANT ENFORCEMENT
+        // âœ… P0.3: INVARIANT ENFORCEMENT
         // The evidence type MUST match the expected measure type
-        // m² MUST come from AREA geometry (or LENGTH→AREA if WALL)
+        // mÂ² MUST come from AREA geometry (or LENGTHâ†’AREA if WALL)
         // un MUST come from BLOCK geometry
         // ml/m MUST come from LENGTH geometry
         let invariantViolation = false;
@@ -707,11 +741,11 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             const matchType = profileBasedType;
             console.log(`[Fix 9.1] Profile-based type: ${matchType} (sampleItem was: ${match.type})`);
 
-            // Rule 1: m² requires AREA (or LENGTH for walls)
+            // Rule 1: mÂ² requires AREA (or LENGTH for walls)
             if (expectedMeasureType === 'AREA') {
                 if (matchType === 'TEXT' || matchType === 'BLOCK') {
                     invariantViolation = true;
-                    invariantReason = `m² cannot use ${matchType} as evidence (requires AREA or LENGTH for walls)`;
+                    invariantReason = `mÂ² cannot use ${matchType} as evidence (requires AREA or LENGTH for walls)`;
                 }
                 // LENGTH is OK for walls - height factor will be applied
             }
@@ -736,7 +770,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             if (invariantViolation) {
                 console.warn(`[Matcher] P0.3 Invariant Violation: ${invariantReason}`);
                 warnings.push(`Invariant: ${invariantReason}`);
-                // P0 FIX 1: Force pending_type_mismatch - NEVER approve m² with TEXT/BLOCK
+                // P0 FIX 1: Force pending_type_mismatch - NEVER approve mÂ² with TEXT/BLOCK
                 confidence = 0; // Zero confidence forces non-approved
                 qtyFinal = null; // Nullify the quantity - it's invalid
             }
@@ -750,12 +784,12 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             status = 'pending_type_mismatch';
         }
 
-        // ========== P0.1: HARD APPROVAL GATE FOR m² ==========
-        // m² can ONLY be approved if:
+        // ========== P0.1: HARD APPROVAL GATE FOR mÂ² ==========
+        // mÂ² can ONLY be approved if:
         // (evidenceTypeUsed=area AND methodDetail=direct_area) OR
         // (evidenceTypeUsed=length AND methodDetail in [length_x_height, length_x_height_default])
         const unitLower = excelItem.unit?.toLowerCase() || '';
-        const isM2Unit = unitLower.includes('m2') || unitLower === 'm²';
+        const isM2Unit = unitLower.includes('m2') || unitLower === 'mÂ²';
 
         if (isM2Unit && status === 'approved') {
             const validAreaMethod = evidenceTypeUsed === 'area' && methodDetail === 'direct_area';
@@ -763,8 +797,8 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 (methodDetail === 'length_x_height' || methodDetail === 'length_x_height_default');
 
             if (!validAreaMethod && !validLengthMethod) {
-                // P0.1: HARD REJECTION - cannot approve m² with invalid evidence
-                console.warn(`[P0.1] ❌ Hard rejection for m²: evidenceType=${evidenceTypeUsed}, method=${methodDetail}`);
+                // P0.1: HARD REJECTION - cannot approve mÂ² with invalid evidence
+                console.warn(`[P0.1] âŒ Hard rejection for mÂ²: evidenceType=${evidenceTypeUsed}, method=${methodDetail}`);
                 status = 'pending_type_mismatch';
                 warnings.push('TYPE_MISMATCH_M2');
                 qtyFinal = null;
@@ -774,16 +808,16 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
         // ========== P0.2: WALL items need LENGTH layers ==========
         if (isWallIntent && isM2Unit && status === 'approved') {
             if (evidenceTypeUsed !== 'length' || !methodDetail?.includes('length_x_height')) {
-                console.warn(`[P0.2] ❌ WALL item approved without length_x_height: ${evidenceTypeUsed}/${methodDetail}`);
+                console.warn(`[P0.2] âŒ WALL item approved without length_x_height: ${evidenceTypeUsed}/${methodDetail}`);
                 status = 'pending_no_length_for_wall';
                 warnings.push('WALL_NEEDS_LENGTH');
                 qtyFinal = null;
             }
         }
 
-        // ========== P0.4: SANITY CHECK for WALL m² > 500 ==========
+        // ========== P0.4: SANITY CHECK for WALL mÂ² > 500 ==========
         if (isWallIntent && isM2Unit && qtyFinal !== null && qtyFinal > 500) {
-            console.warn(`[P0.4] ⚠️ WALL m² sanity check failed: ${qtyFinal.toFixed(0)}m² > 500m² threshold`);
+            console.warn(`[P0.4] âš ï¸ WALL mÂ² sanity check failed: ${qtyFinal.toFixed(0)}mÂ² > 500mÂ² threshold`);
             status = 'pending_sanity_check';
             warnings.push('M2_TOO_LARGE_FOR_WALL');
         }
@@ -818,7 +852,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
             // Log each failure
             for (const failure of qualityCheck.failures) {
-                console.log(`  ❌ ${failure.gate.name}: ${failure.result.message}`);
+                console.log(`  âŒ ${failure.gate.name}: ${failure.result.message}`);
             }
         }
 
@@ -885,13 +919,13 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             if (matchedLayerCandidate) {
                 const profile = matchedLayerCandidate.profile;
                 const unitLower = excelItem.unit?.toLowerCase() || '';
-                const isM2 = unitLower.includes('m2') || unitLower === 'm²';
+                const isM2 = unitLower.includes('m2') || unitLower === 'mÂ²';
 
-                // For m² items: layer MUST have area_support OR length_support (for walls)
+                // For mÂ² items: layer MUST have area_support OR length_support (for walls)
                 if (isM2) {
                     const hasValidSupport = profile.has_area_support || profile.has_length_support;
                     if (!hasValidSupport) {
-                        console.warn(`[Fix 9.3] ❌ m² item but layer "${matchedLayerCandidate.layer}" has no AREA/LENGTH support`);
+                        console.warn(`[Fix 9.3] âŒ mÂ² item but layer "${matchedLayerCandidate.layer}" has no AREA/LENGTH support`);
                         status = 'pending_type_mismatch';
                         qtyFinal = null;
                         warnings.push('LAYER_NO_AREA_OR_LENGTH');
@@ -943,6 +977,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
         } as unknown as StagingRow;
     });
 
+    console.log("[DEBUG] matchItems returning rows:", rows ? rows.length : "undefined");
     return rows;
 }
 
@@ -971,12 +1006,12 @@ function generateSuggestions(
         if (typeMatches(item.type.toUpperCase() as any, expectedType)) {
             reasons.push(`Type matches expected (${expectedType})`);
         } else {
-            reasons.push(`⚠️ Type mismatch: found ${item.type}, expected ${expectedType}`);
+            reasons.push(`âš ï¸ Type mismatch: found ${item.type}, expected ${expectedType}`);
         }
 
         // --- HOTFIX 5: Layer 0 Warning ---
         if (item.layer_normalized === '0' || item.layer_normalized === 'defpoints') {
-            reasons.push(`⚠️ Layer 0/Defpoints (High Risk)`);
+            reasons.push(`âš ï¸ Layer 0/Defpoints (High Risk)`);
             // We heavily penalize this in the score logic if we haven't already
         }
 
@@ -1090,16 +1125,16 @@ function getStatusReason(
         case 'pending_needs_layer_pick':
             return 'No suitable area layers found - please select a layer manually';
         case 'pending_needs_height':
-            return 'Wall/surface requires height to calculate m² - please configure height or approve default (2.4m)';
+            return 'Wall/surface requires height to calculate mÂ² - please configure height or approve default (2.4m)';
         // P0 FIX 1: Type mismatch status
         case 'pending_type_mismatch':
-            return 'Evidence type does not match unit - m² requires AREA geometry (or LENGTH for walls), un requires BLOCK';
+            return 'Evidence type does not match unit - mÂ² requires AREA geometry (or LENGTH for walls), un requires BLOCK';
         // P0.2: WALL needs length
         case 'pending_no_length_for_wall':
-            return 'WALL item requires LENGTH geometry (lines/polylines) to calculate m² via length × height';
+            return 'WALL item requires LENGTH geometry (lines/polylines) to calculate mÂ² via length Ã— height';
         // P0.4: Sanity check failed
         case 'pending_sanity_check':
-            return 'Quantity exceeds sanity threshold - WALL m² > 500 is suspicious';
+            return 'Quantity exceeds sanity threshold - WALL mÂ² > 500 is suspicious';
         default:
             return 'Unknown status';
     }
@@ -1129,7 +1164,7 @@ export function buildDeterministicReason(params: {
 
     // Geometry metrics
     if (params.layerArea && params.layerArea > 0) {
-        parts.push(`area=${params.layerArea.toFixed(1)}m²`);
+        parts.push(`area=${params.layerArea.toFixed(1)}mÂ²`);
     }
     if (params.layerLength && params.layerLength > 0) {
         parts.push(`length=${params.layerLength.toFixed(1)}m`);

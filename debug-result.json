@@ -1,0 +1,58 @@
+[
+  {
+    "id": "b5e27ae5-ad3e-4eea-82a6-c5aa8f2f0d4c",
+    "excel_sheet": "TestSheet",
+    "excel_item_text": "Tabique Sala de Reuniones",
+    "excel_unit": "m",
+    "source_items": [
+      {
+        "id": "5b309afb-76c1-4c8c-8553-5971639037f8",
+        "type": "length",
+        "name_raw": "Tabique General",
+        "layer_raw": "fa_tabiques_gen",
+        "layer_normalized": "fa_tabiques_gen",
+        "value_raw": 20,
+        "unit_raw": "m",
+        "value_si": 20,
+        "value_m": 20
+      }
+    ],
+    "matched_items": [
+      {
+        "id": "5b309afb-76c1-4c8c-8553-5971639037f8",
+        "type": "length",
+        "name_raw": "Tabique General",
+        "layer_raw": "fa_tabiques_gen",
+        "layer_normalized": "fa_tabiques_gen",
+        "value_raw": 20,
+        "unit_raw": "m",
+        "value_si": 20,
+        "value_m": 20
+      }
+    ],
+    "match_confidence": 0.7832000000000001,
+    "confidence": "medium",
+    "match_reason": "Type-matched layer \"fa_tabiques_gen\" (78%) | Geometry: 20.00 m",
+    "qty_final": 20,
+    "price_candidates": [],
+    "status": "approved",
+    "status_reason": "High confidence match (78%)",
+    "calc_method": "LENGTH",
+    "method_detail": "direct_length",
+    "discipline": "UNKNOWN",
+    "expected_measure_type": "LENGTH",
+    "excel_subtype": "wall_length",
+    "excel_subtype_confidence": 0.95,
+    "excel_subtype_keywords": [
+      "tabique"
+    ],
+    "top_candidates": [
+      {
+        "layer": "fa_tabiques_gen",
+        "score_semantic": 0.36,
+        "score_type": 0,
+        "qty_if_used": 20
+      }
+    ]
+  }
+]

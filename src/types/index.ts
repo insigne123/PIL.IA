@@ -45,6 +45,8 @@ export interface ItemDetectado {
 
   // Spatial semantic enrichment
   nearby_text_tokens?: string[];
+  zone_id?: string; // Phase 4: Spatial Zone ID
+  zone_name?: string; // Phase 4: "BODEGA", "TIENDA", etc.
   position?: { x: number; y: number }; // Approximate position for spatial operations
 }
 
