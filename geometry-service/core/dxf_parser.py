@@ -11,13 +11,13 @@ from dataclasses import dataclass
 import math
 
 
-@dataclass
+@dataclass(slots=True)
 class Point:
     x: float
     y: float
 
 
-@dataclass  
+@dataclass(slots=True)
 class Segment:
     start: Point
     end: Point
@@ -25,7 +25,7 @@ class Segment:
     entity_type: str
 
 
-@dataclass
+@dataclass(slots=True)
 class TextBlock:
     text: str
     position: Point

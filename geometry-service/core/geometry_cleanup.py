@@ -10,7 +10,7 @@ import math
 from collections import defaultdict
 
 
-@dataclass
+@dataclass(slots=True)
 class Point:
     x: float
     y: float
@@ -25,7 +25,7 @@ class Point:
         return math.sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
 
 
-@dataclass
+@dataclass(slots=True)
 class Segment:
     start: Point
     end: Point

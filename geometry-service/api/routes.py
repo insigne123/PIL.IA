@@ -143,22 +143,29 @@ async def parse_dxf(
             result = parse_dxf_file(tmp_path)
             
             # 1. Map Parser Segments -> Cleanup Segments (for region extraction)
-            cleanup_segments = []
-            for s in result.segments:
-                cleanup_segments.append(ClnSegment(
+            # OPTIMIZATION: Convert immediately and clear original list to save memory
+            cleanup_segments = [
+                ClnSegment(
                     start=ClnPoint(s.start.x, s.start.y),
                     end=ClnPoint(s.end.x, s.end.y),
                     layer=s.layer,
                     entity_type=s.entity_type
-                ))
+                ) for s in result.segments
+            ]
+            
+            # Critical: Release memory from parser result immediately
+            # We use cleanup_segments for both processing and API response (as "original" geometry)
+            result.segments.clear() 
                 
             # 2. Extract Regions
+            # cleanup_geometry returns a new list, so cleanup_segments (original) is preserved for API response
             cleaned_segments = cleanup_geometry(cleanup_segments, snap_tolerance=0.01)
             extracted_regions = extract_regions(cleaned_segments)
             
             # 3. Map Regions -> API Models
             api_regions = []
             for r in extracted_regions:
+                # Use list comprehension for vertices to be slightly faster
                 p_vertices = [Point(x=v.x, y=v.y) for v in r.vertices]
                 p_centroid = Point(x=r.centroid.x, y=r.centroid.y)
                 api_regions.append(Region(
@@ -171,24 +178,28 @@ async def parse_dxf(
                 ))
 
             # 4. Map Parser Segments -> API Models
-            api_segments = []
-            for s in result.segments:
-                api_segments.append(Segment(
+            # Use cleanup_segments as source (since result.segments was cleared)
+            api_segments = [
+                Segment(
                     start=Point(x=s.start.x, y=s.start.y),
                     end=Point(x=s.end.x, y=s.end.y),
                     layer=s.layer,
                     entity_type=s.entity_type
-                ))
+                ) for s in cleanup_segments
+            ]
+            
+            # Optimization: Clear cleanup_segments before creating next large lists if possible
+            # But we are done with large lists here.
 
             # 5. Map Parser Texts -> API Models
-            api_texts = []
-            for t in result.texts:
-                api_texts.append(TextBlock(
+            api_texts = [
+                TextBlock(
                     text=t.text,
                     position=Point(x=t.position.x, y=t.position.y),
                     layer=t.layer,
                     height=t.height
-                ))
+                ) for t in result.texts
+            ]
 
             # 6. Map Bounds -> API Model
             api_bounds = Bounds(
