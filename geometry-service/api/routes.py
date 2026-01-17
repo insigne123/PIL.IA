@@ -137,31 +137,37 @@ async def parse_dxf(
     file: UploadFile = File(...)
 ):
     """Parse DXF file and return raw geometry/text"""
+    # Write content to temp file
     with tempfile.NamedTemporaryFile(delete=False, suffix=".dxf") as tmp:
         content = await file.read()
         tmp.write(content)
-        tmp.flush()
-        try:
-            os.fsync(tmp.fileno())
-        except:
-            pass
         tmp_path = tmp.name
     
-    file_size = os.path.getsize(tmp_path)
-    print(f"[ParseDxf] Created temp file {tmp_path} size={file_size} bytes")
-
     try:
+        # PLAN B: Use Threading + GC (Multiprocessing failed in this env)
+        # We process in the threadpool to avoid blocking the *main* event loop 
+        # (though GIL still limits CPU concurrency)
+        
+        from fastapi.concurrency import run_in_threadpool
+        
+        # We call the processing task directly here, not via ProcessPool
         from core.processing_task import process_dxf_task
         
-        loop = asyncio.get_running_loop()
-        # Run in separate process to bypass GIL
-        return await loop.run_in_executor(process_pool, process_dxf_task, tmp_path)
+        # Run in threadpool
+        result = await run_in_threadpool(process_dxf_task, tmp_path)
+        
+        # Force garbage collection to free large DXF memory 
+        import gc
+        gc.collect()
+        
+        return result
         
     except Exception as e:
         import traceback
         error_msg = traceback.format_exc()
-        print(f"[ParseDxf] Error in process pool: {e}")
-        # Log to file so we can debug without terminal access
+        print(f"[ParseDxf] Error in thread pool: {e}")
+        
+        # Log to file for debugging
         with open("python_errors.log", "a") as f:
             f.write(f"\n--- Error processing {file.filename} ---\n")
             f.write(error_msg)
