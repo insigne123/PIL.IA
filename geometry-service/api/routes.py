@@ -140,8 +140,16 @@ async def parse_dxf(
     with tempfile.NamedTemporaryFile(delete=False, suffix=".dxf") as tmp:
         content = await file.read()
         tmp.write(content)
+        tmp.flush()
+        try:
+            os.fsync(tmp.fileno())
+        except:
+            pass
         tmp_path = tmp.name
     
+    file_size = os.path.getsize(tmp_path)
+    print(f"[ParseDxf] Created temp file {tmp_path} size={file_size} bytes")
+
     try:
         from core.processing_task import process_dxf_task
         
@@ -150,7 +158,14 @@ async def parse_dxf(
         return await loop.run_in_executor(process_pool, process_dxf_task, tmp_path)
         
     except Exception as e:
+        import traceback
+        error_msg = traceback.format_exc()
         print(f"[ParseDxf] Error in process pool: {e}")
+        # Log to file so we can debug without terminal access
+        with open("python_errors.log", "a") as f:
+            f.write(f"\n--- Error processing {file.filename} ---\n")
+            f.write(error_msg)
+            
         # Fallback empty response
         return ParseDxfResponse(
             segments=[],

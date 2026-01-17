@@ -6,12 +6,22 @@ from core.geometry_cleanup import cleanup_geometry, Segment as ClnSegment, Point
 from core.region_extractor import extract_regions
 import os
 
-def process_dxf_task(file_path: str) -> ParseDxfResponse:
     """
     CPU-bound task to be run in a separate process.
     """
+    import datetime
     try:
+        with open("worker.log", "a") as f:
+            f.write(f"\n[{datetime.datetime.now()}] Worker started for {file_path}\n")
+            if os.path.exists(file_path):
+                f.write(f"File exists, size: {os.path.getsize(file_path)} bytes\n")
+            else:
+                f.write("FILE DOES NOT EXIST!\n")
+
         result = parse_dxf_file(file_path)
+        
+        with open("worker.log", "a") as f:
+            f.write(f"Parse result: {len(result.segments)} segments, {len(result.texts)} texts\n")
         
         # 1. Map Parser Segments -> Cleanup Segments
         cleanup_segments = [
