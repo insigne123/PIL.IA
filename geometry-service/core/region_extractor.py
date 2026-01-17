@@ -45,6 +45,7 @@ class Region:
     perimeter: float
     centroid: Point
     shapely_polygon: Polygon = field(repr=False)
+    layer: str = "Unknown"
     
     def contains_point(self, point: Point) -> bool:
         """Check if a point is inside this region"""
@@ -281,12 +282,73 @@ def extract_regions(
     # Filter by area
     regions = [r for r in regions if min_area <= r.area <= max_area]
     
+    # Assign layers to regions (heuristic: majority vote of boundary segments)
+    try:
+        assign_layers_to_regions(regions, segments)
+    except Exception as e:
+        print(f"[RegionExtractor] Layer assignment failed: {e}")
+        # Continue without layers (default "Unknown")
+    
     # Sort by area (largest first)
     regions.sort(key=lambda r: r.area, reverse=True)
     
     print(f"[RegionExtractor] Extracted {len(regions)} valid regions")
     
     return regions
+
+
+def assign_layers_to_regions(regions: List[Region], segments: List[Segment]):
+    """
+    Assign a layer to each region based on the segments that form its boundary/interior.
+    Uses a spatial index (or brute force for now) to find segments overlapping the region.
+    """
+    if not regions or not segments:
+        return
+
+    # Optimization: Sort segments by x coordinate for faster bounds check
+    # or just brute force for < 10k items (fast enough in memory)
+    
+    # Pre-filter segments that have layers
+    layered_segments = [s for s in segments if s.layer]
+    
+    for region in regions:
+        # 1. Find segments that are "close" to the region boundary
+        # A simple proximity check using the region's buffered boundary
+        
+        region_poly = region.shapely_polygon
+        boundary = region_poly.boundary
+        
+        # Buffer slightly to catch segments that might have slight gaps (cleaned geometry)
+        buffered_boundary = boundary.buffer(0.05) # 5cm tolerance
+        
+        candidates = []
+        for seg in layered_segments:
+            # Quick bounds check
+            min_x = min(seg.start.x, seg.end.x)
+            max_x = max(seg.start.x, seg.end.x)
+            min_y = min(seg.start.y, seg.end.y)
+            max_y = max(seg.start.y, seg.end.y)
+            
+            # Region bounds
+            r_min_x, r_min_y, r_max_x, r_max_y = region_poly.bounds
+            
+            # Intersection test
+            if (min_x > r_max_x or max_x < r_min_x or min_y > r_max_y or max_y < r_min_y):
+                continue
+                
+            # Detailed check
+            seg_line = LineString([(seg.start.x, seg.start.y), (seg.end.x, seg.end.y)])
+            if buffered_boundary.intersects(seg_line):
+                candidates.append(seg.layer)
+        
+        if candidates:
+            # Majority vote
+            from collections import Counter
+            most_common = Counter(candidates).most_common(1)
+            if most_common:
+                region.layer = most_common[0][0]
+        else:
+            region.layer = "Unknown"
 
 
 def find_best_region(

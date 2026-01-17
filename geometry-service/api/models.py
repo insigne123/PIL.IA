@@ -37,6 +37,7 @@ class Region(BaseModel):
     area: float
     perimeter: float
     centroid: Point
+    layer: Optional[str] = None
 
 
 class ExcelItem(BaseModel):
@@ -81,6 +82,7 @@ class ParseDxfResponse(BaseModel):
     texts: List[TextBlock]
     layers: List[str]
     bounds: Bounds
+    regions: List[Region] = []
 
 
 class ParsePdfResponse(BaseModel):

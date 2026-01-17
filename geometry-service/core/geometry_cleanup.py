@@ -130,20 +130,27 @@ def snap_vertices(segments: List[Segment], tolerance: float = 0.01) -> List[Segm
     return snapped_segments
 
 
-def merge_collinear(segments: List[Segment], angle_tolerance: float = 0.5) -> List[Segment]:
-    """
-    Merge segments that are nearly collinear (same line, adjacent or overlapping).
+    from shapely.strtree import STRtree
+    from shapely.geometry import LineString
     
-    Args:
-        segments: List of line segments
-        angle_tolerance: Maximum angle difference in degrees to consider collinear
-    
-    Returns:
-        Merged segments
-    """
     if not segments:
         return segments
     
+    # Optimization: Skip for very large datasets if mostly short segments?
+    # No, we need it. Use STRtree.
+    
+    # Convert to shapely line strings for indexing
+    shapely_lines = []
+    for i, seg in enumerate(segments):
+        shapely_lines.append(LineString([(seg.start.x, seg.start.y), (seg.end.x, seg.end.y)]))
+    
+    # Check if STRtree is available/working
+    try:
+        tree = STRtree(shapely_lines)
+    except Exception as e:
+        print(f"[Cleanup] STRtree init failed: {e}. Skipping collinear merge.")
+        return segments
+
     angle_tolerance_rad = math.radians(angle_tolerance)
     merged = []
     used = set()
@@ -152,67 +159,86 @@ def merge_collinear(segments: List[Segment], angle_tolerance: float = 0.5) -> Li
         if i in used:
             continue
         
-        # Normalize angle to [0, π) for comparison (lines, not rays)
+        # Normalize angle
         angle1 = seg1.angle % math.pi
         
-        # Find all collinear segments that share an endpoint
+        # Find chain
         chain = [seg1]
         used.add(i)
         
-        changed = True
-        while changed:
-            changed = False
-            for j, seg2 in enumerate(segments):
-                if j in used:
+        # Queue of segments to check (BFS for connected collinear)
+        # Actually, simpler: just find all overlapping/touching in tree, filter by angle
+        # But we need to chain them (A touches B, B touches C -> A-B-C)
+        
+        # Iterative expansion
+        current_chain_indices = {i}
+        queue = [i]
+        
+        while queue:
+            curr_idx = queue.pop(0)
+            curr_seg = segments[curr_idx]
+            curr_angle = curr_seg.angle % math.pi
+            curr_geom = shapely_lines[curr_idx]
+            
+            # Query tree for spatial candidates (touching/overlapping)
+            # STRtree query returns indices
+            candidates = tree.query(curr_geom)
+            
+            for cand_idx in candidates:
+                if cand_idx in used or cand_idx in current_chain_indices:
                     continue
                 
+                seg2 = segments[cand_idx]
+                
+                # Check Angle
                 angle2 = seg2.angle % math.pi
-                angle_diff = abs(angle1 - angle2)
+                angle_diff = abs(curr_angle - angle2)
                 if angle_diff > math.pi / 2:
                     angle_diff = math.pi - angle_diff
                 
                 if angle_diff > angle_tolerance_rad:
                     continue
                 
-                # Check if they share an endpoint
-                endpoints1 = {(round(chain[-1].start.x, 4), round(chain[-1].start.y, 4)),
-                              (round(chain[-1].end.x, 4), round(chain[-1].end.y, 4)),
-                              (round(chain[0].start.x, 4), round(chain[0].start.y, 4)),
-                              (round(chain[0].end.x, 4), round(chain[0].end.y, 4))}
-                endpoints2 = {(round(seg2.start.x, 4), round(seg2.start.y, 4)),
-                              (round(seg2.end.x, 4), round(seg2.end.y, 4))}
+                # Check endpoint connectivity (strict)
+                # STRtree is bounding box, check exact intersection
+                # We assume snap_vertices ran before, so endpoints match exactly
+                s1, e1 = curr_seg.start, curr_seg.end
+                s2, e2 = seg2.start, seg2.end
                 
-                if endpoints1 & endpoints2:
+                connected = (s1 == s2 or s1 == e2 or e1 == s2 or e1 == e2)
+                
+                if connected:
                     chain.append(seg2)
-                    used.add(j)
-                    changed = True
-        
-        # Merge chain into single segment (use extreme points)
+                    used.add(cand_idx)
+                    current_chain_indices.add(cand_idx)
+                    queue.append(cand_idx)
+
+        # Merge chain
         all_points = []
         for seg in chain:
             all_points.extend([seg.start, seg.end])
-        
-        # Project points onto line and find extremes
+            
         if len(chain) == 1:
             merged.append(chain[0])
         else:
-            # Find the two most distant points
-            max_dist = 0
-            best_pair = (chain[0].start, chain[0].end)
-            for p1 in all_points:
-                for p2 in all_points:
-                    d = p1.distance_to(p2)
-                    if d > max_dist:
-                        max_dist = d
-                        best_pair = (p1, p2)
-            
-            merged.append(Segment(
-                start=best_pair[0],
-                end=best_pair[1],
+             # Find most distant pair in chain points
+             # Optimization: project to 1D line defined by first segment
+             # p_proj = p.x * cos(a) + p.y * sin(a)
+             # Sort by projection
+             a = chain[0].angle
+             cos_a, sin_a = math.cos(a), math.sin(a)
+             
+             sorted_points = sorted(all_points, key=lambda p: p.x * cos_a + p.y * sin_a)
+             start_pt = sorted_points[0]
+             end_pt = sorted_points[-1]
+             
+             merged.append(Segment(
+                start=start_pt,
+                end=end_pt,
                 layer=chain[0].layer,
                 entity_type="MERGED"
-            ))
-    
+             ))
+
     return merged
 
 
@@ -251,20 +277,55 @@ def close_small_gaps(segments: List[Segment], max_gap: float = 0.05) -> List[Seg
     
     # Find pairs of dangling endpoints that are close
     additional_segments = []
+    
+    # Optimization: Use STRtree for spatial query
+    from shapely.strtree import STRtree
+    from shapely.geometry import Point as ShapelyPoint
+
+    if not dangling:
+        return segments + additional_segments
+
+    # Create Shapely points for search
+    dangle_points = [ShapelyPoint(pt.x, pt.y) for pt, _ in dangling]
+    
+    try:
+        tree = STRtree(dangle_points)
+    except Exception:
+        # Fallback if tree fails
+        return segments 
+        
     used_dangles = set()
     
     for i, (pt1, seg1) in enumerate(dangling):
         if i in used_dangles:
             continue
+            
+        pt1_geom = dangle_points[i]
         
-        for j, (pt2, seg2) in enumerate(dangling):
+        # Query tree for candidates within max_gap
+        # STRtree query is bbox based, but for points bbox is point.
+        # We need to buffer or just check all results.
+        # buffer(max_gap) is expensive.
+        # STRtree interaction: query(geom). 
+        # tree.query(geom) returns indices of geometries that intersect geom's envelope.
+        
+        # To find points within distance, query with buffered point
+        search_area = pt1_geom.buffer(max_gap)
+        candidate_indices = tree.query(search_area)
+        
+        for j in candidate_indices:
             if j <= i or j in used_dangles:
                 continue
+            
+            # Check actul segment (don't connect same segment ends - handled by dangling check which splits ends)
+            # Actually dangling check allowed both ends of same segment IF both are dangling.
+            (pt2, seg2) = dangling[j]
+            
             if seg1 == seg2:
                 continue
-            
+                
             dist = pt1.distance_to(pt2)
-            if dist <= max_gap and dist > 0.001:  # Don't connect already-connected points
+            if dist <= max_gap and dist > 0.001:
                 additional_segments.append(Segment(
                     start=pt1,
                     end=pt2,
@@ -274,7 +335,7 @@ def close_small_gaps(segments: List[Segment], max_gap: float = 0.05) -> List[Seg
                 used_dangles.add(i)
                 used_dangles.add(j)
                 break
-    
+
     return segments + additional_segments
 
 

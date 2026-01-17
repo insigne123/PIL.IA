@@ -10,6 +10,7 @@ import { writeExcel } from '../src/lib/processing/writer';
 import { generateHeatmapPdf } from '../src/lib/pdf-heatmap';
 import { classifyItemIntent } from '../src/lib/processing/unit-classifier';
 import { FeedbackService } from '../src/lib/learning/feedback-service';
+import { extractQuantities, checkGeometryServiceHealth, parseDxfFull } from '../src/lib/processing/geometry-service';
 
 export async function executeJob(supabase: SupabaseClient, job: any) {
     // 1. Fetch File Info
@@ -57,7 +58,25 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
             try {
                 // Attempt 1: UTF-8
                 const fileContent = buffer.toString('utf-8');
-                const result = await parseDxf(fileContent, planUnit);
+                let result;
+
+                // TRY PYTHON GEOMETRY SERVICE FIRST
+                const serviceAvailable = await checkGeometryServiceHealth();
+                if (serviceAvailable) {
+                    try {
+                        console.log(`[DXF] Using Python Geometry Service for ${file.original_filename}...`);
+                        const serviceResult = await parseDxfFull(fileContent, planUnit);
+                        result = { items: serviceResult.items, detectedUnit: serviceResult.detectedUnit };
+                        console.log(`[DXF] Service returned ${result.items.length} items (with regions!)`);
+                    } catch (serviceErr) {
+                        console.error('[DXF] Service failed, falling back to legacy:', serviceErr);
+                        result = await parseDxf(fileContent, planUnit);
+                    }
+                } else {
+                    console.log('[DXF] Service unavailable, using legacy parser');
+                    result = await parseDxf(fileContent, planUnit);
+                }
+
                 extractedItems = result.items;
                 detectedUnitVal = result.detectedUnit || null;
 
@@ -78,8 +97,24 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
                     // Attempt 2: Latin-1 (Windows-1252)
                     const decoder = new TextDecoder('windows-1252');
                     const text = decoder.decode(buffer);
+                    let result;
 
-                    const result = await parseDxf(text, planUnit);
+                    // Reuse service logic if available (but service handles encoding? local handling safer for fallback)
+                    // If service failed first time, it might be due to encoding? 
+                    // Actually, parseDxfFull sends Blob. Python 'dxf file' usually handles encoding well via ezdxf.
+                    // Let's rely on fallback to legacy parseDxf for latin-1 if service fails/is unavailable.
+
+                    if (await checkGeometryServiceHealth()) {
+                        try {
+                            const serviceResult = await parseDxfFull(text, planUnit);
+                            result = { items: serviceResult.items, detectedUnit: serviceResult.detectedUnit };
+                        } catch (e) {
+                            result = await parseDxf(text, planUnit);
+                        }
+                    } else {
+                        result = await parseDxf(text, planUnit);
+                    }
+
                     extractedItems = result.items;
                     detectedUnitVal = result.detectedUnit || null;
 
