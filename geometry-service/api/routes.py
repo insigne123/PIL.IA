@@ -124,6 +124,14 @@ async def extract_quantities(
     )
 
 
+# Global ProcessPoolExecutor
+from concurrent.futures import ProcessPoolExecutor
+import asyncio
+
+# Initialize with 2 workers to avoid over-subscribing in limited environments
+# One for processing, one spare, leaving CPU for main loop
+process_pool = ProcessPoolExecutor(max_workers=2)
+
 @router.post("/parse-dxf", response_model=ParseDxfResponse)
 async def parse_dxf(
     file: UploadFile = File(...)
@@ -135,120 +143,25 @@ async def parse_dxf(
         tmp_path = tmp.name
     
     try:
-        # Imports for type conversion (local to avoid circular imports elsewhere if any)
-        from core.geometry_cleanup import Segment as ClnSegment, Point as ClnPoint, cleanup_geometry
-        from core.region_extractor import extract_regions
+        from core.processing_task import process_dxf_task
         
-        try:
-            result = parse_dxf_file(tmp_path)
-            
-            # 1. Map Parser Segments -> Cleanup Segments (for region extraction)
-            # OPTIMIZATION: Convert immediately and clear original list to save memory
-            cleanup_segments = [
-                ClnSegment(
-                    start=ClnPoint(s.start.x, s.start.y),
-                    end=ClnPoint(s.end.x, s.end.y),
-                    layer=s.layer,
-                    entity_type=s.entity_type
-                ) for s in result.segments
-            ]
-            
-            # Critical: Release memory from parser result immediately
-            # We use cleanup_segments for both processing and API response (as "original" geometry)
-            result.segments.clear() 
-                
-            # 2. Extract Regions
-            # cleanup_geometry returns a new list, so cleanup_segments (original) is preserved for API response
-            cleaned_segments = cleanup_geometry(cleanup_segments, snap_tolerance=0.01)
-            extracted_regions = extract_regions(cleaned_segments)
-            
-            # 3. Map Regions -> API Models
-            api_regions = []
-            for r in extracted_regions:
-                # Use list comprehension for vertices to be slightly faster
-                p_vertices = [Point(x=v.x, y=v.y) for v in r.vertices]
-                p_centroid = Point(x=r.centroid.x, y=r.centroid.y)
-                api_regions.append(Region(
-                    id=r.id,
-                    vertices=p_vertices,
-                    area=r.area,
-                    perimeter=r.perimeter,
-                    centroid=p_centroid,
-                    layer=r.layer
-                ))
-
-            # 4. Map Parser Segments -> API Models
-            # Use cleanup_segments as source (since result.segments was cleared)
-            api_segments = [
-                Segment(
-                    start=Point(x=s.start.x, y=s.start.y),
-                    end=Point(x=s.end.x, y=s.end.y),
-                    layer=s.layer,
-                    entity_type=s.entity_type
-                ) for s in cleanup_segments
-            ]
-            
-            # Optimization: Clear cleanup_segments before creating next large lists if possible
-            # But we are done with large lists here.
-
-            # 5. Map Parser Texts -> API Models
-            api_texts = [
-                TextBlock(
-                    text=t.text,
-                    position=Point(x=t.position.x, y=t.position.y),
-                    layer=t.layer,
-                    height=t.height
-                ) for t in result.texts
-            ]
-
-            # 6. Map Bounds -> API Model
-            api_bounds = Bounds(
-                min_x=result.bounds[0],
-                min_y=result.bounds[1],
-                max_x=result.bounds[2],
-                max_y=result.bounds[3]
-            )
-
-            return ParseDxfResponse(
-                segments=api_segments,
-                texts=api_texts,
-                layers=result.layers,
-                bounds=api_bounds,
-                regions=api_regions
-            )
-
-        except Exception as e:
-            # Fallback for parsing errors
-            print(f"[ParseDxf] Processing failed: {e}")
-            
-            # Try to return partial result if parsing succeeded but extraction failed
-            if 'result' in locals():
-                # Map minimally
-                try:
-                    api_segments = [Segment(start=Point(x=s.start.x, y=s.start.y), end=Point(x=s.end.x, y=s.end.y), layer=s.layer, entity_type=s.entity_type) for s in result.segments]
-                    api_texts = [TextBlock(text=t.text, position=Point(x=t.position.x, y=t.position.y), layer=t.layer, height=t.height) for t in result.texts]
-                    api_bounds = Bounds(min_x=result.bounds[0], min_y=result.bounds[1], max_x=result.bounds[2], max_y=result.bounds[3])
-                    
-                    return ParseDxfResponse(
-                        segments=api_segments,
-                        texts=api_texts,
-                        layers=result.layers,
-                        bounds=api_bounds,
-                        regions=[] 
-                    )
-                except Exception:
-                    pass
-            
-            # Return empty response if all else fails (avoid 500)
-            return ParseDxfResponse(
-                segments=[],
-                texts=[],
-                layers=[],
-                bounds=Bounds(min_x=0, min_y=0, max_x=0, max_y=0),
-                regions=[]
-            )
+        loop = asyncio.get_running_loop()
+        # Run in separate process to bypass GIL
+        return await loop.run_in_executor(process_pool, process_dxf_task, tmp_path)
+        
+    except Exception as e:
+        print(f"[ParseDxf] Error in process pool: {e}")
+        # Fallback empty response
+        return ParseDxfResponse(
+            segments=[],
+            texts=[],
+            layers=[],
+            bounds=Bounds(min_x=0, min_y=0, max_x=0, max_y=0),
+            regions=[]
+        )
     finally:
-        os.unlink(tmp_path)
+        if os.path.exists(tmp_path):
+            os.unlink(tmp_path)
 
 
 @router.post("/parse-pdf", response_model=ParsePdfResponse)

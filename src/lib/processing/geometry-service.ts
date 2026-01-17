@@ -47,7 +47,7 @@ export async function checkGeometryServiceHealth(): Promise<boolean> {
         console.log(`[GeometryService] Checking health at ${GEOMETRY_SERVICE_URL}/health...`);
         const response = await fetch(`${GEOMETRY_SERVICE_URL}/health`, {
             method: 'GET',
-            signal: AbortSignal.timeout(5000),
+            signal: AbortSignal.timeout(10000),
         });
         const isOk = response.ok;
         console.log(`[GeometryService] Health check result: ${isOk ? 'HEALTHY' : 'UNHEALTHY'} (status: ${response.status})`);
