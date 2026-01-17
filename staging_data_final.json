@@ -1,6 +1,6 @@
 [
   {
-    "id": "bf93bd01-7e6b-4006-9671-e1293f3abd4d",
+    "id": "b4ec3a7b-56a5-4092-b24d-2ab4da404342",
     "excel_sheet": "FinalRun",
     "excel_item_text": "OBRAS PRELIMINARES",
     "excel_unit": "gl",
@@ -9,35 +9,34 @@
     "match_confidence": 0.23105869532589807,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_ILUMINARIAS\" (23%) | Geometry: 0.25 m², 4.06 m, 3 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "439b1a46-cda4-4faf-b9bb-9828a8b126fe",
+        "id": "0d74eedd-a60b-4090-bfe7-1d630a5893ef",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Area on FA_ILUMINARIAS\" from layer \"FA_ILUMINARIAS\"",
         "payload": {
-          "itemId": "4af1eb1f-9b9f-48f1-b0d3-6e3b0da2a2f1",
+          "itemId": "92236b59-b477-4b2c-bd0d-f259d4ceefc0",
           "layer": "FA_ILUMINARIAS",
           "name": "Area on FA_ILUMINARIAS"
         },
         "confidence": "low"
       },
       {
-        "id": "29799cae-8398-4a77-8517-fa606a7c6abd",
+        "id": "05a8221a-adf5-45f7-904c-f20f4f8f65de",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "a42de596-ec09-4333-88e5-8fa381864bab",
+        "id": "861a2894-0239-48f3-b69b-8b8b879f523b",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -63,10 +62,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "c6fb4ae5-791c-4b5a-a78e-d0f4916e4599",
+    "id": "22359546-589b-46ec-a97e-8eaa57cd4fa9",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Instalación de faenas",
     "excel_unit": "gl",
@@ -75,35 +77,34 @@
     "match_confidence": 0.2528239388118545,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (25%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "05b44f0d-e7f6-4a8a-b4e8-bc57f0f86d57",
+        "id": "c4e12806-a717-4e53-b3bd-15004fbb0cdc",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "d278689f-14f5-4535-88ca-71322b6bb71a",
+        "id": "d6411cad-ad5f-44b2-94ec-995268cce5b8",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on MB-ELEV 2\" from layer \"MB-ELEV 2\"",
         "payload": {
-          "itemId": "8e2500dc-ab8d-4eec-bd9b-2c25b0e722eb",
+          "itemId": "447589b1-1f1e-4b0a-9c65-b61d15b4e93d",
           "layer": "MB-ELEV 2",
           "name": "Lines on MB-ELEV 2"
         },
         "confidence": "low"
       },
       {
-        "id": "35625171-2ac5-4f48-9afd-f9910a7041df",
+        "id": "1c88fc6c-6757-40df-a003-079c39f4a859",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -129,10 +130,13 @@
         "score_type": 0,
         "qty_if_used": 454.07948236831595
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "8139ccc8-612a-4652-994e-86bddace9994",
+    "id": "db58335b-0c38-478d-a7c3-6ea567ff93c6",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Tablero de Obra (considera tramitacion y obtencion TE1)",
     "excel_unit": "gl",
@@ -141,39 +145,38 @@
     "match_confidence": 0.09581284648796029,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_PROYECCIÓN GATERAS\" (10%) | Geometry: 2.65 m², 34.98 m, 2 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "de5effc2-7456-4772-b856-d2cd336f3917",
+        "id": "f317794b-01f0-4325-9936-1350bab42bf6",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_PROYECCIÓN GATERAS\" from layer \"FA_PROYECCIÓN GATERAS\"",
         "payload": {
-          "itemId": "3c683c9a-695b-4b90-88e1-4fd275512ca7",
+          "itemId": "7123d0ef-1ec5-4f6f-83a8-edc50fd6e31e",
           "layer": "FA_PROYECCIÓN GATERAS",
           "name": "Lines on FA_PROYECCIÓN GATERAS"
         },
         "confidence": "low"
       },
       {
-        "id": "6ae4224e-c5ff-48ef-a5e1-e9afd8d65fcf",
+        "id": "db1546bb-28be-4125-ae93-fffe2adcd5dd",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "a5f4e542-52b1-4e20-95b9-48f028d7c118",
+        "id": "d22a2d41-22cd-40d2-bb54-b553a22a8209",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Length on ARQ_TEXTO 50\" from layer \"ARQ_TEXTO 50\"",
         "payload": {
-          "itemId": "1feb4cc9-7e73-4eb8-8e93-7debd65875a8",
+          "itemId": "e740f9ef-bc91-499a-9d8a-8590fb9659db",
           "layer": "ARQ_TEXTO 50",
           "name": "Length on ARQ_TEXTO 50"
         },
@@ -211,16 +214,19 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "c494eeda-6db7-4697-ad84-7c407672b848",
+    "id": "115f7b0b-cf91-4915-9424-8cb15048ef1f",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Impermeabilización membrana asfáltica según plano",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "8e2500dc-ab8d-4eec-bd9b-2c25b0e722eb",
+        "id": "447589b1-1f1e-4b0a-9c65-b61d15b4e93d",
         "type": "length",
         "name_raw": "Lines on MB-ELEV 2",
         "layer_raw": "MB-ELEV 2",
@@ -235,7 +241,7 @@
     ],
     "matched_items": [
       {
-        "id": "8e2500dc-ab8d-4eec-bd9b-2c25b0e722eb",
+        "id": "447589b1-1f1e-4b0a-9c65-b61d15b4e93d",
         "type": "length",
         "name_raw": "Lines on MB-ELEV 2",
         "layer_raw": "MB-ELEV 2",
@@ -251,7 +257,7 @@
     "match_confidence": 1,
     "confidence": "high",
     "match_reason": "Type-matched layer \"MB-ELEV 2\" (100%) | Keywords: [membrana] | Geometry: 81.13 m², 1038.60 m, 1181 blocks | Derivada: Largo * 2.4m (default)",
-    "qty_final": null,
+    "qty_final": 1089.7907576839582,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -285,13 +291,13 @@
     ]
   },
   {
-    "id": "abf622b4-a746-454d-b582-2d64f24a0214",
+    "id": "3b0748ec-be9f-411c-9f9d-4e78da8f37ce",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Sobrelosa de 8cm",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "081f4b22-3de4-4a49-843c-94800f20803b",
+        "id": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
         "type": "length",
         "name_raw": "Lines on FA_0.20",
         "layer_raw": "FA_0.20",
@@ -306,7 +312,7 @@
     ],
     "matched_items": [
       {
-        "id": "081f4b22-3de4-4a49-843c-94800f20803b",
+        "id": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
         "type": "length",
         "name_raw": "Lines on FA_0.20",
         "layer_raw": "FA_0.20",
@@ -322,7 +328,7 @@
     "match_confidence": 0.9562910976639751,
     "confidence": "high",
     "match_reason": "Type-matched layer \"FA_0.20\" (96%) | Keywords: [sobrelosa, losa] | Geometry: 0.96 m², 151.20 m | Derivada: Largo * 2.4m (default)",
-    "qty_final": null,
+    "qty_final": 181.44565636348742,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -367,13 +373,13 @@
     ]
   },
   {
-    "id": "bf1674ee-77e7-497c-bdc9-98cfb0c8ac94",
+    "id": "6049aa48-0886-4640-b3d7-a000e8f88254",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Trazados y niveles",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "c2dc7e72-c9f8-467a-8ea1-4be1b96339aa",
+        "id": "4b69af5d-3aa5-45c8-bc4d-6c2f15442c66",
         "type": "length",
         "name_raw": "Lines on A-ARQ-BARANDAS Y EM",
         "layer_raw": "A-ARQ-BARANDAS Y EM",
@@ -388,7 +394,7 @@
     ],
     "matched_items": [
       {
-        "id": "c2dc7e72-c9f8-467a-8ea1-4be1b96339aa",
+        "id": "4b69af5d-3aa5-45c8-bc4d-6c2f15442c66",
         "type": "length",
         "name_raw": "Lines on A-ARQ-BARANDAS Y EM",
         "layer_raw": "A-ARQ-BARANDAS Y EM",
@@ -404,7 +410,7 @@
     "match_confidence": 0.49252397537331505,
     "confidence": "medium",
     "match_reason": "Matched layer \"A-ARQ-BARANDAS Y EM\" (49%) | Geometry: 0.00 m², 1.26 m",
-    "qty_final": null,
+    "qty_final": 0.6309999999998968,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -429,11 +435,12 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 0.6309999999998968 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 0.6309999999998968 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "c9717dea-f113-410d-8077-33b48c9dcdde",
+    "id": "bd665f02-3211-48b1-8748-9c73985e6713",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Retiro de escombros",
     "excel_unit": "gl",
@@ -442,13 +449,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "840894d6-91df-4fc5-aaa3-97a2e9db204f",
+        "id": "5a1c1f3b-f348-4070-b0af-cd9dcbe8d648",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -464,10 +470,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with GLOBAL geometry support for \"gl\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "5d806ba3-9c4e-4ffe-a8ee-069440fd0243",
+    "id": "78940d3a-76d7-4037-9047-38f6791d3d8b",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Otros no considerados en OBRAS PRELIMINARES",
     "excel_unit": "gl",
@@ -476,24 +485,23 @@
     "match_confidence": 0.06627316376880943,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (7%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "b7021433-1b88-45ea-8d31-e7eb509b96df",
+        "id": "3c1c331b-58bb-40e7-91d0-0ecebb968db3",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "60b71bf1-844b-43bf-a116-81d027e45da6",
+        "id": "9bd74cc7-d487-45c1-9ad2-d452206d56cb",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -513,16 +521,19 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "b795ef04-4893-460e-b924-1e5210691bce",
+    "id": "9a57ffd1-892d-41d5-8e5b-432705b299b1",
     "excel_sheet": "FinalRun",
     "excel_item_text": "TABIQUES ",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -537,7 +548,7 @@
     ],
     "matched_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -553,7 +564,7 @@
     "match_confidence": 1,
     "confidence": "high",
     "match_reason": "Matched layer \"FA_TABIQUES\" (100%) | Keywords: [tabique, tab, tabiques] | Geometry: 0.00 m², 5.95 m, 1 blocks",
-    "qty_final": null,
+    "qty_final": 2.3431676253008793,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -596,17 +607,18 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 2.3431676253008793 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 2.3431676253008793 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "e177c5df-2683-4fc3-b5ac-0ea4f3bb39e6",
+    "id": "2d4d7c0b-154f-43fa-9f53-8617e41779ad",
     "excel_sheet": "FinalRun",
     "excel_item_text": "TAB 01: sobretabique simple sala de ventas, montante estructural 60 + plancha MDF 15 mm",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -621,7 +633,7 @@
     ],
     "matched_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -637,7 +649,7 @@
     "match_confidence": 0.8800000000000001,
     "confidence": "high",
     "match_reason": "Type-matched layer \"FA_TABIQUES\" (88%) | Keywords: [tabique, sobretabique, tab] | Geometry: 0.00 m², 5.95 m, 1 blocks | Derived 5.62 m² from 2.34m × 2.4m (default height)",
-    "qty_final": null,
+    "qty_final": 5.62360230072211,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -681,13 +693,13 @@
     ]
   },
   {
-    "id": "f58730b4-8536-4877-a44d-a1640dbaf1d4",
+    "id": "c039886f-75c0-4150-bba8-6423ecd09fbb",
     "excel_sheet": "FinalRun",
     "excel_item_text": "TAB 02: sobretabique simple bodega, montante estructural 60 + plancha yeso carton 15 mm",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -702,7 +714,7 @@
     ],
     "matched_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -718,7 +730,7 @@
     "match_confidence": 0.8800000000000001,
     "confidence": "high",
     "match_reason": "Type-matched layer \"FA_TABIQUES\" (88%) | Keywords: [tabique, sobretabique, tab] | Geometry: 0.00 m², 5.95 m, 1 blocks | Derived 5.62 m² from 2.34m × 2.4m (default height)",
-    "qty_final": null,
+    "qty_final": 5.62360230072211,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -758,13 +770,13 @@
     ]
   },
   {
-    "id": "8695e2b6-300c-4f0e-b8ce-b4bbf0bfea8a",
+    "id": "60cf55d5-b17e-4a54-9874-e72f2716e3ca",
     "excel_sheet": "FinalRun",
     "excel_item_text": "TAB 03: tabique simple divisorio, montante estructural 90 + plancha yeso carton 15 mm una cara + pla",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -779,7 +791,7 @@
     ],
     "matched_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -795,7 +807,7 @@
     "match_confidence": 1,
     "confidence": "high",
     "match_reason": "Type-matched layer \"FA_TABIQUES\" (100%) | Keywords: [tabique, tab, divisor] | Geometry: 0.00 m², 5.95 m, 1 blocks | Derived 5.62 m² from 2.34m × 2.4m (default height)",
-    "qty_final": null,
+    "qty_final": 5.62360230072211,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -835,13 +847,13 @@
     ]
   },
   {
-    "id": "bb1e3917-da7e-44d1-a5b2-2b7f3e867335",
+    "id": "9e9487f7-1390-46f6-a5c0-329b5b343dcb",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Sobretabique pilar montante estructural 60 + plancha yeso carton 15 mm, considera esquinas redondead",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -856,7 +868,7 @@
     ],
     "matched_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -872,7 +884,7 @@
     "match_confidence": 1,
     "confidence": "high",
     "match_reason": "Type-matched layer \"FA_TABIQUES\" (100%) | Keywords: [tabique, sobretabique, tab] | Geometry: 0.00 m², 5.95 m, 1 blocks | Derived 5.62 m² from 2.34m × 2.4m (default height)",
-    "qty_final": null,
+    "qty_final": 5.62360230072211,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -912,13 +924,13 @@
     ]
   },
   {
-    "id": "9e740be8-bc9f-433f-aa01-b7db4b5defaa",
+    "id": "00d1bac4-6499-44db-9d94-2a8fab513135",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Tabique fachada montante estructural 60 + plancha MDF 15 mm",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "07ca15e5-d7df-4c2f-a355-39c1b1ec4194",
+        "id": "0c41ec1c-a38c-4fb5-afd4-0d17f318de83",
         "type": "length",
         "name_raw": "Lines on FA_ARQ-MUROS",
         "layer_raw": "FA_ARQ-MUROS",
@@ -933,7 +945,7 @@
     ],
     "matched_items": [
       {
-        "id": "07ca15e5-d7df-4c2f-a355-39c1b1ec4194",
+        "id": "0c41ec1c-a38c-4fb5-afd4-0d17f318de83",
         "type": "length",
         "name_raw": "Lines on FA_ARQ-MUROS",
         "layer_raw": "FA_ARQ-MUROS",
@@ -949,7 +961,7 @@
     "match_confidence": 1,
     "confidence": "high",
     "match_reason": "Type-matched layer \"FA_ARQ-MUROS\" (100%) | Keywords: [tabique, fachada] | Geometry: 22.22 m², 694.63 m | Derived 833.56 m² from 347.32m × 2.4m (default height)",
-    "qty_final": null,
+    "qty_final": 833.5599383827092,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -997,13 +1009,13 @@
     ]
   },
   {
-    "id": "02e6cf3e-0090-4c50-9e63-e12368bba79f",
+    "id": "6483e58b-f25b-41a7-816a-72010e315624",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Refuerzo oculto en tabique TERCIADO 15mm en tabique para fijacion TDA, RACK DE DATOS, estanterias de",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -1018,7 +1030,7 @@
     ],
     "matched_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -1034,7 +1046,7 @@
     "match_confidence": 1,
     "confidence": "high",
     "match_reason": "Type-matched layer \"FA_TABIQUES\" (100%) | Keywords: [tabique, tab] | Geometry: 0.00 m², 5.95 m, 1 blocks | Derived 5.62 m² from 2.34m × 2.4m (default height)",
-    "qty_final": null,
+    "qty_final": 5.62360230072211,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -1073,7 +1085,7 @@
     ]
   },
   {
-    "id": "0e13e71a-bad0-46ed-b360-b4b84920583e",
+    "id": "11ac434c-6040-43ed-930c-3b39dc99d7a5",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Escalera gatera metalica según detalle",
     "excel_unit": "gl",
@@ -1082,13 +1094,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "1170659d-0c98-4ad2-96dc-25a1b4cd4b33",
+        "id": "c9027b3b-6136-4dd7-ac20-857b739a1129",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -1104,16 +1115,19 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with GLOBAL geometry support for \"gl\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "9d621e15-e176-4064-bc54-b2c9ccd67450",
+    "id": "f00d9ad8-aca3-476c-8740-f18818b9cdaf",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Otros no considerados en TABIQUES",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -1128,7 +1142,7 @@
     ],
     "matched_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -1144,7 +1158,7 @@
     "match_confidence": 1,
     "confidence": "high",
     "match_reason": "Matched layer \"FA_TABIQUES\" (100%) | Keywords: [tabique, tab, tabiques] | Geometry: 0.00 m², 5.95 m, 1 blocks",
-    "qty_final": null,
+    "qty_final": 2.3431676253008793,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -1169,17 +1183,18 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 2.3431676253008793 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 2.3431676253008793 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "e5b35c44-cf86-4931-ae2b-f82212ec4bda",
+    "id": "8967549c-3437-4053-9aa9-c3d5ec35efab",
     "excel_sheet": "FinalRun",
     "excel_item_text": "CIELOS",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "f5254b87-95b7-4dcc-bf3c-2a561106d65d",
+        "id": "4ac55d56-a9d6-4fbd-94cd-d5a9072a470b",
         "type": "length",
         "name_raw": "Lines on A-ARQ-CIELO FALSO",
         "layer_raw": "A-ARQ-CIELO FALSO",
@@ -1194,7 +1209,7 @@
     ],
     "matched_items": [
       {
-        "id": "f5254b87-95b7-4dcc-bf3c-2a561106d65d",
+        "id": "4ac55d56-a9d6-4fbd-94cd-d5a9072a470b",
         "type": "length",
         "name_raw": "Lines on A-ARQ-CIELO FALSO",
         "layer_raw": "A-ARQ-CIELO FALSO",
@@ -1210,7 +1225,7 @@
     "match_confidence": 0.9910526560638215,
     "confidence": "high",
     "match_reason": "Matched layer \"A-ARQ-CIELO FALSO\" (99%) | Keywords: [cielo, cielos] | Geometry: 0.35 m², 481.32 m, 39 blocks",
-    "qty_final": null,
+    "qty_final": 238.00361467092688,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -1253,17 +1268,18 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 238.00361467092688 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 238.00361467092688 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "4c51dcd1-212b-4233-a735-14274cf24bcb",
+    "id": "583c28df-fb13-4fbb-a3de-79b04d63e615",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "f5254b87-95b7-4dcc-bf3c-2a561106d65d",
+        "id": "4ac55d56-a9d6-4fbd-94cd-d5a9072a470b",
         "type": "length",
         "name_raw": "Lines on A-ARQ-CIELO FALSO",
         "layer_raw": "A-ARQ-CIELO FALSO",
@@ -1278,7 +1294,7 @@
     ],
     "matched_items": [
       {
-        "id": "f5254b87-95b7-4dcc-bf3c-2a561106d65d",
+        "id": "4ac55d56-a9d6-4fbd-94cd-d5a9072a470b",
         "type": "length",
         "name_raw": "Lines on A-ARQ-CIELO FALSO",
         "layer_raw": "A-ARQ-CIELO FALSO",
@@ -1294,7 +1310,7 @@
     "match_confidence": 0.7556418617731854,
     "confidence": "medium",
     "match_reason": "Type-matched layer \"A-ARQ-CIELO FALSO\" (76%) | Keywords: [cielo, volcanita] | Geometry: 0.35 m², 481.32 m, 39 blocks | Derivada: Largo * 2.4m (default)",
-    "qty_final": null,
+    "qty_final": 571.2086752102244,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -1326,13 +1342,13 @@
     ]
   },
   {
-    "id": "2bc2b921-83f5-42cf-ac42-407dd0e1426a",
+    "id": "85cce58c-7e4f-4b58-82b1-64fa025af8fa",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "f5254b87-95b7-4dcc-bf3c-2a561106d65d",
+        "id": "4ac55d56-a9d6-4fbd-94cd-d5a9072a470b",
         "type": "length",
         "name_raw": "Lines on A-ARQ-CIELO FALSO",
         "layer_raw": "A-ARQ-CIELO FALSO",
@@ -1347,7 +1363,7 @@
     ],
     "matched_items": [
       {
-        "id": "f5254b87-95b7-4dcc-bf3c-2a561106d65d",
+        "id": "4ac55d56-a9d6-4fbd-94cd-d5a9072a470b",
         "type": "length",
         "name_raw": "Lines on A-ARQ-CIELO FALSO",
         "layer_raw": "A-ARQ-CIELO FALSO",
@@ -1363,7 +1379,7 @@
     "match_confidence": 0.7556418617731854,
     "confidence": "medium",
     "match_reason": "Type-matched layer \"A-ARQ-CIELO FALSO\" (76%) | Keywords: [cielo, volcanita] | Geometry: 0.35 m², 481.32 m, 39 blocks | Derivada: Largo * 2.4m (default)",
-    "qty_final": null,
+    "qty_final": 571.2086752102244,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -1395,13 +1411,13 @@
     ]
   },
   {
-    "id": "241b4a2a-57c2-486c-83ec-35cb42758d01",
+    "id": "c49f230c-58cc-4d80-ad77-7ad9d4dc2af9",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm",
     "excel_unit": "ml",
     "source_items": [
       {
-        "id": "f5254b87-95b7-4dcc-bf3c-2a561106d65d",
+        "id": "4ac55d56-a9d6-4fbd-94cd-d5a9072a470b",
         "type": "length",
         "name_raw": "Lines on A-ARQ-CIELO FALSO",
         "layer_raw": "A-ARQ-CIELO FALSO",
@@ -1416,7 +1432,7 @@
     ],
     "matched_items": [
       {
-        "id": "f5254b87-95b7-4dcc-bf3c-2a561106d65d",
+        "id": "4ac55d56-a9d6-4fbd-94cd-d5a9072a470b",
         "type": "length",
         "name_raw": "Lines on A-ARQ-CIELO FALSO",
         "layer_raw": "A-ARQ-CIELO FALSO",
@@ -1432,7 +1448,7 @@
     "match_confidence": 0.68,
     "confidence": "medium",
     "match_reason": "Matched layer \"A-ARQ-CIELO FALSO\" (68%) | Keywords: [cenefa] | Geometry: 0.35 m², 481.32 m, 39 blocks",
-    "qty_final": null,
+    "qty_final": 238.00361467092688,
     "price_candidates": [],
     "status": "pending",
     "status_reason": "Medium confidence - review recommended (68%)",
@@ -1458,7 +1474,7 @@
     ]
   },
   {
-    "id": "9fd1c8b3-3456-486c-91ea-f121a60350dd",
+    "id": "e18d6b2b-1be3-4dc5-a023-cc87a97e28fd",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Pasarela de mantención montante estructural según detalle desde gatera hasta cortina de rollo según ",
     "excel_unit": "ml",
@@ -1467,35 +1483,34 @@
     "match_confidence": 0.052140569493556166,
     "confidence": "low",
     "match_reason": "Matched layer \"MB-ELEV 2\" (5%) | Geometry: 81.13 m², 1038.60 m, 1181 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "2482d182-8373-40df-a0e6-57295621324a",
+        "id": "96da862b-0a7f-4b9a-b28b-c5efcf4da28c",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on MB-ELEV 2\" from layer \"MB-ELEV 2\"",
         "payload": {
-          "itemId": "8e2500dc-ab8d-4eec-bd9b-2c25b0e722eb",
+          "itemId": "447589b1-1f1e-4b0a-9c65-b61d15b4e93d",
           "layer": "MB-ELEV 2",
           "name": "Lines on MB-ELEV 2"
         },
         "confidence": "low"
       },
       {
-        "id": "87a49777-fec7-4386-b9d7-69fcd97e7000",
+        "id": "dd6f006c-67e0-4b94-ac03-a71214c515dc",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "0018aaf8-1c53-4ae7-b739-1b22f952a426",
+        "id": "59fe4a30-9026-42da-8406-ab064507960d",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -1521,10 +1536,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "8bdddf7c-f7dc-462b-97e1-6065aa4be36c",
+    "id": "63ddd55c-14fc-498a-9cb1-be028aa8685d",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Refuerzos metalicos para instalacion rollo y guias cortina metalica",
     "excel_unit": "gl",
@@ -1533,35 +1551,34 @@
     "match_confidence": 0.09097946174900662,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (9%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "388daa90-5980-496f-89cc-9c331fff75ed",
+        "id": "eedb43f9-13d2-4826-904e-558de08ed9c3",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "2719b761-22c2-44e2-b788-c531360eb067",
+        "id": "7acea7f6-c376-4ceb-9ec1-34297c2cbe43",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on MB-ELEV 2\" from layer \"MB-ELEV 2\"",
         "payload": {
-          "itemId": "8e2500dc-ab8d-4eec-bd9b-2c25b0e722eb",
+          "itemId": "447589b1-1f1e-4b0a-9c65-b61d15b4e93d",
           "layer": "MB-ELEV 2",
           "name": "Lines on MB-ELEV 2"
         },
         "confidence": "low"
       },
       {
-        "id": "5b9b74d7-45a0-4f84-baab-c1cfe13edd53",
+        "id": "48413e8b-d1b5-4b64-bcdd-aff9d707a8f3",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -1587,16 +1604,19 @@
         "score_type": 0,
         "qty_if_used": 454.07948236831595
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "11c44762-6ef2-4cf7-8405-9609cf344016",
+    "id": "8367b60b-2403-4857-8767-aa87952600c7",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Tapa de inspeccion clasica para cielos de yeso carton 60x60cms color blanco espesor 15mm marca SKYHO",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "f5254b87-95b7-4dcc-bf3c-2a561106d65d",
+        "id": "4ac55d56-a9d6-4fbd-94cd-d5a9072a470b",
         "type": "length",
         "name_raw": "Lines on A-ARQ-CIELO FALSO",
         "layer_raw": "A-ARQ-CIELO FALSO",
@@ -1611,7 +1631,7 @@
     ],
     "matched_items": [
       {
-        "id": "f5254b87-95b7-4dcc-bf3c-2a561106d65d",
+        "id": "4ac55d56-a9d6-4fbd-94cd-d5a9072a470b",
         "type": "length",
         "name_raw": "Lines on A-ARQ-CIELO FALSO",
         "layer_raw": "A-ARQ-CIELO FALSO",
@@ -1627,7 +1647,7 @@
     "match_confidence": 0.85,
     "confidence": "high",
     "match_reason": "Matched layer \"A-ARQ-CIELO FALSO\" (85%) | Keywords: [cielo, cielos] | Geometry: 0.35 m², 481.32 m, 39 blocks",
-    "qty_final": null,
+    "qty_final": 238.00361467092688,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -1670,11 +1690,12 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 238.00361467092688 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 238.00361467092688 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "fe17a51a-3503-4dd9-b85e-9350c2e4872c",
+    "id": "694ab46a-e608-4100-8ada-135a83019bab",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Otros no considerados en CIELOS",
     "excel_unit": "gl",
@@ -1683,13 +1704,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "bc0ae027-0e33-4f9e-926c-15cd1ac201c8",
+        "id": "c17b807a-428f-4409-9481-e6148b121bb6",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -1705,10 +1725,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with GLOBAL geometry support for \"gl\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "e587b75f-846d-4810-b4aa-2b5e2f574f6b",
+    "id": "61a06383-b1a6-410a-9ed0-d0ed98bef436",
     "excel_sheet": "FinalRun",
     "excel_item_text": "PINTURAS Y REVESTIMIENTOS DE MURO",
     "excel_unit": "gl",
@@ -1717,24 +1740,23 @@
     "match_confidence": 0.17885061991448936,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_SISTEMAS ELECTRICOS\" (18%) | Geometry: 2.81 m², 80.23 m, 27 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "08563a53-aa7c-40aa-b563-2e7faebe7a22",
+        "id": "29364914-94a3-452b-9e0d-1c75a5d86cde",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_SISTEMAS ELECTRICOS\" from layer \"FA_SISTEMAS ELECTRICOS\"",
         "payload": {
-          "itemId": "15aff6d7-699e-477e-9c65-03823df66b60",
+          "itemId": "1f830932-d70a-4bf5-a2d6-8ab32b6978de",
           "layer": "FA_SISTEMAS ELECTRICOS",
           "name": "Lines on FA_SISTEMAS ELECTRICOS"
         },
         "confidence": "low"
       },
       {
-        "id": "a4f08642-1d7b-42aa-b6a0-cb551029a08c",
+        "id": "71d1b0d2-04c9-4b30-8cb3-17badce06d7b",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -1754,16 +1776,19 @@
         "score_type": 0,
         "qty_if_used": 26.960728831833315
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "fc72ffe6-e709-4607-8dd8-3dacaace316a",
+    "id": "fdb7d9bb-7222-460f-86fd-26eb8843270e",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Empaste y huincha de todos los tabiques de yeso carton",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -1778,7 +1803,7 @@
     ],
     "matched_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -1794,7 +1819,7 @@
     "match_confidence": 1,
     "confidence": "high",
     "match_reason": "Type-matched layer \"FA_TABIQUES\" (100%) | Keywords: [tabique, tab, tabiques] | Geometry: 0.00 m², 5.95 m, 1 blocks | Derived 5.62 m² from 2.34m × 2.4m (default height)",
-    "qty_final": null,
+    "qty_final": 5.62360230072211,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -1840,7 +1865,7 @@
     ]
   },
   {
-    "id": "07c19dc0-c3bf-4226-8865-2f9515d1a5c1",
+    "id": "323b14fd-b47b-4129-b874-492315f5b952",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Empaste y huincha de todos los cielos ",
     "excel_unit": "m2",
@@ -1849,13 +1874,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_needs_layer_pick",
     "status_reason": "No suitable area layers found - please select a layer manually",
     "suggestions": [
       {
-        "id": "094cb87a-abe3-431d-a3e1-7c5f7603f945",
+        "id": "67eab64f-5eb5-4fe2-928d-f8cd6e42b549",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -1874,16 +1898,19 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with AREA geometry support for \"m2\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "812ab836-684e-4d74-bd98-5c37a3cc00a6",
+    "id": "a2a66b21-a39a-4133-b157-b1d16f0d3bad",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -1898,7 +1925,7 @@
     ],
     "matched_items": [
       {
-        "id": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+        "id": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
         "type": "length",
         "name_raw": "Lines on FA_TABIQUES",
         "layer_raw": "FA_TABIQUES",
@@ -1914,7 +1941,7 @@
     "match_confidence": 0.8800000000000001,
     "confidence": "high",
     "match_reason": "Type-matched layer \"FA_TABIQUES\" (88%) | Keywords: [tabique, tab, tabiques] | Geometry: 0.00 m², 5.95 m, 1 blocks | Derived 5.62 m² from 2.34m × 2.4m (default height)",
-    "qty_final": null,
+    "qty_final": 5.62360230072211,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -1953,7 +1980,7 @@
     ]
   },
   {
-    "id": "2623ad00-88c0-4e98-9718-0cca07e9c7f7",
+    "id": "d9c51b8f-c077-44ab-87fc-0644f7224d84",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural",
     "excel_unit": "m2",
@@ -1962,39 +1989,38 @@
     "match_confidence": 0.07397616464195297,
     "confidence": "low",
     "match_reason": "Type-matched layer \"FA_COLOR 12\" (7%) | Geometry: 1.09 m², 101.40 m, 1 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_needs_layer_pick",
     "status_reason": "No suitable area layers found - please select a layer manually",
     "suggestions": [
       {
-        "id": "a6c93f61-a50a-4293-8175-e882bc680c03",
+        "id": "14ab4c01-bd54-4fcf-9072-69e78b5a194c",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_COLOR 12\" from layer \"FA_COLOR 12\"",
         "payload": {
-          "itemId": "e361acd3-d9a0-4d03-b4a6-20c618ef5d34",
+          "itemId": "d9ced060-6ba6-40ba-8c54-73b887a72b95",
           "layer": "FA_COLOR 12",
           "name": "Lines on FA_COLOR 12"
         },
         "confidence": "low"
       },
       {
-        "id": "92c5b7ec-a74a-480e-9dbe-298c366df0cf",
+        "id": "4fbf3f71-8c2e-4958-81db-5faac03bf49d",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Area on FA_ILUMINARIAS\" from layer \"FA_ILUMINARIAS\"",
         "payload": {
-          "itemId": "4af1eb1f-9b9f-48f1-b0d3-6e3b0da2a2f1",
+          "itemId": "92236b59-b477-4b2c-bd0d-f259d4ceefc0",
           "layer": "FA_ILUMINARIAS",
           "name": "Area on FA_ILUMINARIAS"
         },
         "confidence": "low"
       },
       {
-        "id": "2cce64e8-8e38-4c66-953e-fa9530181063",
+        "id": "a7c08065-1fe8-4469-8dbc-766c43f61660",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_CORTES\" from layer \"FA_CORTES\"",
         "payload": {
-          "itemId": "8cebaf51-0c4e-43cb-9bdf-1a1d4748874c",
+          "itemId": "6938f24a-aeac-4616-b654-5432cbeec0c3",
           "layer": "FA_CORTES",
           "name": "Lines on FA_CORTES"
         },
@@ -2041,10 +2067,13 @@
         "score_type": 0,
         "qty_if_used": 7.77614938608457
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "c2e9235f-b629-4bf3-88d3-7473ba5c8e28",
+    "id": "96a715db-7733-44a9-a0f2-1181538cdda2",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Pintura latex extracubriente blanco en cielo bodega",
     "excel_unit": "m2",
@@ -2053,39 +2082,38 @@
     "match_confidence": 0.10349332268901404,
     "confidence": "low",
     "match_reason": "Type-matched layer \"FA_COLOR 12\" (10%) | Geometry: 1.09 m², 101.40 m, 1 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_needs_layer_pick",
     "status_reason": "No suitable area layers found - please select a layer manually",
     "suggestions": [
       {
-        "id": "5d98f365-b920-4a74-9179-6d6f96d27404",
+        "id": "597dfe8f-37f7-4787-8686-3fe9f3427005",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_COLOR 12\" from layer \"FA_COLOR 12\"",
         "payload": {
-          "itemId": "e361acd3-d9a0-4d03-b4a6-20c618ef5d34",
+          "itemId": "d9ced060-6ba6-40ba-8c54-73b887a72b95",
           "layer": "FA_COLOR 12",
           "name": "Lines on FA_COLOR 12"
         },
         "confidence": "low"
       },
       {
-        "id": "8c2ad81f-1b12-4c4f-9a4b-a66defddee9b",
+        "id": "5a83a20a-c1e8-4164-8696-354d2ced44d5",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Area on FA_ILUMINARIAS\" from layer \"FA_ILUMINARIAS\"",
         "payload": {
-          "itemId": "4af1eb1f-9b9f-48f1-b0d3-6e3b0da2a2f1",
+          "itemId": "92236b59-b477-4b2c-bd0d-f259d4ceefc0",
           "layer": "FA_ILUMINARIAS",
           "name": "Area on FA_ILUMINARIAS"
         },
         "confidence": "low"
       },
       {
-        "id": "a71cc81a-b7a3-4942-af26-359edfeea137",
+        "id": "e7e0da6a-e862-452b-ad4c-a07ba49001b0",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_CORTES\" from layer \"FA_CORTES\"",
         "payload": {
-          "itemId": "8cebaf51-0c4e-43cb-9bdf-1a1d4748874c",
+          "itemId": "6938f24a-aeac-4616-b654-5432cbeec0c3",
           "layer": "FA_CORTES",
           "name": "Lines on FA_CORTES"
         },
@@ -2132,10 +2160,13 @@
         "score_type": 0,
         "qty_if_used": 7.77614938608457
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "9c4fe0d7-448d-48f4-aa04-ff7951633ddf",
+    "id": "3cd3da01-6277-494b-9e5e-23429508b37e",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Pintura QUARZO con sellador acrilico + estuco SIP + revestimiento gres segun indicacion fabricante. ",
     "excel_unit": "m2",
@@ -2144,28 +2175,27 @@
     "match_confidence": 0.3513054512854346,
     "confidence": "low",
     "match_reason": "Type-matched layer \"FA_TABIQUES\" (35%) | Geometry: 0.00 m², 5.95 m, 1 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_needs_layer_pick",
     "status_reason": "No suitable area layers found - please select a layer manually",
     "suggestions": [
       {
-        "id": "74cb9cf0-742a-4ffa-affc-13077cf69589",
+        "id": "6a6adb6b-867d-4f03-889b-e03ed17e392f",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_TABIQUES\" from layer \"FA_TABIQUES\"",
         "payload": {
-          "itemId": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+          "itemId": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
           "layer": "FA_TABIQUES",
           "name": "Lines on FA_TABIQUES"
         },
         "confidence": "medium"
       },
       {
-        "id": "ade52808-902f-407f-bf2a-6f6d4a5a1299",
+        "id": "5dbbbdd9-04e1-4885-9814-9871ce0b5a4c",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on MB-ELEV 2\" from layer \"MB-ELEV 2\"",
         "payload": {
-          "itemId": "8e2500dc-ab8d-4eec-bd9b-2c25b0e722eb",
+          "itemId": "447589b1-1f1e-4b0a-9c65-b61d15b4e93d",
           "layer": "MB-ELEV 2",
           "name": "Lines on MB-ELEV 2"
         },
@@ -2195,10 +2225,13 @@
         "score_type": 0,
         "qty_if_used": 2.3431676253008793
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "b5a2f462-e37a-4121-80bb-36d7c42e8157",
+    "id": "f987ba7e-c5c8-424d-bad9-b0567672d52f",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Otros no considerados en PINTURAS Y REVESTIMIENTOS DE MURO",
     "excel_unit": "gl",
@@ -2207,35 +2240,34 @@
     "match_confidence": 0.08224766866880528,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_SISTEMAS ELECTRICOS\" (8%) | Geometry: 2.81 m², 80.23 m, 27 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "c1fc4dba-2e18-4552-b32e-1beacf21c4e2",
+        "id": "f79eef01-efbc-42a4-a6fe-420dd67316db",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_SISTEMAS ELECTRICOS\" from layer \"FA_SISTEMAS ELECTRICOS\"",
         "payload": {
-          "itemId": "15aff6d7-699e-477e-9c65-03823df66b60",
+          "itemId": "1f830932-d70a-4bf5-a2d6-8ab32b6978de",
           "layer": "FA_SISTEMAS ELECTRICOS",
           "name": "Lines on FA_SISTEMAS ELECTRICOS"
         },
         "confidence": "low"
       },
       {
-        "id": "5b8bcb06-a0d6-4d7b-8afe-030f6eec7a90",
+        "id": "05ab1782-8bba-4fda-a865-2b369c201d7e",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on A-ARQ-CIELO FALSO\" from layer \"A-ARQ-CIELO FALSO\"",
         "payload": {
-          "itemId": "f5254b87-95b7-4dcc-bf3c-2a561106d65d",
+          "itemId": "4ac55d56-a9d6-4fbd-94cd-d5a9072a470b",
           "layer": "A-ARQ-CIELO FALSO",
           "name": "Lines on A-ARQ-CIELO FALSO"
         },
         "confidence": "low"
       },
       {
-        "id": "debe3e8d-2cea-40de-ac44-1b3364e81b77",
+        "id": "0be701ac-b737-4322-9aa3-fea8a98fe726",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -2261,16 +2293,19 @@
         "score_type": 0,
         "qty_if_used": 238.00361467092688
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "22fe6b83-c85a-4f29-bac1-8f9c88ca4fe4",
+    "id": "c49b061f-1d77-497d-a297-ff1e0164ed8d",
     "excel_sheet": "FinalRun",
     "excel_item_text": "PAVIMENTOS ",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "0379ff20-9d8b-4c79-b4fb-acc2f8e60c2c",
+        "id": "fedfd389-e207-4df1-b8ed-ef0519b6f0bf",
         "type": "length",
         "name_raw": "Lines on EJ - Equipamento Solo",
         "layer_raw": "EJ - Equipamento Solo",
@@ -2285,7 +2320,7 @@
     ],
     "matched_items": [
       {
-        "id": "0379ff20-9d8b-4c79-b4fb-acc2f8e60c2c",
+        "id": "fedfd389-e207-4df1-b8ed-ef0519b6f0bf",
         "type": "length",
         "name_raw": "Lines on EJ - Equipamento Solo",
         "layer_raw": "EJ - Equipamento Solo",
@@ -2301,7 +2336,7 @@
     "match_confidence": 0.8911599661336955,
     "confidence": "high",
     "match_reason": "Matched layer \"EJ - Equipamento Solo\" (89%) | Geometry: 0.54 m², 13.50 m",
-    "qty_final": null,
+    "qty_final": 6.5899999999722985,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -2338,17 +2373,18 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 6.5899999999722985 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 6.5899999999722985 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "8af80045-f6eb-4f68-b5e4-e13e0015e834",
+    "id": "5151f8b8-aed4-4b8b-afd4-31392e285695",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Mortero nivelador",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "081f4b22-3de4-4a49-843c-94800f20803b",
+        "id": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
         "type": "length",
         "name_raw": "Lines on FA_0.20",
         "layer_raw": "FA_0.20",
@@ -2363,7 +2399,7 @@
     ],
     "matched_items": [
       {
-        "id": "081f4b22-3de4-4a49-843c-94800f20803b",
+        "id": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
         "type": "length",
         "name_raw": "Lines on FA_0.20",
         "layer_raw": "FA_0.20",
@@ -2379,7 +2415,7 @@
     "match_confidence": 0.9562910976639751,
     "confidence": "high",
     "match_reason": "Type-matched layer \"FA_0.20\" (96%) | Keywords: [mortero] | Geometry: 0.96 m², 151.20 m | Derivada: Largo * 2.4m (default)",
-    "qty_final": null,
+    "qty_final": 181.44565636348742,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -2432,7 +2468,7 @@
     ]
   },
   {
-    "id": "7f2f4c44-2e31-453e-b35c-e8a65ac1c223",
+    "id": "924ead02-fbc8-4971-99a7-80c40c824ef9",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra ma",
     "excel_unit": "m2",
@@ -2441,24 +2477,23 @@
     "match_confidence": 0.15406898227475424,
     "confidence": "low",
     "match_reason": "Type-matched layer \"LDS-ELECTRICIDAD\" (15%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_needs_layer_pick",
     "status_reason": "No suitable area layers found - please select a layer manually",
     "suggestions": [
       {
-        "id": "6979a11e-29c7-4178-a2de-3f31b643ec10",
+        "id": "eea84c3d-c570-4cbf-b158-abb4aa05eb44",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "7018e86b-6340-4e3c-9783-cfa2ba673acd",
+        "id": "b510b6f6-9c10-45fc-baaf-14436d89d633",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -2478,10 +2513,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "acccdb7a-b558-49f5-8c8c-6005fa369087",
+    "id": "e86d48b2-6439-44f9-af49-1588af3c8a89",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra ",
     "excel_unit": "m2",
@@ -2490,35 +2528,34 @@
     "match_confidence": 0.1835568291608844,
     "confidence": "low",
     "match_reason": "Type-matched layer \"FA_MUEBLES PROYECCION\" (18%) | Geometry: 74.95 m², 810.18 m, 1 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_needs_layer_pick",
     "status_reason": "No suitable area layers found - please select a layer manually",
     "suggestions": [
       {
-        "id": "a2721b7b-65a3-4c48-bbee-f4639ba94ad4",
+        "id": "d9b0149a-0181-4df4-86d9-cc87bce6dfe3",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_MUEBLES PROYECCION\" from layer \"FA_MUEBLES PROYECCION\"",
         "payload": {
-          "itemId": "c419a61b-d334-4304-b1e1-00a1d88ffcdb",
+          "itemId": "decc7cc1-6353-431b-9486-662a6f5af615",
           "layer": "FA_MUEBLES PROYECCION",
           "name": "Lines on FA_MUEBLES PROYECCION"
         },
         "confidence": "low"
       },
       {
-        "id": "1cf5631c-5256-4326-8cee-c3ae29718797",
+        "id": "05204ea8-297a-4f38-ab2b-e8327f01e0ef",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "1782538a-3ffd-48f6-a2e7-a6b12dd7bd7f",
+        "id": "d0e9b814-3dba-4eb8-974b-067abea7581b",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -2544,10 +2581,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "2c39b424-183a-4093-8393-d4df4f7ba880",
+    "id": "be12f3b1-ee6c-4704-bca5-e408fe668aa4",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante pr",
     "excel_unit": "m2",
@@ -2556,24 +2596,23 @@
     "match_confidence": 0.15406898227475424,
     "confidence": "low",
     "match_reason": "Type-matched layer \"LDS-ELECTRICIDAD\" (15%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_needs_layer_pick",
     "status_reason": "No suitable area layers found - please select a layer manually",
     "suggestions": [
       {
-        "id": "e8807161-29e9-4b0f-964b-3bba278b7433",
+        "id": "1cf76092-d5e2-4306-9354-142358e4bdbf",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "1c0801c3-e855-4455-85da-cd4fac0a0357",
+        "id": "60ef810e-c8cd-4c6b-ade7-7c7295be6412",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -2593,16 +2632,19 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "6de8e114-f5ca-4c66-a648-ea7923ce77fa",
+    "id": "5683353c-9eab-493f-8e1d-757e1dd0a7b2",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Pieza de marmol en acceso color Rosso Asiago acabado opaco con logo plancha de bronce e=2mm acabado ",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "e361acd3-d9a0-4d03-b4a6-20c618ef5d34",
+        "id": "d9ced060-6ba6-40ba-8c54-73b887a72b95",
         "type": "length",
         "name_raw": "Lines on FA_COLOR 12",
         "layer_raw": "FA_COLOR 12",
@@ -2617,7 +2659,7 @@
     ],
     "matched_items": [
       {
-        "id": "e361acd3-d9a0-4d03-b4a6-20c618ef5d34",
+        "id": "d9ced060-6ba6-40ba-8c54-73b887a72b95",
         "type": "length",
         "name_raw": "Lines on FA_COLOR 12",
         "layer_raw": "FA_COLOR 12",
@@ -2633,7 +2675,7 @@
     "match_confidence": 0.9582012373923119,
     "confidence": "high",
     "match_reason": "Type-matched layer \"FA_COLOR 12\" (96%) | Keywords: [color] | Geometry: 1.09 m², 101.40 m, 1 blocks | Derivada: Largo * 2.4m (default)",
-    "qty_final": null,
+    "qty_final": 120.27564228905868,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -2665,13 +2707,13 @@
     ]
   },
   {
-    "id": "e9967954-1298-424f-99c2-3755cca2e37a",
+    "id": "c580efa5-0375-4996-ae84-42ebc05c35c6",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Tarima de marmol en vitrinas color Rosso Asiago acabado opaco, considera estructura interior",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "e361acd3-d9a0-4d03-b4a6-20c618ef5d34",
+        "id": "d9ced060-6ba6-40ba-8c54-73b887a72b95",
         "type": "length",
         "name_raw": "Lines on FA_COLOR 12",
         "layer_raw": "FA_COLOR 12",
@@ -2686,7 +2728,7 @@
     ],
     "matched_items": [
       {
-        "id": "e361acd3-d9a0-4d03-b4a6-20c618ef5d34",
+        "id": "d9ced060-6ba6-40ba-8c54-73b887a72b95",
         "type": "length",
         "name_raw": "Lines on FA_COLOR 12",
         "layer_raw": "FA_COLOR 12",
@@ -2702,7 +2744,7 @@
     "match_confidence": 0.9582012373923119,
     "confidence": "high",
     "match_reason": "Type-matched layer \"FA_COLOR 12\" (96%) | Keywords: [color] | Geometry: 1.09 m², 101.40 m, 1 blocks | Derivada: Largo * 2.4m (default)",
-    "qty_final": null,
+    "qty_final": 120.27564228905868,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -2731,13 +2773,13 @@
     ]
   },
   {
-    "id": "8b115979-94ab-4e9d-a717-4aca8a9b44cb",
+    "id": "382df9a9-5040-4e6c-a36e-620b002aaeae",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm.",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "081f4b22-3de4-4a49-843c-94800f20803b",
+        "id": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
         "type": "length",
         "name_raw": "Lines on FA_0.20",
         "layer_raw": "FA_0.20",
@@ -2752,7 +2794,7 @@
     ],
     "matched_items": [
       {
-        "id": "081f4b22-3de4-4a49-843c-94800f20803b",
+        "id": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
         "type": "length",
         "name_raw": "Lines on FA_0.20",
         "layer_raw": "FA_0.20",
@@ -2768,7 +2810,7 @@
     "match_confidence": 0.9562910976639751,
     "confidence": "high",
     "match_reason": "Type-matched layer \"FA_0.20\" (96%) | Keywords: [pavimento] | Geometry: 0.96 m², 151.20 m | Derivada: Largo * 2.4m (default)",
-    "qty_final": null,
+    "qty_final": 181.44565636348742,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -2807,13 +2849,13 @@
     ]
   },
   {
-    "id": "aa19723e-43df-4aae-be66-682c324ecb4b",
+    "id": "87f2d2b7-69bb-488a-92db-58aad436deb8",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Provision e instalacion pavimento IDEM MALL",
     "excel_unit": "m2",
     "source_items": [
       {
-        "id": "081f4b22-3de4-4a49-843c-94800f20803b",
+        "id": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
         "type": "length",
         "name_raw": "Lines on FA_0.20",
         "layer_raw": "FA_0.20",
@@ -2828,7 +2870,7 @@
     ],
     "matched_items": [
       {
-        "id": "081f4b22-3de4-4a49-843c-94800f20803b",
+        "id": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
         "type": "length",
         "name_raw": "Lines on FA_0.20",
         "layer_raw": "FA_0.20",
@@ -2844,7 +2886,7 @@
     "match_confidence": 0.9562910976639751,
     "confidence": "high",
     "match_reason": "Type-matched layer \"FA_0.20\" (96%) | Keywords: [pavimento] | Geometry: 0.96 m², 151.20 m | Derivada: Largo * 2.4m (default)",
-    "qty_final": null,
+    "qty_final": 181.44565636348742,
     "height_factor": 2.4,
     "price_candidates": [],
     "status": "pending",
@@ -2882,7 +2924,7 @@
     ]
   },
   {
-    "id": "b476602f-108c-4da4-b571-5b16445cf315",
+    "id": "20a00d30-2f1b-44c2-8c9e-4e4577fbc8ce",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce",
     "excel_unit": "ml",
@@ -2891,35 +2933,34 @@
     "match_confidence": 0.06926896841012944,
     "confidence": "low",
     "match_reason": "Type-matched layer \"FA_REFUERZOS\" (7%) | Geometry: 15.12 m",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "d9dfdcf3-af5e-4395-a99d-eb1f2f812813",
+        "id": "1d10cab4-8608-4289-a5b0-30ef68854776",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Length on FA_REFUERZOS\" from layer \"FA_REFUERZOS\"",
         "payload": {
-          "itemId": "c487d44a-8805-4312-b00c-19b1c363df79",
+          "itemId": "dd8b283c-47e0-45d6-a0f5-85138ef00cbd",
           "layer": "FA_REFUERZOS",
           "name": "Length on FA_REFUERZOS"
         },
         "confidence": "low"
       },
       {
-        "id": "16930377-6514-4d0e-8c53-17df2a6f8a9d",
+        "id": "d4a5f4db-c26b-43a0-9702-e582f2442998",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "615fbcfc-9679-4ba8-a0bc-3358d1a87e10",
+        "id": "78506577-28ba-45ae-9a88-271669859058",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -2945,10 +2986,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "522adc41-4939-4e01-a137-1e6aaf426402",
+    "id": "cbf9da04-8771-436e-b418-afae48a89bf0",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10",
     "excel_unit": "ml",
@@ -2957,13 +3001,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "5a449693-74e2-48b7-9787-6c31b97bcfef",
+        "id": "4d571df8-5f16-4e1e-a68f-f4ad36c787ad",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -2982,16 +3025,19 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with LENGTH geometry support for \"ml\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "6a84ef20-52ed-4e70-bbec-d42da7663101",
+    "id": "fb80bf78-af2f-4714-a548-0a6394a6b154",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Otros no considerados en PAVIMENTOS",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "081f4b22-3de4-4a49-843c-94800f20803b",
+        "id": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
         "type": "length",
         "name_raw": "Lines on FA_0.20",
         "layer_raw": "FA_0.20",
@@ -3006,7 +3052,7 @@
     ],
     "matched_items": [
       {
-        "id": "081f4b22-3de4-4a49-843c-94800f20803b",
+        "id": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
         "type": "length",
         "name_raw": "Lines on FA_0.20",
         "layer_raw": "FA_0.20",
@@ -3022,7 +3068,7 @@
     "match_confidence": 0.40325960438221564,
     "confidence": "medium",
     "match_reason": "Matched layer \"FA_0.20\" (40%) | Keywords: [pavimento] | Geometry: 0.96 m², 151.20 m",
-    "qty_final": null,
+    "qty_final": 75.60235681811976,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -3041,11 +3087,12 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 75.60235681811976 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 75.60235681811976 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "77f5002e-d98f-4477-a685-d98d429aa578",
+    "id": "d7380916-cd10-44ca-8f12-cd428f19a0d8",
     "excel_sheet": "FinalRun",
     "excel_item_text": "PUERTAS Y QUINCALLERIA",
     "excel_unit": "gl",
@@ -3054,35 +3101,34 @@
     "match_confidence": 0.26181124118429655,
     "confidence": "low",
     "match_reason": "Matched layer \"A-ARQ-MUEBLES\" (26%) | Geometry: 0.04 m², 17.06 m",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "734315a2-566e-4b6b-a42e-6cc7a2683b18",
+        "id": "ac451e26-5e08-4cb3-9f5c-d4c276a6bef8",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on A-ARQ-MUEBLES\" from layer \"A-ARQ-MUEBLES\"",
         "payload": {
-          "itemId": "ab9f45c8-f9f7-4680-b374-3ea04ed8175f",
+          "itemId": "6f215ee4-b72b-42b0-9d82-f971890de3cd",
           "layer": "A-ARQ-MUEBLES",
           "name": "Lines on A-ARQ-MUEBLES"
         },
         "confidence": "low"
       },
       {
-        "id": "9bcabf82-9222-4575-bde1-687df321244c",
+        "id": "f77bde9f-1fc2-422d-acbb-35c8facc4d1e",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "f2edc0ca-a188-43c4-8df8-05b2ecf3d491",
+        "id": "3ac18035-beb6-4b8e-9682-13aa6e31c9dd",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3108,10 +3154,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "38559810-382f-4327-93cc-183879f1e007",
+    "id": "40a7df19-2d86-4aa6-838f-ffbcd9e30380",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Brazo Hidráulico puerta bodega",
     "excel_unit": "un",
@@ -3120,13 +3169,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "389ff84a-690b-4f1a-a793-697541b22217",
+        "id": "b1b299cc-b34e-4a07-9426-b0fd3f1cef77",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3142,10 +3190,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "638355e6-f871-4936-8b8b-9f09e7c9a19e",
+    "id": "8c5b3477-4fe2-47ec-aa55-cd610c877508",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Otros no considerados en PUERTAS Y QUINCALLERIA",
     "excel_unit": "gl",
@@ -3154,24 +3205,23 @@
     "match_confidence": 0.06627316376880943,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (7%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "e9b6d58f-67f4-4ebc-8dfb-c37d7b923b8f",
+        "id": "61f85b5a-f2d4-46d4-9cf2-c783dfc3497e",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "fdf05ec3-e572-4583-abbb-aaed4bc63580",
+        "id": "5eb98e21-1f5b-4650-8c77-a98d4aca70f3",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3191,16 +3241,19 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "a253febc-b7eb-442e-a5fd-760139e68f1b",
+    "id": "1cdf967a-e6cf-44a9-a305-c0ea6944b760",
     "excel_sheet": "FinalRun",
     "excel_item_text": "LUMINARIAS",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "4af1eb1f-9b9f-48f1-b0d3-6e3b0da2a2f1",
+        "id": "92236b59-b477-4b2c-bd0d-f259d4ceefc0",
         "type": "area",
         "name_raw": "Area on FA_ILUMINARIAS",
         "layer_raw": "FA_ILUMINARIAS",
@@ -3214,7 +3267,7 @@
     ],
     "matched_items": [
       {
-        "id": "4af1eb1f-9b9f-48f1-b0d3-6e3b0da2a2f1",
+        "id": "92236b59-b477-4b2c-bd0d-f259d4ceefc0",
         "type": "area",
         "name_raw": "Area on FA_ILUMINARIAS",
         "layer_raw": "FA_ILUMINARIAS",
@@ -3229,7 +3282,7 @@
     "match_confidence": 0.9999999543963084,
     "confidence": "high",
     "match_reason": "Matched layer \"FA_ILUMINARIAS\" (100%) | Geometry: 0.25 m², 4.06 m, 3 blocks",
-    "qty_final": null,
+    "qty_final": 0.25291667686939234,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -3272,11 +3325,12 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 0.25291667686939234 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 0.25291667686939234 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "82d7765a-3d9e-4526-8db2-0ef274b8434b",
+    "id": "66ae43f9-91a2-47d2-b678-61c6dc96f2c8",
     "excel_sheet": "FinalRun",
     "excel_item_text": "(D) Perfil de aluminio sobrepuesto rectangular. Material: Aluminio. Protección IP: IP20. Dimensiones",
     "excel_unit": "un",
@@ -3285,35 +3339,34 @@
     "match_confidence": 0.04616004220740866,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_PROYECCIÓN GATERAS\" (5%) | Geometry: 2.65 m², 34.98 m, 2 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "34e07391-489c-437a-a9e5-8a8d09bcbca8",
+        "id": "c77ae236-6b5b-4efb-a336-7784cfcaa266",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_PROYECCIÓN GATERAS\" from layer \"FA_PROYECCIÓN GATERAS\"",
         "payload": {
-          "itemId": "3c683c9a-695b-4b90-88e1-4fd275512ca7",
+          "itemId": "7123d0ef-1ec5-4f6f-83a8-edc50fd6e31e",
           "layer": "FA_PROYECCIÓN GATERAS",
           "name": "Lines on FA_PROYECCIÓN GATERAS"
         },
         "confidence": "low"
       },
       {
-        "id": "bf7b7fbf-d233-4e7b-b478-73d9e9a1c617",
+        "id": "961fc6c5-98e7-4140-b919-4bdc94be9c10",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "7203d0ef-c079-4bbf-a4ad-b9ac2be91aa3",
+        "id": "0cca6a82-62c4-4599-86c0-8e4f16e0cfc0",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3339,10 +3392,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "0976f744-8a70-4836-8d00-ff7b66d90598",
+    "id": "f223252c-a97f-46c9-a3ff-4daa98b09b2c",
     "excel_sheet": "FinalRun",
     "excel_item_text": "(D) Fuente de poder 12V 120W exterior. IP67 Voltaje de entrada: 220V, Voltaje de salida: 12V. Factor",
     "excel_unit": "un",
@@ -3351,13 +3407,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "47ba1bb9-e9c2-406a-a119-ee99d5febb42",
+        "id": "454cd7ba-f581-4e1f-a59b-f1953b28cf34",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3373,10 +3428,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "2053247d-d62a-4437-95cd-4481e3c3eb73",
+    "id": "b04809ea-377d-4dc7-a84f-204aa626c89b",
     "excel_sheet": "FinalRun",
     "excel_item_text": "(C) Foco riel magnético 6W 3.000°K NG Protección: IP20 Flujo: 600LM. Voltaje 48V. Apertura: 24°. Dim",
     "excel_unit": "un",
@@ -3385,13 +3443,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "431eb37e-4b56-48a1-b9f1-690a30316b6b",
+        "id": "a057f273-e930-4256-a09a-3c58acc38fee",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3410,10 +3467,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "ef1232c5-ed3c-470a-9fe9-8edf584e13b1",
+    "id": "19640a8a-ceef-4799-aa40-6fdd21776ea4",
     "excel_sheet": "FinalRun",
     "excel_item_text": "(G) Foco porta dicroico gu10 retraído fijo Base: 1xGU10 Voltaje: 220V Protección IP: IP20. Color de ",
     "excel_unit": "un",
@@ -3422,13 +3482,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "08e8134d-7007-4593-8332-4a098ff2683e",
+        "id": "8ff91f68-c09b-4983-90ca-00a83eb816b9",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3447,10 +3506,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "7ac1b2cf-c1d6-4a85-8e17-5b43908e6c3d",
+    "id": "f7be2976-0da1-470f-97de-0f8e0b971e73",
     "excel_sheet": "FinalRun",
     "excel_item_text": "(G) Dicroico PHILIPS LED 7W DIMEABLE. Base: GU10. Color de Luz: 2.700°K. Consumo: 7W Voltaje: 220V. ",
     "excel_unit": "un",
@@ -3459,13 +3521,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "b482a6db-79b4-4e86-bed0-c911639d24bd",
+        "id": "45cf5db2-2af6-4034-aed4-2b96ebaa1925",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3481,10 +3542,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "3e71b980-9d8d-42f3-b352-bc18ad5afb35",
+    "id": "d8efb847-bf15-4788-87a0-2955a67ec8c3",
     "excel_sheet": "FinalRun",
     "excel_item_text": "(E) Downlight LED redondo 3w luz cálida, Color negro. Diámetro equipo 5cms, diámetro perforación 4cm",
     "excel_unit": "un",
@@ -3493,13 +3557,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "cddb4969-c3c3-4a55-a3cf-56b208274bdd",
+        "id": "c19ea3e0-61e3-48f8-b822-da32284b1881",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3518,10 +3581,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "41bbc500-a8c3-4d4a-800c-1afa6e203106",
+    "id": "5b0a6914-ae5f-449d-8faa-473e870a332d",
     "excel_sheet": "FinalRun",
     "excel_item_text": "(H) Foco EROS15 LED SPOT dirigible EMB BLACK 15W Color de Luz: 3.000K / 4000K Voltaje: 220V Tipo de ",
     "excel_unit": "un",
@@ -3530,13 +3596,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "1e98a284-42b6-4d93-91b5-b04dd551c6d9",
+        "id": "35237407-952c-4b75-8eea-0df3387979ab",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3556,10 +3621,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "c7f419f4-49e2-4579-9bcf-6bbb131cf8c7",
+    "id": "27856cea-8f78-47a7-851d-8a1462168741",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Kit emergencia para foco embutido sala de ventas (90-120 min autonomía)",
     "excel_unit": "un",
@@ -3568,13 +3636,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "c677fd2d-6732-47fa-aba1-deeef72fe863",
+        "id": "2ab357c4-f713-4440-8e15-185b7563432f",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3593,10 +3660,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "471107d2-88c4-4326-8049-19ec2a48fa8f",
+    "id": "2c02f7ad-45d4-4183-bbb0-263ded94f05c",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Kit emergencia para riel sala de ventas (90-120 min autonomía)",
     "excel_unit": "un",
@@ -3605,13 +3675,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "1f90d69d-5f6f-4d47-a1dd-7714c4954530",
+        "id": "4a0bc9ee-82b4-4dad-b24f-501aa39e9d74",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3627,10 +3696,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "4053d356-6774-41f6-aa2d-de1628fdfa97",
+    "id": "df4b6711-d861-4c00-823d-d9093fbcbf25",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Lamparas bodega estanca LED 36W 4300 LM IP65",
     "excel_unit": "un",
@@ -3639,13 +3711,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "ddf18e09-13de-4818-9826-80f966f69d59",
+        "id": "820ee039-8e1e-4697-809e-e80b8f955966",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3664,10 +3735,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "b32cff9b-a921-4319-9520-b568482edc37",
+    "id": "e6fe4e70-9549-400e-b314-e0e8a9815a8c",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Lamparas bodega con kit emergencia (90-120 min autonomía)",
     "excel_unit": "un",
@@ -3676,13 +3750,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "969af77e-0303-4c25-9088-1f11236186e5",
+        "id": "c77c0f69-75ab-446d-8bb7-d30b7af2e6f1",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3701,10 +3774,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "c3d2a3b3-de4e-4295-b7a5-e0dbb9e51690",
+    "id": "4d32d6aa-d84b-49fa-bb52-e0a2faf9e89e",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65",
     "excel_unit": "un",
@@ -3713,13 +3789,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "612e8a4e-b753-4928-9687-0093e1c5e63d",
+        "id": "2222a9d5-546b-428e-9a41-72033c601e9c",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3738,10 +3813,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "d5c622b0-46c8-435e-8dd2-cad312ea5e7d",
+    "id": "480b66db-d2b5-418b-8a3e-ca26281e421e",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Letrero salida (señalética emergencia)",
     "excel_unit": "un",
@@ -3750,24 +3828,23 @@
     "match_confidence": 0.25,
     "confidence": "low",
     "match_reason": "Matched layer \"MB-ELEV 2\" (25%) | Geometry: 81.13 m², 1038.60 m, 1181 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "0181d03c-854f-410a-8d46-914975850616",
+        "id": "5c9c5c46-1f0c-434d-9c50-d2788aeb0635",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on MB-ELEV 2\" from layer \"MB-ELEV 2\"",
         "payload": {
-          "itemId": "8e2500dc-ab8d-4eec-bd9b-2c25b0e722eb",
+          "itemId": "447589b1-1f1e-4b0a-9c65-b61d15b4e93d",
           "layer": "MB-ELEV 2",
           "name": "Lines on MB-ELEV 2"
         },
         "confidence": "low"
       },
       {
-        "id": "1b1d47c3-753e-4543-9db1-4c06262623ac",
+        "id": "a4aa538e-123b-48e1-8944-ba85a3761bb7",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -3787,16 +3864,19 @@
         "score_type": 0,
         "qty_if_used": 454.07948236831595
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "fbd65e52-e5f8-4f27-866b-c513d355c26b",
+    "id": "4cc696a7-02ed-4f14-92c4-664e70242278",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Instalación de luminarias",
     "excel_unit": "un",
     "source_items": [
       {
-        "id": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+        "id": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
         "type": "length",
         "name_raw": "Lines on LDS-ELECTRICIDAD",
         "layer_raw": "LDS-ELECTRICIDAD",
@@ -3811,7 +3891,7 @@
     ],
     "matched_items": [
       {
-        "id": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+        "id": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
         "type": "length",
         "name_raw": "Lines on LDS-ELECTRICIDAD",
         "layer_raw": "LDS-ELECTRICIDAD",
@@ -3897,13 +3977,13 @@
     ]
   },
   {
-    "id": "e3ea1453-f92c-4e5a-a902-9b141d04732e",
+    "id": "b7ec55d7-6e6c-4bbf-98bc-41f3eec932f1",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Otros no considerados en LUMINARIAS",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+        "id": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
         "type": "length",
         "name_raw": "Lines on LDS-ELECTRICIDAD",
         "layer_raw": "LDS-ELECTRICIDAD",
@@ -3918,7 +3998,7 @@
     ],
     "matched_items": [
       {
-        "id": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+        "id": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
         "type": "length",
         "name_raw": "Lines on LDS-ELECTRICIDAD",
         "layer_raw": "LDS-ELECTRICIDAD",
@@ -3934,7 +4014,7 @@
     "match_confidence": 0.85,
     "confidence": "high",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (85%) | Keywords: [luminaria, luminarias] | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
+    "qty_final": 57.56719279034429,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -3965,17 +4045,18 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 57.56719279034429 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 57.56719279034429 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "613c95df-e2a5-4caf-937c-e51c8841fbbf",
+    "id": "363d1698-1dc3-4e29-936e-107cf837318c",
     "excel_sheet": "FinalRun",
     "excel_item_text": "FACHADA",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "1f4609a0-f49b-48d7-a743-e526438e4319",
+        "id": "5475688e-d30a-42f4-b574-c2fa7b3ad4f8",
         "type": "length",
         "name_raw": "Lines on FA_0.25",
         "layer_raw": "FA_0.25",
@@ -3990,7 +4071,7 @@
     ],
     "matched_items": [
       {
-        "id": "1f4609a0-f49b-48d7-a743-e526438e4319",
+        "id": "5475688e-d30a-42f4-b574-c2fa7b3ad4f8",
         "type": "length",
         "name_raw": "Lines on FA_0.25",
         "layer_raw": "FA_0.25",
@@ -4006,7 +4087,7 @@
     "match_confidence": 0.9683772233983162,
     "confidence": "high",
     "match_reason": "Matched layer \"FA_0.25\" (97%) | Keywords: [fachada] | Geometry: 0.10 m², 4.96 m",
-    "qty_final": null,
+    "qty_final": 2.4790065389893337,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -4049,11 +4130,12 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 2.4790065389893337 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 2.4790065389893337 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "92a25162-9b5a-46c8-a75d-743446f69ae0",
+    "id": "5cfbd8a8-0ed9-4598-a3fd-5745c889ad64",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Vitrina vidrio laminado 5+5mm + marco aluminio oculto según detalle. Considerar film antivandalico 1",
     "excel_unit": "gl",
@@ -4062,13 +4144,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "c46f74a0-e16c-4c81-8512-953ac6f8a33d",
+        "id": "527a8d95-e7a8-40e7-8937-09b67b179e50",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -4084,10 +4165,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with GLOBAL geometry support for \"gl\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "190835eb-f105-4cf1-84f8-f54b2d61f9e2",
+    "id": "86ca43fd-6c83-4933-b197-eb6d0b336d2a",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Zocalo MDF 10mm revestido en fierro plegado laminado en frio E:1.5mm H:10cm electropintado color bro",
     "excel_unit": "ml",
@@ -4096,35 +4180,34 @@
     "match_confidence": 0.08224766866880528,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-FURNITURE OUTLINE\" (8%) | Geometry: 0.41 m², 51.87 m",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "2d5e6483-8587-4690-ac66-853ee12a9ee6",
+        "id": "56b398dc-4722-4b3d-9911-67c745a13676",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-FURNITURE OUTLINE\" from layer \"LDS-FURNITURE OUTLINE\"",
         "payload": {
-          "itemId": "4649dbd4-fa84-4009-b44b-392287c77bef",
+          "itemId": "e3ccdd95-afbc-49dc-b489-c2fc781c8187",
           "layer": "LDS-FURNITURE OUTLINE",
           "name": "Lines on LDS-FURNITURE OUTLINE"
         },
         "confidence": "low"
       },
       {
-        "id": "f6f5fd05-8881-4d89-bd9d-b7c20de0c53b",
+        "id": "80f6260d-08fd-4ca2-8d2f-ba7feaabc30f",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "0f419163-a9c7-4f19-ac37-64ebb7cd550f",
+        "id": "156c0a2b-4dd9-42f2-8e1b-6fb1f2d0c25f",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -4153,10 +4236,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "d827c7f6-5db2-475e-94cf-0f5b3ef2b2fb",
+    "id": "f3e17024-ba2f-4aa3-994f-f0c3edf9d79c",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Cortina emballetada, microperforada, ups, motor central y destrabe manual. Acabado electropintado co",
     "excel_unit": "gl",
@@ -4165,39 +4251,38 @@
     "match_confidence": 0.08224766866880528,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_SISTEMAS ELECTRICOS\" (8%) | Geometry: 2.81 m², 80.23 m, 27 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "bba0d464-3a41-4577-860f-4890b09e0271",
+        "id": "3e237025-0b53-422d-ae5e-dbf08b9ddd65",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_SISTEMAS ELECTRICOS\" from layer \"FA_SISTEMAS ELECTRICOS\"",
         "payload": {
-          "itemId": "15aff6d7-699e-477e-9c65-03823df66b60",
+          "itemId": "1f830932-d70a-4bf5-a2d6-8ab32b6978de",
           "layer": "FA_SISTEMAS ELECTRICOS",
           "name": "Lines on FA_SISTEMAS ELECTRICOS"
         },
         "confidence": "low"
       },
       {
-        "id": "cbdfaa86-0b9b-433d-b133-919e8f86c21f",
+        "id": "2e1c5ea5-a419-477e-bf14-c6202adec162",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-FURNITURE OUTLINE\" from layer \"LDS-FURNITURE OUTLINE\"",
         "payload": {
-          "itemId": "4649dbd4-fa84-4009-b44b-392287c77bef",
+          "itemId": "e3ccdd95-afbc-49dc-b489-c2fc781c8187",
           "layer": "LDS-FURNITURE OUTLINE",
           "name": "Lines on LDS-FURNITURE OUTLINE"
         },
         "confidence": "low"
       },
       {
-        "id": "bf7b986e-e4fc-426e-b3c0-b1a70e2aa4c0",
+        "id": "52c2b98c-df6f-4957-bf90-737f1fdb90fb",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
@@ -4241,16 +4326,19 @@
         "score_type": 0,
         "qty_if_used": 9.521815983573259
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "6c119996-c615-4e25-88d6-af27041300d8",
+    "id": "f34f332a-23b0-44fc-87bb-293340aee0e8",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Otros no considerados en FACHADA",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "081f4b22-3de4-4a49-843c-94800f20803b",
+        "id": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
         "type": "length",
         "name_raw": "Lines on FA_0.20",
         "layer_raw": "FA_0.20",
@@ -4265,7 +4353,7 @@
     ],
     "matched_items": [
       {
-        "id": "081f4b22-3de4-4a49-843c-94800f20803b",
+        "id": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
         "type": "length",
         "name_raw": "Lines on FA_0.20",
         "layer_raw": "FA_0.20",
@@ -4281,7 +4369,7 @@
     "match_confidence": 0.85,
     "confidence": "high",
     "match_reason": "Matched layer \"FA_0.20\" (85%) | Keywords: [fachada] | Geometry: 0.96 m², 151.20 m",
-    "qty_final": null,
+    "qty_final": 75.60235681811976,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -4312,17 +4400,18 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 75.60235681811976 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 75.60235681811976 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "aece4601-2a39-479b-abff-46df5d0c3961",
+    "id": "568e09c4-f162-4fda-b00a-5c5058fba67a",
     "excel_sheet": "FinalRun",
     "excel_item_text": "INSTALACIONES ",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "81683a5f-d809-4ddd-9ad1-7f33d4f1183b",
+        "id": "6e7f8603-cc1e-4da4-a4a9-cd348485ab30",
         "type": "area",
         "name_raw": "Area on FA-ILUMINACION",
         "layer_raw": "FA-ILUMINACION",
@@ -4336,7 +4425,7 @@
     ],
     "matched_items": [
       {
-        "id": "81683a5f-d809-4ddd-9ad1-7f33d4f1183b",
+        "id": "6e7f8603-cc1e-4da4-a4a9-cd348485ab30",
         "type": "area",
         "name_raw": "Area on FA-ILUMINACION",
         "layer_raw": "FA-ILUMINACION",
@@ -4351,7 +4440,7 @@
     "match_confidence": 0.875,
     "confidence": "high",
     "match_reason": "Matched layer \"FA-ILUMINACION\" (88%) | Geometry: 0.40 m², 5.46 m",
-    "qty_final": null,
+    "qty_final": 0.39534095565271377,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -4394,17 +4483,18 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 0.39534095565271377 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 0.39534095565271377 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "1253f7ca-ef60-4ff1-a6d1-297d484c0a21",
+    "id": "bd243cb1-386e-4fab-bc28-1f257a1c02c2",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Climatización",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "81683a5f-d809-4ddd-9ad1-7f33d4f1183b",
+        "id": "6e7f8603-cc1e-4da4-a4a9-cd348485ab30",
         "type": "area",
         "name_raw": "Area on FA-ILUMINACION",
         "layer_raw": "FA-ILUMINACION",
@@ -4418,7 +4508,7 @@
     ],
     "matched_items": [
       {
-        "id": "81683a5f-d809-4ddd-9ad1-7f33d4f1183b",
+        "id": "6e7f8603-cc1e-4da4-a4a9-cd348485ab30",
         "type": "area",
         "name_raw": "Area on FA-ILUMINACION",
         "layer_raw": "FA-ILUMINACION",
@@ -4433,7 +4523,7 @@
     "match_confidence": 0.9016841147018662,
     "confidence": "high",
     "match_reason": "Matched layer \"FA-ILUMINACION\" (90%) | Geometry: 0.40 m², 5.46 m",
-    "qty_final": null,
+    "qty_final": 0.39534095565271377,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -4470,11 +4560,12 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 0.39534095565271377 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 0.39534095565271377 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "283a3cff-23e3-4378-abb8-9ad7b62381a5",
+    "id": "aff255dd-964f-48d6-ba77-71dd479c935a",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Climatización ductos y difusores lineales según proyecto",
     "excel_unit": "gl",
@@ -4483,35 +4574,34 @@
     "match_confidence": 0.09581284648796029,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_MUEBLES PROYECCION\" (10%) | Geometry: 74.95 m², 810.18 m, 1 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "3e373e23-9277-436f-84c0-0a026233055e",
+        "id": "11e243ca-e953-46df-a7a9-e0c7790ee471",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_MUEBLES PROYECCION\" from layer \"FA_MUEBLES PROYECCION\"",
         "payload": {
-          "itemId": "c419a61b-d334-4304-b1e1-00a1d88ffcdb",
+          "itemId": "decc7cc1-6353-431b-9486-662a6f5af615",
           "layer": "FA_MUEBLES PROYECCION",
           "name": "Lines on FA_MUEBLES PROYECCION"
         },
         "confidence": "low"
       },
       {
-        "id": "491c2b0e-5a91-49d4-829a-5911452db42f",
+        "id": "d1c23b89-3138-47d3-b916-4b7a38573c60",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_PROYECCIÓN GATERAS\" from layer \"FA_PROYECCIÓN GATERAS\"",
         "payload": {
-          "itemId": "3c683c9a-695b-4b90-88e1-4fd275512ca7",
+          "itemId": "7123d0ef-1ec5-4f6f-83a8-edc50fd6e31e",
           "layer": "FA_PROYECCIÓN GATERAS",
           "name": "Lines on FA_PROYECCIÓN GATERAS"
         },
         "confidence": "low"
       },
       {
-        "id": "28f34022-de33-49fc-ab4c-b1e90b853359",
+        "id": "88007d76-d584-4fce-a288-0ad58ed13b50",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -4537,10 +4627,13 @@
         "score_type": 0,
         "qty_if_used": 11.659674775251132
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "313bab7e-7a43-4857-b301-d1948e7a72eb",
+    "id": "628bb708-8297-4e06-8bc7-3fe85ec05ead",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Planos As Built y certificado de instalación *se deben entregar al final de la obra impresos y firma",
     "excel_unit": "gl",
@@ -4549,24 +4642,23 @@
     "match_confidence": 0.0447365085070911,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (4%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "21c02b30-5dce-46ba-8f7a-79e2c62e3176",
+        "id": "3eebbf9b-20ff-49b5-9e89-308f937ab860",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "71ac2193-e0aa-405b-8589-6d32110d5e0f",
+        "id": "e75c238f-fb78-41d9-86b4-fd5a67be0c10",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -4586,16 +4678,19 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "2102ea55-ee4e-498e-b0d7-7740e66917f8",
+    "id": "7d8365ac-8da0-4506-867f-0b7c63283d14",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Instalación Eléctrica",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "15aff6d7-699e-477e-9c65-03823df66b60",
+        "id": "1f830932-d70a-4bf5-a2d6-8ab32b6978de",
         "type": "length",
         "name_raw": "Lines on FA_SISTEMAS ELECTRICOS",
         "layer_raw": "FA_SISTEMAS ELECTRICOS",
@@ -4610,7 +4705,7 @@
     ],
     "matched_items": [
       {
-        "id": "15aff6d7-699e-477e-9c65-03823df66b60",
+        "id": "1f830932-d70a-4bf5-a2d6-8ab32b6978de",
         "type": "length",
         "name_raw": "Lines on FA_SISTEMAS ELECTRICOS",
         "layer_raw": "FA_SISTEMAS ELECTRICOS",
@@ -4626,7 +4721,7 @@
     "match_confidence": 0.7809286418229411,
     "confidence": "medium",
     "match_reason": "Matched layer \"FA_SISTEMAS ELECTRICOS\" (78%) | Geometry: 2.81 m², 80.23 m, 27 blocks",
-    "qty_final": null,
+    "qty_final": 26.960728831833315,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -4657,11 +4752,12 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 26.960728831833315 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 26.960728831833315 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "3d45a8f7-61f2-45f2-81d1-2a3eab6098de",
+    "id": "0a3985ee-ccd5-46e7-8f9c-fd1dadab9c4a",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Tablero eléctrico rotulado",
     "excel_unit": "un",
@@ -4670,39 +4766,38 @@
     "match_confidence": 0.21797667585005198,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_TITULO\" (22%) | Geometry: 7.78 m, 27 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "2e973e5d-f8ed-4375-b1b4-b28e8fe8a6e7",
+        "id": "6223a4e3-824c-4857-bd5c-f5f32f5378cc",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Length on FA_TITULO\" from layer \"FA_TITULO\"",
         "payload": {
-          "itemId": "da3f7a46-b7ce-49d3-be2f-f39a6a32bd7e",
+          "itemId": "29e22645-e761-466a-8bb9-58475bfcbacb",
           "layer": "FA_TITULO",
           "name": "Length on FA_TITULO"
         },
         "confidence": "low"
       },
       {
-        "id": "d5eefb7d-b1e4-4d67-82a5-a22e3688d49d",
+        "id": "7e784fdc-0a0c-4442-ae08-caf6cdac2993",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "4a267c18-a9dd-4a50-959c-3e505209a2de",
+        "id": "3c949a03-357b-477b-8cc9-ea12847dcaa4",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_SISTEMAS ELECTRICOS\" from layer \"FA_SISTEMAS ELECTRICOS\"",
         "payload": {
-          "itemId": "15aff6d7-699e-477e-9c65-03823df66b60",
+          "itemId": "1f830932-d70a-4bf5-a2d6-8ab32b6978de",
           "layer": "FA_SISTEMAS ELECTRICOS",
           "name": "Lines on FA_SISTEMAS ELECTRICOS"
         },
@@ -4737,10 +4832,13 @@
         "score_type": 0,
         "qty_if_used": 26.960728831833315
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "f0df27f6-721d-4418-9c92-202cb60ad773",
+    "id": "cc5b9e7b-02f4-4710-9c96-fc8fafcee7bb",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Tablero clima (si lo exige mall)",
     "excel_unit": "un",
@@ -4749,13 +4847,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "d8c51631-c034-4c53-b986-f7cae4c46a7a",
+        "id": "45636678-084b-453f-8fa5-f8aaf295e527",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -4774,10 +4871,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "fadd74b1-d0fe-4980-8891-b670cdea650d",
+    "id": "3397e340-07b3-45fc-9f5e-1f7b37d7b12c",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Alimentador desde la caja de empalme (en linea de concesion) hasta la ubicación del tablero",
     "excel_unit": "un",
@@ -4786,24 +4886,23 @@
     "match_confidence": 0.04299177238636387,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (4%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "1a0636ab-c9aa-4571-90f5-2b2eb7241998",
+        "id": "5ed6cd85-38af-4650-b7df-3580ce081f57",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "1677bd77-b5b7-469f-86c9-ffa8c1878c16",
+        "id": "5d17e583-188a-4b63-9ca0-9eba3c55be0e",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -4827,10 +4926,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "99c2904b-469b-4248-b17f-11d2d47022ba",
+    "id": "39e2cdfd-04ef-4b96-aea3-744a7d32ecf2",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Puntos de iluminación",
     "excel_unit": "un",
@@ -4839,35 +4941,34 @@
     "match_confidence": 0.25101950914109816,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_ILUMINARIAS\" (25%) | Geometry: 0.25 m², 4.06 m, 3 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "f900f749-95c2-4d4d-ac7e-944f3e7e2d8d",
+        "id": "349f13ab-b1fd-4c1f-8163-fc31e2aeed38",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Area on FA_ILUMINARIAS\" from layer \"FA_ILUMINARIAS\"",
         "payload": {
-          "itemId": "4af1eb1f-9b9f-48f1-b0d3-6e3b0da2a2f1",
+          "itemId": "92236b59-b477-4b2c-bd0d-f259d4ceefc0",
           "layer": "FA_ILUMINARIAS",
           "name": "Area on FA_ILUMINARIAS"
         },
         "confidence": "low"
       },
       {
-        "id": "985bd286-e95f-4320-95c4-3be9f9bf2ecd",
+        "id": "536c0fb6-5abc-4f06-a280-94108bc40189",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "edd24fc9-dbf7-44b0-af96-dc372171da0b",
+        "id": "509cb135-c9a8-474f-b246-5b5643a82027",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -4893,16 +4994,19 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "6dd03449-6cb2-4597-9089-99c1db3277f1",
+    "id": "1cad8404-a3c3-4cf1-a1d0-11f98367879f",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Puntos de iluminacion muebles",
     "excel_unit": "un",
     "source_items": [
       {
-        "id": "c419a61b-d334-4304-b1e1-00a1d88ffcdb",
+        "id": "decc7cc1-6353-431b-9486-662a6f5af615",
         "type": "length",
         "name_raw": "Lines on FA_MUEBLES PROYECCION",
         "layer_raw": "FA_MUEBLES PROYECCION",
@@ -4917,7 +5021,7 @@
     ],
     "matched_items": [
       {
-        "id": "c419a61b-d334-4304-b1e1-00a1d88ffcdb",
+        "id": "decc7cc1-6353-431b-9486-662a6f5af615",
         "type": "length",
         "name_raw": "Lines on FA_MUEBLES PROYECCION",
         "layer_raw": "FA_MUEBLES PROYECCION",
@@ -4991,7 +5095,7 @@
     ]
   },
   {
-    "id": "e8b55711-6e19-4746-b43e-da400abaecb7",
+    "id": "f80a4ade-17ef-490d-a282-71582d22fcf7",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Puntos de enchufe",
     "excel_unit": "un",
@@ -5000,13 +5104,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "925fb1ec-6188-4857-8d6b-7a633854c388",
+        "id": "b39e3006-3de2-4993-900a-2e8e7ce5f52c",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5025,16 +5128,19 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "a60a3e61-d76f-4762-8ac0-32c05c17892b",
+    "id": "7795b5fd-1088-4a7d-a238-6117530b3b48",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Puntos de enchufe muebles isla (a piso)",
     "excel_unit": "un",
     "source_items": [
       {
-        "id": "c419a61b-d334-4304-b1e1-00a1d88ffcdb",
+        "id": "decc7cc1-6353-431b-9486-662a6f5af615",
         "type": "length",
         "name_raw": "Lines on FA_MUEBLES PROYECCION",
         "layer_raw": "FA_MUEBLES PROYECCION",
@@ -5049,7 +5155,7 @@
     ],
     "matched_items": [
       {
-        "id": "c419a61b-d334-4304-b1e1-00a1d88ffcdb",
+        "id": "decc7cc1-6353-431b-9486-662a6f5af615",
         "type": "length",
         "name_raw": "Lines on FA_MUEBLES PROYECCION",
         "layer_raw": "FA_MUEBLES PROYECCION",
@@ -5111,7 +5217,7 @@
     ]
   },
   {
-    "id": "dec3a50a-f949-4cd8-a48f-179cc7164520",
+    "id": "0e919189-de6f-489c-997b-f4da79334e6a",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Puntos de datos",
     "excel_unit": "un",
@@ -5120,24 +5226,23 @@
     "match_confidence": 0.1429588441517916,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (14%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "7839b906-c28a-4c4e-941a-66a5602201f9",
+        "id": "94c36334-22c1-4f03-b5de-f0e258f9e673",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "ea0835ba-108a-4078-8b92-f95f13ca4ba4",
+        "id": "21c9e3e4-6d99-4cd3-b73d-a5bb296e5f0b",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5157,10 +5262,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "eebf5d84-45b3-45dc-aff0-1306dfc2d9d6",
+    "id": "dcc6162a-9aa1-4bb4-bb2d-dc2ecf474b50",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Canalizado cámaras de seguridad UTP cat 6e",
     "excel_unit": "un",
@@ -5169,13 +5277,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "fe56e535-27fe-4de9-a3d2-0f0cb4be684b",
+        "id": "94e1c9ef-8ef5-4304-b99b-f6267bda16dc",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5191,10 +5298,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "b474b8d1-8c36-4502-bf40-f997e0c8ed1c",
+    "id": "ef996616-a854-470b-ad19-42cecb012d96",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Canalizado parlantes",
     "excel_unit": "un",
@@ -5203,39 +5313,38 @@
     "match_confidence": 0.2254033307585166,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_0.10\" (23%) | Geometry: 1.30 m², 46.08 m, 13 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "bc39849e-bfbf-46ab-84b9-ad7d12e2a88a",
+        "id": "c0e7dc70-63b5-4307-9b4f-966f071882fc",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_0.10\" from layer \"FA_0.10\"",
         "payload": {
-          "itemId": "9bf6fd0c-de0b-46aa-84bb-8d00814a7827",
+          "itemId": "edf768c9-15d9-4eb7-9fc0-85f1be455f5f",
           "layer": "FA_0.10",
           "name": "Lines on FA_0.10"
         },
         "confidence": "low"
       },
       {
-        "id": "ce94af54-b79f-4fb7-8d27-7f4a4baf4ce2",
+        "id": "abb89cff-de07-4ec7-820d-3b8e2a3c26b3",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_COLOR 12\" from layer \"FA_COLOR 12\"",
         "payload": {
-          "itemId": "e361acd3-d9a0-4d03-b4a6-20c618ef5d34",
+          "itemId": "d9ced060-6ba6-40ba-8c54-73b887a72b95",
           "layer": "FA_COLOR 12",
           "name": "Lines on FA_COLOR 12"
         },
         "confidence": "low"
       },
       {
-        "id": "aa10916d-f264-452d-bbc6-bac3fcafb280",
+        "id": "8e8084f0-79b0-4d9d-8a07-5c65175a9704",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Area on FA_ILUMINARIAS\" from layer \"FA_ILUMINARIAS\"",
         "payload": {
-          "itemId": "4af1eb1f-9b9f-48f1-b0d3-6e3b0da2a2f1",
+          "itemId": "92236b59-b477-4b2c-bd0d-f259d4ceefc0",
           "layer": "FA_ILUMINARIAS",
           "name": "Area on FA_ILUMINARIAS"
         },
@@ -5279,10 +5388,13 @@
         "score_type": 0,
         "qty_if_used": 284.22059522585204
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "d6793ac9-eb89-4af8-ae70-d3b856d633e9",
+    "id": "228d1d27-8a31-4847-9301-0163dc9b0b9e",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Punto clima",
     "excel_unit": "un",
@@ -5291,13 +5403,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "4601536c-dc09-4806-b081-8611cc4472ca",
+        "id": "e37c9242-aba2-4cce-8355-5fef291b1b32",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5313,10 +5424,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "160a5150-06ce-441c-a515-1e8cb76ff125",
+    "id": "e0f89ba9-b160-43bc-b95d-07f62bdb5780",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Punto letrero ",
     "excel_unit": "un",
@@ -5325,13 +5439,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "861a0d58-ba08-481c-a8f4-940e4f0e0a10",
+        "id": "1c86960b-2fe3-4514-b6c7-02777595deb8",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5347,10 +5460,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "d905422b-7b56-420c-b608-71fd5d71d4c7",
+    "id": "81517e57-e765-4e69-8d8a-aef46c5fe164",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Canalización para alarma de intrusion",
     "excel_unit": "un",
@@ -5359,24 +5475,23 @@
     "match_confidence": 0.1073214464321437,
     "confidence": "low",
     "match_reason": "Matched layer \"MB-ELEV 2\" (11%) | Geometry: 81.13 m², 1038.60 m, 1181 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "16ef5f60-9e11-437d-b502-ab1fdb8d4651",
+        "id": "7e33576f-5d98-4b1b-abe7-9c2638cbf752",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on MB-ELEV 2\" from layer \"MB-ELEV 2\"",
         "payload": {
-          "itemId": "8e2500dc-ab8d-4eec-bd9b-2c25b0e722eb",
+          "itemId": "447589b1-1f1e-4b0a-9c65-b61d15b4e93d",
           "layer": "MB-ELEV 2",
           "name": "Lines on MB-ELEV 2"
         },
         "confidence": "low"
       },
       {
-        "id": "927eba66-f6e5-42d0-90ec-ab9fa4b1357a",
+        "id": "1ed87d8e-7783-4f24-8d75-2ece16297e4c",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5396,10 +5511,13 @@
         "score_type": 0,
         "qty_if_used": 454.07948236831595
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "7d12a33a-2ea8-493a-8501-06e300ae9aaa",
+    "id": "907ca3a2-df42-4f0a-9b9f-5a0e264e770d",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Puntos pantallas",
     "excel_unit": "un",
@@ -5408,13 +5526,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "25885ea2-7454-4a0b-9ffe-1743e1a30466",
+        "id": "8cb73360-d612-4562-bc5c-cb2445edcf53",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5430,10 +5547,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "4d133fb7-b407-437f-8040-9e3bd597af58",
+    "id": "86ac63d1-4140-4e7e-ba2b-0316cca3d31c",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Puntos cajas de luz (a muro)",
     "excel_unit": "un",
@@ -5442,13 +5562,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "ddc96657-032c-4072-aaa1-c62ec74eb8fe",
+        "id": "b0d597a9-811c-49a3-a3b7-74a929832cb8",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5467,10 +5586,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "51d1a0e0-8a23-4151-8ace-e15c60ec26ef",
+    "id": "19d41101-6d48-47b9-bd07-5d11afc173eb",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Certificados TE1, Planos As Built *se deben entregar al final de la obra impresos y firmados en fres",
     "excel_unit": "un",
@@ -5479,13 +5601,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "8bd2080e-e800-49a6-830f-78f9776cfb07",
+        "id": "8266513a-4ab1-4645-9b23-dc3b39b01506",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5501,16 +5622,19 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "b4370dc4-063a-414d-a774-a2efaf82893b",
+    "id": "07b46e7d-10e4-4532-b552-6090d2019ba6",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Remarcador",
     "excel_unit": "un",
     "source_items": [
       {
-        "id": "2369b438-8304-4598-b3d1-3b423c6499c0",
+        "id": "a5c213a5-b53b-4191-b6ea-e9eb35137b0c",
         "type": "block",
         "name_raw": "Block A$C853619cd on A-ARQ-ARTEFACTOS",
         "layer_raw": "A-ARQ-ARTEFACTOS",
@@ -5524,7 +5648,7 @@
     ],
     "matched_items": [
       {
-        "id": "2369b438-8304-4598-b3d1-3b423c6499c0",
+        "id": "a5c213a5-b53b-4191-b6ea-e9eb35137b0c",
         "type": "block",
         "name_raw": "Block A$C853619cd on A-ARQ-ARTEFACTOS",
         "layer_raw": "A-ARQ-ARTEFACTOS",
@@ -5583,7 +5707,7 @@
     ]
   },
   {
-    "id": "a9f3bc46-a9c4-41c7-a11b-c89ef9c1f332",
+    "id": "4a57fd32-ca90-4e39-985a-0828d84d7a62",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Enlauchado para fibra optica hasta rack de datos",
     "excel_unit": "gl",
@@ -5592,24 +5716,23 @@
     "match_confidence": 0.06627316376880943,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_ARQ-MUROS\" (7%) | Geometry: 22.22 m², 694.63 m",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "eba9ce68-dbcd-4888-8d9e-a0805b9ee398",
+        "id": "f1eaf66e-fb4a-442c-87dc-211a4080bf8d",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_ARQ-MUROS\" from layer \"FA_ARQ-MUROS\"",
         "payload": {
-          "itemId": "07ca15e5-d7df-4c2f-a355-39c1b1ec4194",
+          "itemId": "0c41ec1c-a38c-4fb5-afd4-0d17f318de83",
           "layer": "FA_ARQ-MUROS",
           "name": "Lines on FA_ARQ-MUROS"
         },
         "confidence": "low"
       },
       {
-        "id": "6c006c68-4a81-4801-bf98-ca3c6e8257ae",
+        "id": "1caefa8b-f16b-4cfd-a642-e8f1a2899ad3",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5629,10 +5752,13 @@
         "score_type": 0,
         "qty_if_used": 347.3166409927955
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "da2300a7-42aa-47b1-82b7-468ba7adc548",
+    "id": "f8800449-7f66-454d-ac24-a8f18f41604e",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Rotulación de todos los enchufes, debe indicar voltaje 220V y demarcar los enchufes conectados al si",
     "excel_unit": "gl",
@@ -5641,13 +5767,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "c74215ae-b835-45c7-9903-d7119d781e19",
+        "id": "9415850a-4ba0-443e-99fc-4a718a58a778",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5663,10 +5788,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with GLOBAL geometry support for \"gl\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "6271a893-f1a2-4ae2-83cc-735aa5eda5d4",
+    "id": "496754ab-c922-4a00-89c0-99debd7ab050",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Alarma en vitrina, provision e instalacion",
     "excel_unit": "un",
@@ -5675,35 +5803,34 @@
     "match_confidence": 0.08902344313185906,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (9%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "c50fcd91-e1e1-4f46-8eb9-2ab792e52d20",
+        "id": "3aa444f5-6bab-41a3-8bf4-0c2b5eae88bc",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "2625e2cd-a4de-4601-907e-ca35a86cbf53",
+        "id": "63a16e0c-df01-4242-8bf4-deeb023d0066",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_TABIQUES\" from layer \"FA_TABIQUES\"",
         "payload": {
-          "itemId": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+          "itemId": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
           "layer": "FA_TABIQUES",
           "name": "Lines on FA_TABIQUES"
         },
         "confidence": "low"
       },
       {
-        "id": "71f58440-877b-4f94-b448-323ae40592df",
+        "id": "35dcec49-7e88-4dc5-8960-45f753b46d6e",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5729,10 +5856,13 @@
         "score_type": 0,
         "qty_if_used": 2.3431676253008793
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "430c3b9f-4d03-4bed-b689-550e96282cd0",
+    "id": "c0448d1d-46a7-49f3-85c0-683cc4201765",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Sensor de movimiento (zona acceso a gatera), provision e instalacion",
     "excel_unit": "un",
@@ -5741,35 +5871,34 @@
     "match_confidence": 0.10292515643974365,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (10%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "f5a1e113-71d1-446e-a026-1fc907446ca6",
+        "id": "7c7fd0bf-1c72-4890-afdb-c9b8032e8bd1",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "3bcf83f4-672a-4bf3-9d66-3b3299ab9a2e",
+        "id": "e30dd7c8-26e5-40b7-84cd-2413ee88ce0e",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_SISTEMAS ELECTRICOS\" from layer \"FA_SISTEMAS ELECTRICOS\"",
         "payload": {
-          "itemId": "15aff6d7-699e-477e-9c65-03823df66b60",
+          "itemId": "1f830932-d70a-4bf5-a2d6-8ab32b6978de",
           "layer": "FA_SISTEMAS ELECTRICOS",
           "name": "Lines on FA_SISTEMAS ELECTRICOS"
         },
         "confidence": "low"
       },
       {
-        "id": "b2eee1b1-f020-4b57-a399-851eba36440f",
+        "id": "70ff03ad-6681-427b-982e-ac9f9c459a5b",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5795,10 +5924,13 @@
         "score_type": 0,
         "qty_if_used": 26.960728831833315
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "06b20b5d-095d-4075-b3cd-90f4158c063c",
+    "id": "40332508-6379-46ca-aacb-106878691a90",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Gabinete de datos para 14 un + ordenacables + rotulación",
     "excel_unit": "un",
@@ -5807,24 +5939,23 @@
     "match_confidence": 0.08847790041077219,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_MUEBLES PROYECCION\" (9%) | Geometry: 74.95 m², 810.18 m, 1 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "aef13af7-fee3-4c2b-9fff-31954095e913",
+        "id": "bb6807f4-72b7-48e4-b467-8ae894d41d79",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_MUEBLES PROYECCION\" from layer \"FA_MUEBLES PROYECCION\"",
         "payload": {
-          "itemId": "c419a61b-d334-4304-b1e1-00a1d88ffcdb",
+          "itemId": "decc7cc1-6353-431b-9486-662a6f5af615",
           "layer": "FA_MUEBLES PROYECCION",
           "name": "Lines on FA_MUEBLES PROYECCION"
         },
         "confidence": "low"
       },
       {
-        "id": "5543688d-8abc-45b9-a3f5-475ef885f153",
+        "id": "1d0841a2-c8d0-428c-9372-dba49f135eab",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5844,10 +5975,13 @@
         "score_type": 0,
         "qty_if_used": 284.22059522585204
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "b86fee5c-93e9-4a18-94b3-6b45f7db75d1",
+    "id": "748d4680-a897-4bba-a410-0ed370381a3e",
     "excel_sheet": "FinalRun",
     "excel_item_text": "UPS 3KVA con enchuve 16A",
     "excel_unit": "un",
@@ -5856,13 +5990,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "1a61644a-4132-4d16-bd7d-956348e953d4",
+        "id": "77abc6a6-0dee-4bf6-91b7-2005af398537",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5881,10 +6014,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "68b83dad-7ccb-403d-b16a-ae18baa54be8",
+    "id": "8b96081c-270b-4dae-b713-8f95ec302904",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Instalación Incendio",
     "excel_unit": "gl",
@@ -5893,24 +6029,23 @@
     "match_confidence": 0.24173306703639708,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (24%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "80115d09-9c12-49ee-8ead-80d58b299ee7",
+        "id": "0068178d-ae7d-49b4-be6a-75f268a8e281",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "6f7b2adb-2968-40e6-aefc-95cf1961dc1c",
+        "id": "d4d1e6a9-1d96-46ae-ae4d-e867cff1db7a",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5930,10 +6065,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "5ccdb351-4cb1-4a57-b476-f858c70128d9",
+    "id": "0e7259af-27fe-41ff-b82a-177f09defb87",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Detección según proyecto",
     "excel_unit": "gl",
@@ -5942,35 +6080,34 @@
     "match_confidence": 0.22131340017359835,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_MUEBLES PROYECCION\" (22%) | Geometry: 74.95 m², 810.18 m, 1 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "8ff12e86-969a-4f5a-afd9-096beddb24e4",
+        "id": "2f0ab493-27b7-4bca-944d-8b905fabeaa7",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_MUEBLES PROYECCION\" from layer \"FA_MUEBLES PROYECCION\"",
         "payload": {
-          "itemId": "c419a61b-d334-4304-b1e1-00a1d88ffcdb",
+          "itemId": "decc7cc1-6353-431b-9486-662a6f5af615",
           "layer": "FA_MUEBLES PROYECCION",
           "name": "Lines on FA_MUEBLES PROYECCION"
         },
         "confidence": "low"
       },
       {
-        "id": "524bba68-ebaa-443c-b114-b25b26e6fa46",
+        "id": "782eb5a1-e72d-4c21-a979-9d1cde4e6bb7",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_PROYECCIÓN GATERAS\" from layer \"FA_PROYECCIÓN GATERAS\"",
         "payload": {
-          "itemId": "3c683c9a-695b-4b90-88e1-4fd275512ca7",
+          "itemId": "7123d0ef-1ec5-4f6f-83a8-edc50fd6e31e",
           "layer": "FA_PROYECCIÓN GATERAS",
           "name": "Lines on FA_PROYECCIÓN GATERAS"
         },
         "confidence": "low"
       },
       {
-        "id": "211b24e4-f021-40d3-98de-9cfa2520ddd3",
+        "id": "f55b9745-1e4f-464e-9696-3dfa26f4bfb2",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -5996,10 +6133,13 @@
         "score_type": 0,
         "qty_if_used": 11.659674775251132
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "f0ce0696-3027-4238-8b5d-4f7c90a60de1",
+    "id": "65c1f10b-5f42-4a7f-a3e4-14898a076cf2",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Extinción según proyecto",
     "excel_unit": "gl",
@@ -6008,35 +6148,34 @@
     "match_confidence": 0.22131340017359835,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_MUEBLES PROYECCION\" (22%) | Geometry: 74.95 m², 810.18 m, 1 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "14227c9e-6ea5-4055-95c0-60a0e1586b66",
+        "id": "c52f87fc-1be5-4145-8406-924d2e0ba111",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_MUEBLES PROYECCION\" from layer \"FA_MUEBLES PROYECCION\"",
         "payload": {
-          "itemId": "c419a61b-d334-4304-b1e1-00a1d88ffcdb",
+          "itemId": "decc7cc1-6353-431b-9486-662a6f5af615",
           "layer": "FA_MUEBLES PROYECCION",
           "name": "Lines on FA_MUEBLES PROYECCION"
         },
         "confidence": "low"
       },
       {
-        "id": "9a4e1844-3766-45cd-884b-8bbd9822b1bc",
+        "id": "4715a453-ee47-4340-9058-f82255871ae9",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_PROYECCIÓN GATERAS\" from layer \"FA_PROYECCIÓN GATERAS\"",
         "payload": {
-          "itemId": "3c683c9a-695b-4b90-88e1-4fd275512ca7",
+          "itemId": "7123d0ef-1ec5-4f6f-83a8-edc50fd6e31e",
           "layer": "FA_PROYECCIÓN GATERAS",
           "name": "Lines on FA_PROYECCIÓN GATERAS"
         },
         "confidence": "low"
       },
       {
-        "id": "afd24bbe-339d-455a-9b87-7eadb4695652",
+        "id": "f846d8b7-1336-48f8-9226-90a5c2c0cd12",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -6062,10 +6201,13 @@
         "score_type": 0,
         "qty_if_used": 11.659674775251132
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "c695be12-48ed-408a-ad3e-3dbfc823e176",
+    "id": "5b810876-3832-45c8-8874-2e212af5e8e8",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Set extintores según proyecto, incluida señaletica de extintor a muro",
     "excel_unit": "gl",
@@ -6074,35 +6216,34 @@
     "match_confidence": 0.09097946174900662,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (9%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "7661f2df-7545-46f5-9106-124c93d72127",
+        "id": "3b414d38-9507-4249-be9f-3700e1220067",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "45f87e2a-af04-455f-8e16-20a1d15c0a1b",
+        "id": "4a4bb2e3-db95-4925-b939-062c2de8e66a",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_PROYECCIÓN GATERAS\" from layer \"FA_PROYECCIÓN GATERAS\"",
         "payload": {
-          "itemId": "3c683c9a-695b-4b90-88e1-4fd275512ca7",
+          "itemId": "7123d0ef-1ec5-4f6f-83a8-edc50fd6e31e",
           "layer": "FA_PROYECCIÓN GATERAS",
           "name": "Lines on FA_PROYECCIÓN GATERAS"
         },
         "confidence": "low"
       },
       {
-        "id": "cc5f7e28-15c0-4370-a514-8e9eef47b558",
+        "id": "ac0622a0-1b00-478c-a09b-d2d40695a1a5",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -6128,10 +6269,13 @@
         "score_type": 0,
         "qty_if_used": 11.659674775251132
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "7e49701d-ed42-43a0-b8b7-53b411beaad5",
+    "id": "e32fb539-8f7c-4247-930b-f2547647a8dd",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Planos As Built y certificado de instalación *se deben entregar al final de la obra impresos y firma",
     "excel_unit": "gl",
@@ -6140,24 +6284,23 @@
     "match_confidence": 0.0447365085070911,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (4%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "8aad1d20-8d56-4a06-841f-fc954f22a76f",
+        "id": "698ed415-5b4c-42d2-982e-04fa81233409",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "3b750af0-145d-4bd8-9385-543935c1d7f9",
+        "id": "c63b9b61-d1ce-4bc6-bc28-1864d8e25acf",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -6177,10 +6320,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "9261e132-3273-4f1f-ba7d-80a4d70e7b0c",
+    "id": "fdd9348a-9330-4a87-a6a3-482aefd168c0",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Instalacion Sanitaria",
     "excel_unit": "gl",
@@ -6189,39 +6335,38 @@
     "match_confidence": 0.31499861339809376,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (31%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "24285af2-7ac6-409a-a2a1-5b7feaf80e7b",
+        "id": "34536722-f24a-4a13-8bad-80edb3e209c7",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "medium"
       },
       {
-        "id": "41e2e157-3c70-443a-ba08-26adf6d5b6c5",
+        "id": "858083a1-45f4-4849-8c92-650ba453c019",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Area on FA_ILUMINARIAS\" from layer \"FA_ILUMINARIAS\"",
         "payload": {
-          "itemId": "4af1eb1f-9b9f-48f1-b0d3-6e3b0da2a2f1",
+          "itemId": "92236b59-b477-4b2c-bd0d-f259d4ceefc0",
           "layer": "FA_ILUMINARIAS",
           "name": "Area on FA_ILUMINARIAS"
         },
         "confidence": "low"
       },
       {
-        "id": "80312d19-9d3d-4f60-affb-5e460035c49f",
+        "id": "f6b9e6da-6c2e-48d0-bfcf-3b2764273711",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on MB-ELEV 2\" from layer \"MB-ELEV 2\"",
         "payload": {
-          "itemId": "8e2500dc-ab8d-4eec-bd9b-2c25b0e722eb",
+          "itemId": "447589b1-1f1e-4b0a-9c65-b61d15b4e93d",
           "layer": "MB-ELEV 2",
           "name": "Lines on MB-ELEV 2"
         },
@@ -6265,10 +6410,13 @@
         "score_type": 0,
         "qty_if_used": 2.3431676253008793
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "8c592ffd-6c21-47ec-87ec-d2163014fb5c",
+    "id": "9797f964-0a10-4a2d-aeb6-505a9fde7687",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Instalación AP y Alcantarillado",
     "excel_unit": "gl",
@@ -6277,24 +6425,23 @@
     "match_confidence": 0.19686541394165125,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (20%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "8d2bf1b2-36e0-4c0c-ab97-0a8398fda135",
+        "id": "766bf747-076b-49cf-a111-dfc51431b579",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "e8df3f15-bd5d-42ba-ad7c-cec4a2f39545",
+        "id": "2eebdd00-4743-40b7-bf4c-ac613ff65bad",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -6314,10 +6461,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "b8d03ec0-7b5d-4186-af32-866fffede626",
+    "id": "88a5c9f2-4485-49b7-a6b7-d038f9314d0b",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Bomba impulsora (si aplica)",
     "excel_unit": "un",
@@ -6326,13 +6476,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "7d4c66f7-bb50-4f85-844c-032c1a4695d5",
+        "id": "b75d5567-aa9f-4235-861b-83b911923745",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -6351,10 +6500,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "b9e251c2-29fb-477c-bffa-7846d0196d2d",
+    "id": "c756e188-fa60-42f6-8aaf-af258118e05e",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Grifería (solo instalacion, provista por mandante)",
     "excel_unit": "un",
@@ -6363,39 +6515,38 @@
     "match_confidence": 0.19159260422961077,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_PROYECCIÓN GATERAS\" (19%) | Geometry: 2.65 m², 34.98 m, 2 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "91371169-54e3-4827-a41b-a9d6c4853db6",
+        "id": "6526daf4-8e02-4ac6-9ddd-59f0f3230c98",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_PROYECCIÓN GATERAS\" from layer \"FA_PROYECCIÓN GATERAS\"",
         "payload": {
-          "itemId": "3c683c9a-695b-4b90-88e1-4fd275512ca7",
+          "itemId": "7123d0ef-1ec5-4f6f-83a8-edc50fd6e31e",
           "layer": "FA_PROYECCIÓN GATERAS",
           "name": "Lines on FA_PROYECCIÓN GATERAS"
         },
         "confidence": "low"
       },
       {
-        "id": "40d957e7-3469-4bcd-8f84-19c8992910c8",
+        "id": "f6e17958-cf11-4fa3-924f-230d2ced7049",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "1a67197e-f85d-45ef-b688-3ed923dec5b5",
+        "id": "547b5f86-5379-4296-8e3e-fb9f170d25cc",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_TABIQUES\" from layer \"FA_TABIQUES\"",
         "payload": {
-          "itemId": "480ceab0-a5b8-4533-a5fc-fa10d2c4dc44",
+          "itemId": "3d4ad7b1-8d83-4b36-8003-f00e163122a0",
           "layer": "FA_TABIQUES",
           "name": "Lines on FA_TABIQUES"
         },
@@ -6427,10 +6578,13 @@
         "score_type": 0,
         "qty_if_used": 2.3431676253008793
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "53538f54-5b45-4517-a221-447dcc460bb0",
+    "id": "6b7affd2-0d63-48a1-9b00-f5234817a99e",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Remarcador agua potable",
     "excel_unit": "un",
@@ -6439,13 +6593,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "74b6890e-77ff-42f3-a58b-7c51f8916d83",
+        "id": "07772c52-c3ba-4290-8c03-379edbe4584b",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -6461,10 +6614,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "c1169662-1ceb-4352-bb96-3f247ff8a505",
+    "id": "411bf599-26c0-4502-8193-0d9656df82d3",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Certificados de factibilidad y dotacion",
     "excel_unit": "gl",
@@ -6473,13 +6629,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "1c94c222-bc3e-457e-a143-1c8951dc15d2",
+        "id": "2c7e3c87-1419-4ab4-810b-040dfcfc770c",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -6495,10 +6650,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with GLOBAL geometry support for \"gl\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "c961ca8c-c21e-48d9-90ee-d4f8e07b136c",
+    "id": "bd7c5cfd-92d8-4bb4-92a2-6da1f7c78fa4",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Planos As Built *se deben entregar al final de la obra impresos y firmados en fresco por el instalad",
     "excel_unit": "gl",
@@ -6507,13 +6665,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "765e8007-2465-42aa-a4bd-c35ec61ff26b",
+        "id": "cfc8b49d-1c30-4981-9558-709184d44917",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -6529,10 +6686,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with GLOBAL geometry support for \"gl\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "966557e1-7bbd-456b-9986-28719ee428ae",
+    "id": "449b5b8a-4179-45e8-b2dc-f3a7a1f6b5d3",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Aseo y entrega final",
     "excel_unit": "gl",
@@ -6541,39 +6701,38 @@
     "match_confidence": 0.2552795641443557,
     "confidence": "low",
     "match_reason": "Matched layer \"A-ARQ-VENTANAS\" (26%) | Geometry: 0.01 m², 23.13 m",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "15d09bf2-e73f-4e66-bea7-c9f75a043533",
+        "id": "b72b5868-8c7b-420a-b39c-0e6e99071d39",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on A-ARQ-VENTANAS\" from layer \"A-ARQ-VENTANAS\"",
         "payload": {
-          "itemId": "1f085651-b9be-467d-b17d-d5baf8dd40b4",
+          "itemId": "4d1604e9-9b1d-4c6a-854d-5a57b8731e45",
           "layer": "A-ARQ-VENTANAS",
           "name": "Lines on A-ARQ-VENTANAS"
         },
         "confidence": "low"
       },
       {
-        "id": "374620a5-a3ad-4f0f-99de-cd3b71dd168d",
+        "id": "2f35ce5a-73bd-4482-85fb-3ac4e9ef6a7f",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on MB-ELEV 2\" from layer \"MB-ELEV 2\"",
         "payload": {
-          "itemId": "8e2500dc-ab8d-4eec-bd9b-2c25b0e722eb",
+          "itemId": "447589b1-1f1e-4b0a-9c65-b61d15b4e93d",
           "layer": "MB-ELEV 2",
           "name": "Lines on MB-ELEV 2"
         },
         "confidence": "low"
       },
       {
-        "id": "06fe96e5-8a36-40f2-bcb8-a979496e62c4",
+        "id": "47f8a010-aeb9-4e14-ae59-f18bc2f26303",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_0.20\" from layer \"FA_0.20\"",
         "payload": {
-          "itemId": "081f4b22-3de4-4a49-843c-94800f20803b",
+          "itemId": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
           "layer": "FA_0.20",
           "name": "Lines on FA_0.20"
         },
@@ -6617,16 +6776,19 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "397d48aa-e891-4aaa-b536-3650b5f267f1",
+    "id": "a463da12-613b-439b-81ad-ed0869be76fe",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Desplazamiento de cierre provisorio para montaje fachada",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "081f4b22-3de4-4a49-843c-94800f20803b",
+        "id": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
         "type": "length",
         "name_raw": "Lines on FA_0.20",
         "layer_raw": "FA_0.20",
@@ -6641,7 +6803,7 @@
     ],
     "matched_items": [
       {
-        "id": "081f4b22-3de4-4a49-843c-94800f20803b",
+        "id": "23ad57ee-07b7-4a65-8aa1-34b987e91628",
         "type": "length",
         "name_raw": "Lines on FA_0.20",
         "layer_raw": "FA_0.20",
@@ -6657,7 +6819,7 @@
     "match_confidence": 0.85,
     "confidence": "high",
     "match_reason": "Matched layer \"FA_0.20\" (85%) | Keywords: [fachada] | Geometry: 0.96 m², 151.20 m",
-    "qty_final": null,
+    "qty_final": 75.60235681811976,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -6688,11 +6850,12 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 75.60235681811976 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 75.60235681811976 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "311663c2-d8d3-42e5-8aba-b54d89408086",
+    "id": "9519595a-df7f-4258-95ff-95f5fb85f264",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Retiro de cierre provisorio",
     "excel_unit": "gl",
@@ -6701,13 +6864,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "365ee69d-2bca-4022-b98d-6077980840a7",
+        "id": "2f8cf23f-50c2-4ad1-af92-4dff4807ea72",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -6723,10 +6885,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with GLOBAL geometry support for \"gl\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "ca9a446b-bd6d-412a-825d-8854aba1cb0f",
+    "id": "ed7149f7-98f4-4b8e-8ca6-35c5dfa5192c",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Tapas registro para RAP ",
     "excel_unit": "un",
@@ -6735,13 +6900,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "9850b085-0e18-43f0-b68b-b7f40d0bebe7",
+        "id": "4c883aad-be7b-423a-acca-1df393a8e2eb",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -6757,10 +6921,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "f61d290d-cbf8-4908-8eae-81e55da926e0",
+    "id": "88432239-213b-4e7c-a213-b3e2c118a86c",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Seguro todo riesgo de construcción solicitado por Mall",
     "excel_unit": "gl",
@@ -6769,24 +6936,23 @@
     "match_confidence": 0.06627316376880943,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (7%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "1c9ae50e-8199-4423-97d2-06aa96e20d31",
+        "id": "0748e78f-8ea3-4fa8-99a0-d4d0d1ffe843",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "24735765-3d3d-4110-aafc-b0e73fda265e",
+        "id": "72821f3b-ed37-40c4-9563-7efd822de8fc",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -6806,10 +6972,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "69d4e8df-e0cc-4310-9a30-4f7a71c0697a",
+    "id": "2dce3603-d469-4213-89ed-2e527b4ef034",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Otros no considerados",
     "excel_unit": "gl",
@@ -6818,13 +6987,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "6601d759-9325-472c-b428-e48144bd2dcb",
+        "id": "b4bc231b-440a-47ce-a5f7-8a44e753c82c",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -6840,10 +7008,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with GLOBAL geometry support for \"gl\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "4ed9f70c-28ea-4bc9-a2ce-442d69d37f6d",
+    "id": "2e0fd777-7785-4912-974c-b7d63f212f3a",
     "excel_sheet": "FinalRun",
     "excel_item_text": "OTROS INSUMOS",
     "excel_unit": "gl",
@@ -6852,24 +7023,23 @@
     "match_confidence": 0.1705146584519316,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_ARQ-MUROS\" (17%) | Geometry: 22.22 m², 694.63 m",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "51f9f70d-08ac-40a3-9b7f-39b48b830e6f",
+        "id": "7ed5f9da-6f2e-4a06-a0d6-8293ae86031c",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_ARQ-MUROS\" from layer \"FA_ARQ-MUROS\"",
         "payload": {
-          "itemId": "07ca15e5-d7df-4c2f-a355-39c1b1ec4194",
+          "itemId": "0c41ec1c-a38c-4fb5-afd4-0d17f318de83",
           "layer": "FA_ARQ-MUROS",
           "name": "Lines on FA_ARQ-MUROS"
         },
         "confidence": "low"
       },
       {
-        "id": "ee54e613-33af-48ae-b068-87f3f1456a58",
+        "id": "937ba2cf-7bfa-4fa4-8487-e9f9a1c29844",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -6889,10 +7059,13 @@
         "score_type": 0,
         "qty_if_used": 347.3166409927955
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "bb102fcb-cfe1-4463-8347-132bce225ffb",
+    "id": "2fb1cb7a-d0d7-4239-a0d3-7421e9dec069",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Estructura soporte UPS",
     "excel_unit": "un",
@@ -6901,39 +7074,38 @@
     "match_confidence": 0.32580013753675796,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_0.10\" (33%) | Geometry: 1.30 m², 46.08 m, 13 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "d3208aff-7c34-45f4-9992-ef3af59484e9",
+        "id": "d30494a6-94dd-4056-9487-5a846b5bc784",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_0.10\" from layer \"FA_0.10\"",
         "payload": {
-          "itemId": "9bf6fd0c-de0b-46aa-84bb-8d00814a7827",
+          "itemId": "edf768c9-15d9-4eb7-9fc0-85f1be455f5f",
           "layer": "FA_0.10",
           "name": "Lines on FA_0.10"
         },
         "confidence": "medium"
       },
       {
-        "id": "5ed6091a-2561-4040-bafa-4b19aed551b2",
+        "id": "8be7d137-334f-4fc0-81d8-ad170911b905",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_COLOR 12\" from layer \"FA_COLOR 12\"",
         "payload": {
-          "itemId": "e361acd3-d9a0-4d03-b4a6-20c618ef5d34",
+          "itemId": "d9ced060-6ba6-40ba-8c54-73b887a72b95",
           "layer": "FA_COLOR 12",
           "name": "Lines on FA_COLOR 12"
         },
         "confidence": "low"
       },
       {
-        "id": "a8ec168c-c53f-46dd-85b8-4db5fa0d4886",
+        "id": "81d4c901-0893-4aac-ab7d-9551346e2758",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Area on FA_ILUMINARIAS\" from layer \"FA_ILUMINARIAS\"",
         "payload": {
-          "itemId": "4af1eb1f-9b9f-48f1-b0d3-6e3b0da2a2f1",
+          "itemId": "92236b59-b477-4b2c-bd0d-f259d4ceefc0",
           "layer": "FA_ILUMINARIAS",
           "name": "Area on FA_ILUMINARIAS"
         },
@@ -6980,10 +7152,13 @@
         "score_type": 0,
         "qty_if_used": 284.22059522585204
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "f7e2f579-94d3-4580-9715-09c5007e1850",
+    "id": "a8f30aff-fe86-4a11-bee4-e6ce7f805b37",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Lockers 6 puertas (2 torres de 3 unidades c/u)",
     "excel_unit": "un",
@@ -6992,13 +7167,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "39e773fc-c3ec-4d67-bc3b-8076aad1ddaa",
+        "id": "8a5b532e-6c08-473a-b73c-31a55f7d149e",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7014,10 +7188,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "6c9cc935-e462-4132-9788-d24db4eefd56",
+    "id": "495ce1b2-9d85-4944-bb0d-4f61ec377aac",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Mueble de bodega metálicos 2.00 mt altura 92x30cm con 10 repisas, incorporar fleje frontal en cada r",
     "excel_unit": "un",
@@ -7026,13 +7203,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "ccdd46eb-2344-4ae2-992d-fe4417e1c8cc",
+        "id": "36432dc0-f2a7-4485-b293-152a1d612006",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7052,10 +7228,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "c5acb5a8-3538-482b-b052-48439779e94a",
+    "id": "0a2c36d6-0487-4d12-b443-9cb931bcabfc",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Caja fuerte + instalación fija a piso",
     "excel_unit": "un",
@@ -7064,24 +7243,23 @@
     "match_confidence": 0.1595013831486991,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-ELECTRICIDAD\" (16%) | Geometry: 38.93 m², 261.67 m, 11 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "c64b1b23-86bc-44bd-9c7b-707e6f1809c7",
+        "id": "89153815-b81a-4589-933d-83dc7c7dd3e1",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "4e265aac-af10-44f3-bff7-b8b05f6f4f5e",
+        "id": "627d6a71-f03e-49ab-a9d6-5ae3d2000173",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7104,10 +7282,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "6a9ceb0e-41ef-483d-a965-8c74bc9445bd",
+    "id": "8efa61a3-25e9-4eb0-98b0-0708606a08e2",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Closet aseo con espacio para escoba",
     "excel_unit": "un",
@@ -7116,24 +7297,23 @@
     "match_confidence": 0.09581284648796029,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_PROYECCIÓN GATERAS\" (10%) | Geometry: 2.65 m², 34.98 m, 2 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "6571bc0d-5cde-438b-ac72-b5ab9248bc25",
+        "id": "63dba007-2f55-4c03-9ebb-0a49dbdcb326",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_PROYECCIÓN GATERAS\" from layer \"FA_PROYECCIÓN GATERAS\"",
         "payload": {
-          "itemId": "3c683c9a-695b-4b90-88e1-4fd275512ca7",
+          "itemId": "7123d0ef-1ec5-4f6f-83a8-edc50fd6e31e",
           "layer": "FA_PROYECCIÓN GATERAS",
           "name": "Lines on FA_PROYECCIÓN GATERAS"
         },
         "confidence": "low"
       },
       {
-        "id": "e7a33e88-372e-4098-9606-b1bb5744eb5e",
+        "id": "cea8cd66-6e0c-4bd1-80de-22360e9e65de",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7156,10 +7336,13 @@
         "score_type": 0,
         "qty_if_used": 11.659674775251132
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "c5cc8532-5c7a-4c3b-9784-002d78931c26",
+    "id": "7b79ed6a-c18f-4774-9a81-b976d9c83475",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Perchero a muro instalado en bodega, con 5 colgadores metálico",
     "excel_unit": "gl",
@@ -7168,13 +7351,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "22885798-6886-46a5-9e49-05d6b883110f",
+        "id": "fb07424b-976d-4d1b-9055-0a549fef0188",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7190,10 +7372,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with GLOBAL geometry support for \"gl\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "87ad94fa-b7bc-41ef-adc3-d28363d1e0b4",
+    "id": "fc0cfd41-8852-4367-9ee5-99588006e14f",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Escalera tijera de aluminio, 4 peldaños",
     "excel_unit": "un",
@@ -7202,24 +7387,23 @@
     "match_confidence": 0.08847790041077219,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_PROYECCIÓN GATERAS\" (9%) | Geometry: 2.65 m², 34.98 m, 2 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "87054a33-3f56-4c86-869f-0cc9e78e71d0",
+        "id": "7394acef-c3cb-47c3-946f-22f20e939a94",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_PROYECCIÓN GATERAS\" from layer \"FA_PROYECCIÓN GATERAS\"",
         "payload": {
-          "itemId": "3c683c9a-695b-4b90-88e1-4fd275512ca7",
+          "itemId": "7123d0ef-1ec5-4f6f-83a8-edc50fd6e31e",
           "layer": "FA_PROYECCIÓN GATERAS",
           "name": "Lines on FA_PROYECCIÓN GATERAS"
         },
         "confidence": "low"
       },
       {
-        "id": "84ae8dc0-7499-455d-93a6-022300c69d36",
+        "id": "70ca7454-fd4c-446e-a708-4b202b655e10",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7239,10 +7423,13 @@
         "score_type": 0,
         "qty_if_used": 11.659674775251132
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "0d088d38-db86-428a-a42b-3a19a7a2ef7b",
+    "id": "23cb3680-c7b7-40b6-bcca-c9841025e319",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Otros no considerados",
     "excel_unit": "un",
@@ -7251,13 +7438,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "b7ddd19d-7589-49dc-b4af-702adddc55c5",
+        "id": "6f227575-84b5-44b7-8bed-7265d93c5595",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7273,16 +7459,19 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "02923269-917c-43d8-9c6b-f28e07bcbd4d",
+    "id": "7e93baac-99ff-41fa-a2e6-3453b938ec49",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Jefatura y dirección de obra",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "3c683c9a-695b-4b90-88e1-4fd275512ca7",
+        "id": "7123d0ef-1ec5-4f6f-83a8-edc50fd6e31e",
         "type": "length",
         "name_raw": "Lines on FA_PROYECCIÓN GATERAS",
         "layer_raw": "FA_PROYECCIÓN GATERAS",
@@ -7297,7 +7486,7 @@
     ],
     "matched_items": [
       {
-        "id": "3c683c9a-695b-4b90-88e1-4fd275512ca7",
+        "id": "7123d0ef-1ec5-4f6f-83a8-edc50fd6e31e",
         "type": "length",
         "name_raw": "Lines on FA_PROYECCIÓN GATERAS",
         "layer_raw": "FA_PROYECCIÓN GATERAS",
@@ -7313,7 +7502,7 @@
     "match_confidence": 0.6707300785041107,
     "confidence": "medium",
     "match_reason": "Matched layer \"FA_PROYECCIÓN GATERAS\" (67%) | Geometry: 2.65 m², 34.98 m, 2 blocks",
-    "qty_final": null,
+    "qty_final": 11.659674775251132,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -7332,17 +7521,18 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 11.659674775251132 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 11.659674775251132 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "ae90ce00-e973-41fe-8e3b-086b7646c19e",
+    "id": "9448ed73-ec2f-4aa9-b89b-b65c173384b0",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Extintores",
     "excel_unit": "un",
     "source_items": [
       {
-        "id": "e527a870-1e27-41f6-b3b1-a07c20f01ee3",
+        "id": "de2047a0-bfbf-4609-aaa1-106bcd58eb3c",
         "type": "area",
         "name_raw": "Area on 7887_EXTINCION",
         "layer_raw": "7887_EXTINCION",
@@ -7356,7 +7546,7 @@
     ],
     "matched_items": [
       {
-        "id": "e527a870-1e27-41f6-b3b1-a07c20f01ee3",
+        "id": "de2047a0-bfbf-4609-aaa1-106bcd58eb3c",
         "type": "area",
         "name_raw": "Area on 7887_EXTINCION",
         "layer_raw": "7887_EXTINCION",
@@ -7438,13 +7628,13 @@
     ]
   },
   {
-    "id": "015ff7f3-b6d2-4b07-924c-db7bf2982316",
+    "id": "bec7aa54-654b-4514-8039-e92df569daec",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Fletes materiales",
     "excel_unit": "un",
     "source_items": [
       {
-        "id": "3c683c9a-695b-4b90-88e1-4fd275512ca7",
+        "id": "7123d0ef-1ec5-4f6f-83a8-edc50fd6e31e",
         "type": "length",
         "name_raw": "Lines on FA_PROYECCIÓN GATERAS",
         "layer_raw": "FA_PROYECCIÓN GATERAS",
@@ -7459,7 +7649,7 @@
     ],
     "matched_items": [
       {
-        "id": "3c683c9a-695b-4b90-88e1-4fd275512ca7",
+        "id": "7123d0ef-1ec5-4f6f-83a8-edc50fd6e31e",
         "type": "length",
         "name_raw": "Lines on FA_PROYECCIÓN GATERAS",
         "layer_raw": "FA_PROYECCIÓN GATERAS",
@@ -7524,7 +7714,7 @@
     ]
   },
   {
-    "id": "4cfdeecb-fb08-448b-9332-eaca3c9970d4",
+    "id": "ab86c207-22e1-4b3f-9713-ceaaa3525a36",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Retiro de escombros",
     "excel_unit": "un",
@@ -7533,13 +7723,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_no_match",
     "status_reason": "No matching CAD items found",
     "suggestions": [
       {
-        "id": "d8552f1a-d91c-423f-a399-2b938ca45127",
+        "id": "56fca1f4-f922-433b-a884-da3e1bb7c31d",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7555,10 +7744,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with BLOCK geometry support for \"un\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "9b726d28-1b49-4e4a-acae-1c2cdbbd0cd8",
+    "id": "80d1a7df-4d34-4ecb-8f48-d72346f06543",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Elemento seguridad personal",
     "excel_unit": "gl",
@@ -7567,35 +7759,34 @@
     "match_confidence": 0.17945604454823316,
     "confidence": "low",
     "match_reason": "Matched layer \"LDS-FURNITURE OUTLINE\" (18%) | Geometry: 0.41 m², 51.87 m",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "e4165ed1-bfd2-4eb0-9e21-fde26468766a",
+        "id": "8bf845e4-4ea9-432a-ad66-a173a017af84",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-FURNITURE OUTLINE\" from layer \"LDS-FURNITURE OUTLINE\"",
         "payload": {
-          "itemId": "4649dbd4-fa84-4009-b44b-392287c77bef",
+          "itemId": "e3ccdd95-afbc-49dc-b489-c2fc781c8187",
           "layer": "LDS-FURNITURE OUTLINE",
           "name": "Lines on LDS-FURNITURE OUTLINE"
         },
         "confidence": "low"
       },
       {
-        "id": "5e2fc7bb-77ef-44b8-9abb-6fbcf1eb7764",
+        "id": "c0d3c3d9-4bc7-45b6-904f-090c12267dbb",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on LDS-ELECTRICIDAD\" from layer \"LDS-ELECTRICIDAD\"",
         "payload": {
-          "itemId": "52ab9393-f7ce-4eae-be0a-7608c21ee207",
+          "itemId": "43eaed39-4a53-4d3f-8e2b-aeaa8012229f",
           "layer": "LDS-ELECTRICIDAD",
           "name": "Lines on LDS-ELECTRICIDAD"
         },
         "confidence": "low"
       },
       {
-        "id": "d712b65a-dce8-47df-8455-de1ecd08bdbb",
+        "id": "84e146f0-8457-400a-880e-dfd7cb14186e",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7621,10 +7812,13 @@
         "score_type": 0,
         "qty_if_used": 57.56719279034429
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "25c5bb5a-ef27-4ebd-b340-8b748e319854",
+    "id": "7b85cbd4-882e-4e48-941e-cdfa752998d0",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Gastos de oficina central",
     "excel_unit": "gl",
@@ -7633,24 +7827,23 @@
     "match_confidence": 0.13393378789890784,
     "confidence": "low",
     "match_reason": "Matched layer \"A-ARQ-CIELO FALSO\" (13%) | Geometry: 0.35 m², 481.32 m, 39 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "e7f221f3-2859-4438-8d23-ba950ddb1b8f",
+        "id": "2328ea33-631c-4b9f-ac69-cda269fbdc4e",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on A-ARQ-CIELO FALSO\" from layer \"A-ARQ-CIELO FALSO\"",
         "payload": {
-          "itemId": "f5254b87-95b7-4dcc-bf3c-2a561106d65d",
+          "itemId": "4ac55d56-a9d6-4fbd-94cd-d5a9072a470b",
           "layer": "A-ARQ-CIELO FALSO",
           "name": "Lines on A-ARQ-CIELO FALSO"
         },
         "confidence": "low"
       },
       {
-        "id": "dd4f6246-72b9-441f-a929-21324fd8bb2c",
+        "id": "bf2b12f0-2ee9-4b83-a449-32e3a779106c",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7670,16 +7863,19 @@
         "score_type": 0,
         "qty_if_used": 238.00361467092688
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "eb841f00-53ac-469c-9163-8d55c6384cc1",
+    "id": "e8d587f7-5257-464c-8165-27717c8da2f1",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Arriendo andamios",
     "excel_unit": "gl",
     "source_items": [
       {
-        "id": "1f085651-b9be-467d-b17d-d5baf8dd40b4",
+        "id": "4d1604e9-9b1d-4c6a-854d-5a57b8731e45",
         "type": "length",
         "name_raw": "Lines on A-ARQ-VENTANAS",
         "layer_raw": "A-ARQ-VENTANAS",
@@ -7694,7 +7890,7 @@
     ],
     "matched_items": [
       {
-        "id": "1f085651-b9be-467d-b17d-d5baf8dd40b4",
+        "id": "4d1604e9-9b1d-4c6a-854d-5a57b8731e45",
         "type": "length",
         "name_raw": "Lines on A-ARQ-VENTANAS",
         "layer_raw": "A-ARQ-VENTANAS",
@@ -7710,7 +7906,7 @@
     "match_confidence": 0.7452388916663086,
     "confidence": "medium",
     "match_reason": "Matched layer \"A-ARQ-VENTANAS\" (75%) | Geometry: 0.01 m², 23.13 m",
-    "qty_final": null,
+    "qty_final": 11.567115612789603,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
@@ -7753,11 +7949,12 @@
       }
     ],
     "warnings": [
-      "outlier: Item de servicio con cantidad 11.567115612789603 - normalmente debería ser 1"
+      "outlier: Item de servicio con cantidad 11.567115612789603 - normalmente debería ser 1",
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "3b3dcb5f-fe0b-4096-b5b6-ead4114f0ad9",
+    "id": "ba8f451e-f2f2-43f7-9466-deace6b56f24",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Arriendo de herramientas",
     "excel_unit": "gl",
@@ -7766,13 +7963,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "e1bb3eaf-e8c0-477a-9af7-7cc71a48a3dc",
+        "id": "221c060a-c028-4457-aba2-3e653ad89eaa",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7788,10 +7984,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with GLOBAL geometry support for \"gl\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "7fb57dc6-7d3c-42c5-88c2-c7a0782006b9",
+    "id": "d6f56f59-78e7-41be-a323-9fc7d19af066",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Traslados y viaticos ",
     "excel_unit": "gl",
@@ -7800,24 +7999,23 @@
     "match_confidence": 0.19065885847942854,
     "confidence": "low",
     "match_reason": "Matched layer \"FA_SISTEMAS ELECTRICOS\" (19%) | Geometry: 2.81 m², 80.23 m, 27 blocks",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "0c0019e9-c537-424e-9fd6-dd8a9f3c718f",
+        "id": "940d7dd6-9bb0-45a8-b222-16a9e78ed3a8",
         "action_type": "SELECT_ALT_LAYER",
         "label": "Use \"Lines on FA_SISTEMAS ELECTRICOS\" from layer \"FA_SISTEMAS ELECTRICOS\"",
         "payload": {
-          "itemId": "15aff6d7-699e-477e-9c65-03823df66b60",
+          "itemId": "1f830932-d70a-4bf5-a2d6-8ab32b6978de",
           "layer": "FA_SISTEMAS ELECTRICOS",
           "name": "Lines on FA_SISTEMAS ELECTRICOS"
         },
         "confidence": "low"
       },
       {
-        "id": "a202c334-1cd3-4a1f-9721-5807bac96929",
+        "id": "a7fb6056-3039-4130-ab86-ddcce889628f",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7837,10 +8035,13 @@
         "score_type": 0,
         "qty_if_used": 26.960728831833315
       }
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "40467473-459c-44c5-a53f-0fa034b93cab",
+    "id": "6e42d482-59a8-4289-8a60-948e8b373ecc",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Aseo y cuidado de obra",
     "excel_unit": "gl",
@@ -7849,13 +8050,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "d6b7097e-572a-4002-b5e2-7d155dcaf79a",
+        "id": "4bd74d01-f69a-48a1-93b4-369787ec3273",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7871,10 +8071,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with GLOBAL geometry support for \"gl\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "fa896d12-2cd1-4981-8f5f-f94db37e7fdb",
+    "id": "d8113d0f-0b15-4068-81f7-89ba392f2eab",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Imposiciones personal",
     "excel_unit": "gl",
@@ -7883,13 +8086,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "aebe2958-4cc2-4769-a1f5-a8bd81ccd997",
+        "id": "fd0c8490-8cae-4449-99b7-ba052b42ee8c",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7905,10 +8107,13 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with GLOBAL geometry support for \"gl\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   },
   {
-    "id": "67dea836-f0d5-4baa-9e1f-36f0e0b9765e",
+    "id": "190f411e-456a-4986-996e-771b2dcffe19",
     "excel_sheet": "FinalRun",
     "excel_item_text": "Otros no considerados",
     "excel_unit": "gl",
@@ -7917,13 +8122,12 @@
     "match_confidence": 0,
     "confidence": "low",
     "match_reason": "No valid match found",
-    "qty_final": null,
     "price_candidates": [],
     "status": "pending_semantics",
     "status_reason": "Type or semantic mismatch - Unit 'gl' (normalized: 'gl') strictly defines GLOBAL",
     "suggestions": [
       {
-        "id": "9e799201-6360-4253-990e-2df29250805a",
+        "id": "10824c53-c393-4cb9-aa60-a877e3ed6d15",
         "action_type": "MANUAL_QTY",
         "label": "Enter quantity manually",
         "payload": {},
@@ -7939,6 +8143,9 @@
     "top_candidates": [],
     "hard_reject_reasons": [
       "No layers found with GLOBAL geometry support for \"gl\""
+    ],
+    "warnings": [
+      "CALC_METHOD_MISSING"
     ]
   }
 ]

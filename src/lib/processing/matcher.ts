@@ -898,10 +898,13 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
         });
 
         // ========== STEP B: FINAL ENFORCEMENT ==========
-        // Phase 8: NEVER return a quantity for pending items - this prevents false errors in regression
+        // Phase 8 REMOVED: Previously nullified qtyFinal for pending items, which broke derived area
+        // Now we KEEP qtyFinal values even for pending items to show calculated values in UI
+        // The status field already indicates that user review is needed
+
+        // Log warning if pending but has qty (for debugging) - but DON'T nullify
         if (status.startsWith('pending') && qtyFinal !== null) {
-            console.warn(`[Phase 8] Nullifying qtyFinal (${qtyFinal}) for pending status: ${status}`);
-            qtyFinal = null;
+            console.log(`[Phase 8] ℹ️ Pending status with calculated qty: ${qtyFinal?.toFixed(2)} (keeping value)`);
         }
 
         // Also ensure calcMethod is set if we have a qty

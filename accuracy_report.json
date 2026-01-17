@@ -1,0 +1,1029 @@
+[
+  {
+    "item": "OBRAS PRELIMINARES",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Instalación de faenas",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Tablero de Obra (considera tramitacion y obtencion TE1)",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Impermeabilización membrana asfáltica según plano",
+    "unit": "m2",
+    "expected": 46.57,
+    "calculated": 1089.7907576839582,
+    "diff": "2240%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Sobrelosa de 8cm",
+    "unit": "m2",
+    "expected": 60.57,
+    "calculated": 181.44565636348742,
+    "diff": "200%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Trazados y niveles",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": 0.6309999999998968,
+    "diff": "37%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Retiro de escombros",
+    "unit": "gl",
+    "expected": 4,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Otros no considerados en OBRAS PRELIMINARES",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "TABIQUES ",
+    "unit": "gl",
+    "expected": 135.58,
+    "calculated": 2.3431676253008793,
+    "diff": "98%",
+    "status": "WRONG"
+  },
+  {
+    "item": "TAB 01: sobretabique simple sala de ventas, montante estruct",
+    "unit": "m2",
+    "expected": null,
+    "calculated": 5.62360230072211,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "TAB 02: sobretabique simple bodega, montante estructural 60 ",
+    "unit": "m2",
+    "expected": null,
+    "calculated": 5.62360230072211,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "TAB 03: tabique simple divisorio, montante estructural 90 + ",
+    "unit": "m2",
+    "expected": null,
+    "calculated": 5.62360230072211,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Sobretabique pilar montante estructural 60 + plancha yeso ca",
+    "unit": "m2",
+    "expected": null,
+    "calculated": 5.62360230072211,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Tabique fachada montante estructural 60 + plancha MDF 15 mm",
+    "unit": "m2",
+    "expected": null,
+    "calculated": 833.5599383827092,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Refuerzo oculto en tabique TERCIADO 15mm en tabique para fij",
+    "unit": "m2",
+    "expected": null,
+    "calculated": 5.62360230072211,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Escalera gatera metalica según detalle",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Otros no considerados en TABIQUES",
+    "unit": "gl",
+    "expected": null,
+    "calculated": 2.3431676253008793,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "CIELOS",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": 238.00361467092688,
+    "diff": "23700%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Cielo volcanita sala de ventas montante metálico estructural",
+    "unit": "m2",
+    "expected": 4.94,
+    "calculated": 571.2086752102244,
+    "diff": "11463%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Cielo volcanita bodega montante metálico estructural 60 + vo",
+    "unit": "m2",
+    "expected": 9.889,
+    "calculated": 571.2086752102244,
+    "diff": "5676%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Cenefa perimetral sala de ventas montante metálico estructur",
+    "unit": "ml",
+    "expected": 13.42,
+    "calculated": 238.00361467092688,
+    "diff": "1673%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Pasarela de mantención montante estructural según detalle de",
+    "unit": "ml",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Refuerzos metalicos para instalacion rollo y guias cortina m",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Tapa de inspeccion clasica para cielos de yeso carton 60x60c",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": 238.00361467092688,
+    "diff": "23700%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Otros no considerados en CIELOS",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "PINTURAS Y REVESTIMIENTOS DE MURO",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Empaste y huincha de todos los tabiques de yeso carton",
+    "unit": "m2",
+    "expected": 135.58,
+    "calculated": 5.62360230072211,
+    "diff": "96%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Empaste y huincha de todos los cielos ",
+    "unit": "m2",
+    "expected": 135.58,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLA",
+    "unit": "m2",
+    "expected": 48.32,
+    "calculated": 5.62360230072211,
+    "diff": "88%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Pintura latex extracubriente blanco en cielo sala de ventas,",
+    "unit": "m2",
+    "expected": 9.89,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Pintura latex extracubriente blanco en cielo bodega",
+    "unit": "m2",
+    "expected": 9.89,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Pintura QUARZO con sellador acrilico + estuco SIP + revestim",
+    "unit": "m2",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Otros no considerados en PINTURAS Y REVESTIMIENTOS DE MURO",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "PAVIMENTOS ",
+    "unit": "gl",
+    "expected": null,
+    "calculated": 6.5899999999722985,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Mortero nivelador",
+    "unit": "m2",
+    "expected": 46.87,
+    "calculated": 181.44565636348742,
+    "diff": "287%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Marmol instalado tipo mosaico color Crema Marfil acabado sel",
+    "unit": "m2",
+    "expected": 35.1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Marmol instalado tipo mosaico color Rosso Alicante acabado s",
+    "unit": "m2",
+    "expected": 35.1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Marmol instalado tipo mosaico color Rosso Asiago acabado opa",
+    "unit": "m2",
+    "expected": 35.1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Pieza de marmol en acceso color Rosso Asiago acabado opaco c",
+    "unit": "m2",
+    "expected": null,
+    "calculated": 120.27564228905868,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Tarima de marmol en vitrinas color Rosso Asiago acabado opac",
+    "unit": "m2",
+    "expected": null,
+    "calculated": 120.27564228905868,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Provision e instalacion pavimento porcelanato DISCTRICT PLUS",
+    "unit": "m2",
+    "expected": 19,
+    "calculated": 181.44565636348742,
+    "diff": "855%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Provision e instalacion pavimento IDEM MALL",
+    "unit": "m2",
+    "expected": 19,
+    "calculated": 181.44565636348742,
+    "diff": "855%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color ",
+    "unit": "ml",
+    "expected": 19,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE",
+    "unit": "ml",
+    "expected": 8.382,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Otros no considerados en PAVIMENTOS",
+    "unit": "gl",
+    "expected": null,
+    "calculated": 75.60235681811976,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "PUERTAS Y QUINCALLERIA",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Brazo Hidráulico puerta bodega",
+    "unit": "un",
+    "expected": 2,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Otros no considerados en PUERTAS Y QUINCALLERIA",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "LUMINARIAS",
+    "unit": "gl",
+    "expected": 20,
+    "calculated": 0.25291667686939234,
+    "diff": "99%",
+    "status": "WRONG"
+  },
+  {
+    "item": "(D) Perfil de aluminio sobrepuesto rectangular. Material: Al",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "(D) Fuente de poder 12V 120W exterior. IP67 Voltaje de entra",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "(C) Foco riel magnético 6W 3.000°K NG Protección: IP20 Flujo",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "(G) Foco porta dicroico gu10 retraído fijo Base: 1xGU10 Volt",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "(G) Dicroico PHILIPS LED 7W DIMEABLE. Base: GU10. Color de L",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "(E) Downlight LED redondo 3w luz cálida, Color negro. Diámet",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "(H) Foco EROS15 LED SPOT dirigible EMB BLACK 15W Color de Lu",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Kit emergencia para foco embutido sala de ventas (90-120 min",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Kit emergencia para riel sala de ventas (90-120 min autonomí",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Lamparas bodega estanca LED 36W 4300 LM IP65",
+    "unit": "un",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Lamparas bodega con kit emergencia (90-120 min autonomía)",
+    "unit": "un",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65",
+    "unit": "un",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Letrero salida (señalética emergencia)",
+    "unit": "un",
+    "expected": 2,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Instalación de luminarias",
+    "unit": "un",
+    "expected": 20,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Otros no considerados en LUMINARIAS",
+    "unit": "gl",
+    "expected": null,
+    "calculated": 57.56719279034429,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "FACHADA",
+    "unit": "gl",
+    "expected": null,
+    "calculated": 2.4790065389893337,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Vitrina vidrio laminado 5+5mm + marco aluminio oculto según ",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Zocalo MDF 10mm revestido en fierro plegado laminado en frio",
+    "unit": "ml",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Cortina emballetada, microperforada, ups, motor central y de",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Otros no considerados en FACHADA",
+    "unit": "gl",
+    "expected": null,
+    "calculated": 75.60235681811976,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "INSTALACIONES ",
+    "unit": "gl",
+    "expected": null,
+    "calculated": 0.39534095565271377,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Climatización",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": 0.39534095565271377,
+    "diff": "60%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Climatización ductos y difusores lineales según proyecto",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Planos As Built y certificado de instalación *se deben entre",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Instalación Eléctrica",
+    "unit": "gl",
+    "expected": null,
+    "calculated": 26.960728831833315,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Tablero eléctrico rotulado",
+    "unit": "un",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Tablero clima (si lo exige mall)",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Alimentador desde la caja de empalme (en linea de concesion)",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Puntos de iluminación",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Puntos de iluminacion muebles",
+    "unit": "un",
+    "expected": null,
+    "calculated": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Puntos de enchufe",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Puntos de enchufe muebles isla (a piso)",
+    "unit": "un",
+    "expected": null,
+    "calculated": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Puntos de datos",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Canalizado cámaras de seguridad UTP cat 6e",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Canalizado parlantes",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Punto clima",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Punto letrero ",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Canalización para alarma de intrusion",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Puntos pantallas",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Puntos cajas de luz (a muro)",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Certificados TE1, Planos As Built *se deben entregar al fina",
+    "unit": "un",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Remarcador",
+    "unit": "un",
+    "expected": 1,
+    "calculated": 1,
+    "diff": "0.0%",
+    "status": "OK"
+  },
+  {
+    "item": "Enlauchado para fibra optica hasta rack de datos",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Rotulación de todos los enchufes, debe indicar voltaje 220V ",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Alarma en vitrina, provision e instalacion",
+    "unit": "un",
+    "expected": 19,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Sensor de movimiento (zona acceso a gatera), provision e ins",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Gabinete de datos para 14 un + ordenacables + rotulación",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "UPS 3KVA con enchuve 16A",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Instalación Incendio",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Detección según proyecto",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Extinción según proyecto",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Set extintores según proyecto, incluida señaletica de extint",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Planos As Built y certificado de instalación *se deben entre",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Instalacion Sanitaria",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Instalación AP y Alcantarillado",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Bomba impulsora (si aplica)",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Grifería (solo instalacion, provista por mandante)",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Remarcador agua potable",
+    "unit": "un",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Certificados de factibilidad y dotacion",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Planos As Built *se deben entregar al final de la obra impre",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Aseo y entrega final",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Desplazamiento de cierre provisorio para montaje fachada",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": 75.60235681811976,
+    "diff": "7460%",
+    "status": "WRONG"
+  },
+  {
+    "item": "Retiro de cierre provisorio",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Tapas registro para RAP ",
+    "unit": "un",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Seguro todo riesgo de construcción solicitado por Mall",
+    "unit": "gl",
+    "expected": 1,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Otros no considerados",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "OTROS INSUMOS",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Estructura soporte UPS",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Lockers 6 puertas (2 torres de 3 unidades c/u)",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Mueble de bodega metálicos 2.00 mt altura 92x30cm con 10 rep",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Caja fuerte + instalación fija a piso",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Closet aseo con espacio para escoba",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Perchero a muro instalado en bodega, con 5 colgadores metáli",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Escalera tijera de aluminio, 4 peldaños",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Otros no considerados",
+    "unit": "un",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Jefatura y dirección de obra",
+    "unit": "gl",
+    "expected": null,
+    "calculated": 11.659674775251132,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Extintores",
+    "unit": "un",
+    "expected": null,
+    "calculated": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Fletes materiales",
+    "unit": "un",
+    "expected": null,
+    "calculated": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Retiro de escombros",
+    "unit": "un",
+    "expected": 4,
+    "calculated": null,
+    "diff": "∞",
+    "status": "MISSING"
+  },
+  {
+    "item": "Elemento seguridad personal",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Gastos de oficina central",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Arriendo andamios",
+    "unit": "gl",
+    "expected": null,
+    "calculated": 11.567115612789603,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Arriendo de herramientas",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Traslados y viaticos ",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Aseo y cuidado de obra",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Imposiciones personal",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  },
+  {
+    "item": "Otros no considerados",
+    "unit": "gl",
+    "expected": null,
+    "diff": "N/A",
+    "status": "NO_REF"
+  }
+]

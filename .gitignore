@@ -51,3 +51,18 @@ firestore-debug.log
 *.dxf
 *.xlsx
 *.xlsm
+
+# Data files
+*.xlsx
+*.xlsm
+*.xls
+*.dxf
+*.dwg
+*.pdf
+
+# Python venv
+geometry-service/venv/
+
+# Environment files
+.env
+geometry-service/.env

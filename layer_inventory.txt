@@ -1,0 +1,152 @@
+====================================================================================================
+DXF LAYER INVENTORY - Buscando capas que coincidan con valores esperados
+====================================================================================================
+
+VALORES ESPERADOS DEL CSV:
+  TAB 01 (sobretabique sala): 62.38 m²
+  TAB 02 (sobretabique bodega): 30.58 m²
+  TAB 03 (tabique divisorio): 29.76 m²
+  Cielo sala: 37.62 m²
+  Cielo bodega: 9.89 m²
+  Impermeabilización: 46.57 m²
+  Sobrelosa: 60.57 m²
+
+====================================================================================================
+CAPAS DISPONIBLES EN EL DXF:
+====================================================================================================
+
+Layer                                         Área (m²)      Largo (m)      Área×2.4m   Bloques               Tipos
+-------------------------------------------------------------------------------------------------------------------
+0                                               5521.68        2607.01        6256.83        94text,length,area,block
+mb-auxiliar                                      721.83        3853.56        9248.55         -         length,area
+mb-elev 2                                         81.13        1038.60        2492.64      1181text,length,area,block
+fa_muebles proyeccion                             74.95         810.18        1944.44         1text,length,area,block
+fa_arq-muros                                      22.22         694.63        1667.12         -         length,area
+a-arq-cielo falso                                  0.35         481.32        1155.16        39   length,area,block
+mb-elev 4                                        121.43         344.57         826.97         2   length,area,block
+fa_0.05                                            8.46         366.16         878.78         -         length,area
+proyección                                         8.18         350.59         841.43        12   length,area,block
+g-dim                                             79.12         296.81         712.35         -    text,length,area
+lds-electricidad                                  38.93         261.67         628.01        11text,length,area,block
+fa_0.15                                            0.52         213.11         511.47         -         length,area
+arq_mob                                            0.44         199.83         479.59         -         length,area
+pdf_geometry                                       3.41         164.89         395.75         -         length,area
+fa_0.20                                            0.96         151.20         362.89         -         length,area
+mb-elev 3                                          5.54         108.28         259.87         -         length,area
+fa_color 12                                        1.09         101.40         243.35         1text,length,area,block
+fa_sistemas electricos                             2.81          80.23         192.55        27text,length,area,block
+mb-elev 0                                          3.77          72.50         174.01         4   length,area,block
+lds-furniture outline                              0.41          51.87         124.49         -         length,area
+fa_0.10                                            1.30          46.08         110.58        13   length,area,block
+hatch_f                                            7.14          40.31          96.73         -         length,area
+fa_proyección gateras                              2.65          34.98          83.95         2   length,area,block
+mb-cotas                                              -          34.20          82.08        29        length,block
+_0arquitectura                                     0.01          31.29          75.10         -         length,area
+fa_0.09                                               -          28.31          67.94         -              length
+fa_cortes                                          0.11          27.44          65.86         -         length,area
+a-arq-ventanas                                     0.01          23.13          55.52         -         length,area
+a-auxiliar                                         0.76          22.36          53.67         -         length,area
+a-arq-muebles                                      0.04          17.06          40.94         -    text,length,area
+fa_refuerzos                                          -          15.12          36.29         -              length
+ej - equipamento solo                              0.54          13.50          32.39         -         length,area
+arq_nivel                                          0.63          10.76          25.82        22   length,area,block
+pen a-rcp devices                                     -          10.91          26.18         -         text,length
+fa-sistemas                                        0.03          10.81          25.96         2text,length,area,block
+fa_titulo                                             -           7.78          18.66        27        length,block
+fa_texto                                           0.72           7.38          17.72         -    text,length,area
+mb-logo                                            0.13           7.39          17.74         -         area,length
+mb-elev 3.1                                        0.03           6.90          16.56         -         area,length
+fa_tabiques                                        0.00           5.95          14.27         1   length,area,block
+fa-iluminacion                                     0.40           5.46          13.10         -         area,length
+fa_0.25                                            0.10           4.96          11.90         -         length,area
+arq_texto 50                                          -           4.62          11.10         -              length
+fa_iluminarias                                     0.25           4.06           9.74         3   area,length,block
+ej - x1 - layout                                      -           4.00           9.61         2   text,length,block
+fixture-fix-l                                      0.00           3.24           7.76         -         area,length
+a-arq-t90-f120                                        -           2.40           5.76         -              length
+mv_muebles                                         0.00           2.20           5.29         1   area,length,block
+e                                                     -           2.17           5.22         -              length
+_0textos                                              -           2.05           4.91         4   text,length,block
+a-seccion                                          0.00           1.87           4.49         -         area,length
+04-fur_신규                                          0.00           1.43           3.44         -         area,length
+a-cot-exteriores                                      -           1.31           3.15         -              length
+a-arq-barandas y em                                0.00           1.26           3.03         -         length,area
+a-txt-especificacion                                  -           1.20           2.89         -         text,length
+7887_extincion                                     0.02           0.91           2.19         1area,length,block,text
+pen a-flr tile patt                                0.01           0.88           2.11         -         area,length
+omega                                                 -           0.63           1.52         -              length
+i-ele-alumbrado                                    0.00           0.37           0.88         -    text,length,area
+0.1                                                   -           0.31           0.75         -              length
+3 light                                            0.00           0.27           0.66         -         length,area
+a-arq-accesorios                                   0.00           0.16           0.38         -         length,area
+simbolo_obra                                          -           0.11           0.26        47        length,block
+pdf_text                                              -              -              -         -                text
+a-texto                                               -              -              -         -                text
+a-arq-artefactos                                      -              -              -         1               block
+mb-section hatch                                      -              -              -        10               block
+elev-251                                              -              -              -         8               block
+mb-lds-bronce                                         -              -              -       183               block
+ej - luminárias                                       -              -              -         2               block
+fa_muebles                                            -              -              -         -                text
+proy                                                  -              -              -         -                text
+
+====================================================================================================
+CAPAS CON ÁREA DIRECTA (potenciales matches para cielos/pisos):
+====================================================================================================
+  0: 5521.68 m²
+  mb-auxiliar: 721.83 m²
+  mb-elev 2: 81.13 m²
+  fa_muebles proyeccion: 74.95 m²
+  fa_arq-muros: 22.22 m²
+  mb-elev 4: 121.43 m²
+  fa_0.05: 8.46 m²
+  proyección: 8.18 m²
+  g-dim: 79.12 m²
+  lds-electricidad: 38.93 m²
+  pdf_geometry: 3.41 m²
+  mb-elev 3: 5.54 m²
+  fa_color 12: 1.09 m²
+  fa_sistemas electricos: 2.81 m²
+  mb-elev 0: 3.77 m²
+  fa_0.10: 1.30 m²
+  hatch_f: 7.14 m²
+  fa_proyección gateras: 2.65 m²
+
+====================================================================================================
+CAPAS CON LARGO SIGNIFICATIVO (potenciales matches para tabiques):
+====================================================================================================
+  mb-auxiliar: 3853.56 m → 9248.55 m² (×2.4m)
+  0: 2607.01 m → 6256.83 m² (×2.4m)
+  mb-elev 2: 1038.60 m → 2492.64 m² (×2.4m)
+  fa_muebles proyeccion: 810.18 m → 1944.44 m² (×2.4m)
+  fa_arq-muros: 694.63 m → 1667.12 m² (×2.4m)
+  a-arq-cielo falso: 481.32 m → 1155.16 m² (×2.4m)
+  fa_0.05: 366.16 m → 878.78 m² (×2.4m)
+  proyección: 350.59 m → 841.43 m² (×2.4m)
+  mb-elev 4: 344.57 m → 826.97 m² (×2.4m)
+  g-dim: 296.81 m → 712.35 m² (×2.4m)
+  lds-electricidad: 261.67 m → 628.01 m² (×2.4m)
+  fa_0.15: 213.11 m → 511.47 m² (×2.4m)
+  arq_mob: 199.83 m → 479.59 m² (×2.4m)
+  pdf_geometry: 164.89 m → 395.75 m² (×2.4m)
+  fa_0.20: 151.20 m → 362.89 m² (×2.4m)
+  mb-elev 3: 108.28 m → 259.87 m² (×2.4m)
+  fa_color 12: 101.40 m → 243.35 m² (×2.4m)
+  fa_sistemas electricos: 80.23 m → 192.55 m² (×2.4m)
+  mb-elev 0: 72.50 m → 174.01 m² (×2.4m)
+  lds-furniture outline: 51.87 m → 124.49 m² (×2.4m)
+  fa_0.10: 46.08 m → 110.58 m² (×2.4m)
+  hatch_f: 40.31 m → 96.73 m² (×2.4m)
+  fa_proyección gateras: 34.98 m → 83.95 m² (×2.4m)
+  mb-cotas: 34.20 m → 82.08 m² (×2.4m)
+  _0arquitectura: 31.29 m → 75.10 m² (×2.4m)
+  fa_0.09: 28.31 m → 67.94 m² (×2.4m)
+  fa_cortes: 27.44 m → 65.86 m² (×2.4m)
+  a-arq-ventanas: 23.13 m → 55.52 m² (×2.4m)
+  a-auxiliar: 22.36 m → 53.67 m² (×2.4m)
+  a-arq-muebles: 17.06 m → 40.94 m² (×2.4m)
+  fa_refuerzos: 15.12 m → 36.29 m² (×2.4m)
+  ej - equipamento solo: 13.50 m → 32.39 m² (×2.4m)
+  pen a-rcp devices: 10.91 m → 26.18 m² (×2.4m)
+  fa-sistemas: 10.81 m → 25.96 m² (×2.4m)
+  arq_nivel: 10.76 m → 25.82 m² (×2.4m)
