@@ -107,57 +107,77 @@ export async function parseDxfFull(fileContent: Buffer | string, unit: string = 
     // Note: The Python endpoint currently detects unit from file header automatically
     // We might want to pass 'unit' as a hint in future if needed
 
-    const response = await fetch(`${GEOMETRY_SERVICE_URL}/api/parse-dxf`, {
-        method: 'POST',
-        body: formData,
-    });
 
-    if (!response.ok) {
-        throw new Error(`Failed to parse DXF via service: ${response.statusText}`);
+    // Optimize: Set 5-minute timeout for large DXF processing
+    // (Optimization Phase 9: Prevent 'HeadersTimeoutError' fallback)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 300000); // 5 minutes
+
+    let data;
+    try {
+        const response = await fetch(`${GEOMETRY_SERVICE_URL}/api/parse-dxf`, {
+            method: 'POST',
+            body: formData,
+            signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+            throw new Error(`Failed to parse DXF via service: ${response.statusText}`);
+        }
+
+        data = await response.json();
+    } catch (error) {
+        clearTimeout(timeoutId);
+        throw error;
     }
 
-    const data = await response.json();
     const items: any[] = [];
 
     // Map Segments -> LENGTH items
     // (We could merge contiguous segments into polylines here or trust Python regions)
     // For now, let's map segments as simple length items
-    data.segments.forEach((seg: any, index: number) => {
-        // Calculate length
-        const dx = seg.end.x - seg.start.x;
-        const dy = seg.end.y - seg.start.y;
-        const len = Math.sqrt(dx * dx + dy * dy);
+    if (data.segments) {
+        data.segments.forEach((seg: any, index: number) => {
+            // Calculate length
+            const dx = seg.end.x - seg.start.x;
+            const dy = seg.end.y - seg.start.y;
+            const len = Math.sqrt(dx * dx + dy * dy);
 
-        items.push({
-            id: `seg_${index}`,
-            type: 'length',
-            layer: seg.layer || '0',
-            layer_normalized: (seg.layer || '0').toLowerCase().trim(),
-            value_raw: len,
-            value_m: len, // python service usually processes in unitless or meters? 
-            // Default python parser returns raw coordinates. 
-            // We need scaling logic if units mismatch. 
-            // For now assume raw = m or handle scaling downstream.
-            vertices: [seg.start, seg.end],
-            color: 7
+            items.push({
+                id: `seg_${index}`,
+                type: 'length',
+                layer: seg.layer || '0',
+                layer_normalized: (seg.layer || '0').toLowerCase().trim(),
+                value_raw: len,
+                value_m: len, // python service usually processes in unitless or meters? 
+                // Default python parser returns raw coordinates. 
+                // We need scaling logic if units mismatch. 
+                // For now assume raw = m or handle scaling downstream.
+                vertices: [seg.start, seg.end],
+                color: 7
+            });
         });
-    });
+    }
 
     // Map Texts -> TEXT items
-    data.texts.forEach((txt: any, index: number) => {
-        items.push({
-            id: `txt_${index}`,
-            type: 'text',
-            layer: txt.layer || '0',
-            layer_normalized: (txt.layer || '0').toLowerCase().trim(),
-            value_raw: 0,
-            value_m: 0,
-            name_raw: txt.text,
-            text: txt.text,
-            vertices: [txt.position],
-            color: 7
+    if (data.texts) {
+        data.texts.forEach((txt: any, index: number) => {
+            items.push({
+                id: `txt_${index}`,
+                type: 'text',
+                layer: txt.layer || '0',
+                layer_normalized: (txt.layer || '0').toLowerCase().trim(),
+                value_raw: 0,
+                value_m: 0,
+                name_raw: txt.text,
+                text: txt.text,
+                vertices: [txt.position],
+                color: 7
+            });
         });
-    });
+    }
 
     // Map Regions -> AREA items (The Missing Link!)
     if (data.regions) {
@@ -191,7 +211,7 @@ export async function parseDxfFull(fileContent: Buffer | string, unit: string = 
     // If Python returns raw, we need to know the unit.
     // Python parser checks $INSUNITS.
 
-    return { items, detectedUnit: 'm' }; // Mock unit for now
+    return { items, detectedUnit: data.detected_unit || 'm' };
 }
 
 /**
