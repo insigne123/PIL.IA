@@ -90,9 +90,16 @@ async def extract_quantities(
         
         # Map segments to Cleanup format
         from core.geometry_cleanup import Segment as ClnSegment, Point as ClnPoint
+        from core.layer_filter import filter_segments
         
+        # Apply Smart Layer Filter (Optimization Phase 9)
+        # Keeps only architecturally relevant layers (unless Force Full Scan is on)
+        print(f"[Filter] Before: {len(all_segments)} segments")
+        filtered_segments = filter_segments(all_segments, force_full_scan=False)
+        print(f"[Filter] After: {len(filtered_segments)} segments")
+
         cleanup_segments = []
-        for s in all_segments:
+        for s in filtered_segments:
             cleanup_segments.append(ClnSegment(
                 start=ClnPoint(s.start.x, s.start.y),
                 end=ClnPoint(s.end.x, s.end.y),

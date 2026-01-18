@@ -7,6 +7,7 @@ python-multipart>=0.0.6
 ezdxf>=1.2.0
 shapely>=2.0.0
 networkx>=3.0
+rtree>=1.0.1
 numpy>=1.24.0
 scipy>=1.11.0
 

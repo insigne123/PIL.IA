@@ -9,7 +9,7 @@ import json
 import os
 import sys
 
-API_URL = "http://127.0.0.1:8004/api/extract"
+API_URL = "http://127.0.0.1:8000/api/extract"
 DXF_PATH = r"c:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\qa\minimal.dxf"
 
 def run_e2e_test():
