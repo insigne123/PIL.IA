@@ -1,0 +1,259 @@
+
+--- Error processing fake.dxf ---
+Traceback (most recent call last):
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\dxf_parser.py", line 229, in parse_dxf_file
+    doc = ezdxf.readfile(file_path)
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\ezdxf\filemanagement.py", line 147, in readfile
+    raise IOError(f"File '{filename}' is not a DXF file.")
+OSError: File 'C:\Users\nicog\AppData\Local\Temp\tmpwsxvggnb.dxf' is not a DXF file.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\api\routes.py", line 157, in parse_dxf
+    result = await run_in_threadpool(process_dxf_task, tmp_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\processing_task.py", line 96, in process_dxf_task
+    raise e
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\processing_task.py", line 22, in process_dxf_task
+    result = parse_dxf_file(file_path)
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\dxf_parser.py", line 231, in parse_dxf_file
+    raise ValueError(f"Failed to read DXF file: {e}")
+ValueError: Failed to read DXF file: File 'C:\Users\nicog\AppData\Local\Temp\tmpwsxvggnb.dxf' is not a DXF file.
+
+--- Error processing fake.dxf ---
+Traceback (most recent call last):
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\dxf_parser.py", line 229, in parse_dxf_file
+    doc = ezdxf.readfile(file_path)
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\ezdxf\filemanagement.py", line 147, in readfile
+    raise IOError(f"File '{filename}' is not a DXF file.")
+OSError: File 'C:\Users\nicog\AppData\Local\Temp\tmpw6pip6sz.dxf' is not a DXF file.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\api\routes.py", line 157, in parse_dxf
+    result = await run_in_threadpool(process_dxf_task, tmp_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\processing_task.py", line 96, in process_dxf_task
+    raise e
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\processing_task.py", line 22, in process_dxf_task
+    result = parse_dxf_file(file_path)
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\dxf_parser.py", line 231, in parse_dxf_file
+    raise ValueError(f"Failed to read DXF file: {e}")
+ValueError: Failed to read DXF file: File 'C:\Users\nicog\AppData\Local\Temp\tmpw6pip6sz.dxf' is not a DXF file.
+
+--- Error processing stress.dxf ---
+Traceback (most recent call last):
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\dxf_parser.py", line 229, in parse_dxf_file
+    doc = ezdxf.readfile(file_path)
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\ezdxf\filemanagement.py", line 147, in readfile
+    raise IOError(f"File '{filename}' is not a DXF file.")
+OSError: File 'C:\Users\nicog\AppData\Local\Temp\tmpixm9jhnh.dxf' is not a DXF file.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\api\routes.py", line 157, in parse_dxf
+    result = await run_in_threadpool(process_dxf_task, tmp_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\processing_task.py", line 96, in process_dxf_task
+    raise e
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\processing_task.py", line 22, in process_dxf_task
+    result = parse_dxf_file(file_path)
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\dxf_parser.py", line 231, in parse_dxf_file
+    raise ValueError(f"Failed to read DXF file: {e}")
+ValueError: Failed to read DXF file: File 'C:\Users\nicog\AppData\Local\Temp\tmpixm9jhnh.dxf' is not a DXF file.
+
+--- Error processing stress.dxf ---
+Traceback (most recent call last):
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\dxf_parser.py", line 229, in parse_dxf_file
+    doc = ezdxf.readfile(file_path)
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\ezdxf\filemanagement.py", line 147, in readfile
+    raise IOError(f"File '{filename}' is not a DXF file.")
+OSError: File 'C:\Users\nicog\AppData\Local\Temp\tmpdlrwcd6t.dxf' is not a DXF file.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\api\routes.py", line 157, in parse_dxf
+    result = await run_in_threadpool(process_dxf_task, tmp_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\processing_task.py", line 96, in process_dxf_task
+    raise e
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\processing_task.py", line 22, in process_dxf_task
+    result = parse_dxf_file(file_path)
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\dxf_parser.py", line 231, in parse_dxf_file
+    raise ValueError(f"Failed to read DXF file: {e}")
+ValueError: Failed to read DXF file: File 'C:\Users\nicog\AppData\Local\Temp\tmpdlrwcd6t.dxf' is not a DXF file.
+
+--- Error processing stress.dxf ---
+Traceback (most recent call last):
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\dxf_parser.py", line 229, in parse_dxf_file
+    doc = ezdxf.readfile(file_path)
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\ezdxf\filemanagement.py", line 147, in readfile
+    raise IOError(f"File '{filename}' is not a DXF file.")
+OSError: File 'C:\Users\nicog\AppData\Local\Temp\tmpeu3vp4et.dxf' is not a DXF file.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\api\routes.py", line 157, in parse_dxf
+    result = await run_in_threadpool(process_dxf_task, tmp_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\processing_task.py", line 96, in process_dxf_task
+    raise e
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\processing_task.py", line 22, in process_dxf_task
+    result = parse_dxf_file(file_path)
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\dxf_parser.py", line 231, in parse_dxf_file
+    raise ValueError(f"Failed to read DXF file: {e}")
+ValueError: Failed to read DXF file: File 'C:\Users\nicog\AppData\Local\Temp\tmpeu3vp4et.dxf' is not a DXF file.
+
+--- Error processing stress.dxf ---
+Traceback (most recent call last):
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\dxf_parser.py", line 229, in parse_dxf_file
+    doc = ezdxf.readfile(file_path)
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\ezdxf\filemanagement.py", line 147, in readfile
+    raise IOError(f"File '{filename}' is not a DXF file.")
+OSError: File 'C:\Users\nicog\AppData\Local\Temp\tmpvq_rxnq6.dxf' is not a DXF file.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\api\routes.py", line 157, in parse_dxf
+    result = await run_in_threadpool(process_dxf_task, tmp_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\processing_task.py", line 96, in process_dxf_task
+    raise e
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\processing_task.py", line 22, in process_dxf_task
+    result = parse_dxf_file(file_path)
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\dxf_parser.py", line 231, in parse_dxf_file
+    raise ValueError(f"Failed to read DXF file: {e}")
+ValueError: Failed to read DXF file: File 'C:\Users\nicog\AppData\Local\Temp\tmpvq_rxnq6.dxf' is not a DXF file.
+
+--- Error processing stress.dxf ---
+Traceback (most recent call last):
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\dxf_parser.py", line 229, in parse_dxf_file
+    doc = ezdxf.readfile(file_path)
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\ezdxf\filemanagement.py", line 147, in readfile
+    raise IOError(f"File '{filename}' is not a DXF file.")
+OSError: File 'C:\Users\nicog\AppData\Local\Temp\tmpffvvk7x2.dxf' is not a DXF file.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\api\routes.py", line 157, in parse_dxf
+    result = await run_in_threadpool(process_dxf_task, tmp_path)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\starlette\concurrency.py", line 32, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\to_thread.py", line 63, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        func, args, abandon_on_cancel=abandon_on_cancel, limiter=limiter
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 2502, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\nicog\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 986, in run
+    result = context.run(func, *args)
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\processing_task.py", line 96, in process_dxf_task
+    raise e
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\processing_task.py", line 22, in process_dxf_task
+    result = parse_dxf_file(file_path)
+  File "C:\Users\nicog\Downloads\wetransfer_lds-pak-licitacion-oocc_2026-01-08_0027\PIL.IA\geometry-service\core\dxf_parser.py", line 231, in parse_dxf_file
+    raise ValueError(f"Failed to read DXF file: {e}")
+ValueError: Failed to read DXF file: File 'C:\Users\nicog\AppData\Local\Temp\tmpffvvk7x2.dxf' is not a DXF file.

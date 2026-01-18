@@ -130,6 +130,11 @@ def snap_vertices(segments: List[Segment], tolerance: float = 0.01) -> List[Segm
     return snapped_segments
 
 
+
+def merge_collinear(segments: List[Segment], angle_tolerance: float = 0.5) -> List[Segment]:
+    """
+    Merge collinear segments that are connected and within angle tolerance.
+    """
     from shapely.strtree import STRtree
     from shapely.geometry import LineString
     

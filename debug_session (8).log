@@ -8,31 +8,30 @@
    - Environments: .env.local
 
  ✓ Starting...
- ✓ Ready in 2.7s
+ ✓ Ready in 7s
  ○ Compiling / ...
- ✓ Compiled / in 19.4s
- GET / 200 in 20703ms
- GET / 200 in 14429ms
+ ✓ Compiled / in 20.4s
+ GET / 200 in 21403ms
  ⚠ Cross origin request detected from 9003-firebase-studio-1767836392299.cluster-j6d3cbsvdbe5uxnhqrfzzeyj7i.cloudworkstations.dev to /_next/* resource. In a future major version of Next.js, you will need to explicitly configure "allowedDevOrigins" in next.config to allow this.
 Read more: https://nextjs.org/docs/app/api-reference/config/next-config-js/allowedDevOrigins
  ○ Compiling /project/[id] ...
- ✓ Compiled /project/[id] in 3.4s
- GET /project/22a09c7f-adeb-40e9-a01a-8d9e3d95e374 200 in 5533ms
+ ✓ Compiled /project/[id] in 2.3s
+ GET /project/22a09c7f-adeb-40e9-a01a-8d9e3d95e374 200 in 3197ms
  ○ Compiling /project/[id]/batch/[batchId] ...
- ✓ Compiled /project/[id]/batch/[batchId] in 2.6s
- GET /project/22a09c7f-adeb-40e9-a01a-8d9e3d95e374/batch/18160f74-c89d-4914-a822-99fec4f5f3c6 200 in 4206ms
+ ✓ Compiled /project/[id]/batch/[batchId] in 3.3s
+ GET /project/22a09c7f-adeb-40e9-a01a-8d9e3d95e374/batch/18160f74-c89d-4914-a822-99fec4f5f3c6 200 in 4720ms
  ○ Compiling /api/batches/[batchId]/reset ...
- ✓ Compiled /api/batches/[batchId]/reset in 2.2s
+ ✓ Compiled /api/batches/[batchId]/reset in 1761ms
 [Reset] Resetting batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
 [Reset] Batch 18160f74-c89d-4914-a822-99fec4f5f3c6 reset successfully.
- POST /api/batches/18160f74-c89d-4914-a822-99fec4f5f3c6/reset 200 in 6196ms
+ POST /api/batches/18160f74-c89d-4914-a822-99fec4f5f3c6/reset 200 in 4394ms
  ○ Compiling /api/batches/[batchId]/start ...
- ✓ Compiled /api/batches/[batchId]/start in 1515ms
- POST /api/batches/18160f74-c89d-4914-a822-99fec4f5f3c6/start 200 in 4237ms
+ ✓ Compiled /api/batches/[batchId]/start in 712ms
+ POST /api/batches/18160f74-c89d-4914-a822-99fec4f5f3c6/start 200 in 2915ms
  ○ Compiling /api/worker/run ...
- ✓ Compiled /api/worker/run in 18.3s
-Processing Job 2a519cb9-c37a-44b9-b2fa-008758b58f47 (EXTRACT)...
-Processing Job 2a519cb9-c37a-44b9-b2fa-008758b58f47 (EXTRACT)...
+ ✓ Compiled /api/worker/run in 19.6s
+Processing Job 4bc74682-4188-4931-b03d-1bab9d461954 (EXTRACT)...
+Processing Job 4bc74682-4188-4931-b03d-1bab9d461954 (EXTRACT)...
 [Excel Parser] Row 10 candidate - Unit validation: 100.0%, Total score: 210.7
 [Excel Classify] Detected POSSIBLE TITLE: "OBRAS PRELIMINARES" (Unit: "")
 [Excel Classify] Detected POSSIBLE TITLE: "TABIQUES" (Unit: "")
@@ -65,17 +64,17 @@ Processing Job 2a519cb9-c37a-44b9-b2fa-008758b58f47 (EXTRACT)...
 [Pipeline] Checking trigger for batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
 [Pipeline] Successfully updated file 00. LdS PAK - Planilla cotizaciขn OOCC.xlsx to 'extracted'
 [Pipeline] Checking trigger for batch 18160f74-c89d-4914-a822-99fec4f5f3c6...
-[Pipeline] File statuses: [00. LdS PAK - Planilla cotizaciขn OOCC.xlsx: extracted, LDS_PAK - (LC) (1).dxf: queued]
+[Pipeline] File statuses: [LDS_PAK - (LC) (1).dxf: queued, 00. LdS PAK - Planilla cotizaciขn OOCC.xlsx: extracted]
 [Pipeline] Not all files extracted yet. Waiting...
-[Pipeline] File statuses: [00. LdS PAK - Planilla cotizaciขn OOCC.xlsx: extracted, LDS_PAK - (LC) (1).dxf: queued]
+[Pipeline] File statuses: [LDS_PAK - (LC) (1).dxf: queued, 00. LdS PAK - Planilla cotizaciขn OOCC.xlsx: extracted]
 [Pipeline] Not all files extracted yet. Waiting...
- POST /api/worker/run 200 in 22833ms
- POST /api/worker/run 200 in 23018ms
-Processing Job 9b721478-917e-4fff-be14-0933924c6eb6 (EXTRACT)...
+ POST /api/worker/run 200 in 24409ms
+ POST /api/worker/run 200 in 24279ms
+Processing Job df477906-df47-4859-89c7-b9c516e790ab (EXTRACT)...
 [GeometryService] Checking health at http://localhost:8000/health...
 [GeometryService] Health check result: HEALTHY (status: 200)
 [DXF] Using Python Geometry Service for LDS_PAK - (LC) (1).dxf...
- POST /api/worker/run 200 in 1791ms
+ POST /api/worker/run 200 in 1925ms
 [DXF] Service returned 0 items (with regions!)
 [DXF] Parsed 0 items from LDS_PAK - (LC) (1).dxf (UTF-8)
 [Pipeline] Successfully updated file LDS_PAK - (LC) (1).dxf to 'extracted'
@@ -600,12 +599,10 @@ Processing AI batch 7/7 (items 61-62/62)
 [Type Enforcement] Item 'Tapas registro para RAP' requires BLOCK but no block/text candidates found.
 AI Refinement complete. Processed 62 items.
 [Mapping] Inserting 116 rows in chunks of 10...
-[Mapping] Chunk 1 insert failed (Attempt 1/3). Retrying in 2s... Error: TypeError: fetch failed
-[Mapping] Chunk 1 insert failed (Attempt 2/3). Retrying in 2s... Error: TypeError: fetch failed
 [Mapping] Successfully inserted all 116 rows.
 [Mapping] Batch 18160f74-c89d-4914-a822-99fec4f5f3c6 mapping complete. Status updated to 'ready'.
- POST /api/worker/run 200 in 75416ms
- POST /api/worker/run 200 in 918ms
+ POST /api/worker/run 200 in 18759ms
+ POST /api/worker/run 200 in 576ms
  ○ Compiling /api/batches/[batchId]/diagnostic ...
- ✓ Compiled /api/batches/[batchId]/diagnostic in 1205ms
- GET /api/batches/18160f74-c89d-4914-a822-99fec4f5f3c6/diagnostic 200 in 5155ms
+ ✓ Compiled /api/batches/[batchId]/diagnostic in 642ms
+ GET /api/batches/18160f74-c89d-4914-a822-99fec4f5f3c6/diagnostic 200 in 4127ms

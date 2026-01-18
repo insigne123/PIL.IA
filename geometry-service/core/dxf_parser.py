@@ -9,7 +9,10 @@ from ezdxf.entities import Line, LWPolyline, Polyline, Arc, Circle, Text, MText,
 from typing import List, Tuple, Optional
 from dataclasses import dataclass
 import math
+import logging
 
+# Configure logger locally if not already done
+logger = logging.getLogger(__name__)
 
 @dataclass(slots=True)
 class Point:
@@ -170,10 +173,14 @@ def extract_text(entity) -> Optional[TextBlock]:
     return None
 
 
-def explode_block(insert: Insert, doc) -> Tuple[List[Segment], List[TextBlock]]:
-    """Recursively explode block references"""
+def explode_block(insert: Insert, doc, depth: int = 0, max_depth: int = 10) -> Tuple[List[Segment], List[TextBlock]]:
+    """Recursively explode block references with depth limit"""
     segments = []
     texts = []
+    
+    if depth > max_depth:
+        logger.warning(f"Max recursion depth ({max_depth}) reached for block {insert.dxf.name}")
+        return segments, texts
     
     try:
         block = doc.blocks.get(insert.dxf.name)
@@ -190,7 +197,7 @@ def explode_block(insert: Insert, doc) -> Tuple[List[Segment], List[TextBlock]]:
         for entity in block:
             if isinstance(entity, Insert):
                 # Recursive block explosion
-                sub_segs, sub_texts = explode_block(entity, doc)
+                sub_segs, sub_texts = explode_block(entity, doc, depth + 1, max_depth)
                 segments.extend(sub_segs)
                 texts.extend(sub_texts)
             elif isinstance(entity, (Line, LWPolyline, Polyline, Arc, Circle)):
@@ -209,7 +216,7 @@ def explode_block(insert: Insert, doc) -> Tuple[List[Segment], List[TextBlock]]:
                     text.position.y = text.position.y * scale_y + offset_y
                     texts.append(text)
     except Exception as e:
-        print(f"Warning: Failed to explode block {insert.dxf.name}: {e}")
+        logger.error(f"Failed to explode block {insert.dxf.name}: {e}")
     
     return segments, texts
 

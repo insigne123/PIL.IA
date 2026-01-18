@@ -6,6 +6,7 @@ from core.geometry_cleanup import cleanup_geometry, Segment as ClnSegment, Point
 from core.region_extractor import extract_regions
 import os
 
+def process_dxf_task(file_path: str) -> ParseDxfResponse:
     """
     CPU-bound task to be run in a separate process.
     """
