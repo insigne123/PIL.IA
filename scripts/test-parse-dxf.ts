@@ -40,7 +40,7 @@ async function testParse() {
         const report: any = { layers: {} };
 
         targetLayers.forEach(layerName => {
-            const items = result.items.filter(i => i.layer.toLowerCase() === layerName.toLowerCase());
+            const items = result.items.filter((i: any) => i.layer && i.layer.toLowerCase() === layerName.toLowerCase());
             let totalArea = 0;
             let totalLength = 0;
             let blockCount = 0;
@@ -69,6 +69,11 @@ async function testParse() {
         const reportPath = path.join(process.cwd(), 'scripts', 'layer-report.json');
         fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
         console.log(`Report saved to ${reportPath}`);
+    } catch (error) {
+        console.error("Error in testParse:", error);
+    } finally {
+        console.log = originalLog;
     }
+}
 
 testParse().catch(console.error);
