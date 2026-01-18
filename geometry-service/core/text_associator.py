@@ -1,52 +1,26 @@
 """
 Text Associator - Match Excel items to regions via text labels
 
-Uses fuzzy matching and spatial proximity to associate partidas with geometry.
+Uses fuzzy matching and Spatial Indexing to associate partidas with geometry.
 """
-from typing import List, Optional, Tuple, Dict
+from typing import List, Optional, Tuple, Dict, Any
 from dataclasses import dataclass
-import re
 from difflib import SequenceMatcher
+import re
+import logging
 
+from core.spatial_index import SpatialIndex
+# Import Region/Point type hits only for static analysis if needed, 
+# but we duck-type or use Any to avoid circular deps if RegionExtractor imports this.
 
-@dataclass
-class Point:
-    x: float
-    y: float
+logger = logging.getLogger(__name__)
 
-
+# Re-use existing structures where possible, or define minimal interfaces
 @dataclass
 class Label:
     text: str
-    position: Point
+    position: Any # Point-like object with x, y
     confidence: float = 1.0
-
-
-@dataclass
-class Region:
-    id: str
-    vertices: List[Point]
-    area: float
-    perimeter: float
-    centroid: Point
-    
-    def contains_point(self, point: Point) -> bool:
-        """Simple point-in-polygon check using ray casting"""
-        n = len(self.vertices)
-        inside = False
-        j = n - 1
-        
-        for i in range(n):
-            xi, yi = self.vertices[i].x, self.vertices[i].y
-            xj, yj = self.vertices[j].x, self.vertices[j].y
-            
-            if ((yi > point.y) != (yj > point.y)) and \
-               (point.x < (xj - xi) * (point.y - yi) / (yj - yi) + xi):
-                inside = not inside
-            j = i
-        
-        return inside
-
 
 @dataclass
 class ExcelItem:
@@ -55,29 +29,33 @@ class ExcelItem:
     unit: str
     expected_qty: Optional[float] = None
 
-
 @dataclass
 class Match:
     excel_item: ExcelItem
-    region: Optional[Region]
+    region: Optional[Any] # region_extractor.Region
     label: Optional[Label]
     qty_calculated: float
     confidence: float
     match_reason: str
 
-
 def normalize_text(text: str) -> str:
     """Normalize text for comparison"""
+    if not text: return ""
     text = text.lower()
     text = re.sub(r'[^\w\s]', ' ', text)
     text = re.sub(r'\s+', ' ', text)
     return text.strip()
 
-
 def fuzzy_match_score(text1: str, text2: str) -> float:
     """Calculate fuzzy match score between two texts"""
     t1 = normalize_text(text1)
     t2 = normalize_text(text2)
+    
+    if not t1 or not t2: return 0.0
+
+    # Strict containment for short codes
+    if len(t1) < 5 and t1 in t2: return 1.0
+    if len(t2) < 5 and t2 in t1: return 1.0
     
     # Check for exact substring match
     if t1 in t2 or t2 in t1:
@@ -96,7 +74,6 @@ def fuzzy_match_score(text1: str, text2: str) -> float:
     
     return ratio
 
-
 def find_matching_labels(
     item: ExcelItem,
     labels: List[Label],
@@ -104,7 +81,6 @@ def find_matching_labels(
 ) -> List[Tuple[Label, float]]:
     """
     Find labels that match the Excel item description.
-    Returns list of (label, score) tuples sorted by score descending.
     """
     matches = []
     
@@ -116,40 +92,8 @@ def find_matching_labels(
     matches.sort(key=lambda x: x[1], reverse=True)
     return matches
 
-
-def find_regions_for_label(
-    label: Label,
-    regions: List[Region],
-    max_distance: float = 2.0
-) -> List[Tuple[Region, str, float]]:
-    """
-    Find regions associated with a label using multiple strategies.
-    
-    Returns:
-        List of (region, strategy, score) tuples
-    """
-    candidates = []
-    
-    for region in regions:
-        # Strategy 1: Label inside region
-        if region.contains_point(label.position):
-            candidates.append((region, 'inside', 1.0))
-            continue
-        
-        # Strategy 2: Label near region centroid
-        dist_to_centroid = ((label.position.x - region.centroid.x)**2 + 
-                           (label.position.y - region.centroid.y)**2)**0.5
-        if dist_to_centroid <= max_distance:
-            proximity_score = 1.0 - (dist_to_centroid / max_distance)
-            candidates.append((region, 'near_centroid', proximity_score))
-    
-    # Sort by score
-    candidates.sort(key=lambda x: x[2], reverse=True)
-    return candidates
-
-
 def associate_text_to_regions(
-    regions: List[Region],
+    regions: List[Any], # List[region_extractor.Region]
     labels: List[Label],
     excel_items: List[ExcelItem],
     text_match_threshold: float = 0.5,
@@ -157,63 +101,86 @@ def associate_text_to_regions(
 ) -> List[Match]:
     """
     Main function to associate Excel items with regions via text labels.
-    
-    Process:
-    1. For each Excel item, find matching text labels (fuzzy)
-    2. For each matching label, find associated regions (spatial)
-    3. Score and select best region
-    4. Calculate quantity based on region geometry
+    Now uses SPATIAL INDEX for robust containment checks.
     """
     matches = []
     
+    # 1. Build Spatial Index from Regions
+    # We need to adapt the regions to the format expected by SpatialIndex
+    # SpatialIndex expects: List[Tuple[Polygon, layer, handle]]
+    poly_list = []
+    for r in regions:
+        # region_extractor.Region has .shapely_polygon
+        if hasattr(r, 'shapely_polygon'):
+            poly_list.append((r.shapely_polygon, r.layer, r.id))
+    
+    spatial_index = SpatialIndex(poly_list)
+    
     for item in excel_items:
-        # Skip titles and summary rows
+        # Skip titles/summary
         if not item.description or len(item.description) < 3:
             continue
-        
-        # Step 1: Find matching labels
+            
+        # Step 1: Find matching labels (Text Match)
         matching_labels = find_matching_labels(item, labels, threshold=text_match_threshold)
         
         best_match = None
-        best_score = 0
+        best_score = 0.0
         
         for label, text_score in matching_labels:
-            # Step 2: Find regions for this label
-            region_candidates = find_regions_for_label(
-                label, regions, max_distance=spatial_search_radius
-            )
+            # Step 2: Spatial Query using Index (Zone Match)
+            # Find which region CONTAINS this label
+            zone = spatial_index.find_zone(label.position.x, label.position.y)
             
-            if not region_candidates:
-                continue
+            region_match = None
+            strategy = "none"
+            spatial_score = 0.0
             
-            # Step 3: Score candidates
-            for region, strategy, spatial_score in region_candidates:
-                # Combined score
-                combined = text_score * 0.5 + spatial_score * 0.5
+            if zone:
+                # STRICT CONTAINMENT FOUND!
+                # We need to find the original Region object that corresponds to this zone
+                # The zone contains 'polygon' which is the shapely object.
+                # Let's simple heuristic: find the region with this ID/polygon
+                # (Optimization: SpatialIndex could return index or ID directly)
                 
-                # Boost if area matches expected
+                # For now, simplest way:
+                for r in regions:
+                    if hasattr(r, 'shapely_polygon') and r.shapely_polygon == zone['polygon']:
+                        region_match = r
+                        strategy = "inside_zone"
+                        spatial_score = 1.0
+                        break
+            
+            # Fallback: Nearest Neighbor (if no containment)
+            if not region_match:
+                # Iterate regions to find nearest (Legacy/Backup)
+                # Only do this if we really need to, or if containment failed
+                # For efficiency, we might skip this if the index is trusted
+                pass 
+                
+            if region_match:
+                # Combined Score
+                # Text score is paramount, but spatial validates it
+                combined = text_score * 0.6 + spatial_score * 0.4
+                
+                # Boost for expected area match
                 if item.expected_qty and item.expected_qty > 0:
-                    ratio = region.area / item.expected_qty
+                    ratio = region_match.area / item.expected_qty
                     if 0.8 <= ratio <= 1.2:
                         combined += 0.2
-                    elif 0.5 <= ratio <= 2.0:
-                        combined += 0.1
                 
                 if combined > best_score:
                     best_score = combined
-                    best_match = (region, label, strategy)
-        
-        # Step 4: Create match result
+                    best_match = (region_match, label, strategy)
+
+        # Step 3: Create Match
         if best_match:
             region, label, strategy = best_match
             
-            # Calculate quantity based on unit
-            if item.unit.lower() in ['m2', 'm²', 'metro cuadrado']:
-                qty = region.area
-            elif item.unit.lower() in ['ml', 'm', 'metro lineal']:
-                qty = region.perimeter
-            else:
-                qty = region.area  # Default to area
+            # Unit logic
+            qty = region.area # Default
+            if item.unit and item.unit.lower() in ['ml', 'm', 'metro lineal']:
+                 qty = region.perimeter
             
             matches.append(Match(
                 excel_item=item,
@@ -221,17 +188,16 @@ def associate_text_to_regions(
                 label=label,
                 qty_calculated=round(qty, 2),
                 confidence=best_score,
-                match_reason=f"Matched via label '{label.text}' ({strategy})"
+                match_reason=f"Matched '{label.text}' via {strategy}"
             ))
         else:
-            # No match found
-            matches.append(Match(
+             matches.append(Match(
                 excel_item=item,
                 region=None,
                 label=None,
                 qty_calculated=0,
                 confidence=0,
-                match_reason="No matching label/region found"
+                match_reason="No spatial match found"
             ))
-    
+            
     return matches

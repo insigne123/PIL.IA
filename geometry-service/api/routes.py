@@ -75,53 +75,103 @@ async def extract_quantities(
             finally:
                 os.unlink(tmp_path)
     
-    if not all_segments:
-        raise HTTPException(status_code=400, detail="No geometry found in input files")
-    
-    # Vision AI label detection (optional)
-    if use_vision_ai and (dxf_file or pdf_files):
-        # Render to image and detect labels
-        labels_result = detect_labels(
-            dxf_path=tmp_path if dxf_file else None,
-            model=vision_model
+    try:
+        if not all_segments:
+            raise HTTPException(status_code=400, detail="No geometry found in input files")
+        
+        # Vision AI label detection (optional)
+        if use_vision_ai and (dxf_file or pdf_files):
+            # Render to image and detect labels
+            labels_result = detect_labels(
+                dxf_path=tmp_path if dxf_file else None,
+                model=vision_model
+            )
+            all_labels.extend(labels_result.labels)
+        
+        # Map segments to Cleanup format
+        from core.geometry_cleanup import Segment as ClnSegment, Point as ClnPoint
+        
+        cleanup_segments = []
+        for s in all_segments:
+            cleanup_segments.append(ClnSegment(
+                start=ClnPoint(s.start.x, s.start.y),
+                end=ClnPoint(s.end.x, s.end.y),
+                layer=s.layer,
+                entity_type=s.entity_type
+            ))
+            
+        # Geometry cleanup
+        cleaned_segments = cleanup_geometry(
+            cleanup_segments, 
+            snap_tolerance=snap_tolerance
         )
-        all_labels.extend(labels_result.labels)
-    
-    # Geometry cleanup
-    cleaned_segments = cleanup_geometry(
-        all_segments, 
-        snap_tolerance=snap_tolerance
-    )
-    
-    # Extract regions (cycles from planar graph)
-    regions = extract_regions(cleaned_segments)
-    
-    # Associate text/labels to regions
-    matches = associate_text_to_regions(
-        regions=regions,
-        labels=all_labels + all_texts,
-        excel_items=excel_items
-    )
-    
-    # QA checks and confidence scoring
-    validated_matches = []
-    for match in matches:
-        sanity_result = run_sanity_checks(match)
-        confidence = compute_confidence(match, sanity_result)
-        match.confidence = confidence
-        match.warnings = sanity_result.warnings
-        validated_matches.append(match)
-    
-    # Find unmatched items
-    matched_ids = {m.excel_item_id for m in validated_matches}
-    unmatched = [item for item in excel_items if item.get('id') not in matched_ids]
-    
-    return ExtractResponse(
-        matches=validated_matches,
-        unmatched_items=unmatched,
-        warnings=[],
-        processing_time_ms=0  # TODO: Add timing
-    )
+        
+        # Extract regions (cycles from planar graph)
+        regions = extract_regions(cleaned_segments)
+        
+        # Convert Dicts to ExcelItem objects for Core Logic
+        from core.text_associator import ExcelItem as CoreExcelItem
+        core_excel_items = []
+        for item in excel_items:
+            core_excel_items.append(CoreExcelItem(
+                id=item.get('id', ''),
+                description=item.get('description', ''),
+                unit=item.get('unit', ''),
+                expected_qty=item.get('expected_qty')
+            ))
+
+        # Associate text/labels to regions
+        matches = associate_text_to_regions(
+            regions=regions,
+            labels=all_labels + all_texts,
+            excel_items=core_excel_items
+        )
+        
+        # QA checks and confidence scoring
+        validated_matches = []
+        for match in matches:
+            sanity_result = run_sanity_checks(match)
+            confidence = compute_confidence(match, sanity_result)
+            match.confidence = confidence
+            # match.warnings = sanity_result.warnings # Core match might not have warnings field, simpler to map later
+            validated_matches.append((match, sanity_result.warnings))
+        
+        # Find unmatched items
+        matched_ids = {m.excel_item.id for m, _ in validated_matches}
+        unmatched = [item for item in excel_items if item.get('id') not in matched_ids]
+        
+        # Map to API Models
+        import uuid
+        from api.models import Match as ApiMatch
+        
+        api_matches = []
+        for match, warnings in validated_matches:
+            api_matches.append(ApiMatch(
+                id=str(uuid.uuid4()),
+                excel_item_id=match.excel_item.id,
+                excel_item_description=match.excel_item.description,
+                region_id=match.region.id if match.region else None,
+                label_text=match.label.text if match.label else None,
+                qty_calculated=match.qty_calculated,
+                unit=match.excel_item.unit,
+                confidence=match.confidence,
+                match_reason=match.match_reason,
+                warnings=warnings
+            ))
+            
+        return ExtractResponse(
+            matches=api_matches,
+            unmatched_items=unmatched,
+            warnings=[],
+            processing_time_ms=0  # TODO: Add timing
+        )
+            
+    except Exception as e:
+        import traceback
+        with open("python_errors.log", "a") as f:
+            f.write(f"\n--- Error in /extract ---\n")
+            f.write(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 
 # Global ProcessPoolExecutor
