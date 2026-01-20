@@ -6,7 +6,9 @@ This is the core algorithm that enables measuring areas from fragmented geometry
 """
 import networkx as nx
 from shapely.geometry import Polygon, LineString, Point as ShapelyPoint
-from shapely.ops import polygonize, unary_union
+from shapely.ops import polygonize, unary_union, nearest_points
+from shapely.strtree import STRtree
+from shapely.geometry import MultiPoint
 from typing import List, Tuple, Optional, Set
 from dataclasses import dataclass, field
 import math
@@ -70,11 +72,190 @@ def segments_to_linestrings(segments: List[Segment]) -> List[LineString]:
     return linestrings
 
 
+
+# Valid layers for force closing
+FORCE_CLOSE_LAYERS = {
+    "FA_0.20": 0.20,             # Sobrelosa needs larger gap closing
+    "a-arq-cielo falso": 0.20,   # Cielos often have gaps
+    "a-arq-tabiques": 0.10,      # Walls
+    "mb-elev 2": 0.20            # Membrane
+}
+
+def force_close_polygons(segments: List[Segment], tolerance: float = 0.05) -> List[Segment]:
+    """
+    Attempts to close small gaps between segments by adding bridging segments.
+    Applies custom tolerance for problematic layers.
+    """
+    if not segments:
+        return []
+
+    # 1. Identify endpoints and apply layer-specific tolerance
+    endpoints = set()
+    layer_map = {} # Point -> max_tolerance needed
+
+    for seg in segments:
+        endpoints.add(seg.start)
+        endpoints.add(seg.end)
+        
+        # Determine tolerance for this segment
+        seg_tol = tolerance 
+        norm_layer = seg.layer.lower()
+        
+        # Check explicit layers
+        for layer_key, layer_val in FORCE_CLOSE_LAYERS.items():
+            if layer_key.lower() in norm_layer:
+                seg_tol = max(seg_tol, layer_val)
+        
+        # Map points to max needed tolerance
+        layer_map[seg.start] = max(layer_map.get(seg.start, 0), seg_tol)
+        layer_map[seg.end] = max(layer_map.get(seg.end, 0), seg_tol)
+
+    # Use the maximum tolerance found as the grid cell size
+    max_tol = max(layer_map.values()) if layer_map else tolerance
+    cell_size = max_tol
+    
+    grid = defaultdict(list)
+    points = list(endpoints)
+    
+    for p in points:
+        idx_x = int(p.x / cell_size)
+        idx_y = int(p.y / cell_size)
+        for dx in [-1, 0, 1]:
+            for dy in [-1, 0, 1]:
+                grid[(idx_x + dx, idx_y + dy)].append(p)
+
+    new_segments = []
+    processed_pairs = set()
+
+    for p1 in points:
+        idx_x = int(p1.x / cell_size)
+        idx_y = int(p1.y / cell_size)
+        
+        potential_neighbors = grid[(idx_x, idx_y)]
+        p1_tol = layer_map.get(p1, tolerance)
+
+        for p2 in potential_neighbors:
+            if p1 == p2:
+                continue
+
+            pair_id = tuple(sorted(((p1.x, p1.y), (p2.x, p2.y))))
+            if pair_id in processed_pairs:
+                continue
+
+            dist = math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
+            
+            # Use the larger of the two point tolerances
+            p2_tol = layer_map.get(p2, tolerance)
+            effective_tol = max(p1_tol, p2_tol)
+
+            if 0 < dist <= effective_tol:
+                processed_pairs.add(pair_id)
+                new_segments.append(Segment(
+                    start=p1,
+                    end=p2,
+                    layer="AUTO_CLOSE",
+                    entity_type="BRIDGE"
+                ))
+
+    if new_segments:
+        print(f"[RegionExtractor] Added {len(new_segments)} bridges (Max Tol: {max_tol}m)")
+        return segments + new_segments
+    
+    return segments
+
+
+def snap_undershoots(segments: List[Segment], tolerance: float = 0.15) -> List[Segment]:
+    """
+    P2.1: Graph Loop Builder (Noding Strategy)
+    Snaps hanging endpoints to the nearest edge (T-Junctions).
+    This fixes undershoots where a wall stops just short of another wall.
+    """
+    if not segments:
+        return []
+        
+    # Create LineStrings for query
+    # We map id(LineString) -> Segment to modify
+    linestrings = []
+    seg_map = {}
+    
+    for seg in segments:
+        ls = LineString([(seg.start.x, seg.start.y), (seg.end.x, seg.end.y)])
+        linestrings.append(ls)
+        seg_map[id(ls)] = seg
+        
+    try:
+        tree = STRtree(linestrings)
+    except Exception:
+        # Fallback if STRtree fails or empty
+        return segments
+
+    # Collect all endpoints
+    endpoints = []
+    for seg in segments:
+        endpoints.append((seg.start, seg))
+        endpoints.append((seg.end, seg))
+        
+    snapped_count = 0
+    
+    for pt, owner_seg in endpoints:
+        p_shape = ShapelyPoint(pt.x, pt.y)
+        
+        # Query nearest geometries
+        # STRtree.query returns indices or geometries depending on version
+        # ezdxf/shapely usage might vary. assuming modern shapely
+        try:
+            nearest_geoms = tree.query(p_shape)
+            # If query returns indices (shapely 2.0)
+            if nearest_geoms.dtype != 'object': # numpy array of indices
+                 nearest_geoms = [linestrings[i] for i in nearest_geoms]
+        except:
+             # Old shapely returns list of geoms directly
+             pass
+
+        # Find actual nearest point
+        best_dist = tolerance
+        best_point = None
+        
+        for geom in nearest_geoms:
+            # Skip own segment
+            if seg_map.get(id(geom)) == owner_seg:
+                continue
+                
+            # Distance to segment (edge)
+            dist = geom.distance(p_shape)
+            
+            if dist > 0.0001 and dist < best_dist:
+                proj_dist = geom.project(p_shape)
+                proj_pt = geom.interpolate(proj_dist)
+                
+                # Verify we are not snapping to an endpoint of the target (that is handled by force_close)
+                # We want T-Junctions (mid-point snaps)
+                # But allowing endpoint snap is fine too if force_close missed it
+                
+                best_dist = dist
+                best_point = proj_pt
+
+        if best_point:
+            # Update coordinate in place (or match)
+            pt.x = best_point.x
+            pt.y = best_point.y
+            snapped_count += 1
+            
+    # logger.info(f"Snapped {snapped_count} undershoots")
+    return segments
+
+
 def extract_regions_shapely(segments: List[Segment]) -> List[Region]:
     """
     Extract regions using Shapely's polygonize function.
     This is faster but may miss some complex cases.
     """
+    # FIX 11.2: Force close small gaps (Endpoint->Endpoint)
+    segments = force_close_polygons(segments, tolerance=0.10) 
+    
+    # P2.1: Graph Loop Builder (Endpoint->Edge)
+    segments = snap_undershoots(segments, tolerance=0.15)
+
     linestrings = segments_to_linestrings(segments)
     
     if not linestrings:

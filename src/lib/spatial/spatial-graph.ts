@@ -5,8 +5,8 @@ import { SpatialZone, SpatialGraphConfig, SpatialAnalysisResult } from './types'
 import { Point } from '../processing/block-resolver';
 
 export class SpatialGraph {
-    private zones: SpatialZone[] = [];
-    private config: SpatialGraphConfig;
+    public zones: SpatialZone[] = [];
+    public config: SpatialGraphConfig;
 
     constructor(config: SpatialGraphConfig = {}) {
         this.config = {

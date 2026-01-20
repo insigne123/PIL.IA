@@ -261,13 +261,14 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
             const cleanName = cleanDxfText(t.text);
             return {
                 id: uuidv4(),
-                type: 'text',
+                type: 'text' as const,
                 name_raw: cleanName, // Cleaned name
                 layer_raw: t.layer,
                 layer_normalized: t.layer_normalized,
                 position: t.position,
                 value_m: t.height,
-                value_raw: 0, unit_raw: 'm', value_si: 0
+                value_raw: 0, unit_raw: 'm', value_si: 0,
+                layerAnalysis: undefined
             };
         })
         .filter(t => t.name_raw.length > 0 && t.name_raw.length < 50); // Filter empty or too long
@@ -285,13 +286,14 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
             if (clean && clean.length > 0 && rawPos) {
                 spatialCandidates.push({
                     id: uuidv4(),
-                    type: 'text',
+                    type: 'text' as const,
                     name_raw: clean,
                     layer_raw: (ent as any).layer || '0',
                     layer_normalized: ((ent as any).layer || '0').toLowerCase(),
                     position: { x: rawPos.x, y: rawPos.y },
                     value_m: (ent as any).height || 0,
-                    value_raw: 0, unit_raw: 'm', value_si: 0
+                    value_raw: 0, unit_raw: 'm', value_si: 0,
+                    layerAnalysis: undefined
                 });
             }
         }

@@ -100,24 +100,24 @@ function checkLengthSanity(
     context?: any
 ): SanityCheckResult {
     // Suspiciously large (likely unconverted mm)
-    if (qty > 100000) {
+    if (qty > 10000) {
         issues.push({
             type: 'unconverted_units',
-            message: `Longitud ${qty.toFixed(0)}m es sospechosamente grande - posiblemente son mm sin convertir`,
+            message: `Longitud ${qty.toFixed(0)}m es sospechosamente grande (>10km) - posible mm sin convertir`,
             detected_value: qty,
-            expected_range: { min: 0, max: 10000 },
-            suggestion: 'Verificar que value_raw se convirtió correctamente con toMeters()'
+            expected_range: { min: 0, max: 1000 },
+            suggestion: 'Verificar factor de conversión de unidades'
         });
         return { passed: false, issues, severity: 'error' };
     }
 
     // Very large (warning)
-    if (qty > 10000) {
+    if (qty > 1000) {
         issues.push({
             type: 'outlier',
-            message: `Longitud ${qty.toFixed(0)}m es muy grande (>10km) - revisar`,
+            message: `Longitud ${qty.toFixed(0)}m es muy grande (>1km) - revisar`,
             detected_value: qty,
-            expected_range: { min: 0, max: 10000 }
+            expected_range: { min: 0, max: 1000 }
         });
         return { passed: false, issues, severity: 'warning' };
     }
@@ -165,24 +165,24 @@ function checkAreaSanity(
     }
 
     // Suspiciously large (likely unconverted)
-    if (qty > 1000000) {
+    if (qty > 100000) {
         issues.push({
             type: 'unconverted_units',
-            message: `Área ${qty.toFixed(0)}m² es sospechosamente grande (>1km²) - posible error de conversión`,
+            message: `Área ${qty.toFixed(0)}m² es sospechosamente grande (>10ha) - posible error de conversión`,
             detected_value: qty,
-            expected_range: { min: 0, max: 100000 },
-            suggestion: 'Verificar que se usó toMetersSquared() no toMeters()'
+            expected_range: { min: 0, max: 10000 },
+            suggestion: 'Verificar unidades del dibujo (mm² vs m²)'
         });
         return { passed: false, issues, severity: 'error' };
     }
 
     // Very large building (warning)
-    if (qty > 100000) {
+    if (qty > 10000) {
         issues.push({
             type: 'outlier',
-            message: `Área ${qty.toFixed(0)}m² es muy grande (>10 hectáreas) - revisar`,
+            message: `Área ${qty.toFixed(0)}m² es muy grande (>1ha) - revisar`,
             detected_value: qty,
-            expected_range: { min: 0, max: 100000 }
+            expected_range: { min: 0, max: 10000 }
         });
         return { passed: false, issues, severity: 'warning' };
     }
@@ -242,26 +242,30 @@ function checkCountSanity(
     issues: SanityIssue[],
     context?: any
 ): SanityCheckResult {
-    // Not an integer (suspicious)
+    // Not an integer (suspicious - unless it's global)
     if (!Number.isInteger(qty)) {
         issues.push({
             type: 'type_mismatch',
-            message: `Conteo ${qty} no es entero - puede indicar que se usó valor de longitud`,
+            message: `Conteo ${qty.toFixed(2)} no es entero - Probablemente se midió LONGITUD o TEXTO en vez de BLOQUES`,
             detected_value: qty,
-            suggestion: 'Verificar que el tipo DXF sea "block" no "length"'
+            suggestion: 'Verificar que el tipo DXF sea "block" no "length/text"',
+            // P0: Treat as error for Unit items
+            severity: 'error'
         });
-        return { passed: false, issues, severity: 'warning' };
+        return { passed: false, issues, severity: 'error' };
     }
 
-    // Suspiciously  high count
-    if (qty > 50000) {
+    // P0: Sanity Limit lowered to 500 (from 50k)
+    // 1112 error typically produces huge numbers
+    if (qty > 500) {
         issues.push({
             type: 'outlier',
-            message: `Conteo ${qty} es sospechosamente alto (>50k unidades)`,
+            message: `Conteo ${qty} es sospechosamente alto (>500) - Posible error de "Contar Textos"`,
             detected_value: qty,
-            expected_range: { min: 1, max: 10000 }
+            expected_range: { min: 1, max: 500 },
+            suggestion: 'Bloquear match de tipo TEXT para este ítem'
         });
-        return { passed: false, issues, severity: 'warning' };
+        return { passed: false, issues, severity: 'error' };
     }
 
     return { passed: true, issues, severity: 'ok' };

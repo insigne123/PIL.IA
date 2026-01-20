@@ -11,6 +11,10 @@ export interface Transform {
     position: Point;
     rotation: number; // radians
     scale: Point;
+    // Missing properties used in block-exploder.ts
+    scaleX?: number;
+    scaleY?: number;
+    skewY?: number;
 }
 
 export interface BlockDefinition {

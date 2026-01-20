@@ -28,13 +28,17 @@ class SpatialIndex:
             polygons: List of (ShapelyPolygon, layer_name, entity_handle)
         """
         self.polygons = []
+        self.polygons = []
         self.metadata = {}  # index -> (layer, handle)
+        self.geom_map = {}  # id(geom) -> (layer, handle)
         
         valid_polys = []
         for i, (poly, layer, handle) in enumerate(polygons):
             if poly.is_valid and not poly.is_empty:
                 valid_polys.append(poly)
+                valid_polys.append(poly)
                 self.metadata[len(valid_polys)-1] = (layer, handle)
+                self.geom_map[id(poly)] = (layer, handle)
         
         self.tree = STRtree(valid_polys) if valid_polys else None
         self.geometries = valid_polys
@@ -79,3 +83,64 @@ class SpatialIndex:
             "area": best["area"],
             "polygon": best["polygon"]
         }
+
+    def find_nearest_zone(self, point_x: float, point_y: float, max_distance: float = 5.0) -> Optional[Dict]:
+        """
+        Find the nearest polygon within max_distance.
+        Used when strict containment fails.
+        """
+        if not self.tree:
+            return None
+            
+        pt = ShapelyPoint(point_x, point_y)
+        
+        # 1. Use nearest neighbor search
+        # Note: behavior depends on shapely version. 
+        # For robustness, we can query a buffer if we're unsure, but nearest is standard.
+        try:
+            nearest_geom = self.tree.nearest(pt)
+        except Exception:
+            # Fallback for older shapely or empty tree
+            return None
+            
+        if not nearest_geom:
+            return None
+            
+        # 2. Check distance
+        dist = nearest_geom.distance(pt)
+        if dist > max_distance:
+            return None
+            
+        # 3. Find metadata for this geometry
+        meta = self.geom_map.get(id(nearest_geom))
+        if not meta:
+            return None
+            
+        layer, handle = meta
+        
+        return {
+            "name": "Unknown",
+            "layer": layer,
+            "handle": handle, # Include handle
+            "area": nearest_geom.area,
+            "polygon": nearest_geom
+        }
+        
+        # Optimization: Re-use self.metadata which is index -> ...
+        # But nearest() returns geom. 
+        # Let's search by equality (geometry object identity)
+        
+        match = None
+        for idx, geom in enumerate(self.geometries):
+             if geom is nearest_geom: # identity check should work if tree holds refs
+                 layer, handle = self.metadata[idx]
+                 match = {
+                     "polygon": geom,
+                     "layer": layer,
+                     "handle": handle,
+                     "area": geom.area,
+                     "distance": dist
+                 }
+                 break
+        
+        return match

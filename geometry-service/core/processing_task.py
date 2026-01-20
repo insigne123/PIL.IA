@@ -5,6 +5,8 @@ from core.dxf_parser import parse_dxf_file
 from core.geometry_cleanup import cleanup_geometry, Segment as ClnSegment, Point as ClnPoint
 from core.region_extractor import extract_regions
 import os
+import traceback
+import sys
 
 def process_dxf_task(file_path: str) -> ParseDxfResponse:
     """
@@ -54,6 +56,33 @@ def process_dxf_task(file_path: str) -> ParseDxfResponse:
                 centroid=p_centroid,
                 layer=r.layer
             ))
+            
+        # P1.3: Merge Precomputed Hatch Regions
+        if getattr(result, 'precomputed_regions', None):
+            import uuid
+            for h in result.precomputed_regions:
+                # Calculate simple centroid
+                cx = sum(v.x for v in h.vertices) / len(h.vertices)
+                cy = sum(v.y for v in h.vertices) / len(h.vertices)
+                
+                # Calculate perimeter
+                perimeter = 0.0
+                for i in range(len(h.vertices)):
+                    j = (i + 1) % len(h.vertices)
+                    dx = h.vertices[j].x - h.vertices[i].x
+                    dy = h.vertices[j].y - h.vertices[i].y
+                    perimeter += (dx*dx + dy*dy)**0.5
+                    
+                p_vertices = [Point(x=v.x, y=v.y) for v in h.vertices]
+                
+                api_regions.append(Region(
+                    id=f"hatch_{uuid.uuid4().hex[:8]}",
+                    vertices=p_vertices,
+                    area=h.area,
+                    perimeter=perimeter,
+                    centroid=Point(x=cx, y=cy),
+                    layer=h.layer
+                ))
 
         # 4. Map Parser Segments -> API Models
         api_segments = [
@@ -73,6 +102,20 @@ def process_dxf_task(file_path: str) -> ParseDxfResponse:
                 layer=t.layer,
                 height=t.height
             ) for t in result.texts
+
+        ]
+
+        # NEW: Map Inserts -> API Models
+        from api.models import BlockReference as ApiBlockRef
+        api_inserts = [
+            ApiBlockRef(
+                name=ins.name,
+                position=Point(x=ins.position.x, y=ins.position.y),
+                layer=ins.layer,
+                rotation=ins.rotation,
+                scale_x=ins.scale_x,
+                scale_y=ins.scale_y
+            ) for ins in result.inserts
         ]
 
         # 6. Map Bounds -> API Model
@@ -85,12 +128,33 @@ def process_dxf_task(file_path: str) -> ParseDxfResponse:
 
         return ParseDxfResponse(
             segments=api_segments,
+
             texts=api_texts,
+            inserts=api_inserts, # NEW
             layers=result.layers,
+
             bounds=api_bounds,
-            regions=api_regions
+            regions=api_regions,
+            unit_factor=getattr(result, 'unit_factor', 1.0),
+            detected_unit=getattr(result, 'detected_unit', 'Unknown'),
+            unit_confidence=getattr(result, 'unit_confidence', 'Low'),
+            layer_metadata=getattr(result, 'layer_metadata', None),
+            block_metadata=getattr(result, 'block_metadata', None)
         )
 
     except Exception as e:
-        print(f"[WorkerProcess] Processing failed: {e}")
+        error_msg = f"[WorkerProcess] Processing failed: {e}\n{traceback.format_exc()}"
+        print(error_msg) # Keep printing for visible feedback
+        
+        # Log to python_errors.log
+        try:
+            with open("python_errors.log", "a") as f:
+                f.write(f"\n[{datetime.datetime.now()}] CRITICAL ERROR in process_dxf_task:\n")
+                f.write(error_msg + "\n" + "-"*40 + "\n")
+                
+            with open("worker.log", "a") as f:
+                f.write(f"FAILED: {e}\n")
+        except:
+            pass # Last resort if disk full or permissions
+            
         raise e

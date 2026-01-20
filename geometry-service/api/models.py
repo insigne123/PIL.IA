@@ -24,6 +24,15 @@ class TextBlock(BaseModel):
     height: Optional[float] = None
 
 
+class BlockReference(BaseModel):
+    name: str
+    position: Point
+    layer: Optional[str] = None
+    rotation: float = 0.0
+    scale_x: float = 1.0
+    scale_y: float = 1.0
+
+
 class Label(BaseModel):
     text: str
     bbox: Tuple[float, float, float, float]  # x1, y1, x2, y2
@@ -75,14 +84,23 @@ class ExtractResponse(BaseModel):
     unmatched_items: List[Dict[str, Any]]
     warnings: List[str]
     processing_time_ms: int
+    unit_factor: float = 1.0  # NEW
+    detected_unit: str = "Unknown" # NEW
+    unit_confidence: str = "Low" # NEW
 
 
 class ParseDxfResponse(BaseModel):
     segments: List[Segment]
     texts: List[TextBlock]
+    inserts: List[BlockReference] = [] # NEW
     layers: List[str]
     bounds: Bounds
     regions: List[Region] = []
+    unit_factor: float = 1.0  # NEW
+    detected_unit: str = "Unknown" # NEW
+    unit_confidence: str = "Low" # NEW
+    layer_metadata: Optional[Dict[str, Any]] = None # NEW
+    block_metadata: Optional[Dict[str, Any]] = None # NEW
 
 
 class ParsePdfResponse(BaseModel):

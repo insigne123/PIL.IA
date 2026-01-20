@@ -467,11 +467,13 @@ function processEntities(
 
             // Scale height
             // Simple scale assumption: take X scale (if uniform)
-            const scale = Math.sqrt(parentTransform.scaleX * parentTransform.scaleX + parentTransform.skewY * parentTransform.skewY);
+            const sx = parentTransform.scaleX || 1;
+            const sy = parentTransform.skewY || 0;
+            const scale = Math.sqrt(sx * sx + sy * sy);
             const height = (entity.height || entity.textHeight || 0) * scale;
 
             // Rotation? Simplified for now.
-            const rotation = (entity.rotation || 0) + (Math.atan2(parentTransform.skewY, parentTransform.scaleX) * 180 / Math.PI);
+            const rotation = (entity.rotation || 0) + (Math.atan2(sy, sx) * 180 / Math.PI);
 
             if (entity.text) {
                 result.texts.push({
@@ -672,16 +674,7 @@ export function aggregateExplodedToItems(exploded: ExplodedGeometry): ItemDetect
             value_m: t.height,
             position: t.position,
             evidence: 'Block Explosion (TEXT)',
-            profile: {
-                has_area_support: false,
-                has_length_support: false,
-                has_block_support: false,
-                total_area: 0,
-                total_length: 0,
-                block_count: 0,
-                hatch_count: 0,
-                entity_types: new Set(['TEXT'])
-            }
+            evidence: 'Block Explosion (TEXT)'
         });
     });
 

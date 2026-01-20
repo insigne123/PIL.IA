@@ -4,7 +4,7 @@
  * Client for calling the Python geometry extraction service from Next.js
  */
 
-const GEOMETRY_SERVICE_URL = process.env.GEOMETRY_SERVICE_URL || 'http://localhost:8000';
+const GEOMETRY_SERVICE_URL = process.env.GEOMETRY_SERVICE_URL || 'http://127.0.0.1:8000'; // Explicit IPv4 for Windows
 
 export interface ExtractRequest {
     dxfFile?: File;
@@ -37,6 +37,9 @@ export interface ExtractResponse {
     unmatched_items: Array<{ id: string; description: string }>;
     warnings: string[];
     processing_time_ms: number;
+    unit_factor?: number;
+    detected_unit?: string;
+    unit_confidence?: string;
 }
 
 /**
@@ -96,7 +99,7 @@ export async function extractQuantities(request: ExtractRequest): Promise<Extrac
  * Parse DXF using Python service and return full ItemDetectado array
  * This replaces the local legacy parser
  */
-export async function parseDxfFull(fileContent: Buffer | string, unit: string = 'm'): Promise<{ items: any[], detectedUnit: string }> {
+export async function parseDxfFull(fileContent: Buffer | string, unit: string = 'm'): Promise<{ items: any[], detectedUnit: string, unitConfidence: string, unitFactor: number, blockMetadata?: any }> {
     const formData = new FormData();
 
     // Create a Blob/File from content since API expects file upload
@@ -151,12 +154,11 @@ export async function parseDxfFull(fileContent: Buffer | string, unit: string = 
                 layer: seg.layer || '0',
                 layer_normalized: (seg.layer || '0').toLowerCase().trim(),
                 value_raw: len,
-                value_m: len, // python service usually processes in unitless or meters? 
-                // Default python parser returns raw coordinates. 
-                // We need scaling logic if units mismatch. 
-                // For now assume raw = m or handle scaling downstream.
+                value_m: len,
                 vertices: [seg.start, seg.end],
-                color: 7
+                color: 7,
+                // 11.1: Map Layer Analysis
+                layerAnalysis: data.layer_metadata ? ((data.layer_metadata[seg.layer] || data.layer_metadata[seg.layer.toUpperCase()]) as any) : undefined
             });
         });
     }
@@ -174,34 +176,49 @@ export async function parseDxfFull(fileContent: Buffer | string, unit: string = 
                 name_raw: txt.text,
                 text: txt.text,
                 vertices: [txt.position],
-                color: 7
+                color: 7,
+                layerAnalysis: data.layer_metadata ? ((data.layer_metadata[txt.layer] || data.layer_metadata[txt.layer.toUpperCase()]) as any) : undefined
             });
         });
     }
 
-    // Map Regions -> AREA items (The Missing Link!)
+    // Map Regions -> AREA items
     if (data.regions) {
         data.regions.forEach((reg: any) => {
             items.push({
                 id: reg.id,
-                type: 'block', // Using 'block' type for now as 'area' might not be fully supported by matcher logic? 
-                // Wait, matcher supports 'area' type check?
-                // Log says: "Excel expects AREA but matched length geometry"
-                // So 'area' type is supported.
-                // However, matcher often looks for 'block' for Count items.
-                // Let's use 'area' type but ensure matcher handles it.
-                // Actually, in `routes.py` log it said: "Profile: has_area=true".
-                // If I set type='area', matcher should pick it up.
-                // REVISION: Use 'length' for simple processing if flat, but 'area' is better.
-                // Let's check ItemDetectado type definition.
-                // Assuming 'area' is valid.
                 type: 'area',
                 layer: reg.layer || 'Unknown',
                 layer_normalized: (reg.layer || 'Unknown').toLowerCase().trim(),
                 value_raw: reg.area,
                 value_m: reg.area,
                 vertices: reg.vertices,
-                color: 9
+                color: 9,
+                layerAnalysis: data.layer_metadata ? ((data.layer_metadata[reg.layer] || data.layer_metadata[reg.layer.toUpperCase()]) as any) : undefined
+            });
+        });
+    }
+
+    // 11.3 Map Blocks -> BLOCK items
+    if (data.inserts) {
+        data.inserts.forEach((ins: any, index: number) => {
+            const blockStats = data.block_metadata ? data.block_metadata[ins.name] : undefined;
+
+            items.push({
+                id: `blk_${index}_${Math.random().toString(36).substr(2, 5)}`,
+                type: 'block',
+                name_raw: ins.name,
+                layer: ins.layer || '0',
+                layer_normalized: (ins.layer || '0').toLowerCase().trim(),
+                value_raw: 1, // Count = 1
+                value_si: 1,  // Count = 1
+                value_m: 1,   // Legacy count
+                // P1.2 Block Transform: Area = DefArea * |ScaleX * ScaleY|
+                value_area: blockStats ? blockStats.area * Math.abs((ins.scale_x ?? 1) * (ins.scale_y ?? 1)) : undefined,
+                vertices: [ins.position],
+                color: 5,
+                unit_raw: 'u',
+                layerAnalysis: data.layer_metadata ? ((data.layer_metadata[ins.layer] || data.layer_metadata[ins.layer.toUpperCase()]) as any) : undefined
             });
         });
     }
@@ -211,7 +228,13 @@ export async function parseDxfFull(fileContent: Buffer | string, unit: string = 
     // If Python returns raw, we need to know the unit.
     // Python parser checks $INSUNITS.
 
-    return { items, detectedUnit: data.detected_unit || 'm' };
+    return {
+        items,
+        detectedUnit: data.detected_unit || 'm',
+        unitConfidence: data.unit_confidence || 'Low', // NEW
+        unitFactor: data.unit_factor || 1.0,           // NEW
+        blockMetadata: data.block_metadata
+    };
 }
 
 /**

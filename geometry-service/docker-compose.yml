@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  geometry-service:
+    build: .
+    container_name: geometry-service
+    ports:
+      - "8000:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      # Optional: Mount logs locally for debugging
+      - ./worker.log:/app/worker.log
+      - ./python_errors.log:/app/python_errors.log
+    restart: unless-stopped
+    # Resource limits (optional - remove if unlimited)
+    # deploy:
+    #   resources:
+    #     limits:
+    #       memory: 4G

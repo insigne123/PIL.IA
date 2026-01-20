@@ -32,7 +32,8 @@ async def extract_quantities(
     excel_data: str = Form(...),
     use_vision_ai: bool = Form(True),
     snap_tolerance: float = Form(0.01),
-    vision_model: str = Form("claude")
+    vision_model: str = Form("claude"),
+    height_default: float = Form(2.4) # NEW: Allow user to specify default height for linear area estimation
 ):
     """
     Main extraction endpoint - processes DXF/PDF and returns matched quantities
@@ -45,6 +46,8 @@ async def extract_quantities(
     all_segments = []
     all_texts = []
     all_labels = []
+    all_precomputed_regions = [] # P1.3 Hatch regions
+    dxf_result = None # Init to capture unit metadata
     
     # Parse DXF if provided
     if dxf_file:
@@ -57,6 +60,8 @@ async def extract_quantities(
             dxf_result = parse_dxf_file(tmp_path)
             all_segments.extend(dxf_result.segments)
             all_texts.extend(dxf_result.texts)
+            if dxf_result.precomputed_regions:
+                all_precomputed_regions.extend(dxf_result.precomputed_regions)
         finally:
             os.unlink(tmp_path)
     
@@ -116,6 +121,37 @@ async def extract_quantities(
         # Extract regions (cycles from planar graph)
         regions = extract_regions(cleaned_segments)
         
+        # P1.3: Merge Precomputed Hatch Regions
+        if all_precomputed_regions:
+            from core.region_extractor import Region as CoreRegion, Point as CorePoint
+            import uuid
+            from shapely.geometry import Polygon as ShapelyPolygon
+            
+            for h in all_precomputed_regions:
+                try:
+                    # Convert to Core Logic objects
+                    c_verts = [CorePoint(v.x, v.y) for v in h.vertices]
+                    if len(c_verts) < 3: continue
+                    
+                    s_poly = ShapelyPolygon([(v.x, v.y) for v in h.vertices])
+                    if not s_poly.is_valid:
+                        s_poly = s_poly.buffer(0)
+                        
+                    # Calculate properties if missing
+                    area = h.area if h.area > 0 else s_poly.area
+                    
+                    regions.append(CoreRegion(
+                        id=f"hatch_{uuid.uuid4().hex[:8]}",
+                        vertices=c_verts,
+                        area=area,
+                        perimeter=s_poly.length,
+                        centroid=CorePoint(s_poly.centroid.x, s_poly.centroid.y),
+                        shapely_polygon=s_poly,
+                        layer=h.layer
+                    ))
+                except Exception as e:
+                    print(f"Failed to merge hatch region: {e}")
+        
         # Convert Dicts to ExcelItem objects for Core Logic
         from core.text_associator import ExcelItem as CoreExcelItem
         core_excel_items = []
@@ -131,7 +167,9 @@ async def extract_quantities(
         matches = associate_text_to_regions(
             regions=regions,
             labels=all_labels + all_texts,
-            excel_items=core_excel_items
+            excel_items=core_excel_items,
+            segments=cleaned_segments, # P2.2 Pass Segments for Fallback Estimator
+            default_height=height_default  # Pass user-provided height
         )
         
         # QA checks and confidence scoring
@@ -170,7 +208,10 @@ async def extract_quantities(
             matches=api_matches,
             unmatched_items=unmatched,
             warnings=[],
-            processing_time_ms=0  # TODO: Add timing
+            processing_time_ms=0,  # TODO: Add timing
+            unit_factor=getattr(dxf_result, 'unit_factor', 1.0) if dxf_result else 1.0,
+            detected_unit=getattr(dxf_result, 'detected_unit', 'Unknown') if dxf_result else 'Unknown',
+            unit_confidence=getattr(dxf_result, 'unit_confidence', 'Low') if dxf_result else 'Low'
         )
             
     except Exception as e:

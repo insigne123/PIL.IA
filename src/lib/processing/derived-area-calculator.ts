@@ -39,9 +39,9 @@ const DEFAULT_CONFIG: DerivedAreaConfig = {
         'cielo', 'cielo falso', 'cielo raso', 'plafon',
         'cupula', 'boveda', 'cenefa',
         // Pisos (normalmente tienen HATCH, pero por si acaso)
-        'piso', 'pavimento', 'solera', 'radier',
-        // Otros horizontales
-        'losa', 'entrepiso', 'cubierta', 'techumbre'
+        'piso', 'pavimento', 'solera', 'radier', 'ceramica', 'porcelanato',
+        // Otros horizontales (Impermeabilización, techumbre)
+        'losa', 'entrepiso', 'cubierta', 'techumbre', 'impermeabiliza', 'membrana', 'aislacion'
     ],
     defaultHeight: 2.4, // metros
     heightPatterns: [

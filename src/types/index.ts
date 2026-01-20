@@ -38,6 +38,13 @@ export interface ItemDetectado {
     resolved: string;
     block_name?: string;
   };
+
+  // 11.1: 3D Layer Analysis from Python
+  layerAnalysis?: {
+    classification: 'HORIZONTAL' | 'VERTICAL' | 'MIXED' | 'UNKNOWN';
+    stats: { h: number; v: number };
+    entityTypes: string[];
+  };
   // Suspect geometry flagging
   suspect_geometry?: boolean;
   suspect_reason?: string;

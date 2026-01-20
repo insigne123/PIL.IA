@@ -17,6 +17,9 @@ class Point:
     
     def __hash__(self):
         return hash((round(self.x, 6), round(self.y, 6)))
+
+    def distance_to(self, other: 'Point') -> float:
+        return math.hypot(self.x - other.x, self.y - other.y)
     
     def __eq__(self, other):
         return (round(self.x, 6), round(self.y, 6)) == (round(other.x, 6), round(other.y, 6))

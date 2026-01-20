@@ -1,4 +1,4 @@
-import Fuse from 'fuse.js';
+import Fuse, { FuseResult } from 'fuse.js';
 import { ItemDetectado, StagingRow, Unit, Suggestion, Discipline } from '@/types';
 import { ExtractedExcelItem } from './excel';
 import { v4 as uuidv4 } from 'uuid';
@@ -67,7 +67,47 @@ function validateApprovalGates(
     return { approved: true, reason: 'Unit not strictly validated' };
 }
 
+// FIX 11.1: Helper to Validate Wall Fallback
+function shouldApplyWallFallback(match: ItemDetectado, excelItem: ExtractedExcelItem): boolean {
+    // 1. Layer Analysis Check (The 3D Truth)
+    if (match.layerAnalysis?.classification === 'HORIZONTAL') {
+        console.log(`  [Matcher] ⚠️ Wall Fallback Blocked: Layer ${match.layer_normalized} is 3D-Horizontal`);
+        return false;
+    }
+
+    // 2. Keyword check (Redundant but safe)
+    const horizontalKeywords = ['losa', 'cielo', 'impermeabilizacion', 'cubierta', 'radier', 'piso', 'terraza', 'techo'];
+    const itemText = excelItem.description.toLowerCase();
+    if (horizontalKeywords.some(kw => itemText.includes(kw))) {
+        console.log(`  [Matcher] ⚠️ Wall Fallback Blocked: Item "${excelItem.description}" has horizontal keyword`);
+        return false;
+    }
+
+    return true;
+}
+
 export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetectado[], sheetName: string, excelDiscipline: Discipline = 'UNKNOWN'): StagingRow[] {
+
+    // FIX 8.2: Build Spatial Zone Registry
+    // Map Zone Name -> Max Valid Area found in that zone
+    const zoneRegistry: Record<string, number> = {};
+    dxfItems.forEach(item => {
+        if (item.zone_name && item.type === 'area') {
+            if (item.value_si > 0) {
+                const zoneKey = item.zone_name.toUpperCase();
+                // Keep the largest area found for this zone (e.g. the floor)
+                if (!zoneRegistry[zoneKey] || item.value_si > zoneRegistry[zoneKey]) {
+                    zoneRegistry[zoneKey] = item.value_si;
+                }
+            }
+        }
+    });
+    if (Object.keys(zoneRegistry).length > 0) {
+        const keys = Object.keys(zoneRegistry);
+        console.log(`[Matcher] Built Zone Registry with ${keys.length} zones. Keys: ${keys.slice(0, 10).join(', ')}...`);
+    } else {
+        console.warn(`[Matcher] WARNING: Zone Registry is EMPTY. DLP/Spatial logic might fail. Total Items: ${dxfItems.length}. Items with zone_name: ${dxfItems.filter(i => i.zone_name).length}`);
+    }
 
     // âœ… P0.1: BUILD LAYER GEOMETRY PROFILES ONCE
     const layerProfiles = buildLayerProfiles(dxfItems);
@@ -365,7 +405,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
         // Evaluate top candidates to find best match after boosting
         // P0.C: We must evaluate multiple candidates because keyword boosting might promote a lower-ranked Fuse match
         interface EvaluatedCandidate {
-            match: Fuse.FuseResult<LayerCandidate>;
+            match: FuseResult<LayerCandidate>;
             confidence: number;
             reason: string;
             warnings: string[];
@@ -469,6 +509,21 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                     currentReason += ` | Penalty: -${(layerPenalty * 100).toFixed(0)}%`;
                 }
 
+                // FIX 8.1: Horizontal vs Vertical Orientation Check
+                // Prevent Floors (Horizontal) from matching Walls/Elevations (Length)
+                const orientationResult = detectSurfaceOrientation(excelItem.description);
+                const isHorizontalIntent = orientationResult.orientation === 'horizontal';
+
+                // If Item is Horizontal (Floor/Ceiling) but Candidate is purely Length-based (no Area)
+                // We penalize it because generating Area from Length * Height is only valid for Walls (Vertical)
+                if (isHorizontalIntent && dominantType === 'LENGTH' && expectedMeasureType === 'AREA') {
+                    // Strong penalty: Non-wall items should NOT use length fallback
+                    currentConfidence *= 0.2;
+                    currentReason += ` | Orientation Mismatch (Horizontal Item vs Length Layer)`;
+                }
+
+                // Conversly, if Vertical Intent but Area Only (unlikely but possible), slight boost? No.
+
                 if (layerCandidate.layer_normalized === 'defpoints') {
                     currentConfidence *= 0.1;
                     currentReason += " | DEFPOINTS PENALTY";
@@ -540,8 +595,23 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             // We use calcMethod to decide how to derive qty from CAD geometry
 
             if (calcMethod === 'COUNT') {
-                // âœ… Use value_si for count (blocks)
-                qtyFinal = match.type === 'block' ? (match.value_si || 1) : 0;
+                // FIXED 11.5: Disable Text Match for Unit/Global Items to prevent "1112" count error
+                const isUnitOrGlobal = ['un', 'gl', 'u'].includes(excelItem.unit?.toLowerCase() || '');
+                const isTextLayer = match.type === 'text' || (match as any).layer_normalized?.toLowerCase().includes('text');
+
+                if (isUnitOrGlobal && isTextLayer) {
+                    console.log(`[Matcher] Blocked Text Match for Unit Item: ${excelItem.excel_item} vs ${(match as any).layer_normalized}`);
+                    qtyFinal = 0; // Force zero to avoid counting letters
+                    match.confidence = 'low';
+                    reason = '⛔ Blocked: Cannot count Text for Unit/Global item';
+                } else if (match.type === 'block' && match.value_area && (excelItem.unit === 'm2' || excelItem.unit === 'm²')) {
+                    // FIX 11.3: If target is AREA and block has area, multiply!
+                    qtyFinal = (match.value_si || 1) * match.value_area;
+                    methodDetail = 'block_area_times_count';
+                    reason += ` | Area derived from ${match.value_si} blocks * ${match.value_area.toFixed(2)}m²/each`;
+                } else {
+                    qtyFinal = match.type === 'block' ? (match.value_si || 1) : 0;
+                }
                 evidenceTypeUsed = match.type as 'area' | 'length' | 'block' | 'text'; // P0.3
 
                 // P0.D: Check if block is generic/untrusted
@@ -596,12 +666,26 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                         reason += ` | ${derivedResult.reason}`;
                         console.log(`  [FIX 2] length_x_height: ${match.value_si.toFixed(2)}m Ã— ${heightFactor}m = ${qtyFinal?.toFixed(2)}mÂ²`);
                     } else {
-                        // Phase 6 D): Default height fallback logic (already here, just ensuring it's robust)
-                        heightFactor = 2.4;
-                        qtyFinal = match.value_si * heightFactor;
-                        methodDetail = 'length_x_height_default';
-                        evidenceTypeUsed = 'length'; // P0.3
-                        reason += ` | Derivada: Largo * 2.4m (default)`;
+                        // FIX 8.1: Block unsafe fallback for Horizontal items
+                        if (derivedResult.orientation === 'horizontal') {
+                            qtyFinal = 0; // Better to return 0 than fake wall area
+                            reason += ` | âŒ Mismatch: Horizontal Item matched Length Layer (Requires Area/Hatch)`;
+                            console.log(`  [Matcher] Blocked Length*Hz for Horizontal Item "${excelItem.description}"`);
+                        } else {
+                            // Phase 6 D): Default height fallback logic
+                            // FIX 11.1: Validate with 3D analysis
+                            if (shouldApplyWallFallback(match, excelItem)) {
+                                heightFactor = 2.4;
+                                qtyFinal = match.value_si * heightFactor;
+                                methodDetail = 'length_x_height_default';
+                                evidenceTypeUsed = 'length';
+                                reason += ` | Derivada: Largo * 2.4m (default)`;
+                            } else {
+                                qtyFinal = 0; // Blocked
+                                methodDetail = 'fallback_blocked_3d_horizontal';
+                                reason += ` | ⛔ FALLBACK BLOCKED: 3D Horizontal Layer or Keyword`;
+                            }
+                        }
                     }
                 }
                 // Case A: Geometry is Area (HATCH/Polyline Region)
@@ -630,20 +714,13 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                         evidenceTypeUsed = 'length';
                         reason += ` | âš ï¸ WALL: Layer matched via block but using length Ã— 2.4m = ${qtyFinal?.toFixed(2)} mÂ²`;
                         console.log(`  [FIX] Block layer with WALL intent: using profile.total_length Ã— 2.4 = ${qtyFinal?.toFixed(2)} mÂ²`);
-                    } else if (match.type === 'length' && isWallIntent) {
-                        // FIX: Match is length item (e.g. from fuzzy search returning an item not a profile summary?)
-                        // Usually matches are items. If match.type says length, use it.
-                        heightFactor = 2.4;
-                        qtyFinal = match.value_si * heightFactor;
-                        methodDetail = 'length_x_height_default';
-                        evidenceTypeUsed = 'length';
-                        console.log(`  [FIX] Length match with WALL intent: using length Ã— 2.4 = ${qtyFinal?.toFixed(2)} mÂ²`);
+                        console.log(`  [FIX] Block layer with WALL intent: using profile.total_length Ã— 2.4 = ${qtyFinal?.toFixed(2)} mÂ²`);
                     } else {
                         // P0.3: No area/length geometry available - this is INVALID for mÂ² items
                         qtyFinal = null; // Mark as null to trigger pending status
                         methodDetail = 'invalid_type_for_area';
                         evidenceTypeUsed = match.type as 'block' | 'text' | 'area' | 'length';
-                        reason += ` | âŒ ERROR: mÂ² item matched to ${match.type} layer with no area/length geometry`;
+                        reason += ` | â Œ ERROR: mÂ² item matched to ${match.type} layer with no area/length geometry`;
                         console.log(`  [ERROR] mÂ² item matched to ${match.type} type with no area geometry - setting qtyFinal = null`);
                     }
                 }
@@ -669,6 +746,27 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             // Keep existing Excel qty if present for "Manual" verification
             if (excelItem.qty !== null) qtyFinal = excelItem.qty;
         }
+
+        // FIX 8.2: Spatial Zone Override (Highest Priority for mÂ² items with failed/missing geometries)
+        // If standard geometry match failed (e.g. Horizontal item had no Hatch), use the Zone Area.
+        if (expectedMeasureType === 'AREA' && (!qtyFinal || qtyFinal <= 0.1)) {
+            const zoneIntent = extractZoneIntent(excelItem.description);
+            if (zoneIntent) {
+                const zoneKey = zoneIntent.toUpperCase();
+                // Soft match zone registry keys (e.g. "BODEGA" matches "BODEGAS")?
+                // For now, assume exact match or simple inclusion.
+                // Let's try direct lookup first.
+                if (zoneRegistry[zoneKey] && zoneRegistry[zoneKey] > 0) {
+                    qtyFinal = zoneRegistry[zoneKey];
+                    reason += ` | âœ… SPATIAL OVERRIDE: Using Zone "${zoneIntent}" Area`;
+                    methodDetail = 'spatial_zone_area';
+                    evidenceTypeUsed = 'area';
+                    confidence = 0.95; // High confidence if we found the exact zone
+                    console.log(`  [Spatial] Overriding "${excelItem.description}" with Zone Area: ${qtyFinal.toFixed(2)} mÂ²`);
+                }
+            }
+        }
+
 
         // FIX 9.2: Ensure methodDetail is NEVER null for normal items
         // If we got here without a methodDetail, assign one based on expectedMeasureType

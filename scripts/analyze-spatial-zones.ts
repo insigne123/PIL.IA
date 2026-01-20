@@ -28,7 +28,7 @@ async function analyzeSpatialZones() {
     result.items.forEach(item => {
         itemTypes[item.type] = (itemTypes[item.type] || 0) + 1;
 
-        if (item.type === 'text' || item.type === 'mtext') {
+        if (item.type === 'text') {
             // Capture any text-like item
             if (textSamples.length < 50) {
                 textSamples.push(item);

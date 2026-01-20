@@ -95,7 +95,12 @@ export async function POST(req: NextRequest) {
                             matched: result.matches.filter(m => m.confidence > 0.3).length,
                             processingTimeMs: result.processing_time_ms
                         },
-                        geometryServiceUsed: true
+                        geometryServiceUsed: true,
+                        unitMetadata: {
+                            detectedUnit: result.detected_unit,
+                            confidence: result.unit_confidence,
+                            factor: result.unit_factor
+                        }
                     }
                 });
 
