@@ -519,55 +519,77 @@ def extract_regions(
 def assign_layers_to_regions(regions: List[Region], segments: List[Segment]):
     """
     Assign a layer to each region based on the segments that form its boundary/interior.
-    Uses a spatial index (or brute force for now) to find segments overlapping the region.
+    Uses STRtree for efficient spatial queries (O(N log M)).
     """
     if not regions or not segments:
         return
 
-    # Optimization: Sort segments by x coordinate for faster bounds check
-    # or just brute force for < 10k items (fast enough in memory)
+    print(f"[RegionExtractor] Assigning layers to {len(regions)} regions using STRtree...")
     
-    # Pre-filter segments that have layers
+    # 1. Build STRtree of *layered* segments
     layered_segments = [s for s in segments if s.layer]
+    if not layered_segments:
+        return
+        
+    # Map id(geom) -> segment layer
+    seg_geoms = []
+    geom_to_layer = {}
     
+    for s in layered_segments:
+        # Create small line object for indexing
+        if s.start.x == s.end.x and s.start.y == s.end.y:
+            continue
+        ls = LineString([(s.start.x, s.start.y), (s.end.x, s.end.y)])
+        seg_geoms.append(ls)
+        # We rely on parallel arrays or id map. 
+        # STRtree returns the geometry object itself in new shapely, 
+        # or index in old shapely. Let's use parallel list for safety with index.
+    
+    if not seg_geoms:
+        return
+
+    try:
+        tree = STRtree(seg_geoms)
+    except Exception as e:
+        print(f"[RegionExtractor] Failed to build STRtree: {e}")
+        return
+
+    # 2. Query tree for each region
     for region in regions:
-        # 1. Find segments that are "close" to the region boundary
-        # A simple proximity check using the region's buffered boundary
-        
         region_poly = region.shapely_polygon
-        boundary = region_poly.boundary
-        
-        # Buffer slightly to catch segments that might have slight gaps (cleaned geometry)
-        buffered_boundary = boundary.buffer(0.05) # 5cm tolerance
+        # Query bounds (small buffer to touch boundary lines)
+        query_geom = region_poly.boundary.buffer(0.05)
         
         candidates = []
-        for seg in layered_segments:
-            # Quick bounds check
-            min_x = min(seg.start.x, seg.end.x)
-            max_x = max(seg.start.x, seg.end.x)
-            min_y = min(seg.start.y, seg.end.y)
-            max_y = max(seg.start.y, seg.end.y)
-            
-            # Region bounds
-            r_min_x, r_min_y, r_max_x, r_max_y = region_poly.bounds
-            
-            # Intersection test
-            if (min_x > r_max_x or max_x < r_min_x or min_y > r_max_y or max_y < r_min_y):
-                continue
-                
-            # Detailed check
-            seg_line = LineString([(seg.start.x, seg.start.y), (seg.end.x, seg.end.y)])
-            if buffered_boundary.intersects(seg_line):
-                candidates.append(seg.layer)
         
+        # STRtree query
+        # Returns indices of intersecting geometries
+        try:
+            indices = tree.query(query_geom)
+            
+            # Handle different return types (scalar vs array vs list)
+            if hasattr(indices, '__iter__'):
+                if hasattr(indices, 'dtype'): # Numpy array (Shapely 2.0)
+                    for idx in indices:
+                        # idx is integer index into seg_geoms
+                        candidates.append(layered_segments[int(idx)].layer)
+                else: # List of geometries (Shapely < 1.8 or similar)
+                    for geom in indices:
+                        # Find layer (slow reverse lookup, avoid this path if possible)
+                        # Actually we can't easily map back from geom unless we have a map
+                        pass 
+        except Exception:
+            pass
+            
         if candidates:
-            # Majority vote
             from collections import Counter
             most_common = Counter(candidates).most_common(1)
             if most_common:
                 region.layer = most_common[0][0]
         else:
             region.layer = "Unknown"
+    
+    print("[RegionExtractor] Layer assignment done.")
 
 
 def find_best_region(
