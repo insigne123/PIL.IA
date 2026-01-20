@@ -14,9 +14,7 @@ from dataclasses import dataclass, field
 import math
 from collections import defaultdict
 import uuid
-
-
-@dataclass
+import gc
 class Point:
     x: float
     y: float
@@ -476,7 +474,7 @@ def score_region(
 def extract_regions(
     segments: List[Segment],
     method: str = "shapely",
-    min_area: float = 0.1,
+    min_area: float = 0.5, # Increased to reduce noise
     max_area: float = 1000000.0
 ) -> List[Region]:
     """
@@ -498,6 +496,9 @@ def extract_regions(
     else:
         regions = extract_regions_networkx(segments)
     
+    # Aggressive GC
+    gc.collect()
+
     # Filter by area
     regions = [r for r in regions if min_area <= r.area <= max_area]
     
@@ -589,6 +590,7 @@ def assign_layers_to_regions(regions: List[Region], segments: List[Segment]):
         else:
             region.layer = "Unknown"
     
+    gc.collect()
     print("[RegionExtractor] Layer assignment done.")
 
 
