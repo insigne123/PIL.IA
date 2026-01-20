@@ -27,17 +27,41 @@ def process_dxf_task(file_path: str, hint_unit: str = "m") -> ParseDxfResponse:
             f.write(f"Parse result: {len(result.segments)} segments, {len(result.texts)} texts\n")
         
         # 1. Map Parser Segments -> Cleanup Segments
+        # FILTER: Aggressive Layer Filtering to prevent OOM
+        # We only want architectural elements (Walls, Openings, Room boundaries)
+        # We explicitly exclude Hatch patterns (usually decoration) and Furniture
+        skip_keywords = ['hatch', 'sombrado', 'pattern', 'vegetacion', 'tree', 'plant', 'landscape', 'jardin', 'mueble', 'furniture', 'silla', 'mesa', 'cotas', 'dim', 'text', 'npt', 'ejes', 'grid']
+        
+        filtered_segments = []
+        skipped_count = 0
+        
+        for s in result.segments:
+            layer_lower = s.layer.lower()
+            # If layer contains any skip keyword, ignore it
+            if any(k in layer_lower for k in skip_keywords):
+                skipped_count += 1
+                continue
+            
+            # Additional heuristic: If entity type is NOT Line/Polyline/Arc (e.g. it's loose text or weird stuff), skip? 
+            # (Already filtered by parser to only return segments)
+            
+            filtered_segments.append(s)
+
+        with open("worker.log", "a") as f:
+            f.write(f"Layer Filtering: Kept {len(filtered_segments)} segments (Skipped {skipped_count} noise segments)\n")
+
         cleanup_segments = [
             ClnSegment(
                 start=ClnPoint(s.start.x, s.start.y),
                 end=ClnPoint(s.end.x, s.end.y),
                 layer=s.layer,
                 entity_type=s.entity_type
-            ) for s in result.segments
+            ) for s in filtered_segments
         ]
         
-        # Release memory from parser result
+        # Release memory from parser result immediately
         result.segments.clear() 
+        del filtered_segments # Free intermediate list 
             
         # 2. Extract Regions
         cleaned_segments = cleanup_geometry(cleanup_segments, snap_tolerance=0.01)
