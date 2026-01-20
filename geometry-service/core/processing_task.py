@@ -8,20 +8,20 @@ import os
 import traceback
 import sys
 
-def process_dxf_task(file_path: str) -> ParseDxfResponse:
+def process_dxf_task(file_path: str, hint_unit: str = "m") -> ParseDxfResponse:
     """
     CPU-bound task to be run in a separate process.
     """
     import datetime
     try:
         with open("worker.log", "a") as f:
-            f.write(f"\n[{datetime.datetime.now()}] Worker started for {file_path}\n")
+            f.write(f"\n[{datetime.datetime.now()}] Worker started for {file_path} (Hint: {hint_unit})\n")
             if os.path.exists(file_path):
                 f.write(f"File exists, size: {os.path.getsize(file_path)} bytes\n")
             else:
                 f.write("FILE DOES NOT EXIST!\n")
 
-        result = parse_dxf_file(file_path)
+        result = parse_dxf_file(file_path, hint_unit=hint_unit)
         
         with open("worker.log", "a") as f:
             f.write(f"Parse result: {len(result.segments)} segments, {len(result.texts)} texts\n")

@@ -15,6 +15,7 @@ import math
 from collections import defaultdict
 import uuid
 import gc
+@dataclass(slots=True)
 class Point:
     x: float
     y: float

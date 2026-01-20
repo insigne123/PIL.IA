@@ -8,13 +8,16 @@ services:
       - "8000:8000"
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - WEB_CONCURRENCY=4 # Uvicorn workers
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --workers 4
     volumes:
       # Optional: Mount logs locally for debugging
       - ./worker.log:/app/worker.log
       - ./python_errors.log:/app/python_errors.log
     restart: unless-stopped
-    # Resource limits (optional - remove if unlimited)
-    # deploy:
-    #   resources:
-    #     limits:
-    #       memory: 4G
+    # Resource limits (Documentation only - Enforced by Host)
+    deploy:
+      resources:
+        limits:
+          memory: 8G
+          cpus: '4.0'

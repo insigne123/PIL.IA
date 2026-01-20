@@ -234,7 +234,8 @@ process_pool = ProcessPoolExecutor(max_workers=2)
 
 @router.post("/parse-dxf", response_model=ParseDxfResponse)
 async def parse_dxf(
-    file: UploadFile = File(...)
+    file: UploadFile = File(...),
+    hint_unit: str = Form("m")
 ):
     """Parse DXF file and return raw geometry/text"""
     # Write content to temp file
@@ -254,7 +255,7 @@ async def parse_dxf(
         from core.processing_task import process_dxf_task
         
         # Run in threadpool
-        result = await run_in_threadpool(process_dxf_task, tmp_path)
+        result = await run_in_threadpool(process_dxf_task, tmp_path, hint_unit)
         
         # Force garbage collection to free large DXF memory 
         import gc

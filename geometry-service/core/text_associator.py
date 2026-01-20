@@ -260,9 +260,12 @@ def associate_text_to_regions(
             for l, s in matching_labels[:5]:
                 print(f"    * '{l.text}' (Score: {s:.2f}) at {l.position}")
 
+        # Step 2: Aggregate ALL valid matches (1-to-Many)
+        valid_matches = []
+        matched_region_ids = set()
+        
         for label, text_score in matching_labels:
-            # Step 2: Spatial Query using Index (Zone Match)
-            # Find which region CONTAINS this label
+            # Spatial Query using Index (Zone Match)
             zone = spatial_index.find_zone(label.position.x, label.position.y)
             
             region_match = None
@@ -270,36 +273,29 @@ def associate_text_to_regions(
             spatial_score = 0.0
             
             if zone:
-                # STRICT CONTAINMENT FOUND!
-                # Lookup region by ID (O(1)) instead of scanning all regions
                 region_match = region_id_map.get(zone.get('handle'))
                 if region_match:
                     strategy = "inside_zone"
-                    spatial_score = 1.0 # High confidence
+                    spatial_score = 1.0 
 
-            # P2.3: Proximity Check (If no containment found)
+            # Proximity Check
             if not region_match:
-                # Try finding nearest zone within 50cm
                 nearby_zone = spatial_index.find_nearest_zone(label.position.x, label.position.y, max_distance=0.5)
                 if nearby_zone:
-                     # Find corresponding region
                      region_match = region_id_map.get(nearby_zone.get('handle'))
                      if region_match:
                         strategy = "proximity"
-                        spatial_score = 0.8 # Good confidence
+                        spatial_score = 0.8
             
-            # P2.2: Fallback Estimator (If still no match)
+            # Fallback Estimator
             if not region_match and segments:
-                # Lazy build tree once
                 if 'segment_tree' not in locals():
-                    # Build tree
                     seg_geoms = [LineString([(s.start.x, s.start.y), (s.end.x, s.end.y)]) 
                                 for s in segments if hasattr(s, 'start')]
                     if seg_geoms:
                         segment_tree = STRtree(seg_geoms)
                     else:
                         segment_tree = None
-                    segment_map_dummy = {} # Not strictly needed if using geometry bounds
                 
                 if segment_tree:
                     fallback_region = estimate_unclosed_area(
@@ -308,129 +304,91 @@ def associate_text_to_regions(
                         {},
                         search_radius=5.0
                     )
-                    
                     if fallback_region:
                         region_match = fallback_region
                         strategy = "fallback_estimator"
-                        confidence = 0.6 # Lower confidence for fallback
+                        spatial_score = 1.0 # High confidence if geometry found
 
-                        spatial_score = 1.0
-                        break
-            
-            # Fallback: Nearest Neighbor (if no containment)
+            # Nearest Neighbor Fallback
             if not region_match:
-                # FIX 11.2: Use Spatial Index Nearest Neighbor
                 nearest_zone = spatial_index.find_nearest_zone(
-                    label.position.x, 
-                    label.position.y, 
-                    max_distance=spatial_search_radius
+                    label.position.x, label.position.y, max_distance=spatial_search_radius
                 )
-                
                 if nearest_zone:
-                    # Find the original region object
                     region_match = region_id_map.get(nearest_zone.get('handle'))
                     if region_match:
                         strategy = "nearest_neighbor"
-                        # Distance penalty: closer = higher score
                         dist = nearest_zone.get("distance", 0)
                         spatial_score = max(0.5, 1.0 - (dist / spatial_search_radius)) 
-                
-            if debug_item:
-                print(f"  - Label '{label.text}': Strategy={strategy}, SpatialScore={spatial_score:.2f}")
-                if region_match:
-                    print(f"    -> Matched Region {region_match.id} (Area: {region_match.area:.2f})")
-                else:
-                    print("    -> No region matched")
-
+            
             if region_match:
                 # Combined Score
-                # Text score is paramount, but spatial validates it
                 combined = text_score * 0.6 + spatial_score * 0.4
                 
-                # Boost for expected area match
-                if item.expected_qty and item.expected_qty > 0:
-                    ratio = region_match.area / item.expected_qty
-                    if 0.8 <= ratio <= 1.2:
-                        combined += 0.2
-                
-                if combined > best_score:
-                    best_score = combined
-                    best_match = (region_match, label, strategy)
+                # Check confidence threshold (e.g. 0.6)
+                if combined >= 0.6:
+                    # Avoid double counting the same region for the same item
+                    # (e.g. two labels "Sala" in the same room)
+                    if region_match.id not in matched_region_ids:
+                        matched_region_ids.add(region_match.id)
+                        valid_matches.append((region_match, label, strategy, combined))
 
-        # Step 3: Create Match
-        if best_match:
-            region, label, strategy = best_match
+        # Step 3: Sum Quantities
+        if valid_matches:
+            total_qty = 0.0
+            match_details = []
             
-            # Unit logic
-            # Unit logic
-            qty = region.area # Default
+            # Use the first match's label for display/debug or concatenate?
+            # We'll use the highest confidence one for the 'Label' field, but sum qty.
+            best_single_match = max(valid_matches, key=lambda x: x[3])
+            primary_label = best_single_match[1]
+            primary_region = best_single_match[0]
             
-            # IMPROVEMENT: Handle Area items matched to Linear Layers (Walls/Partitions)
-            # If unit is m2 but area is ~0 (Linear), use Perimeter * Detected Height (or Default)
-            if item.unit and item.unit.lower() in ['m2', 'm²', 'metro cuadrado']:
-                 if qty < 0.01 and region.perimeter > 0:
-                     # Logically, if we matched a linear element for an Area item (e.g. Wall Paint),
-                     # we should estimate area via height.
-                     
-                     # P2.4: Auto-detect Height from nearby labels (e.g. "H=2.50m")
-                     detected_height = default_height
-                     min_h_dist = float('inf')
-                     
-                     # Simple scan of all labels (Optimization: Use SpatialIndex if too slow)
-                     # We only pay this cost for Fallback items (Linear->Area), which are few.
-                     for lbl in labels:
-                         if not lbl.text: continue
-                         # Regex for H=2.40 or H= 2.40m
-                         h_match = re.search(r'H\s*=\s*(\d+[.,]?\d*)', lbl.text, re.IGNORECASE)
-                         if h_match:
-                             try:
-                                 h_val = float(h_match.group(1).replace(',', '.'))
-                                 # Distance check
-                                 dist = float('inf')
-                                 if hasattr(region, 'shapely_polygon'):
-                                      dist = region.shapely_polygon.distance(ShapelyPoint(lbl.position.x, lbl.position.y))
-                                 
-                                 # Valid if close enough (e.g. inside or within 2m)
-                                 if dist < 2.0:
-                                     if dist < min_h_dist:
-                                         min_h_dist = dist
-                                         detected_height = h_val
-                             except:
-                                 pass
-                     
-                     # CLASSIFICATION: Vertical vs Horizontal
-                     # Walls, Partitions, Painting -> Vertical (Use Height)
-                     # Floors, Ceilings, Overslabs -> Horizontal (Use Enclosed Area)
-                     desc = item.description.lower()
-                     horizontal_keywords = ['cielo', 'pisos', 'pavimento', 'losa', 'radier', 'sobrelosa', 'vitrina']
-                     is_horizontal = any(k in desc for k in horizontal_keywords)
-                     
-                     if is_horizontal:
-                         # For Horizontal items found as lines (e.g. unclosed polygon),
-                         # we cannot use Height. We must estimate the Enclosed Area.
-                         # Best effort: Convex Hull of the linear geometry.
-                         # (Ideally we should use the spatial container (Room), but we matched this specific layer)
-                         if hasattr(region, 'shapely_polygon'):
-                             qty = region.shapely_polygon.convex_hull.area
-                     else:
-                         # Vertical (Default)
-                         qty = region.perimeter * detected_height
+            detected_height = default_height # Reset for this item
             
-            if item.unit:
-                u = item.unit.lower()
-                if u in ['ml', 'm', 'metro lineal']:
-                    qty = region.perimeter
-                elif u in ['un', 'u', 'unidad', 'c/u', 'num', 'gl']:
-                    # For unit/global items, we count the match as 1 instance
-                    qty = 1.0
+            # Determine Height Once (Optimization)
+            # ... (Reuse height logic if needed, but applied to each region if distinct?)
+            # For simplicity, we calculate QTY for each region and sum.
             
+            for region, lbl, strat, score in valid_matches:
+                 # Unit logic per region
+                 sub_qty = region.area
+                 
+                 # Detect Height for this specific region match? 
+                 # Or use item-global detection? Let's use item-global default for now 
+                 # or simple logic:
+                 
+                 if item.unit and item.unit.lower() in ['m2', 'm²', 'metro cuadrado']:
+                     if sub_qty < 0.01 and region.perimeter > 0:
+                         # Linear element (Wall) -> Area
+                         # Check keywords for Horizontal
+                         desc = item.description.lower()
+                         horizontal_keywords = ['cielo', 'pisos', 'pavimento', 'losa', 'radier', 'sobrelosa', 'vitrina']
+                         is_horizontal = any(k in desc for k in horizontal_keywords)
+                         
+                         if is_horizontal:
+                             if hasattr(region, 'shapely_polygon'):
+                                 sub_qty = region.shapely_polygon.convex_hull.area
+                         else:
+                             sub_qty = region.perimeter * default_height # Use default for speed in agg
+                 
+                 elif item.unit:
+                    u = item.unit.lower()
+                    if u in ['ml', 'm', 'metro lineal']:
+                        sub_qty = region.perimeter
+                    elif u in ['un', 'u', 'unidad', 'c/u', 'num', 'gl']:
+                        sub_qty = 1.0
+                 
+                 total_qty += sub_qty
+                 match_details.append(f"{lbl.text}({strat})")
+
             matches.append(Match(
                 excel_item=item,
-                region=region,
-                label=label,
-                qty_calculated=round(qty, 2),
-                confidence=best_score,
-                match_reason=f"{strategy} | Auto-Height: {detected_height if 'detected_height' in locals() and detected_height != default_height else 'Default'}"
+                region=primary_region, # Representative region
+                label=primary_label,
+                qty_calculated=round(total_qty, 2),
+                confidence=best_single_match[3],  # Confidence of best match
+                match_reason=f"Aggregated {len(valid_matches)} regions: {', '.join(match_details[:3])}..."
             ))
     
         else:

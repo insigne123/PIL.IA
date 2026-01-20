@@ -2,7 +2,7 @@ geometry-service  | INFO:     Started server process [1]
 geometry-service  | INFO:     Waiting for application startup.
 geometry-service  | INFO:     Application startup complete.
 geometry-service  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-geometry-service  | INFO:     191.125.158.49:51713 - "GET /health HTTP/1.1" 200 OK
+geometry-service  | INFO:     191.125.38.241:10496 - "GET /health HTTP/1.1" 200 OK
 geometry-service  | [Cleanup] Starting with 1045089 segments
 geometry-service  | [Cleanup] After snapping: 128002 segments
 geometry-service  | [Cleanup] After merging collinear: 41951 segments
@@ -33,4 +33,4 @@ geometry-service  |                 ^^^^^^^^^^^
 geometry-service  | TypeError: Point() takes no arguments
 geometry-service  | 
 geometry-service  | [ParseDxf] Error in thread pool: Point() takes no arguments
-geometry-service  | INFO:     191.125.38.241:10560 - "POST /api/parse-dxf HTTP/1.1" 200 OK
+geometry-service  | INFO:     191.125.150.97:14784 - "POST /api/parse-dxf HTTP/1.1" 200 OK

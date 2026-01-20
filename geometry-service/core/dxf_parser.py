@@ -72,7 +72,7 @@ class ParseResult:
     block_metadata: dict = None
 
 
-def get_unit_factor(doc) -> Tuple[float, str, str]:
+def get_unit_factor(doc, hint_unit: str = None) -> Tuple[float, str, str]:
     """
     Get conversion factor to meters with smart inference.
     Returns: (factor, unit_name, confidence)
@@ -89,26 +89,37 @@ def get_unit_factor(doc) -> Tuple[float, str, str]:
             6: (1.0, 'Meters', 'High'),
         }
 
+        # Hint Mapping
+        hint_map = {
+            'mm': (0.001, 'Millimeters (Hint)'),
+            'cm': (0.01, 'Centimeters (Hint)'),
+            'm': (1.0, 'Meters (Hint)'),
+            'in': (0.0254, 'Inches (Hint)'),
+            'ft': (0.3048, 'Feet (Hint)')
+        }
+
         if insunits in factors:
+            # If explicit unit matches hint, super high confidence
+            # If mismatch, usually trust file, but log warning
             return factors[insunits]
 
-        # If Unitless (0) or Unknown -> Infer from Extents
+        # If Unitless (0), prioritize Hint
+        if insunits == 0 and hint_unit:
+            norm_hint = hint_unit.lower().strip()
+            if norm_hint in hint_map:
+                val, name = hint_map[norm_hint]
+                logger.info(f"Unitless DXF: Using hint '{norm_hint}' -> {name}")
+                return (val, name, 'Medium')
+
+        # Fallback to Extents Inference
         if insunits == 0:
             try:
-                # Ezdxf calculates extents from header or geometry
-                # If header is missing, we might need to iterate geometry (expensive)
-                # But typically $EXTMIN/$EXTMAX are present
                 ext_min = doc.header.get('$EXTMIN', (0,0,0))
                 ext_max = doc.header.get('$EXTMAX', (0,0,0))
                 
                 width = ext_max[0] - ext_min[0]
                 height = ext_max[1] - ext_min[1]
                 max_dim = max(width, height)
-                
-                # Heuristics for Architecture Plans
-                # A typical building is 10m - 100m.
-                # If > 10,000 -> It's likely Millimeters (10m = 10,000mm)
-                # If < 1,000 -> It's likely Meters
                 
                 if max_dim > 5000:
                     return (0.001, 'Millimeters (Inferred)', 'Medium')
@@ -433,7 +444,7 @@ from core.block_analyzer import analyze_blocks
 
 # ... (imports)
 
-def parse_dxf_file(file_path: str) -> ParseResult:
+def parse_dxf_file(file_path: str, hint_unit: str = None) -> ParseResult:
     """
     Main function to parse DXF file and extract all geometry
     """
@@ -442,7 +453,7 @@ def parse_dxf_file(file_path: str) -> ParseResult:
     except Exception as e:
         raise ValueError(f"Failed to read DXF file: {e}")
     
-    unit_factor, detected_unit, unit_confidence = get_unit_factor(doc)
+    unit_factor, detected_unit, unit_confidence = get_unit_factor(doc, hint_unit=hint_unit)
     logger.info(f"Unit Inference: {detected_unit} (Factor: {unit_factor}, Confidence: {unit_confidence})")
     
     # 11.1: Extract layer orientation stats

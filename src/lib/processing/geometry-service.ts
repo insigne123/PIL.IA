@@ -116,7 +116,9 @@ export async function parseDxfFull(fileContent: Buffer | string, unit: string = 
     // Create a Blob/File from content since API expects file upload
     const blobContent = typeof fileContent === 'string' ? fileContent : new Uint8Array(fileContent);
     const blob = new Blob([blobContent]);
+    const blob = new Blob([blobContent]);
     formData.append('file', blob, 'temp.dxf');
+    formData.append('hint_unit', unit); // Send explicit hint
 
     // Note: The Python endpoint currently detects unit from file header automatically
     // We might want to pass 'unit' as a hint in future if needed
