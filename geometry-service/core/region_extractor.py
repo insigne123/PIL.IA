@@ -279,11 +279,16 @@ def extract_regions_shapely(segments: List[Segment]) -> List[Region]:
     Extract regions using Shapely's polygonize function.
     This is faster but may miss some complex cases.
     """
+    print(f"[RegionExtractor] Starting extraction chain on {len(segments)} segments...")
+
     # FIX 11.2: Force close small gaps (Endpoint->Endpoint)
     segments = force_close_polygons(segments, tolerance=0.10) 
+    print(f"[RegionExtractor] Force close done. Total segments: {len(segments)}")
     
     # P2.1: Graph Loop Builder (Endpoint->Edge)
-    segments = snap_undershoots(segments, tolerance=0.15)
+    # print("[RegionExtractor] Starting snap_undershoots...")
+    # segments = snap_undershoots(segments, tolerance=0.15)
+    # print(f"[RegionExtractor] Snapping done. Total segments: {len(segments)}")
 
     linestrings = segments_to_linestrings(segments)
     
@@ -291,10 +296,14 @@ def extract_regions_shapely(segments: List[Segment]) -> List[Region]:
         return []
     
     # Union all lines to handle overlaps
+    print(f"[RegionExtractor] Starting unary_union on {len(linestrings)} lines...")
     merged = unary_union(linestrings)
+    print("[RegionExtractor] Unary union done.")
     
     # Polygonize
+    print("[RegionExtractor] Starting polygonize...")
     polygons = list(polygonize(merged))
+    print(f"[RegionExtractor] Polygonize done. Found {len(polygons)} raw polygons.")
     
     regions = []
     for poly in polygons:
