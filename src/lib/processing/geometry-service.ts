@@ -81,17 +81,28 @@ export async function extractQuantities(request: ExtractRequest): Promise<Extrac
     formData.append('use_vision_ai', String(request.useVisionAI ?? true));
     formData.append('snap_tolerance', String(request.snapTolerance ?? 0.01));
 
-    const response = await fetch(`${GEOMETRY_SERVICE_URL}/api/extract`, {
-        method: 'POST',
-        body: formData,
-    });
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 300000); // 5 minutes
 
-    if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`Geometry service error: ${error}`);
+    try {
+        const response = await fetch(`${GEOMETRY_SERVICE_URL}/api/extract`, {
+            method: 'POST',
+            body: formData,
+            signal: controller.signal,
+        });
+
+        clearTimeout(timeoutId);
+
+        if (!response.ok) {
+            const error = await response.text();
+            throw new Error(`Geometry service error: ${error}`);
+        }
+
+        return response.json();
+    } catch (error) {
+        clearTimeout(timeoutId);
+        throw error;
     }
-
-    return response.json();
 }
 
 

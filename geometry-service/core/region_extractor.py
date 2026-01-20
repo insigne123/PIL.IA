@@ -85,17 +85,24 @@ def force_close_polygons(segments: List[Segment], tolerance: float = 0.05) -> Li
     """
     Attempts to close small gaps between segments by adding bridging segments.
     Applies custom tolerance for problematic layers.
+    Optimized to avoid duplicates and mesh explosion.
     """
     if not segments:
         return []
 
     # 1. Identify endpoints and apply layer-specific tolerance
     endpoints = set()
+    existing_pairs = set() # Track existing edges to avoid duplication
     layer_map = {} # Point -> max_tolerance needed
 
     for seg in segments:
         endpoints.add(seg.start)
         endpoints.add(seg.end)
+        
+        # Track existing connection (rounded for consistency)
+        p1_t = (round(seg.start.x, 5), round(seg.start.y, 5))
+        p2_t = (round(seg.end.x, 5), round(seg.end.y, 5))
+        existing_pairs.add(tuple(sorted((p1_t, p2_t))))
         
         # Determine tolerance for this segment
         seg_tol = tolerance 
@@ -133,13 +140,16 @@ def force_close_polygons(segments: List[Segment], tolerance: float = 0.05) -> Li
         
         potential_neighbors = grid[(idx_x, idx_y)]
         p1_tol = layer_map.get(p1, tolerance)
+        
+        # Find valid neighbors within tolerance
+        valid_neighbors = []
 
         for p2 in potential_neighbors:
             if p1 == p2:
                 continue
 
-            pair_id = tuple(sorted(((p1.x, p1.y), (p2.x, p2.y))))
-            if pair_id in processed_pairs:
+            # Quick distance check before expensive exact math/logic
+            if abs(p1.x - p2.x) > p1_tol or abs(p1.y - p2.y) > p1_tol:
                 continue
 
             dist = math.sqrt((p1.x - p2.x)**2 + (p1.y - p2.y)**2)
@@ -149,13 +159,32 @@ def force_close_polygons(segments: List[Segment], tolerance: float = 0.05) -> Li
             effective_tol = max(p1_tol, p2_tol)
 
             if 0 < dist <= effective_tol:
-                processed_pairs.add(pair_id)
-                new_segments.append(Segment(
-                    start=p1,
-                    end=p2,
-                    layer="AUTO_CLOSE",
-                    entity_type="BRIDGE"
-                ))
+                # Check if edge already exists
+                p1_t = (round(p1.x, 5), round(p1.y, 5))
+                p2_t = (round(p2.x, 5), round(p2.y, 5))
+                pair_id_rounded = tuple(sorted((p1_t, p2_t)))
+                
+                if pair_id_rounded in existing_pairs:
+                    continue
+                
+                valid_neighbors.append((dist, p2))
+
+        # Sort by distance and take top 2 to avoid fully connected mesh in dense areas
+        valid_neighbors.sort(key=lambda x: x[0])
+        
+        for dist, p2 in valid_neighbors[:2]:
+            pair_id = tuple(sorted(((p1.x, p1.y), (p2.x, p2.y))))
+            
+            if pair_id in processed_pairs:
+                continue
+            
+            processed_pairs.add(pair_id)
+            new_segments.append(Segment(
+                start=p1,
+                end=p2,
+                layer="AUTO_CLOSE",
+                entity_type="BRIDGE"
+            ))
 
     if new_segments:
         print(f"[RegionExtractor] Added {len(new_segments)} bridges (Max Tol: {max_tol}m)")
