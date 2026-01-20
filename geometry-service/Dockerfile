@@ -1,5 +1,5 @@
-# Use official Python runtime as a parent image
-FROM python:3.11-slim
+# Use official Python runtime as a parent image (Bookworm = Stable)
+FROM python:3.11-slim-bookworm
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1
@@ -9,7 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install system dependencies required for OpenCV, PaddleOCR, and generalized geometry libs
 RUN apt-get update && apt-get install -y \
     build-essential \
-    libgl1-mesa-glx \
+    libgl1 \
     libglib2.0-0 \
     libgomp1 \
     libsm6 \
