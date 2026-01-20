@@ -151,6 +151,17 @@ export async function executeJob(supabase: SupabaseClient, job: any) {
             .upload(jsonPath, JSON.stringify(extractedItems), { upsert: true });
 
         // Update Batch File
+        // FIX for DB Constraint: Normalize unit string to simple code (m, mm, cm)
+        if (detectedUnitVal) {
+            const u = detectedUnitVal.toLowerCase();
+            if (u.includes('millim') || u === 'mm') detectedUnitVal = 'mm';
+            else if (u.includes('centim') || u === 'cm') detectedUnitVal = 'cm';
+            else if (u.includes('meter') || u === 'm') detectedUnitVal = 'm';
+            else if (u.includes('inch') || u === 'in') detectedUnitVal = 'in';
+            else if (u.includes('foot') || u === 'ft') detectedUnitVal = 'ft';
+            else detectedUnitVal = 'm'; // Safe fallback
+        }
+
         const { error: updateError } = await supabase.from('batch_files').update({
             status: 'extracted',
             // @ts-ignore: Assuming column exists in updated migration

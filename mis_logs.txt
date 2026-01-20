@@ -1,6 +1,0 @@
-geometry-service  | INFO:     Started server process [1]
-geometry-service  | INFO:     Waiting for application startup.
-geometry-service  | INFO:     Application startup complete.
-geometry-service  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-geometry-service  | INFO:     191.125.38.241:10371 - "GET /health HTTP/1.1" 200 OK
-geometry-service  | INFO:     191.125.38.241:10376 - "GET /health HTTP/1.1" 200 OK
