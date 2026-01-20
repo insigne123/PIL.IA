@@ -477,7 +477,7 @@ def extract_regions(
     segments: List[Segment],
     method: str = "shapely",
     min_area: float = 0.1,
-    max_area: float = 10000.0
+    max_area: float = 1000000.0
 ) -> List[Region]:
     """
     Main function to extract regions from line segments.

@@ -252,6 +252,14 @@ def associate_text_to_regions(
         best_match = None
         best_score = 0.0
         
+        # DEBUG TRACE for problematic items
+        debug_item = "sobrelosa" in item.description.lower()
+        if debug_item:
+            print(f"[TextAssociator] Tracing '{item.description}' (ID: {item.id})")
+            print(f"  - Found {len(matching_labels)} text candidate labels")
+            for l, s in matching_labels[:5]:
+                print(f"    * '{l.text}' (Score: {s:.2f}) at {l.position}")
+
         for label, text_score in matching_labels:
             # Step 2: Spatial Query using Index (Zone Match)
             # Find which region CONTAINS this label
@@ -327,6 +335,13 @@ def associate_text_to_regions(
                         dist = nearest_zone.get("distance", 0)
                         spatial_score = max(0.5, 1.0 - (dist / spatial_search_radius)) 
                 
+            if debug_item:
+                print(f"  - Label '{label.text}': Strategy={strategy}, SpatialScore={spatial_score:.2f}")
+                if region_match:
+                    print(f"    -> Matched Region {region_match.id} (Area: {region_match.area:.2f})")
+                else:
+                    print("    -> No region matched")
+
             if region_match:
                 # Combined Score
                 # Text score is paramount, but spatial validates it

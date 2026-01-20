@@ -204,6 +204,8 @@ async def extract_quantities(
                 warnings=warnings
             ))
             
+        print(f"[API] Processing complete. Returning {len(api_matches)} matches.")
+        
         return ExtractResponse(
             matches=api_matches,
             unmatched_items=unmatched,
