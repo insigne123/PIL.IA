@@ -600,9 +600,9 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 const isTextLayer = match.type === 'text' || (match as any).layer_normalized?.toLowerCase().includes('text');
 
                 if (isUnitOrGlobal && isTextLayer) {
-                    console.log(`[Matcher] Blocked Text Match for Unit Item: ${excelItem.excel_item} vs ${(match as any).layer_normalized}`);
+                    console.log(`[Matcher] Blocked Text Match for Unit Item: ${excelItem.description} vs ${(match as any).layer_normalized}`);
                     qtyFinal = 0; // Force zero to avoid counting letters
-                    match.confidence = 'low';
+                    (match as any).confidence = 'low';
                     reason = '⛔ Blocked: Cannot count Text for Unit/Global item';
                 } else if (match.type === 'block' && match.value_area && (excelItem.unit === 'm2' || excelItem.unit === 'm²')) {
                     // FIX 11.3: If target is AREA and block has area, multiply!
