@@ -80,6 +80,7 @@ class SpatialIndex:
         return {
             "name": "Unknown",  # To be filled by caller using the Text content
             "layer": best["layer"],
+            "handle": best["handle"],
             "area": best["area"],
             "polygon": best["polygon"]
         }

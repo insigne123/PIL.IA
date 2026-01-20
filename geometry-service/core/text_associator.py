@@ -238,6 +238,9 @@ def associate_text_to_regions(
     
     spatial_index = SpatialIndex(poly_list)
     
+    # Create lookup map for O(1) access
+    region_id_map = {r.id: r for r in regions}
+
     for item in excel_items:
         # Skip titles/summary
         if not item.get('description') or len(item.get('description')) < 3:
@@ -260,18 +263,11 @@ def associate_text_to_regions(
             
             if zone:
                 # STRICT CONTAINMENT FOUND!
-                # We need to find the original Region object that corresponds to this zone
-                # The zone contains 'polygon' which is the shapely object.
-                # Let's simple heuristic: find the region with this ID/polygon
-                # (Optimization: SpatialIndex could return index or ID directly)
-                
-                # For now, simplest way:
-                for r in regions:
-                    if hasattr(r, 'shapely_polygon') and r.shapely_polygon == zone['polygon']:
-                        region_match = r
-                        strategy = "inside_zone"
-                        spatial_score = 1.0 # High confidence
-                        break
+                # Lookup region by ID (O(1)) instead of scanning all regions
+                region_match = region_id_map.get(zone.get('handle'))
+                if region_match:
+                    strategy = "inside_zone"
+                    spatial_score = 1.0 # High confidence
 
             # P2.3: Proximity Check (If no containment found)
             if not region_match:
@@ -279,12 +275,10 @@ def associate_text_to_regions(
                 nearby_zone = spatial_index.find_nearest_zone(label.position.x, label.position.y, max_distance=0.5)
                 if nearby_zone:
                      # Find corresponding region
-                     for r in regions:
-                        if hasattr(r, 'shapely_polygon') and r.shapely_polygon == nearby_zone['polygon']:
-                            region_match = r
-                            strategy = "proximity"
-                            spatial_score = 0.8 # Good confidence
-                            break
+                     region_match = region_id_map.get(nearby_zone.get('handle'))
+                     if region_match:
+                        strategy = "proximity"
+                        spatial_score = 0.8 # Good confidence
             
             # P2.2: Fallback Estimator (If still no match)
             if not region_match and segments:
@@ -326,14 +320,12 @@ def associate_text_to_regions(
                 
                 if nearest_zone:
                     # Find the original region object
-                    for r in regions:
-                        if hasattr(r, 'shapely_polygon') and r.shapely_polygon == nearest_zone['polygon']:
-                            region_match = r
-                            strategy = "nearest_neighbor"
-                            # Distance penalty: closer = higher score
-                            dist = nearest_zone.get("distance", 0)
-                            spatial_score = max(0.5, 1.0 - (dist / spatial_search_radius))
-                            break 
+                    region_match = region_id_map.get(nearest_zone.get('handle'))
+                    if region_match:
+                        strategy = "nearest_neighbor"
+                        # Distance penalty: closer = higher score
+                        dist = nearest_zone.get("distance", 0)
+                        spatial_score = max(0.5, 1.0 - (dist / spatial_search_radius)) 
                 
             if region_match:
                 # Combined Score
