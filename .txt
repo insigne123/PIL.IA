@@ -1,0 +1,32 @@
+geometry-service  | INFO:     Started server process [1]
+geometry-service  | INFO:     Waiting for application startup.
+geometry-service  | INFO:     Application startup complete.
+geometry-service  | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+geometry-service  | INFO:     191.125.158.49:51721 - "GET /health HTTP/1.1" 200 OK
+geometry-service  | INFO:     191.125.38.241:10690 - "GET /health HTTP/1.1" 200 OK
+geometry-service  | [Cleanup] Starting with 1045089 segments
+geometry-service  | [Cleanup] Starting with 1045089 segments
+geometry-service  | [Cleanup] After snapping: 128002 segments
+geometry-service  | [Cleanup] After snapping: 128002 segments
+geometry-service  | [Cleanup] After merging collinear: 41951 segments
+geometry-service  | [Cleanup] After merging collinear: 41951 segments
+geometry-service  | [Cleanup] After closing gaps: 46687 segments
+geometry-service  | [Cleanup] Final: 46687 segments
+geometry-service  | [RegionExtractor] Extracting regions from 46687 segments using shapely
+geometry-service  | [RegionExtractor] Starting extraction chain on 46687 segments...
+geometry-service  | [Cleanup] After closing gaps: 46687 segments
+geometry-service  | [Cleanup] Final: 46687 segments
+geometry-service  | [RegionExtractor] Extracting regions from 46687 segments using shapely
+geometry-service  | [RegionExtractor] Starting extraction chain on 46687 segments...
+geometry-service  | [RegionExtractor] Added 43592 bridges (Max Tol: 0.2m)
+geometry-service  | [RegionExtractor] Force close done. Total segments: 90279
+geometry-service  | [RegionExtractor] Starting unary_union on 90279 lines...
+geometry-service  | [RegionExtractor] Unary union done.
+geometry-service  | [RegionExtractor] Starting polygonize...
+geometry-service  | [RegionExtractor] Added 43592 bridges (Max Tol: 0.2m)
+geometry-service  | [RegionExtractor] Force close done. Total segments: 90279
+geometry-service  | [RegionExtractor] Starting unary_union on 90279 lines...
+geometry-service  | [RegionExtractor] Unary union done.
+geometry-service  | [RegionExtractor] Starting polygonize...
+geometry-service  | [RegionExtractor] Polygonize done. Found 102142 raw polygons.
+geometry-service  | [RegionExtractor] Polygonize done. Found 102142 raw polygons.

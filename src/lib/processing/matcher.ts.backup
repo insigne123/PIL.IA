@@ -33,9 +33,8 @@ function validateApprovalGates(
 
     // 1. mÂ² Rules
     if (unitLower.includes('m2') || unitLower === 'mÂ²') {
-        // Valid Case A: Area geometry (direct or from profile)
-        const isAreaMethod = calcMethod === 'direct_area' || calcMethod?.startsWith('profile_area');
-        if (evidenceType === 'area' && isAreaMethod) {
+        // Valid Case A: Area geometry with direct measurement
+        if (evidenceType === 'area' && calcMethod === 'direct_area') {
             return { approved: true, reason: 'Valid area geometry' };
         }
 
@@ -598,13 +597,13 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             if (calcMethod === 'COUNT') {
                 // FIXED 11.5: Disable Text Match for Unit/Global Items to prevent "1112" count error
                 const isUnitOrGlobal = ['un', 'gl', 'u'].includes(excelItem.unit?.toLowerCase() || '');
+                const isTextLayer = match.type === 'text' || (match as any).layer_normalized?.toLowerCase().includes('text');
 
-                // STRICT FIX: Block ANY non-block match for unit items
-                if (isUnitOrGlobal && match.type !== 'block') {
-                    console.log(`[Matcher] Blocked NON-BLOCK Match for Unit Item: ${excelItem.description} - got type ${match.type}`);
-                    qtyFinal = 0; // Force zero
-                    confidence = 0.3;
-                    reason = `⛔ Blocked: Unit items require BLOCK evidence, got ${match.type}`;
+                if (isUnitOrGlobal && isTextLayer) {
+                    console.log(`[Matcher] Blocked Text Match for Unit Item: ${excelItem.description} vs ${(match as any).layer_normalized}`);
+                    qtyFinal = 0; // Force zero to avoid counting letters
+                    (match as any).confidence = 'low';
+                    reason = '⛔ Blocked: Cannot count Text for Unit/Global item';
                 } else if (match.type === 'block' && match.value_area && (excelItem.unit === 'm2' || excelItem.unit === 'm²')) {
                     // FIX 11.3: If target is AREA and block has area, multiply!
                     qtyFinal = (match.value_si || 1) * match.value_area;
@@ -669,18 +668,9 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                     } else {
                         // FIX 8.1: Block unsafe fallback for Horizontal items
                         if (derivedResult.orientation === 'horizontal') {
-                            const layerProfile = result.length > 0 ? result[0].item.profile : null;
-                            if (layerProfile && layerProfile.total_area > 0) {
-                                qtyFinal = layerProfile.total_area;
-                                methodDetail = 'profile_area_horizontal';
-                                evidenceTypeUsed = 'area';
-                                reason += ` | Horizontal: Using layer regions (${layerProfile.total_area.toFixed(2)}m2)`;
-                                console.log(`  [FIX HORIZONTAL] Using layer area: ${layerProfile.total_area.toFixed(2)}m2`);
-                            } else {
-                                qtyFinal = 0; // Better to return 0 than fake wall area
-                                reason += ` | âŒ Mismatch: Horizontal Item matched Length Layer (Requires Area/Hatch)`;
-                                console.log(`  [Matcher] Blocked Length*Hz for Horizontal Item "${excelItem.description}" - no area`);
-                            }
+                            qtyFinal = 0; // Better to return 0 than fake wall area
+                            reason += ` | âŒ Mismatch: Horizontal Item matched Length Layer (Requires Area/Hatch)`;
+                            console.log(`  [Matcher] Blocked Length*Hz for Horizontal Item "${excelItem.description}"`);
                         } else {
                             // Phase 6 D): Default height fallback logic
                             // FIX 11.1: Validate with 3D analysis
