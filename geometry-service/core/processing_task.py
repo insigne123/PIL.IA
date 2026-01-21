@@ -27,28 +27,71 @@ def process_dxf_task(file_path: str, hint_unit: str = "m") -> ParseDxfResponse:
             f.write(f"Parse result: {len(result.segments)} segments, {len(result.texts)} texts\n")
         
         # 1. Map Parser Segments -> Cleanup Segments
-        # FILTER: Aggressive Layer Filtering to prevent OOM
-        # We only want architectural elements (Walls, Openings, Room boundaries)
-        # We explicitly exclude Hatch patterns (usually decoration) and Furniture
-        skip_keywords = ['hatch', 'sombrado', 'pattern', 'vegetacion', 'tree', 'plant', 'landscape', 'jardin', 'mueble', 'furniture', 'silla', 'mesa', 'cotas', 'dim', 'text', 'npt', 'ejes', 'grid']
+        # STRATEGY: WHITELIST + HARD LIMIT to prevent OOM
+        # Only keep known architectural layers and enforce 200k segment maximum
+        
+        # Common architectural layer patterns in Chilean DXF files
+        whitelist_patterns = [
+            'arq',      # Arquitectura
+            'mb',       # Muros/Tabiques base
+            'mu',       # Muros
+            'tab',      # Tabiques
+            'pu',       # Puertas
+            'ven',      # Ventanas
+            'muro',     # Español
+            'wall',     # English
+            'door',
+            'window',
+            'partition',
+            'room',
+            'space',
+            'boundary'
+        ]
+        
+        MAX_SEGMENTS = 200000  # Hard limit to prevent OOM
         
         filtered_segments = []
         skipped_count = 0
+        layer_stats = {}  # Track segments per layer for diagnostics
         
         for s in result.segments:
             layer_lower = s.layer.lower()
-            # If layer contains any skip keyword, ignore it
-            if any(k in layer_lower for k in skip_keywords):
+            
+            # Track layer distribution
+            if layer_lower not in layer_stats:
+                layer_stats[layer_lower] = 0
+            layer_stats[layer_lower] += 1
+            
+            # Whitelist check: Only keep if layer contains architectural keywords
+            is_architectural = any(pattern in layer_lower for pattern in whitelist_patterns)
+            
+            if is_architectural:
+                filtered_segments.append(s)
+            else:
                 skipped_count += 1
-                continue
+
+        # Apply hard limit with intelligent sampling if needed
+        if len(filtered_segments) > MAX_SEGMENTS:
+            with open("worker.log", "a") as f:
+                f.write(f"⚠️  WARNING: {len(filtered_segments)} segments exceed limit of {MAX_SEGMENTS}\n")
+                f.write(f"Applying intelligent sampling (keeping every Nth segment)\n")
             
-            # Additional heuristic: If entity type is NOT Line/Polyline/Arc (e.g. it's loose text or weird stuff), skip? 
-            # (Already filtered by parser to only return segments)
+            # Calculate sampling rate
+            sampling_rate = len(filtered_segments) / MAX_SEGMENTS
+            sampled = []
+            for i, seg in enumerate(filtered_segments):
+                if i % int(sampling_rate) == 0:
+                    sampled.append(seg)
+                if len(sampled) >= MAX_SEGMENTS:
+                    break
             
-            filtered_segments.append(s)
+            filtered_segments = sampled
 
         with open("worker.log", "a") as f:
             f.write(f"Layer Filtering: Kept {len(filtered_segments)} segments (Skipped {skipped_count} noise segments)\n")
+            # Log top 5 layers by segment count
+            sorted_layers = sorted(layer_stats.items(), key=lambda x: x[1], reverse=True)[:5]
+            f.write(f"Top 5 layers: {sorted_layers}\n")
 
         cleanup_segments = [
             ClnSegment(
@@ -61,7 +104,8 @@ def process_dxf_task(file_path: str, hint_unit: str = "m") -> ParseDxfResponse:
         
         # Release memory from parser result immediately
         result.segments.clear() 
-        del filtered_segments # Free intermediate list 
+        del filtered_segments
+        del layer_stats 
             
         # 2. Extract Regions
         cleaned_segments = cleanup_geometry(cleanup_segments, snap_tolerance=0.01)
