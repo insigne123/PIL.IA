@@ -44,11 +44,11 @@ next-env.d.ts
 firebase-debug.log
 firestore-debug.log
 # Large data files
-*.dxf
+
 *.xlsx
 *.xlsm
 
-*.dxf
+
 *.xlsx
 *.xlsm
 
@@ -56,7 +56,7 @@ firestore-debug.log
 *.xlsx
 *.xlsm
 *.xls
-*.dxf
+
 *.dwg
 *.pdf
 
