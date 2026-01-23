@@ -45,15 +45,15 @@ firebase-debug.log
 firestore-debug.log
 # Large data files
 
-*.xlsx
+
 *.xlsm
 
 
-*.xlsx
+
 *.xlsm
 
 # Data files
-*.xlsx
+
 *.xlsm
 *.xls
 
