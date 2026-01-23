@@ -6,6 +6,8 @@ from typing import Optional, List
 import json
 import tempfile
 import os
+import dataclasses
+from fastapi.concurrency import run_in_threadpool
 
 from api.models import (
     ExtractResponse,
@@ -297,10 +299,10 @@ async def parse_pdf(
         tmp_path = tmp.name
     
     try:
-        result = parse_pdf_file(tmp_path)
+        result = await run_in_threadpool(parse_pdf_file, tmp_path)
         return ParsePdfResponse(
-            segments=result.segments,
-            texts=result.texts,
+            segments=[dataclasses.asdict(s) for s in result.segments],
+            texts=[dataclasses.asdict(t) for t in result.texts],
             pages=result.pages
         )
     finally:
