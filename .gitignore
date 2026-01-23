@@ -66,3 +66,7 @@ geometry-service/venv/
 # Environment files
 .env
 geometry-service/.env
+
+# Python artifacts
+__pycache__/
+*.pyc
