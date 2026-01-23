@@ -2,6 +2,7 @@
 API Routes for Geometry Extraction Service
 """
 from fastapi import APIRouter, UploadFile, File, Form, HTTPException
+from fastapi.concurrency import run_in_threadpool
 from typing import Optional, List
 import json
 import tempfile
@@ -57,7 +58,7 @@ async def extract_quantities(
             tmp_path = tmp.name
         
         try:
-            dxf_result = parse_dxf_file(tmp_path)
+            dxf_result = await run_in_threadpool(parse_dxf_file, tmp_path)
             all_segments.extend(dxf_result.segments)
             all_texts.extend(dxf_result.texts)
             if dxf_result.precomputed_regions:
@@ -248,8 +249,6 @@ async def parse_dxf(
         # PLAN B: Use Threading + GC (Multiprocessing failed in this env)
         # We process in the threadpool to avoid blocking the *main* event loop 
         # (though GIL still limits CPU concurrency)
-        
-        from fastapi.concurrency import run_in_threadpool
         
         # We call the processing task directly here, not via ProcessPool
         from core.processing_task import process_dxf_task

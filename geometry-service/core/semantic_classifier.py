@@ -98,7 +98,7 @@ class SemanticCategory:
         'keywords': [
             'text', 'dim', 'dimension', 'cota', 'nota', 'note', 'label',
             'seccion', 'section', 'corte', 'reference', 'grid'
-        },
+        ],
         'layer_prefixes': ['DIM', 'TEXT', 'NOTE', 'ANNO'],
         'layer_contains': ['text', 'dim', 'cota', 'nota', 'seccion']
     }
