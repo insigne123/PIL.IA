@@ -135,6 +135,16 @@ export interface StagingRow {
   confidence: string; // high, medium, low
   match_confidence?: number; // Numeric confidence score
 
+  // P2: Score breakdown for UI transparency
+  score_breakdown?: {
+    layerSimilarity: number;  // Base layer name match (0-1)
+    textBoost: number;        // DXF text match boost (0-0.3)
+    keywordBoost: number;     // Layer keyword boost (0-0.2)
+    synonymBoost?: number;    // Synonym expansion boost
+  };
+  match_source?: 'csv' | 'dxf' | 'geometry_service' | 'manual';
+  ambiguous_layers?: string[]; // P1.2: When multiple layers have similar scores
+
   match_reason?: string; // AI reasoning
   confidence_reason?: string;
   status:
@@ -236,7 +246,7 @@ export interface BatchFile {
   id: string;
   batchId: string;
   originalName: string;
-  fileType: 'dwg' | 'dxf' | 'excel';
+  fileType: 'dwg' | 'dxf' | 'excel' | 'csv';
   size: number;
   detectedUnit?: Unit;
   status: 'uploaded' | 'queued' | 'processing' | 'converted' | 'extracted' | 'error';

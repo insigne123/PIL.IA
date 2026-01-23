@@ -47,6 +47,12 @@ class Region(BaseModel):
     perimeter: float
     centroid: Point
     layer: Optional[str] = None
+    
+    # Semantic enrichment fields
+    resolution: Optional[str] = None  # 'coarse', 'medium', 'fine'
+    semantic_type: Optional[str] = None  # 'FLOOR', 'WALL', 'CEILING', 'FIXTURE', 'ANNOTATION', 'UNKNOWN'
+    semantic_confidence: Optional[float] = None  # 0.0-1.0
+    associated_texts: Optional[List[dict]] = None  # Nearby text labels with relevance scores
 
 
 class ExcelItem(BaseModel):

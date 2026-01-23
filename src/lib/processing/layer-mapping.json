@@ -99,9 +99,26 @@
                 "marmol"
             ],
             "description": "Revestimientos de muros y pisos"
+        },
+        "a-seccion": {
+            "keywords": [
+                "seccion",
+                "corte",
+                "section"
+            ],
+            "description": "Secciones arquitectónicas (baja prioridad para áreas)"
         }
     },
     "wildcards": {
+        "FA_0": [
+            "losa",
+            "sobrelosa",
+            "pavimento",
+            "piso",
+            "mortero",
+            "floor",
+            "slab"
+        ],
         "ELEC": [
             "electrico",
             "electrica",

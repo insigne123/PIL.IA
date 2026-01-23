@@ -11,6 +11,9 @@ from dataclasses import dataclass
 import math
 import logging
 from core.block_analyzer import analyze_blocks
+from core.semantic_classifier import classify_regions
+from core.spatial_text_matcher import associate_texts
+from core.multi_resolution_extractor import extract_regions_multi_res
 
 # Configure logger locally if not already done
 logger = logging.getLogger(__name__)

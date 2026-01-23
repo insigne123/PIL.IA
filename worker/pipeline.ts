@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
 import { detectDiscipline } from '@/lib/processing/discipline';
 import { SupabaseClient } from '@supabase/supabase-js';

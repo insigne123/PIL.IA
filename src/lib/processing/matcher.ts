@@ -2,6 +2,8 @@ import Fuse, { FuseResult } from 'fuse.js';
 import { ItemDetectado, StagingRow, Unit, Suggestion, Discipline } from '@/types';
 import { ExtractedExcelItem } from './excel';
 import { v4 as uuidv4 } from 'uuid';
+import { logMatcherDebug } from './matcher-logger';
+import { validateQuantity } from './quantity-validator';
 // Use legacy-compatible functions from unit-classifier (which now has VOLUME support)
 import { classifyItemIntent, typeMatches, getExpectedMeasureType, type ExpectedType } from './unit-classifier';
 import { determineCalcMethod, isCompatibleType, type CalcMethod } from './calc-method';
@@ -675,7 +677,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                                 methodDetail = 'profile_area_horizontal';
                                 evidenceTypeUsed = 'area';
                                 reason += ` | Horizontal: Using layer regions (${layerProfile.total_area.toFixed(2)}m2)`;
-                                console.log(`  [FIX HORIZONTAL] Using layer area: ${layerProfile.total_area.toFixed(2)}m2`);
+                                logMatcherDebug(`  [FIX HORIZONTAL] "${excelItem.description}" - Using layer "${layerProfile.total_area.toFixed(2)}m2" from profile`);
                             } else {
                                 qtyFinal = 0; // Better to return 0 than fake wall area
                                 reason += ` | âŒ Mismatch: Horizontal Item matched Length Layer (Requires Area/Hatch)`;
@@ -794,6 +796,27 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             console.log(`[Fix 9.2] Assigned default methodDetail: ${methodDetail}`);
         }
 
+        // CRITICAL FIX: Unit Item Fallback Validation
+        // Catches unit items that matched to text/length/area and bypassed the COUNT branch
+        const isUnitItem = ['un', 'u', 'gl', 'und', 'unidad'].includes(excelItem.unit?.toLowerCase() || '');
+        if (isUnitItem && evidenceTypeUsed && evidenceTypeUsed !== 'block') {
+            logMatcherDebug(`[UNIT FALLBACK BLOCK] "${excelItem.description}" - Found ${evidenceTypeUsed} evidence (qty: ${qtyFinal}), forcing to 0`);
+            qtyFinal = 0;
+            confidence = Math.min(confidence, 0.3);
+            reason += ` | BLOCKED: Unit items require BLOCK evidence, got ${evidenceTypeUsed}`;
+            console.log(`  [UNIT FALLBACK] Blocked "${excelItem.description}" - ${evidenceTypeUsed} not allowed for unit items`);
+        }
+
+        // QUALITY FIX: Penalize horizontal m2 items with very small matched areas
+        // Sobrelosa shouldn't match to a layer with only 0.96m2 when it needs ~60m2
+        const isHorizontalM2 = (excelItem.unit === 'm2' || excelItem.unit === 'm²') &&
+            excelItem.description.toLowerCase().match(/piso|losa|sobrelosa|pavimento|cielo/);
+        if (isHorizontalM2 && qtyFinal && qtyFinal < 5 && methodDetail?.includes('profile_area')) {
+            logMatcherDebug(`[SMALL AREA WARNING] "${excelItem.description}" - Only ${qtyFinal.toFixed(2)}m² found, likely wrong layer`);
+            warnings.push(`Small area (${qtyFinal.toFixed(2)}m²) for horizontal item - verify layer match`);
+            confidence = Math.min(confidence, 0.5); // Reduce confidence for review
+        }
+
         // âœ… SANITY CHECK: Detect suspicious values
         const measureKind = getMeasureKind(excelItem.unit);
         const sanityCheck = checkQuantitySanity(qtyFinal, measureKind, {
@@ -812,6 +835,24 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 confidence = Math.min(confidence, 0.3); // Reduce confidence
             }
         }
+
+        // ✅ STATISTICAL QUANTITY VALIDATION (New Architectural Component)
+        // Validates against contextual bounds to detect absurd values
+        const validation = validateQuantity(qtyFinal, excelItem.unit, excelItem.description);
+
+        if (validation.severity === 'error') {
+            // HARD REJECT: Quantity exceeds absolute bounds (e.g., 1112 units > 500 max)
+            logMatcherDebug(`[VALIDATOR REJECT] "${excelItem.description}" - qty ${qtyFinal.toFixed(2)} ${excelItem.unit}: ${validation.message}`);
+            qtyFinal = 0;
+            confidence = 0.1;
+            reason += ` | ❌ VALIDATOR: ${validation.message}`;
+        } else if (validation.severity === 'warning') {
+            // SOFT WARNING: Quantity outside typical range (e.g., 0.96m² < 10m² floor typical)
+            logMatcherDebug(`[VALIDATOR WARNING] "${excelItem.description}" - ${validation.message}`);
+            warnings.push(`⚠️ ${validation.message}`);
+            confidence = Math.min(confidence, 0.6); // Reduce confidence for manual review
+        }
+        // severity === 'ok': no action needed
 
         // âœ… P0.3: INVARIANT ENFORCEMENT
         // The evidence type MUST match the expected measure type

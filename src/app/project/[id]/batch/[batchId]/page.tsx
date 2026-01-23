@@ -269,7 +269,8 @@ export default function BatchPage() {
                 // Validate file type
                 const fileType = file.name.endsWith('.dxf') ? 'dxf' :
                     file.name.endsWith('.xlsx') || file.name.endsWith('.xls') ? 'excel' :
-                        file.name.endsWith('.dwg') ? 'dwg' : null;
+                        file.name.endsWith('.dwg') ? 'dwg' :
+                            file.name.endsWith('.csv') ? 'csv' : null;
 
                 console.log('📋 [Upload] Detected file type:', fileType, 'for file:', file.name);
 
@@ -471,6 +472,35 @@ export default function BatchPage() {
                                     <Button size="lg" disabled={loading} onClick={async () => {
                                         setLoading(true);
 
+                                        // Check if there's a CSV file
+                                        const csvFile = files.find(f => f.fileType === 'csv');
+
+                                        if (csvFile) {
+                                            // CSV Takeoff flow - use special endpoint
+                                            console.log('📊 CSV detected, using CSV Takeoff flow');
+                                            try {
+                                                const res = await fetch(`/api/batches/${batchId}/process-csv`, { method: 'POST' });
+                                                const json = await res.json();
+
+                                                if (!res.ok) {
+                                                    alert(`❌ Error: ${json.error}`);
+                                                    setLoading(false);
+                                                    return;
+                                                }
+
+                                                await fetchBatchData();
+                                                setActiveTab('staging');
+                                                alert('✅ Procesamiento CSV completado. Los datos están listos para revisión.');
+                                                setLoading(false);
+                                            } catch (err) {
+                                                console.error(err);
+                                                alert('❌ Error procesando CSV');
+                                                setLoading(false);
+                                            }
+                                            return;
+                                        }
+
+                                        // Normal flow (no CSV) - use worker
                                         // 1. Mark batch as processing (queues jobs)
                                         await fetch(`/api/batches/${batchId}/start`, { method: 'POST' });
 

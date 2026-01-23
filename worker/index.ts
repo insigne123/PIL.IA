@@ -3,7 +3,8 @@ import dotenv from 'dotenv';
 import { executeJob } from './pipeline';
 
 // Load env from .env.local
-dotenv.config({ path: '.env.local' });
+// Load env from .env
+dotenv.config({ path: '.env' });
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;

@@ -26,7 +26,7 @@ export interface BatchFile {
     id: string;
     batch_id: string;
     original_filename: string;
-    file_type: 'excel' | 'dxf' | 'dwg';
+    file_type: 'excel' | 'dxf' | 'dwg' | 'csv';
     size_bytes: number | null;
     status: 'uploaded' | 'queued' | 'processing' | 'converted' | 'extracted' | 'error';
     error_code: string | null;

@@ -12,7 +12,7 @@ interface FileUploaderProps {
     maxSizeMB?: number;
 }
 
-export function FileUploader({ onFilesSelected, accept = ".dwg,.dxf,.xlsx,.xlsm", maxSizeMB = 50 }: FileUploaderProps) {
+export function FileUploader({ onFilesSelected, accept = ".dwg,.dxf,.xlsx,.xlsm,.csv", maxSizeMB = 50 }: FileUploaderProps) {
     const [isDragOver, setIsDragOver] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 

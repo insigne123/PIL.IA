@@ -4,6 +4,9 @@ from api.models import (
 from core.dxf_parser import parse_dxf_file
 from core.geometry_cleanup import cleanup_geometry, Segment as ClnSegment, Point as ClnPoint
 from core.region_extractor import extract_regions
+from core.semantic_classifier import GeometryClassifier
+from core.spatial_text_matcher import SpatialTextMatcher  
+from core.multi_resolution_extractor import MultiResolutionExtractor
 import os
 import traceback
 import sys
@@ -107,29 +110,134 @@ def process_dxf_task(file_path: str, hint_unit: str = "m") -> ParseDxfResponse:
         del filtered_segments
         del layer_stats 
             
-        # 2. Extract Regions
-        cleaned_segments = cleanup_geometry(cleanup_segments, snap_tolerance=0.01)
-        extracted_regions = extract_regions(cleaned_segments)
+        # 2. SEMANTIC REGION EXTRACTION PIPELINE
+        import logging
+        from shapely.geometry import LineString, Polygon
         
-        # 3. Map Regions -> API Models
+        logger = logging.getLogger(__name__)
+        logger.info("Starting semantic region extraction pipeline...")
+        
+        # 2.1 Group segments by layer for multi-resolution processing
+        layer_segments = {}
+        for seg in cleanup_segments:
+            if seg.layer not in layer_segments:
+                layer_segments[seg.layer] = []
+            layer_segments[seg.layer].append(seg)
+        
+        logger.info(f"Grouped segments into {len(layer_segments)} layers")
+        
+        # 2.2 Multi-resolution extraction
+        multi_res_extractor = MultiResolutionExtractor(
+            coarse_threshold=10.0,
+            medium_threshold=1.0
+        )
+        
+        all_regions_multiRes = []
+        
+        for layer, segs in layer_segments.items():
+            try:
+                # Convert to Shapely LineStrings
+                line_strings = []
+                for seg in segs:
+                    try:
+                        ls = LineString([(seg.start.x, seg.start.y), (seg.end.x, seg.end.y)])
+                        line_strings.append(ls)
+                    except Exception:
+                        continue
+                
+                if not line_strings:
+                    continue
+                
+                # Extract at multiple resolutions
+                multi_res = multi_res_extractor.extract_multi_resolution(line_strings, layer)
+                
+                # Collect all resolution levels
+                for resolution_level in ['coarse', 'medium', 'fine']:
+                    for region_dict in multi_res.get(resolution_level, []):
+                        all_regions_multiRes.append(region_dict)
+                        
+            except Exception as e:
+                logger.error(f"Failed multi-res extraction for layer {layer}: {e}")
+                continue
+        
+        logger.info(f"Extracted {len(all_regions_multiRes)} regions across all resolutions")
+        
+        # 2.3 Spatial text association
+        text_matcher = SpatialTextMatcher(max_distance=5.0)
+        
+        texts_for_matcher = []
+        for t in result.texts:
+            texts_for_matcher.append({
+                'content': t.text,
+                'position': (t.position.x, t.position.y, 0.0),
+                'layer': t.layer
+            })
+        
+        regions_with_texts = text_matcher.associate_texts_to_regions(
+            all_regions_multiRes,
+            texts_for_matcher
+        )
+        
+        logger.info(f"Associated texts to regions")
+        
+        # 2.4 Semantic classification
+        classifier = GeometryClassifier(min_confidence=0.3)
+        classified_regions = classifier.classify_batch(regions_with_texts)
+        
+        logger.info(f"Classified regions semantically")
+        
+        # 2.5 Map to API models with semantic fields
         api_regions = []
-        for r in extracted_regions:
-            p_vertices = [Point(x=v.x, y=v.y) for v in r.vertices]
-            p_centroid = Point(x=r.centroid.x, y=r.centroid.y)
-            api_regions.append(Region(
-                id=r.id,
-                vertices=p_vertices,
-                area=r.area,
-                perimeter=r.perimeter,
-                centroid=p_centroid,
-                layer=r.layer
-            ))
+        for r in classified_regions:
+            try:
+                # Extract vertices
+                vertices = r.get('vertices', [])
+                if not vertices:
+                    continue
+                
+                p_vertices = [Point(x=v[0], y=v[1]) for v in vertices]
+                
+                # Extract centroid
+                centroid = r.get('centroid', {})
+                p_centroid = Point(x=centroid.get('x', 0.0), y=centroid.get('y', 0.0))
+                
+                # Calculate perimeter if not present
+                perimeter = r.get('perimeter', 0.0)
+                if perimeter == 0.0 and len(vertices) > 2:
+                    for i in range(len(vertices)):
+                        j = (i + 1) % len(vertices)
+                        dx = vertices[j][0] - vertices[i][0]
+                        dy = vertices[j][1] - vertices[i][1]
+                        perimeter += (dx*dx + dy*dy)**0.5
+                
+                api_regions.append(Region(
+                    id=r.get('id', f"region_{len(api_regions)}"),
+                    vertices=p_vertices,
+                    area=r.get('area', 0.0),
+                    perimeter=perimeter,
+                    centroid=p_centroid,
+                    layer=r.get('layer', 'unknown'),
+                    # NEW SEMANTIC FIELDS:
+                    resolution=r.get('resolution'),
+                    semantic_type=r.get('semantic_type'),
+                    semantic_confidence=r.get('semantic_confidence'),
+                    associated_texts=r.get('associated_texts', [])
+                ))
+                
+            except Exception as e:
+                logger.error(f"Failed to map region to API model: {e}")
+                continue
+        
+        logger.info(f"Mapped {len(api_regions)} regions to API models")
             
-        # P1.3: Merge Precomputed Hatch Regions
+        # 2.6 Merge Precomputed Hatch Regions (with semantic classification)
         if getattr(result, 'precomputed_regions', None):
             import uuid
+            
+            hatch_regions_for_classification = []
+            
             for h in result.precomputed_regions:
-                # Calculate simple centroid
+                # Calculate centroid
                 cx = sum(v.x for v in h.vertices) / len(h.vertices)
                 cy = sum(v.y for v in h.vertices) / len(h.vertices)
                 
@@ -140,17 +248,52 @@ def process_dxf_task(file_path: str, hint_unit: str = "m") -> ParseDxfResponse:
                     dx = h.vertices[j].x - h.vertices[i].x
                     dy = h.vertices[j].y - h.vertices[i].y
                     perimeter += (dx*dx + dy*dy)**0.5
-                    
-                p_vertices = [Point(x=v.x, y=v.y) for v in h.vertices]
                 
-                api_regions.append(Region(
-                    id=f"hatch_{uuid.uuid4().hex[:8]}",
-                    vertices=p_vertices,
-                    area=h.area,
-                    perimeter=perimeter,
-                    centroid=Point(x=cx, y=cy),
-                    layer=h.layer
-                ))
+                # Create polygon for classification
+                try:
+                    vertices_list = [(v.x, v.y) for v in h.vertices]
+                    poly = Polygon(vertices_list)
+                    
+                    hatch_regions_for_classification.append({
+                        'id': f"hatch_{uuid.uuid4().hex[:8]}",
+                        'polygon': poly,
+                        'vertices': vertices_list,
+                        'area': h.area,
+                        'perimeter': perimeter,
+                        'centroid': {'x': cx, 'y': cy},
+                        'layer': h.layer,
+                        'associated_texts': [],  # Will be filled
+                        'z_level': 0.0
+                    })
+                except Exception as e:
+                    logger.warning(f"Failed to create polygon for hatch region: {e}")
+                    continue
+            
+            # Classify hatch regions
+            if hatch_regions_for_classification:
+                hatch_with_texts = text_matcher.associate_texts_to_regions(
+                    hatch_regions_for_classification,
+                    texts_for_matcher
+                )
+                classified_hatches = classifier.classify_batch(hatch_with_texts)
+                
+                for h_classified in classified_hatches:
+                    p_vertices = [Point(x=v[0], y=v[1]) for v in h_classified['vertices']]
+                    
+                    api_regions.append(Region(
+                        id=h_classified['id'],
+                        vertices=p_vertices,
+                        area=h_classified['area'],
+                        perimeter=h_classified['perimeter'],
+                        centroid=Point(x=h_classified['centroid']['x'], y=h_classified['centroid']['y']),
+                        layer=h_classified['layer'],
+                        resolution='fine',  # Hatches are typically detailed
+                        semantic_type=h_classified.get('semantic_type'),
+                        semantic_confidence=h_classified.get('semantic_confidence'),
+                        associated_texts=h_classified.get('associated_texts', [])
+                    ))
+                
+                logger.info(f"Added {len(classified_hatches)} classified hatch regions")
 
         # 4. Map Parser Segments -> API Models
         api_segments = [
