@@ -838,11 +838,11 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
         // ✅ STATISTICAL QUANTITY VALIDATION (New Architectural Component)
         // Validates against contextual bounds to detect absurd values
-        const validation = validateQuantity(qtyFinal, excelItem.unit, excelItem.description);
+        const validation = validateQuantity(qtyFinal || 0, excelItem.unit, excelItem.description);
 
         if (validation.severity === 'error') {
             // HARD REJECT: Quantity exceeds absolute bounds (e.g., 1112 units > 500 max)
-            logMatcherDebug(`[VALIDATOR REJECT] "${excelItem.description}" - qty ${qtyFinal.toFixed(2)} ${excelItem.unit}: ${validation.message}`);
+            logMatcherDebug(`[VALIDATOR REJECT] "${excelItem.description}" - qty ${(qtyFinal || 0).toFixed(2)} ${excelItem.unit}: ${validation.message}`);
             qtyFinal = 0;
             confidence = 0.1;
             reason += ` | ❌ VALIDATOR: ${validation.message}`;
