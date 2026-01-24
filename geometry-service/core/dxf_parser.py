@@ -313,6 +313,28 @@ def extract_text(entity) -> Optional[TextBlock]:
     return None
 
 
+def apply_transformation(pt: Point, offset_x: float, offset_y: float, scale_x: float, scale_y: float, rotation_rad: float):
+    """
+    Apply scaling, rotation, and translation to a point in place.
+    Order: Scale -> Rotate -> Translate
+    """
+    # Scale
+    x = pt.x * scale_x
+    y = pt.y * scale_y
+
+    # Rotate
+    if rotation_rad != 0:
+        cos_a = math.cos(rotation_rad)
+        sin_a = math.sin(rotation_rad)
+        x_new = x * cos_a - y * sin_a
+        y_new = x * sin_a + y * cos_a
+        x, y = x_new, y_new
+
+    # Translate
+    pt.x = x + offset_x
+    pt.y = y + offset_y
+
+
 def explode_block(insert: Insert, doc, depth: int = 0, max_depth: int = 10) -> Tuple[List[Segment], List[TextBlock]]:
     """Recursively explode block references with depth limit"""
     segments = []
@@ -328,32 +350,40 @@ def explode_block(insert: Insert, doc, depth: int = 0, max_depth: int = 10) -> T
             return segments, texts
         
         # Get transformation matrix
-        # TODO: Apply proper transformation (rotation, scale, position)
         offset_x = insert.dxf.insert.x
         offset_y = insert.dxf.insert.y
         scale_x = insert.dxf.xscale
         scale_y = insert.dxf.yscale
+        rotation_rad = math.radians(insert.dxf.rotation)
         
         for entity in block:
             if isinstance(entity, Insert):
                 # Recursive block explosion
                 sub_segs, sub_texts = explode_block(entity, doc, depth + 1, max_depth)
+
+                # Apply transformation to nested blocks (which are in local block coordinates)
+                for seg in sub_segs:
+                    apply_transformation(seg.start, offset_x, offset_y, scale_x, scale_y, rotation_rad)
+                    apply_transformation(seg.end, offset_x, offset_y, scale_x, scale_y, rotation_rad)
+
+                for txt in sub_texts:
+                    apply_transformation(txt.position, offset_x, offset_y, scale_x, scale_y, rotation_rad)
+
                 segments.extend(sub_segs)
                 texts.extend(sub_texts)
+
             elif isinstance(entity, (Line, LWPolyline, Polyline, Arc, Circle)):
                 entity_segs = extract_line_segments(entity)
                 # Apply block transformation
                 for seg in entity_segs:
-                    seg.start.x = seg.start.x * scale_x + offset_x
-                    seg.start.y = seg.start.y * scale_y + offset_y
-                    seg.end.x = seg.end.x * scale_x + offset_x
-                    seg.end.y = seg.end.y * scale_y + offset_y
+                    apply_transformation(seg.start, offset_x, offset_y, scale_x, scale_y, rotation_rad)
+                    apply_transformation(seg.end, offset_x, offset_y, scale_x, scale_y, rotation_rad)
                 segments.extend(entity_segs)
+
             elif isinstance(entity, (Text, MText)):
                 text = extract_text(entity)
                 if text:
-                    text.position.x = text.position.x * scale_x + offset_x
-                    text.position.y = text.position.y * scale_y + offset_y
+                    apply_transformation(text.position, offset_x, offset_y, scale_x, scale_y, rotation_rad)
                     texts.append(text)
     except Exception as e:
         logger.error(f"Failed to explode block {insert.dxf.name}: {e}")
