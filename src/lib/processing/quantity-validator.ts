@@ -196,7 +196,7 @@ function inferContext(description: string, unit: string): string {
     }
 
     // Small fixtures/details patterns
-    if (descLower.match(/\b(puerta|door|ventana|window|fixture|detalle|impermeabilizaci[oó]n)\b/)) {
+    if (descLower.match(/\b(puerta|door|ventana|window|fixture|detalle)\b/)) {
         return 'small';
     }
 
