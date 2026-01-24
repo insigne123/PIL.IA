@@ -307,3 +307,569 @@
 [2026-01-21T22:24:02.869Z] [VALIDATOR WARNING] "Remarcador agua potable" - Quantity 0.00 outside typical range [1-50] for un (general)
 [2026-01-21T22:24:02.887Z] [UNIT FALLBACK BLOCK] "Tapas registro para RAP" - Found none evidence (qty: 0), forcing to 0
 [2026-01-21T22:24:02.892Z] [VALIDATOR WARNING] "Tapas registro para RAP" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:30:44.422Z] [UNIT FALLBACK BLOCK] "Instalación de faenas" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:44.424Z] [VALIDATOR WARNING] "Instalación de faenas" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:44.447Z] [UNIT FALLBACK BLOCK] "Tablero de Obra (considera tramitacion y obtencion TE1)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:44.447Z] [VALIDATOR WARNING] "Tablero de Obra (considera tramitacion y obtencion TE1)" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:44.470Z]   [FIX HORIZONTAL] "Impermeabilización membrana asfáltica según plano" - Using layer "81.11m2" from profile
+[2026-01-24T01:30:44.470Z] [VALIDATOR REJECT] "Impermeabilización membrana asfáltica según plano" - qty 81.11 m2: Quantity 81.11 exceeds absolute maximum 50 for m2 (small)
+[2026-01-24T01:30:44.476Z]   [FIX HORIZONTAL] "Sobrelosa de 8cm" - Using layer "0.10m2" from profile
+[2026-01-24T01:30:44.476Z] [SMALL AREA WARNING] "Sobrelosa de 8cm" - Only 0.10m² found, likely wrong layer
+[2026-01-24T01:30:44.476Z] [VALIDATOR WARNING] "Sobrelosa de 8cm" - Quantity 0.10 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:30:44.482Z] [UNIT FALLBACK BLOCK] "Trazados y niveles" - Found none evidence (qty: 0.6309999999998968), forcing to 0
+[2026-01-24T01:30:44.482Z] [VALIDATOR WARNING] "Trazados y niveles" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:44.488Z] [UNIT FALLBACK BLOCK] "Retiro de escombros" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:44.488Z] [VALIDATOR WARNING] "Retiro de escombros" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:44.644Z] [UNIT FALLBACK BLOCK] "Escalera gatera metalica según detalle" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:44.644Z] [VALIDATOR WARNING] "Escalera gatera metalica según detalle" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:44.675Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:30:44.675Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:30:44.675Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:30:44.703Z]   [FIX HORIZONTAL] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:30:44.703Z] [SMALL AREA WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:30:44.703Z] [VALIDATOR WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:30:44.731Z]   [FIX HORIZONTAL] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Using layer "0.01m2" from profile
+[2026-01-24T01:30:44.731Z] [VALIDATOR WARNING] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Quantity 0.01 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:30:44.813Z] [UNIT FALLBACK BLOCK] "Pasarela de mantención montante estructural según detalle desde gatera hasta cortina de rollo según requerimientos a revisar en terreno, considera 60 cms de ancho libre. Considera pasamanos para restringir el paso al resto del cielo." - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:44.813Z] [VALIDATOR WARNING] "Pasarela de mantención montante estructural según detalle desde gatera hasta cortina de rollo según requerimientos a revisar en terreno, considera 60 cms de ancho libre. Considera pasamanos para restringir el paso al resto del cielo." - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:44.844Z] [UNIT FALLBACK BLOCK] "Refuerzos metalicos para instalacion rollo y guias cortina metalica" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:44.844Z] [VALIDATOR WARNING] "Refuerzos metalicos para instalacion rollo y guias cortina metalica" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:44.895Z] [UNIT FALLBACK BLOCK] "Tapa de inspeccion clasica para cielos de yeso carton 60x60cms color blanco espesor 15mm marca SKYHOUSE (con pasador para candado)" - Found none evidence (qty: 221.36260611187936), forcing to 0
+[2026-01-24T01:30:44.895Z] [VALIDATOR WARNING] "Tapa de inspeccion clasica para cielos de yeso carton 60x60cms color blanco espesor 15mm marca SKYHOUSE (con pasador para candado)" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:44.924Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Using layer "0.35m2" from profile
+[2026-01-24T01:30:44.924Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:30:44.924Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:30:44.945Z] [VALIDATOR WARNING] "Empaste y huincha de todos los tabiques de yeso carton" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:30:44.963Z] [VALIDATOR WARNING] "Empaste y huincha de todos los cielos" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:30:44.982Z] [VALIDATOR WARNING] "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:30:45.012Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:30:45.031Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo bodega" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:30:45.049Z] [VALIDATOR WARNING] "Instalación de papel mural en cielo" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:30:45.057Z] [UNIT FALLBACK BLOCK] "Pintura elementos metálicos" - Found none evidence (qty: 26.960728831833315), forcing to 0
+[2026-01-24T01:30:45.058Z] [VALIDATOR WARNING] "Pintura elementos metálicos" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.062Z] [VALIDATOR WARNING] "Mortero nivelador" - Quantity 345.93 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:30:45.110Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:30:45.157Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:30:45.194Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:30:45.316Z]   [FIX HORIZONTAL] "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm." - Using layer "38.93m2" from profile
+[2026-01-24T01:30:45.338Z] [UNIT FALLBACK BLOCK] "Provision e instalacion pavimento IDEM MALL" - Found none evidence (qty: 75.60235681811976), forcing to 0
+[2026-01-24T01:30:45.338Z] [VALIDATOR WARNING] "Provision e instalacion pavimento IDEM MALL" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.366Z] [VALIDATOR WARNING] "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:30:45.403Z] [VALIDATOR WARNING] "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:30:45.410Z] [UNIT FALLBACK BLOCK] "Logo en bronce para piso" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.410Z] [VALIDATOR WARNING] "Logo en bronce para piso" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.415Z] [UNIT FALLBACK BLOCK] "Brazo Hidráulico puerta bodega" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.415Z] [VALIDATOR WARNING] "Brazo Hidráulico puerta bodega" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:30:45.424Z] [UNIT FALLBACK BLOCK] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.424Z] [VALIDATOR WARNING] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:30:45.433Z] [UNIT FALLBACK BLOCK] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.433Z] [VALIDATOR WARNING] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:30:45.441Z] [UNIT FALLBACK BLOCK] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.441Z] [VALIDATOR WARNING] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:30:45.450Z] [UNIT FALLBACK BLOCK] "Letrero salida (señalética emergencia)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.451Z] [VALIDATOR WARNING] "Letrero salida (señalética emergencia)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:30:45.462Z] [VALIDATOR WARNING] "Instalación de cinta led" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:30:45.500Z] [UNIT FALLBACK BLOCK] "Vitrina vidrio laminado 5+5mm + marco aluminio oculto según detalle. Considerar film antivandalico 10 micras" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.500Z] [VALIDATOR WARNING] "Vitrina vidrio laminado 5+5mm + marco aluminio oculto según detalle. Considerar film antivandalico 10 micras" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.552Z] [UNIT FALLBACK BLOCK] "Cortina emballetada, microperforada, ups, motor central y destrabe manual. Acabado electropintado color negro. Considera 3 control remoto" - Found none evidence (qty: 50.11485095377445), forcing to 0
+[2026-01-24T01:30:45.552Z] [VALIDATOR WARNING] "Cortina emballetada, microperforada, ups, motor central y destrabe manual. Acabado electropintado color negro. Considera 3 control remoto" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.573Z] [UNIT FALLBACK BLOCK] "Climatización ductos y difusores lineales según proyecto" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.573Z] [VALIDATOR WARNING] "Climatización ductos y difusores lineales según proyecto" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.576Z] [UNIT FALLBACK BLOCK] "Tablero eléctrico rotulado" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.577Z] [VALIDATOR WARNING] "Tablero eléctrico rotulado" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:30:45.584Z] [UNIT FALLBACK BLOCK] "Detección según proyecto" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.584Z] [VALIDATOR WARNING] "Detección según proyecto" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.592Z] [UNIT FALLBACK BLOCK] "Extinción según proyecto" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.592Z] [VALIDATOR WARNING] "Extinción según proyecto" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.621Z] [UNIT FALLBACK BLOCK] "Set extintores según proyecto, incluida señaletica de extintor a muro" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.622Z] [VALIDATOR WARNING] "Set extintores según proyecto, incluida señaletica de extintor a muro" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.631Z] [UNIT FALLBACK BLOCK] "Instalación AP y Alcantarillado" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.631Z] [VALIDATOR WARNING] "Instalación AP y Alcantarillado" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.640Z] [UNIT FALLBACK BLOCK] "Grifería (solo instalacion, provista por mandante)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.640Z] [VALIDATOR WARNING] "Grifería (solo instalacion, provista por mandante)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:30:45.643Z] [UNIT FALLBACK BLOCK] "Remarcador agua potable" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.643Z] [VALIDATOR WARNING] "Remarcador agua potable" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:30:45.664Z] [UNIT FALLBACK BLOCK] "Certificados de factibilidad y dotacion" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.664Z] [VALIDATOR WARNING] "Certificados de factibilidad y dotacion" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.702Z] [UNIT FALLBACK BLOCK] "Planos As Built *se deben entregar al final de la obra impresos y firmados en fresco por el instalador" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.703Z] [VALIDATOR WARNING] "Planos As Built *se deben entregar al final de la obra impresos y firmados en fresco por el instalador" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.708Z] [UNIT FALLBACK BLOCK] "Aseo y entrega final" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.708Z] [VALIDATOR WARNING] "Aseo y entrega final" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.730Z] [UNIT FALLBACK BLOCK] "Desplazamiento de cierre provisorio para montaje fachada" - Found none evidence (qty: 2.4790065389893337), forcing to 0
+[2026-01-24T01:30:45.730Z] [VALIDATOR WARNING] "Desplazamiento de cierre provisorio para montaje fachada" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.737Z] [UNIT FALLBACK BLOCK] "Retiro de cierre provisorio" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.737Z] [VALIDATOR WARNING] "Retiro de cierre provisorio" - Quantity 0.00 outside typical range [1-1] for gl (general)
+[2026-01-24T01:30:45.740Z] [UNIT FALLBACK BLOCK] "Tapas registro para RAP" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:30:45.740Z] [VALIDATOR WARNING] "Tapas registro para RAP" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:30:45.769Z] [VALIDATOR WARNING] "Electropintado difusores clima" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:30:45.774Z]   [FIX HORIZONTAL] "Protección de pisos" - Using layer "4.75m2" from profile
+[2026-01-24T01:30:45.774Z] [SMALL AREA WARNING] "Protección de pisos" - Only 4.75m² found, likely wrong layer
+[2026-01-24T01:30:45.774Z] [VALIDATOR WARNING] "Protección de pisos" - Quantity 4.75 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:34:18.448Z]   [FIX HORIZONTAL] "Impermeabilización membrana asfáltica según plano" - Using layer "81.11m2" from profile
+[2026-01-24T01:34:18.450Z] [VALIDATOR REJECT] "Impermeabilización membrana asfáltica según plano" - qty 81.11 m2: Quantity 81.11 exceeds absolute maximum 50 for m2 (small)
+[2026-01-24T01:34:18.466Z]   [FIX HORIZONTAL] "Sobrelosa de 8cm" - Using layer "0.10m2" from profile
+[2026-01-24T01:34:18.466Z] [SMALL AREA WARNING] "Sobrelosa de 8cm" - Only 0.10m² found, likely wrong layer
+[2026-01-24T01:34:18.467Z] [VALIDATOR WARNING] "Sobrelosa de 8cm" - Quantity 0.10 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:34:18.644Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:34:18.644Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:34:18.644Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:34:18.674Z]   [FIX HORIZONTAL] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:34:18.674Z] [SMALL AREA WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:34:18.674Z] [VALIDATOR WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:34:18.704Z]   [FIX HORIZONTAL] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Using layer "0.01m2" from profile
+[2026-01-24T01:34:18.705Z] [VALIDATOR WARNING] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Quantity 0.01 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:34:18.736Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Using layer "0.35m2" from profile
+[2026-01-24T01:34:18.736Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:34:18.737Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:34:18.757Z] [VALIDATOR WARNING] "Empaste y huincha de todos los tabiques de yeso carton" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:34:18.779Z] [VALIDATOR WARNING] "Empaste y huincha de todos los cielos" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:34:18.800Z] [VALIDATOR WARNING] "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:34:18.829Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:34:18.851Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo bodega" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:34:18.873Z] [VALIDATOR WARNING] "Instalación de papel mural en cielo" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:34:18.878Z] [VALIDATOR WARNING] "Mortero nivelador" - Quantity 345.93 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:34:18.928Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:34:18.977Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:34:19.017Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:34:19.147Z]   [FIX HORIZONTAL] "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm." - Using layer "38.93m2" from profile
+[2026-01-24T01:34:19.177Z] [VALIDATOR WARNING] "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:34:19.218Z] [VALIDATOR WARNING] "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:34:19.224Z] [UNIT FALLBACK BLOCK] "Brazo Hidráulico puerta bodega" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:34:19.224Z] [VALIDATOR WARNING] "Brazo Hidráulico puerta bodega" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:34:19.233Z] [UNIT FALLBACK BLOCK] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:34:19.233Z] [VALIDATOR WARNING] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:34:19.243Z] [UNIT FALLBACK BLOCK] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:34:19.243Z] [VALIDATOR WARNING] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:34:19.252Z] [UNIT FALLBACK BLOCK] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:34:19.252Z] [VALIDATOR WARNING] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:34:19.262Z] [UNIT FALLBACK BLOCK] "Letrero salida (señalética emergencia)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:34:19.262Z] [VALIDATOR WARNING] "Letrero salida (señalética emergencia)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:34:19.274Z] [VALIDATOR WARNING] "Instalación de cinta led" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:34:19.278Z] [UNIT FALLBACK BLOCK] "Tablero eléctrico rotulado" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:34:19.278Z] [VALIDATOR WARNING] "Tablero eléctrico rotulado" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:34:19.288Z] [UNIT FALLBACK BLOCK] "Grifería (solo instalacion, provista por mandante)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:34:19.288Z] [VALIDATOR WARNING] "Grifería (solo instalacion, provista por mandante)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:34:19.291Z] [UNIT FALLBACK BLOCK] "Remarcador agua potable" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:34:19.291Z] [VALIDATOR WARNING] "Remarcador agua potable" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:34:19.294Z] [UNIT FALLBACK BLOCK] "Tapas registro para RAP" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:34:19.294Z] [VALIDATOR WARNING] "Tapas registro para RAP" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:34:19.325Z] [VALIDATOR WARNING] "Electropintado difusores clima" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:34:19.330Z]   [FIX HORIZONTAL] "Protección de pisos" - Using layer "4.75m2" from profile
+[2026-01-24T01:34:19.330Z] [SMALL AREA WARNING] "Protección de pisos" - Only 4.75m² found, likely wrong layer
+[2026-01-24T01:34:19.330Z] [VALIDATOR WARNING] "Protección de pisos" - Quantity 4.75 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:38:30.558Z]   [FIX HORIZONTAL] "Impermeabilización membrana asfáltica según plano" - Using layer "81.11m2" from profile
+[2026-01-24T01:38:30.560Z] [VALIDATOR REJECT] "Impermeabilización membrana asfáltica según plano" - qty 81.11 m2: Quantity 81.11 exceeds absolute maximum 50 for m2 (small)
+[2026-01-24T01:38:30.576Z]   [FIX HORIZONTAL] "Sobrelosa de 8cm" - Using layer "0.10m2" from profile
+[2026-01-24T01:38:30.576Z] [SMALL AREA WARNING] "Sobrelosa de 8cm" - Only 0.10m² found, likely wrong layer
+[2026-01-24T01:38:30.577Z] [VALIDATOR WARNING] "Sobrelosa de 8cm" - Quantity 0.10 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:38:30.753Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:38:30.754Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:38:30.754Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:38:30.784Z]   [FIX HORIZONTAL] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:38:30.784Z] [SMALL AREA WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:38:30.784Z] [VALIDATOR WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:38:30.815Z]   [FIX HORIZONTAL] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Using layer "0.01m2" from profile
+[2026-01-24T01:38:30.815Z] [VALIDATOR WARNING] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Quantity 0.01 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:38:30.845Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Using layer "0.35m2" from profile
+[2026-01-24T01:38:30.845Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:38:30.845Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:38:30.866Z] [VALIDATOR WARNING] "Empaste y huincha de todos los tabiques de yeso carton" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:38:30.888Z] [VALIDATOR WARNING] "Empaste y huincha de todos los cielos" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:38:30.908Z] [VALIDATOR WARNING] "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:38:30.938Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:38:30.959Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo bodega" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:38:30.980Z] [VALIDATOR WARNING] "Instalación de papel mural en cielo" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:38:30.985Z] [VALIDATOR WARNING] "Mortero nivelador" - Quantity 345.93 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:38:31.036Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:38:31.085Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:38:31.124Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:38:31.253Z]   [FIX HORIZONTAL] "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm." - Using layer "38.93m2" from profile
+[2026-01-24T01:38:31.282Z] [VALIDATOR WARNING] "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:38:31.322Z] [VALIDATOR WARNING] "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:38:31.327Z] [UNIT FALLBACK BLOCK] "Brazo Hidráulico puerta bodega" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:38:31.327Z] [VALIDATOR WARNING] "Brazo Hidráulico puerta bodega" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:38:31.337Z] [UNIT FALLBACK BLOCK] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:38:31.337Z] [VALIDATOR WARNING] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:38:31.346Z] [UNIT FALLBACK BLOCK] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:38:31.346Z] [VALIDATOR WARNING] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:38:31.355Z] [UNIT FALLBACK BLOCK] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:38:31.355Z] [VALIDATOR WARNING] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:38:31.366Z] [UNIT FALLBACK BLOCK] "Letrero salida (señalética emergencia)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:38:31.366Z] [VALIDATOR WARNING] "Letrero salida (señalética emergencia)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:38:31.377Z] [VALIDATOR WARNING] "Instalación de cinta led" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:38:31.381Z] [UNIT FALLBACK BLOCK] "Tablero eléctrico rotulado" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:38:31.381Z] [VALIDATOR WARNING] "Tablero eléctrico rotulado" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:38:31.391Z] [UNIT FALLBACK BLOCK] "Grifería (solo instalacion, provista por mandante)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:38:31.391Z] [VALIDATOR WARNING] "Grifería (solo instalacion, provista por mandante)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:38:31.394Z] [UNIT FALLBACK BLOCK] "Remarcador agua potable" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:38:31.394Z] [VALIDATOR WARNING] "Remarcador agua potable" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:38:31.397Z] [UNIT FALLBACK BLOCK] "Tapas registro para RAP" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:38:31.397Z] [VALIDATOR WARNING] "Tapas registro para RAP" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:38:31.427Z] [VALIDATOR WARNING] "Electropintado difusores clima" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:38:31.434Z]   [FIX HORIZONTAL] "Protección de pisos" - Using layer "4.75m2" from profile
+[2026-01-24T01:38:31.435Z] [SMALL AREA WARNING] "Protección de pisos" - Only 4.75m² found, likely wrong layer
+[2026-01-24T01:38:31.435Z] [VALIDATOR WARNING] "Protección de pisos" - Quantity 4.75 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:40:31.532Z]   [FIX HORIZONTAL] "Impermeabilización membrana asfáltica según plano" - Using layer "81.11m2" from profile
+[2026-01-24T01:40:31.533Z] [VALIDATOR REJECT] "Impermeabilización membrana asfáltica según plano" - qty 81.11 m2: Quantity 81.11 exceeds absolute maximum 50 for m2 (small)
+[2026-01-24T01:40:31.549Z]   [FIX HORIZONTAL] "Sobrelosa de 8cm" - Using layer "0.10m2" from profile
+[2026-01-24T01:40:31.549Z] [SMALL AREA WARNING] "Sobrelosa de 8cm" - Only 0.10m² found, likely wrong layer
+[2026-01-24T01:40:31.550Z] [VALIDATOR WARNING] "Sobrelosa de 8cm" - Quantity 0.10 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:40:31.727Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:40:31.727Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:40:31.727Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:40:31.758Z]   [FIX HORIZONTAL] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:40:31.758Z] [SMALL AREA WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:40:31.758Z] [VALIDATOR WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:40:31.790Z]   [FIX HORIZONTAL] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Using layer "0.01m2" from profile
+[2026-01-24T01:40:31.791Z] [VALIDATOR WARNING] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Quantity 0.01 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:40:31.821Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Using layer "0.35m2" from profile
+[2026-01-24T01:40:31.821Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:40:31.821Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:40:31.842Z] [VALIDATOR WARNING] "Empaste y huincha de todos los tabiques de yeso carton" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:40:31.865Z] [VALIDATOR WARNING] "Empaste y huincha de todos los cielos" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:40:31.886Z] [VALIDATOR WARNING] "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:40:31.916Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:40:31.937Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo bodega" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:40:31.958Z] [VALIDATOR WARNING] "Instalación de papel mural en cielo" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:40:31.963Z] [VALIDATOR WARNING] "Mortero nivelador" - Quantity 345.93 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:40:32.014Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:40:32.062Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:40:32.102Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:40:32.233Z]   [FIX HORIZONTAL] "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm." - Using layer "38.93m2" from profile
+[2026-01-24T01:40:32.263Z] [VALIDATOR WARNING] "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:40:32.304Z] [VALIDATOR WARNING] "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:40:32.309Z] [UNIT FALLBACK BLOCK] "Brazo Hidráulico puerta bodega" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:40:32.309Z] [VALIDATOR WARNING] "Brazo Hidráulico puerta bodega" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:40:32.318Z] [UNIT FALLBACK BLOCK] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:40:32.318Z] [VALIDATOR WARNING] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:40:32.328Z] [UNIT FALLBACK BLOCK] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:40:32.328Z] [VALIDATOR WARNING] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:40:32.337Z] [UNIT FALLBACK BLOCK] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:40:32.337Z] [VALIDATOR WARNING] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:40:32.348Z] [UNIT FALLBACK BLOCK] "Letrero salida (señalética emergencia)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:40:32.348Z] [VALIDATOR WARNING] "Letrero salida (señalética emergencia)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:40:32.358Z] [VALIDATOR WARNING] "Instalación de cinta led" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:40:32.362Z] [UNIT FALLBACK BLOCK] "Tablero eléctrico rotulado" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:40:32.362Z] [VALIDATOR WARNING] "Tablero eléctrico rotulado" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:40:32.372Z] [UNIT FALLBACK BLOCK] "Grifería (solo instalacion, provista por mandante)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:40:32.372Z] [VALIDATOR WARNING] "Grifería (solo instalacion, provista por mandante)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:40:32.375Z] [UNIT FALLBACK BLOCK] "Remarcador agua potable" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:40:32.375Z] [VALIDATOR WARNING] "Remarcador agua potable" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:40:32.378Z] [UNIT FALLBACK BLOCK] "Tapas registro para RAP" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:40:32.378Z] [VALIDATOR WARNING] "Tapas registro para RAP" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:40:32.409Z] [VALIDATOR WARNING] "Electropintado difusores clima" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:40:32.416Z]   [FIX HORIZONTAL] "Protección de pisos" - Using layer "4.75m2" from profile
+[2026-01-24T01:40:32.416Z] [SMALL AREA WARNING] "Protección de pisos" - Only 4.75m² found, likely wrong layer
+[2026-01-24T01:40:32.416Z] [VALIDATOR WARNING] "Protección de pisos" - Quantity 4.75 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:43:17.774Z]   [FIX HORIZONTAL] "Impermeabilización membrana asfáltica según plano" - Using layer "81.11m2" from profile
+[2026-01-24T01:43:17.776Z] [VALIDATOR REJECT] "Impermeabilización membrana asfáltica según plano" - qty 81.11 m2: Quantity 81.11 exceeds absolute maximum 50 for m2 (small)
+[2026-01-24T01:43:17.792Z]   [FIX HORIZONTAL] "Sobrelosa de 8cm" - Using layer "0.10m2" from profile
+[2026-01-24T01:43:17.792Z] [SMALL AREA WARNING] "Sobrelosa de 8cm" - Only 0.10m² found, likely wrong layer
+[2026-01-24T01:43:17.792Z] [VALIDATOR WARNING] "Sobrelosa de 8cm" - Quantity 0.10 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:43:17.971Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:43:17.971Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:43:17.972Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:43:18.001Z]   [FIX HORIZONTAL] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:43:18.001Z] [SMALL AREA WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:43:18.001Z] [VALIDATOR WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:43:18.031Z]   [FIX HORIZONTAL] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Using layer "0.01m2" from profile
+[2026-01-24T01:43:18.032Z] [VALIDATOR WARNING] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Quantity 0.01 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:43:18.061Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Using layer "0.35m2" from profile
+[2026-01-24T01:43:18.061Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:43:18.062Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:43:18.082Z] [VALIDATOR WARNING] "Empaste y huincha de todos los tabiques de yeso carton" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:43:18.104Z] [VALIDATOR WARNING] "Empaste y huincha de todos los cielos" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:43:18.127Z] [VALIDATOR WARNING] "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:43:18.156Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:43:18.178Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo bodega" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:43:18.198Z] [VALIDATOR WARNING] "Instalación de papel mural en cielo" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:43:18.203Z] [VALIDATOR WARNING] "Mortero nivelador" - Quantity 345.93 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:43:18.253Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:43:18.300Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:43:18.340Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:43:18.469Z]   [FIX HORIZONTAL] "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm." - Using layer "38.93m2" from profile
+[2026-01-24T01:43:18.499Z] [VALIDATOR WARNING] "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:43:18.538Z] [VALIDATOR WARNING] "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:43:18.543Z] [UNIT FALLBACK BLOCK] "Brazo Hidráulico puerta bodega" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:43:18.543Z] [VALIDATOR WARNING] "Brazo Hidráulico puerta bodega" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:43:18.552Z] [UNIT FALLBACK BLOCK] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:43:18.552Z] [VALIDATOR WARNING] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:43:18.561Z] [UNIT FALLBACK BLOCK] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:43:18.561Z] [VALIDATOR WARNING] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:43:18.570Z] [UNIT FALLBACK BLOCK] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:43:18.570Z] [VALIDATOR WARNING] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:43:18.581Z] [UNIT FALLBACK BLOCK] "Letrero salida (señalética emergencia)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:43:18.581Z] [VALIDATOR WARNING] "Letrero salida (señalética emergencia)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:43:18.592Z] [VALIDATOR WARNING] "Instalación de cinta led" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:43:18.595Z] [UNIT FALLBACK BLOCK] "Tablero eléctrico rotulado" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:43:18.596Z] [VALIDATOR WARNING] "Tablero eléctrico rotulado" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:43:18.605Z] [UNIT FALLBACK BLOCK] "Grifería (solo instalacion, provista por mandante)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:43:18.605Z] [VALIDATOR WARNING] "Grifería (solo instalacion, provista por mandante)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:43:18.608Z] [UNIT FALLBACK BLOCK] "Remarcador agua potable" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:43:18.608Z] [VALIDATOR WARNING] "Remarcador agua potable" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:43:18.611Z] [UNIT FALLBACK BLOCK] "Tapas registro para RAP" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:43:18.611Z] [VALIDATOR WARNING] "Tapas registro para RAP" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:43:18.641Z] [VALIDATOR WARNING] "Electropintado difusores clima" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:43:18.648Z]   [FIX HORIZONTAL] "Protección de pisos" - Using layer "4.75m2" from profile
+[2026-01-24T01:43:18.648Z] [SMALL AREA WARNING] "Protección de pisos" - Only 4.75m² found, likely wrong layer
+[2026-01-24T01:43:18.648Z] [VALIDATOR WARNING] "Protección de pisos" - Quantity 4.75 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:47:10.848Z]   [FIX HORIZONTAL] "Impermeabilización membrana asfáltica según plano" - Using layer "81.11m2" from profile
+[2026-01-24T01:47:10.849Z] [VALIDATOR REJECT] "Impermeabilización membrana asfáltica según plano" - qty 81.11 m2: Quantity 81.11 exceeds absolute maximum 50 for m2 (small)
+[2026-01-24T01:47:10.865Z]   [FIX HORIZONTAL] "Sobrelosa de 8cm" - Using layer "0.10m2" from profile
+[2026-01-24T01:47:10.865Z] [SMALL AREA WARNING] "Sobrelosa de 8cm" - Only 0.10m² found, likely wrong layer
+[2026-01-24T01:47:10.866Z] [VALIDATOR WARNING] "Sobrelosa de 8cm" - Quantity 0.10 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:47:11.043Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:47:11.043Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:47:11.043Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:47:11.073Z]   [FIX HORIZONTAL] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:47:11.073Z] [SMALL AREA WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:47:11.073Z] [VALIDATOR WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:47:11.103Z]   [FIX HORIZONTAL] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Using layer "0.01m2" from profile
+[2026-01-24T01:47:11.103Z] [VALIDATOR WARNING] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Quantity 0.01 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:47:11.135Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Using layer "0.35m2" from profile
+[2026-01-24T01:47:11.135Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:47:11.135Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:47:11.156Z] [VALIDATOR WARNING] "Empaste y huincha de todos los tabiques de yeso carton" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:47:11.177Z] [VALIDATOR WARNING] "Empaste y huincha de todos los cielos" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:47:11.198Z] [VALIDATOR WARNING] "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:47:11.227Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:47:11.249Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo bodega" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:47:11.269Z] [VALIDATOR WARNING] "Instalación de papel mural en cielo" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:47:11.275Z] [VALIDATOR WARNING] "Mortero nivelador" - Quantity 345.93 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:47:11.326Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:47:11.373Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:47:11.413Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:47:11.540Z]   [FIX HORIZONTAL] "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm." - Using layer "38.93m2" from profile
+[2026-01-24T01:47:11.569Z] [VALIDATOR WARNING] "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:47:11.608Z] [VALIDATOR WARNING] "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:47:11.613Z] [UNIT FALLBACK BLOCK] "Brazo Hidráulico puerta bodega" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:47:11.613Z] [VALIDATOR WARNING] "Brazo Hidráulico puerta bodega" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:47:11.622Z] [UNIT FALLBACK BLOCK] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:47:11.622Z] [VALIDATOR WARNING] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:47:11.631Z] [UNIT FALLBACK BLOCK] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:47:11.632Z] [VALIDATOR WARNING] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:47:11.641Z] [UNIT FALLBACK BLOCK] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:47:11.641Z] [VALIDATOR WARNING] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:47:11.651Z] [UNIT FALLBACK BLOCK] "Letrero salida (señalética emergencia)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:47:11.651Z] [VALIDATOR WARNING] "Letrero salida (señalética emergencia)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:47:11.663Z] [VALIDATOR WARNING] "Instalación de cinta led" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:47:11.667Z] [UNIT FALLBACK BLOCK] "Tablero eléctrico rotulado" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:47:11.667Z] [VALIDATOR WARNING] "Tablero eléctrico rotulado" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:47:11.676Z] [UNIT FALLBACK BLOCK] "Grifería (solo instalacion, provista por mandante)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:47:11.677Z] [VALIDATOR WARNING] "Grifería (solo instalacion, provista por mandante)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:47:11.679Z] [UNIT FALLBACK BLOCK] "Remarcador agua potable" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:47:11.680Z] [VALIDATOR WARNING] "Remarcador agua potable" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:47:11.682Z] [UNIT FALLBACK BLOCK] "Tapas registro para RAP" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:47:11.683Z] [VALIDATOR WARNING] "Tapas registro para RAP" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:47:11.713Z] [VALIDATOR WARNING] "Electropintado difusores clima" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:47:11.718Z]   [FIX HORIZONTAL] "Protección de pisos" - Using layer "4.75m2" from profile
+[2026-01-24T01:47:11.718Z] [SMALL AREA WARNING] "Protección de pisos" - Only 4.75m² found, likely wrong layer
+[2026-01-24T01:47:11.718Z] [VALIDATOR WARNING] "Protección de pisos" - Quantity 4.75 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:48:44.330Z]   [FIX HORIZONTAL] "Impermeabilización membrana asfáltica según plano" - Using layer "81.11m2" from profile
+[2026-01-24T01:48:44.332Z] [VALIDATOR REJECT] "Impermeabilización membrana asfáltica según plano" - qty 81.11 m2: Quantity 81.11 exceeds absolute maximum 50 for m2 (small)
+[2026-01-24T01:48:44.348Z]   [FIX HORIZONTAL] "Sobrelosa de 8cm" - Using layer "0.10m2" from profile
+[2026-01-24T01:48:44.348Z] [SMALL AREA WARNING] "Sobrelosa de 8cm" - Only 0.10m² found, likely wrong layer
+[2026-01-24T01:48:44.349Z] [VALIDATOR WARNING] "Sobrelosa de 8cm" - Quantity 0.10 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:48:44.524Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:48:44.525Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:48:44.525Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:48:44.554Z]   [FIX HORIZONTAL] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:48:44.554Z] [SMALL AREA WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:48:44.554Z] [VALIDATOR WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:48:44.585Z]   [FIX HORIZONTAL] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Using layer "0.01m2" from profile
+[2026-01-24T01:48:44.586Z] [VALIDATOR WARNING] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Quantity 0.01 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:48:44.616Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Using layer "0.35m2" from profile
+[2026-01-24T01:48:44.616Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:48:44.616Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:48:44.637Z] [VALIDATOR WARNING] "Empaste y huincha de todos los tabiques de yeso carton" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:48:44.659Z] [VALIDATOR WARNING] "Empaste y huincha de todos los cielos" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:48:44.679Z] [VALIDATOR WARNING] "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:48:44.709Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:48:44.730Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo bodega" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:48:44.751Z] [VALIDATOR WARNING] "Instalación de papel mural en cielo" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:48:44.756Z] [VALIDATOR WARNING] "Mortero nivelador" - Quantity 345.93 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:48:44.808Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:48:44.856Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:48:44.896Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:48:45.025Z]   [FIX HORIZONTAL] "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm." - Using layer "38.93m2" from profile
+[2026-01-24T01:48:45.054Z] [VALIDATOR WARNING] "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:48:45.093Z] [VALIDATOR WARNING] "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:48:45.098Z] [UNIT FALLBACK BLOCK] "Brazo Hidráulico puerta bodega" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:48:45.098Z] [VALIDATOR WARNING] "Brazo Hidráulico puerta bodega" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:48:45.107Z] [UNIT FALLBACK BLOCK] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:48:45.108Z] [VALIDATOR WARNING] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:48:45.117Z] [UNIT FALLBACK BLOCK] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:48:45.117Z] [VALIDATOR WARNING] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:48:45.126Z] [UNIT FALLBACK BLOCK] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:48:45.126Z] [VALIDATOR WARNING] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:48:45.136Z] [UNIT FALLBACK BLOCK] "Letrero salida (señalética emergencia)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:48:45.136Z] [VALIDATOR WARNING] "Letrero salida (señalética emergencia)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:48:45.148Z] [VALIDATOR WARNING] "Instalación de cinta led" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:48:45.152Z] [UNIT FALLBACK BLOCK] "Tablero eléctrico rotulado" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:48:45.152Z] [VALIDATOR WARNING] "Tablero eléctrico rotulado" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:48:45.162Z] [UNIT FALLBACK BLOCK] "Grifería (solo instalacion, provista por mandante)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:48:45.162Z] [VALIDATOR WARNING] "Grifería (solo instalacion, provista por mandante)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:48:45.165Z] [UNIT FALLBACK BLOCK] "Remarcador agua potable" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:48:45.165Z] [VALIDATOR WARNING] "Remarcador agua potable" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:48:45.168Z] [UNIT FALLBACK BLOCK] "Tapas registro para RAP" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:48:45.168Z] [VALIDATOR WARNING] "Tapas registro para RAP" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:48:45.198Z] [VALIDATOR WARNING] "Electropintado difusores clima" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:48:45.203Z]   [FIX HORIZONTAL] "Protección de pisos" - Using layer "4.75m2" from profile
+[2026-01-24T01:48:45.204Z] [SMALL AREA WARNING] "Protección de pisos" - Only 4.75m² found, likely wrong layer
+[2026-01-24T01:48:45.204Z] [VALIDATOR WARNING] "Protección de pisos" - Quantity 4.75 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:50:36.042Z]   [FIX HORIZONTAL] "Impermeabilización membrana asfáltica según plano" - Using layer "81.11m2" from profile
+[2026-01-24T01:50:36.044Z] [VALIDATOR REJECT] "Impermeabilización membrana asfáltica según plano" - qty 81.11 m2: Quantity 81.11 exceeds absolute maximum 50 for m2 (small)
+[2026-01-24T01:50:36.061Z]   [FIX HORIZONTAL] "Sobrelosa de 8cm" - Using layer "0.10m2" from profile
+[2026-01-24T01:50:36.062Z] [SMALL AREA WARNING] "Sobrelosa de 8cm" - Only 0.10m² found, likely wrong layer
+[2026-01-24T01:50:36.062Z] [VALIDATOR WARNING] "Sobrelosa de 8cm" - Quantity 0.10 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:50:36.237Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:50:36.237Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:50:36.237Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:50:36.267Z]   [FIX HORIZONTAL] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:50:36.267Z] [SMALL AREA WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:50:36.267Z] [VALIDATOR WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:50:36.297Z]   [FIX HORIZONTAL] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Using layer "0.01m2" from profile
+[2026-01-24T01:50:36.297Z] [VALIDATOR WARNING] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Quantity 0.01 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:50:36.333Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Using layer "0.35m2" from profile
+[2026-01-24T01:50:36.333Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:50:36.334Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:50:36.354Z] [VALIDATOR WARNING] "Empaste y huincha de todos los tabiques de yeso carton" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:50:36.375Z] [VALIDATOR WARNING] "Empaste y huincha de todos los cielos" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:50:36.394Z] [VALIDATOR WARNING] "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:50:36.423Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:50:36.444Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo bodega" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:50:36.463Z] [VALIDATOR WARNING] "Instalación de papel mural en cielo" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:50:36.468Z] [VALIDATOR WARNING] "Mortero nivelador" - Quantity 345.93 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:50:36.516Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:50:36.564Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:50:36.601Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:50:36.725Z]   [FIX HORIZONTAL] "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm." - Using layer "38.93m2" from profile
+[2026-01-24T01:50:36.754Z] [VALIDATOR WARNING] "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:50:36.792Z] [VALIDATOR WARNING] "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:50:36.797Z] [UNIT FALLBACK BLOCK] "Brazo Hidráulico puerta bodega" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:50:36.797Z] [VALIDATOR WARNING] "Brazo Hidráulico puerta bodega" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:50:36.806Z] [UNIT FALLBACK BLOCK] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:50:36.807Z] [VALIDATOR WARNING] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:50:36.816Z] [UNIT FALLBACK BLOCK] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:50:36.816Z] [VALIDATOR WARNING] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:50:36.825Z] [UNIT FALLBACK BLOCK] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:50:36.825Z] [VALIDATOR WARNING] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:50:36.836Z] [UNIT FALLBACK BLOCK] "Letrero salida (señalética emergencia)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:50:36.836Z] [VALIDATOR WARNING] "Letrero salida (señalética emergencia)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:50:36.847Z] [VALIDATOR WARNING] "Instalación de cinta led" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:50:36.851Z] [UNIT FALLBACK BLOCK] "Tablero eléctrico rotulado" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:50:36.851Z] [VALIDATOR WARNING] "Tablero eléctrico rotulado" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:50:36.860Z] [UNIT FALLBACK BLOCK] "Grifería (solo instalacion, provista por mandante)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:50:36.860Z] [VALIDATOR WARNING] "Grifería (solo instalacion, provista por mandante)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:50:36.863Z] [UNIT FALLBACK BLOCK] "Remarcador agua potable" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:50:36.863Z] [VALIDATOR WARNING] "Remarcador agua potable" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:50:36.866Z] [UNIT FALLBACK BLOCK] "Tapas registro para RAP" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:50:36.867Z] [VALIDATOR WARNING] "Tapas registro para RAP" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:50:36.896Z] [VALIDATOR WARNING] "Electropintado difusores clima" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:50:36.902Z]   [FIX HORIZONTAL] "Protección de pisos" - Using layer "4.75m2" from profile
+[2026-01-24T01:50:36.903Z] [SMALL AREA WARNING] "Protección de pisos" - Only 4.75m² found, likely wrong layer
+[2026-01-24T01:50:36.903Z] [VALIDATOR WARNING] "Protección de pisos" - Quantity 4.75 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:51:54.528Z]   [FIX HORIZONTAL] "Impermeabilización membrana asfáltica según plano" - Using layer "81.11m2" from profile
+[2026-01-24T01:51:54.529Z] [VALIDATOR REJECT] "Impermeabilización membrana asfáltica según plano" - qty 81.11 m2: Quantity 81.11 exceeds absolute maximum 50 for m2 (small)
+[2026-01-24T01:51:54.546Z]   [FIX HORIZONTAL] "Sobrelosa de 8cm" - Using layer "0.10m2" from profile
+[2026-01-24T01:51:54.546Z] [SMALL AREA WARNING] "Sobrelosa de 8cm" - Only 0.10m² found, likely wrong layer
+[2026-01-24T01:51:54.547Z] [VALIDATOR WARNING] "Sobrelosa de 8cm" - Quantity 0.10 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:51:54.724Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:51:54.725Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:51:54.725Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:51:54.754Z]   [FIX HORIZONTAL] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:51:54.755Z] [SMALL AREA WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:51:54.755Z] [VALIDATOR WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:51:54.785Z]   [FIX HORIZONTAL] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Using layer "0.01m2" from profile
+[2026-01-24T01:51:54.786Z] [VALIDATOR WARNING] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Quantity 0.01 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:51:54.816Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Using layer "0.35m2" from profile
+[2026-01-24T01:51:54.816Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:51:54.816Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:51:54.836Z] [VALIDATOR WARNING] "Empaste y huincha de todos los tabiques de yeso carton" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:51:54.858Z] [VALIDATOR WARNING] "Empaste y huincha de todos los cielos" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:51:54.879Z] [VALIDATOR WARNING] "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:51:54.910Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:51:54.931Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo bodega" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:51:54.951Z] [VALIDATOR WARNING] "Instalación de papel mural en cielo" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:51:54.956Z] [VALIDATOR WARNING] "Mortero nivelador" - Quantity 345.93 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:51:55.006Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:51:55.054Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:51:55.094Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:51:55.221Z]   [FIX HORIZONTAL] "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm." - Using layer "38.93m2" from profile
+[2026-01-24T01:51:55.251Z] [VALIDATOR WARNING] "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:51:55.290Z] [VALIDATOR WARNING] "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:51:55.295Z] [UNIT FALLBACK BLOCK] "Brazo Hidráulico puerta bodega" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:51:55.295Z] [VALIDATOR WARNING] "Brazo Hidráulico puerta bodega" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:51:55.305Z] [UNIT FALLBACK BLOCK] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:51:55.305Z] [VALIDATOR WARNING] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:51:55.314Z] [UNIT FALLBACK BLOCK] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:51:55.314Z] [VALIDATOR WARNING] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:51:55.323Z] [UNIT FALLBACK BLOCK] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:51:55.323Z] [VALIDATOR WARNING] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:51:55.333Z] [UNIT FALLBACK BLOCK] "Letrero salida (señalética emergencia)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:51:55.333Z] [VALIDATOR WARNING] "Letrero salida (señalética emergencia)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:51:55.345Z] [VALIDATOR WARNING] "Instalación de cinta led" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:51:55.348Z] [UNIT FALLBACK BLOCK] "Tablero eléctrico rotulado" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:51:55.349Z] [VALIDATOR WARNING] "Tablero eléctrico rotulado" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:51:55.358Z] [UNIT FALLBACK BLOCK] "Grifería (solo instalacion, provista por mandante)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:51:55.358Z] [VALIDATOR WARNING] "Grifería (solo instalacion, provista por mandante)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:51:55.361Z] [UNIT FALLBACK BLOCK] "Remarcador agua potable" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:51:55.361Z] [VALIDATOR WARNING] "Remarcador agua potable" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:51:55.364Z] [UNIT FALLBACK BLOCK] "Tapas registro para RAP" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:51:55.365Z] [VALIDATOR WARNING] "Tapas registro para RAP" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:51:55.395Z] [VALIDATOR WARNING] "Electropintado difusores clima" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:51:55.400Z]   [FIX HORIZONTAL] "Protección de pisos" - Using layer "4.75m2" from profile
+[2026-01-24T01:51:55.400Z] [SMALL AREA WARNING] "Protección de pisos" - Only 4.75m² found, likely wrong layer
+[2026-01-24T01:51:55.400Z] [VALIDATOR WARNING] "Protección de pisos" - Quantity 4.75 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:53:30.311Z]   [FIX HORIZONTAL] "Impermeabilización membrana asfáltica según plano" - Using layer "81.11m2" from profile
+[2026-01-24T01:53:30.312Z] [VALIDATOR REJECT] "Impermeabilización membrana asfáltica según plano" - qty 81.11 m2: Quantity 81.11 exceeds absolute maximum 50 for m2 (small)
+[2026-01-24T01:53:30.329Z]   [FIX HORIZONTAL] "Sobrelosa de 8cm" - Using layer "0.10m2" from profile
+[2026-01-24T01:53:30.329Z] [SMALL AREA WARNING] "Sobrelosa de 8cm" - Only 0.10m² found, likely wrong layer
+[2026-01-24T01:53:30.329Z] [VALIDATOR WARNING] "Sobrelosa de 8cm" - Quantity 0.10 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:53:30.508Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:53:30.508Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:53:30.508Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:53:30.538Z]   [FIX HORIZONTAL] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Using layer "0.35m2" from profile
+[2026-01-24T01:53:30.538Z] [SMALL AREA WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:53:30.538Z] [VALIDATOR WARNING] "Cielo volcanita bodega montante metálico estructural 60 + volcanita 10 mm" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:53:30.568Z]   [FIX HORIZONTAL] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Using layer "0.01m2" from profile
+[2026-01-24T01:53:30.568Z] [VALIDATOR WARNING] "Cenefa perimetral sala de ventas montante metálico estructural 60 + MDF 15 mm" - Quantity 0.01 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:53:30.600Z]   [FIX HORIZONTAL] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Using layer "0.35m2" from profile
+[2026-01-24T01:53:30.600Z] [SMALL AREA WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Only 0.35m² found, likely wrong layer
+[2026-01-24T01:53:30.600Z] [VALIDATOR WARNING] "Cielo volcanita sala de ventas montante metálico estructural 60 + volcanita 15 mm (cúpula)" - Quantity 0.35 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:53:30.621Z] [VALIDATOR WARNING] "Empaste y huincha de todos los tabiques de yeso carton" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:53:30.641Z] [VALIDATOR WARNING] "Empaste y huincha de todos los cielos" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:53:30.663Z] [VALIDATOR WARNING] "Pintura tabiques bodega: esmalte al agua SW 6258 TRICORN BLACK" - Quantity 5.62 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:53:30.693Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo sala de ventas, para recibir papel mural" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:53:30.713Z] [VALIDATOR WARNING] "Pintura latex extracubriente blanco en cielo bodega" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:53:30.735Z] [VALIDATOR WARNING] "Instalación de papel mural en cielo" - Quantity 0.00 outside typical range [10-150] for m2 (ceiling)
+[2026-01-24T01:53:30.740Z] [VALIDATOR WARNING] "Mortero nivelador" - Quantity 345.93 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:53:30.790Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Crema Marfil acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:53:30.838Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Alicante acabado sello incoloro Referencia: según muestra mandante Proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:53:30.878Z] [VALIDATOR WARNING] "Marmol instalado tipo mosaico color Rosso Asiago acabado opaco Referencia: según muestra mandante proveedor Brescia. Fragüe 1mm." - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:53:31.006Z]   [FIX HORIZONTAL] "Provision e instalacion pavimento porcelanato DISCTRICT PLUS GREIGE MATE 60X60CMS de MK. Fragüe 2mm." - Using layer "38.93m2" from profile
+[2026-01-24T01:53:31.036Z] [VALIDATOR WARNING] "Provision e instalacion CUBREJUNTA OMEGA 10x10x2500MM Color Bronce" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:53:31.074Z] [VALIDATOR WARNING] "Guardapolvo porcelanato en bodega DISCTRICT PLUS GREIGE MATE 60X60CMS de MK (se considera retorno 10 cm de porcelanato piso)" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:53:31.079Z] [UNIT FALLBACK BLOCK] "Brazo Hidráulico puerta bodega" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:53:31.080Z] [VALIDATOR WARNING] "Brazo Hidráulico puerta bodega" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:53:31.090Z] [UNIT FALLBACK BLOCK] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:53:31.090Z] [VALIDATOR WARNING] "Lamparas bodega estanca LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:53:31.099Z] [UNIT FALLBACK BLOCK] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:53:31.099Z] [VALIDATOR WARNING] "Lamparas bodega con kit emergencia (90-120 min autonomía)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:53:31.108Z] [UNIT FALLBACK BLOCK] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:53:31.108Z] [VALIDATOR WARNING] "Lampara entretecho con kit emergencia LED 36W 4300 LM IP65" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:53:31.118Z] [UNIT FALLBACK BLOCK] "Letrero salida (señalética emergencia)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:53:31.118Z] [VALIDATOR WARNING] "Letrero salida (señalética emergencia)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:53:31.129Z] [VALIDATOR WARNING] "Instalación de cinta led" - Quantity 0.00 outside typical range [1-200] for ml (general)
+[2026-01-24T01:53:31.133Z] [UNIT FALLBACK BLOCK] "Tablero eléctrico rotulado" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:53:31.133Z] [VALIDATOR WARNING] "Tablero eléctrico rotulado" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:53:31.143Z] [UNIT FALLBACK BLOCK] "Grifería (solo instalacion, provista por mandante)" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:53:31.143Z] [VALIDATOR WARNING] "Grifería (solo instalacion, provista por mandante)" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:53:31.146Z] [UNIT FALLBACK BLOCK] "Remarcador agua potable" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:53:31.146Z] [VALIDATOR WARNING] "Remarcador agua potable" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:53:31.149Z] [UNIT FALLBACK BLOCK] "Tapas registro para RAP" - Found none evidence (qty: 0), forcing to 0
+[2026-01-24T01:53:31.149Z] [VALIDATOR WARNING] "Tapas registro para RAP" - Quantity 0.00 outside typical range [1-50] for un (general)
+[2026-01-24T01:53:31.179Z] [VALIDATOR WARNING] "Electropintado difusores clima" - Quantity 0.00 outside typical range [10-200] for m2 (floor)
+[2026-01-24T01:53:31.185Z]   [FIX HORIZONTAL] "Protección de pisos" - Using layer "4.75m2" from profile
+[2026-01-24T01:53:31.185Z] [SMALL AREA WARNING] "Protección de pisos" - Only 4.75m² found, likely wrong layer
+[2026-01-24T01:53:31.185Z] [VALIDATOR WARNING] "Protección de pisos" - Quantity 4.75 outside typical range [10-200] for m2 (floor)
