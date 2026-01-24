@@ -184,6 +184,12 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
 
     // P0.C: BUILD LAYER-FIRST CANDIDATES
     // Instead of fuzzy matching entities, we match against layer profiles
+    // DEBUG: Log fa_0.05 profile
+    const fa05 = layerProfiles.get('fa_0.05');
+    if (fa05) {
+        console.log(`[DEBUG] fa_0.05 Profile in Matcher: Area=${fa05.total_area}, Length=${fa05.total_length}, Blocks=${fa05.block_count}`);
+    }
+
     interface LayerCandidate {
         layer: string;
         layer_normalized: string;
@@ -196,6 +202,9 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
     for (const [layerName, profile] of layerProfiles.entries()) {
         const sampleItem = candidateItems.find(i => i.layer_normalized === layerName);
         if (sampleItem) {
+            if (layerName === 'fa_0.05') {
+                console.log(`[DEBUG] Building LayerCandidate for fa_0.05. Profile Area: ${profile.total_area}`);
+            }
             // Get keywords for this layer
             const keywords = getLayerKeywords(layerName);
 
@@ -231,6 +240,11 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
     });
 
     const rows: StagingRow[] = excelItems.map(excelItem => {
+        // DEBUG: Log GL items
+        if (excelItem.unit === 'gl') {
+            console.log(`[DEBUG] Item "${excelItem.description.substring(0, 20)}" Unit=${excelItem.unit} Type=${excelItem.type} IsService=${excelItem.type === 'service'}`);
+        }
+
         // --- HOTFIX 1: Handle Non-Measurable Rows ---
         if (excelItem.type === 'section_header' || excelItem.type === 'note') {
             return {
@@ -255,7 +269,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             } as StagingRow;
         }
 
-        if (excelItem.type === 'service') {
+        if (excelItem.type === 'service' || excelItem.unit === 'gl') {
             return {
                 id: uuidv4(),
                 excel_sheet: sheetName,
@@ -674,6 +688,11 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                             const layerProfile = result.length > 0 ? result[0].item.profile : null;
                             if (layerProfile && layerProfile.total_area > 0) {
                                 qtyFinal = layerProfile.total_area;
+                                console.log(`[DEBUG] Set qtyFinal to ${qtyFinal} from profile area for "${excelItem.description.substring(0, 20)}" (Layer: ${match.layer_normalized})`);
+                                const directProfile = layerProfiles.get(match.layer_normalized);
+                                if (directProfile) {
+                                    console.log(`[DEBUG] Direct Profile Lookup for ${match.layer_normalized}: Area=${directProfile.total_area}`);
+                                }
                                 methodDetail = 'profile_area_horizontal';
                                 evidenceTypeUsed = 'area';
                                 reason += ` | Horizontal: Using layer regions (${layerProfile.total_area.toFixed(2)}m2)`;
@@ -702,8 +721,15 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 }
                 // Case A: Geometry is Area (HATCH/Polyline Region)
                 else if (match.type === 'area') {
-                    qtyFinal = match.value_si; // âœ… SI units (mÂ²)
-                    methodDetail = 'direct_area';
+                    // P0.3: Use layer profile total area (aggregation) instead of single item value
+                    const layerProfile = result.length > 0 ? result[0].item.profile : null;
+                    if (layerProfile && layerProfile.total_area > 0) {
+                        qtyFinal = layerProfile.total_area;
+                        methodDetail = 'profile_area_aggregated';
+                    } else {
+                        qtyFinal = match.value_si; // âœ… SI units (mÂ²)
+                        methodDetail = 'direct_area';
+                    }
                     evidenceTypeUsed = 'area'; // P0.3
                 }
                 // FIX: match.type is block or text - use layer profile's total_area instead

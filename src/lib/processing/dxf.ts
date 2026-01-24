@@ -533,6 +533,21 @@ export async function parseDxf(fileContent: string, planUnitPreference?: Unit): 
     let accurateBBox = calculateBoundingBoxFromEntities(processableEntities, unitMetadata.toMeters);
     let accurateDiagonal = calculateDiagonal(accurateBBox);
 
+    // Fallback 0: Use Exploded BBox if Main BBox is invalid (common in block-only DXFs)
+    if (accurateDiagonal < 0.1 && explodedBBox.diagonal > 0) {
+        const explMinX = toMeters(explodedBBox.minX);
+        const explMinY = toMeters(explodedBBox.minY);
+        const explMaxX = toMeters(explodedBBox.maxX);
+        const explMaxY = toMeters(explodedBBox.maxY);
+
+        accurateBBox = {
+            min: { x: explMinX, y: explMinY, z: 0 },
+            max: { x: explMaxX, y: explMaxY, z: 0 }
+        };
+        accurateDiagonal = calculateDiagonal(accurateBBox);
+        console.log(`[BBox] Overriding invalid Top-Level BBox with Exploded BBox: ${accurateDiagonal.toFixed(2)} m`);
+    }
+
     // Fallback 1: Try DXF header extents if bbox is still invalid
     if (accurateDiagonal < 0.01 && dxf.header) {
         const extentsBBox = getBBoxFromExtents(dxf.header, unitMetadata.toMeters);
