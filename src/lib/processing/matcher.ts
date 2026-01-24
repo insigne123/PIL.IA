@@ -598,22 +598,51 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             // We use calcMethod to decide how to derive qty from CAD geometry
 
             if (calcMethod === 'COUNT') {
-                // FIXED 11.5: Disable Text Match for Unit/Global Items to prevent "1112" count error
-                const isUnitOrGlobal = ['un', 'gl', 'u'].includes(excelItem.unit?.toLowerCase() || '');
+                const isUnitItem = ['un', 'u', 'und', 'unidad', 'pza', 'c/u'].includes(excelItem.unit?.toLowerCase() || '');
 
-                // STRICT FIX: Block ANY non-block match for unit items
-                if (isUnitOrGlobal && match.type !== 'block') {
-                    console.log(`[Matcher] Blocked NON-BLOCK Match for Unit Item: ${excelItem.description} - got type ${match.type}`);
+                // RELAXED FIX: Allow Text and Small Areas for unit items, but prioritize Blocks
+                const isBlock = match.type === 'block';
+                const isText = match.type === 'text';
+                const isSmallArea = match.type === 'area' && (match.value_si || 0) < 2.0; // Allow areas < 2.0m² (e.g. big circles)
+
+                if (isUnitItem && !isBlock && !isText && !isSmallArea) {
+                    console.log(`[Matcher] Blocked Invalid Match for Unit Item: ${excelItem.description} - got type ${match.type}`);
                     qtyFinal = 0; // Force zero
                     confidence = 0.3;
-                    reason = `⛔ Blocked: Unit items require BLOCK evidence, got ${match.type}`;
+                    reason = `⛔ Blocked: Unit items require BLOCK, TEXT or SMALL AREA evidence, got ${match.type}`;
                 } else if (match.type === 'block' && match.value_area && (excelItem.unit === 'm2' || excelItem.unit === 'm²')) {
                     // FIX 11.3: If target is AREA and block has area, multiply!
-                    qtyFinal = (match.value_si || 1) * match.value_area;
+                    // Get total block count from profile
+                    const profile = layerProfiles.get(match.layer_normalized);
+                    const blockCount = profile ? profile.block_count : (match.value_si || 1);
+
+                    qtyFinal = blockCount * match.value_area;
                     methodDetail = 'block_area_times_count';
-                    reason += ` | Area derived from ${match.value_si} blocks * ${match.value_area.toFixed(2)}m²/each`;
+                    reason += ` | Area derived from ${blockCount} blocks * ${match.value_area.toFixed(2)}m²/each`;
                 } else {
-                    qtyFinal = match.type === 'block' ? (match.value_si || 1) : 0;
+                    // Get correct count based on type
+                    const profile = layerProfiles.get(match.layer_normalized);
+
+                    if (isBlock) {
+                        qtyFinal = profile ? profile.block_count : (match.value_si || 1);
+                        methodDetail = 'count_blocks';
+                    } else if (isText) {
+                        // Count text entities in this layer
+                        const textCount = dxfItems.filter(i => i.layer_normalized === match.layer_normalized && i.type === 'text').length;
+                        qtyFinal = textCount;
+                        methodDetail = 'count_text_entities';
+                    } else if (isSmallArea) {
+                        // Count small area entities in this layer
+                        const smallAreaCount = dxfItems.filter(i =>
+                            i.layer_normalized === match.layer_normalized &&
+                            i.type === 'area' &&
+                            (i.value_si || 0) < 2.0
+                        ).length;
+                        qtyFinal = smallAreaCount;
+                        methodDetail = 'count_small_areas';
+                    } else {
+                        qtyFinal = 0;
+                    }
                 }
                 evidenceTypeUsed = match.type as 'area' | 'length' | 'block' | 'text'; // P0.3
 
@@ -647,7 +676,8 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
             }
 
             else if (calcMethod === 'LENGTH') {
-                qtyFinal = match.value_si; // âœ… SI units (meters)
+                const profile = layerProfiles.get(match.layer_normalized);
+                qtyFinal = profile ? profile.total_length : match.value_si; // Use total length of layer
                 evidenceTypeUsed = 'length'; // P0.3
             }
 
@@ -656,8 +686,12 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 // If evidence is length, check for wall intent
                 if (match.type === 'length') {
                     // FIX 2: Use derived area calculator for intelligent height detection
+                    // Use total length from profile
+                    const profile = layerProfiles.get(match.layer_normalized);
+                    const totalLen = profile ? profile.total_length : match.value_si;
+
                     const derivedResult = calculateDerivedArea(
-                        match.value_si,
+                        totalLen,
                         excelItem.description
                     );
 
@@ -667,7 +701,7 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                         methodDetail = 'length_x_height';
                         evidenceTypeUsed = 'length';
                         reason += ` | ${derivedResult.reason}`;
-                        console.log(`  [FIX 2] length_x_height: ${match.value_si.toFixed(2)}m Ã— ${heightFactor}m = ${qtyFinal?.toFixed(2)}mÂ²`);
+                        console.log(`  [FIX 2] length_x_height: ${totalLen.toFixed(2)}m Ã— ${heightFactor}m = ${qtyFinal?.toFixed(2)}mÂ²`);
                     } else {
                         // FIX 8.1: Block unsafe fallback for Horizontal items
                         if (derivedResult.orientation === 'horizontal') {
@@ -688,10 +722,14 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                             // FIX 11.1: Validate with 3D analysis
                             if (shouldApplyWallFallback(match, excelItem)) {
                                 heightFactor = 2.4;
-                                qtyFinal = match.value_si * heightFactor;
+                                // Use total length
+                                const profile = layerProfiles.get(match.layer_normalized);
+                                const totalLen = profile ? profile.total_length : match.value_si;
+
+                                qtyFinal = totalLen * heightFactor;
                                 methodDetail = 'length_x_height_default';
                                 evidenceTypeUsed = 'length';
-                                reason += ` | Derivada: Largo * 2.4m (default)`;
+                                reason += ` | Derivada: Largo Total * 2.4m (default)`;
                             } else {
                                 qtyFinal = 0; // Blocked
                                 methodDetail = 'fallback_blocked_3d_horizontal';
@@ -702,7 +740,8 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 }
                 // Case A: Geometry is Area (HATCH/Polyline Region)
                 else if (match.type === 'area') {
-                    qtyFinal = match.value_si; // âœ… SI units (mÂ²)
+                    const profile = layerProfiles.get(match.layer_normalized);
+                    qtyFinal = profile ? profile.total_area : match.value_si; // Use total area of layer
                     methodDetail = 'direct_area';
                     evidenceTypeUsed = 'area'; // P0.3
                 }
@@ -750,8 +789,15 @@ export function matchItems(excelItems: ExtractedExcelItem[], dxfItems: ItemDetec
                 qtyFinal = match.value_si * (match.type === 'length' ? 2.4 : 1) * thickness;
             }
 
+            else if (calcMethod === 'GLOBAL') {
+                // Global items (gl, est) -> Always 1 unless user manually overrides
+                qtyFinal = 1;
+                methodDetail = 'global_default_1';
+                evidenceTypeUsed = 'none'; // Global doesn't strictly use geometry evidence
+            }
+
             else {
-                // Global or Unknown
+                // Unknown
                 qtyFinal = match.value_si;  // âœ… SI units
             }
         } else {
